@@ -33,7 +33,7 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
                     ""id"": ""b20cce49-13e1-4ffc-a5f8-ff94c8cbd658"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""MouseDrag"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -44,15 +44,6 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Delta"",
-                    ""type"": ""Value"",
-                    ""id"": ""949e41c0-dff9-441d-84d3-61fedd27343b"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -60,7 +51,7 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
                     ""name"": ""DragLeft"",
                     ""id"": ""2ebf1406-5d57-45ae-a810-a99357aac7a4"",
                     ""path"": ""MouseDrag"",
-                    ""interactions"": ""MouseDrag"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DragLeft"",
@@ -92,7 +83,7 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Axis2"",
                     ""id"": ""528f337c-5e1b-42ab-b025-4ef28955635a"",
-                    ""path"": ""<Mouse>/radius/y"",
+                    ""path"": ""<Mouse>/position/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -136,24 +127,13 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Axis2"",
                     ""id"": ""5328a2af-b9c4-4388-9fdf-038bf8a91abc"",
-                    ""path"": ""<Mouse>/radius/y"",
+                    ""path"": ""<Mouse>/position/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DragRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""aad7cef2-5b9f-49b6-9983-b74ee374b607"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Delta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -741,7 +721,6 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_DragLeft = m_Player.FindAction("DragLeft", throwIfNotFound: true);
         m_Player_DragRight = m_Player.FindAction("DragRight", throwIfNotFound: true);
-        m_Player_Delta = m_Player.FindAction("Delta", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -815,14 +794,12 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_DragLeft;
     private readonly InputAction m_Player_DragRight;
-    private readonly InputAction m_Player_Delta;
     public struct PlayerActions
     {
         private @InputModule m_Wrapper;
         public PlayerActions(@InputModule wrapper) { m_Wrapper = wrapper; }
         public InputAction @DragLeft => m_Wrapper.m_Player_DragLeft;
         public InputAction @DragRight => m_Wrapper.m_Player_DragRight;
-        public InputAction @Delta => m_Wrapper.m_Player_Delta;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -838,9 +815,6 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
                 @DragRight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDragRight;
                 @DragRight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDragRight;
                 @DragRight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDragRight;
-                @Delta.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDelta;
-                @Delta.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDelta;
-                @Delta.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDelta;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -851,9 +825,6 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
                 @DragRight.started += instance.OnDragRight;
                 @DragRight.performed += instance.OnDragRight;
                 @DragRight.canceled += instance.OnDragRight;
-                @Delta.started += instance.OnDelta;
-                @Delta.performed += instance.OnDelta;
-                @Delta.canceled += instance.OnDelta;
             }
         }
     }
@@ -1012,7 +983,6 @@ public partial class @InputModule : IInputActionCollection2, IDisposable
     {
         void OnDragLeft(InputAction.CallbackContext context);
         void OnDragRight(InputAction.CallbackContext context);
-        void OnDelta(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

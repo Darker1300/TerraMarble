@@ -11,7 +11,7 @@
                     "id": "b20cce49-13e1-4ffc-a5f8-ff94c8cbd658",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "MouseDrag",
                     "initialStateCheck": true
                 },
                 {
@@ -22,15 +22,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Delta",
-                    "type": "Value",
-                    "id": "949e41c0-dff9-441d-84d3-61fedd27343b",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -38,7 +29,7 @@
                     "name": "DragLeft",
                     "id": "2ebf1406-5d57-45ae-a810-a99357aac7a4",
                     "path": "MouseDrag",
-                    "interactions": "MouseDrag",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "DragLeft",
@@ -70,7 +61,7 @@
                 {
                     "name": "Axis2",
                     "id": "528f337c-5e1b-42ab-b025-4ef28955635a",
-                    "path": "<Mouse>/radius/y",
+                    "path": "<Mouse>/position/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -114,24 +105,13 @@
                 {
                     "name": "Axis2",
                     "id": "5328a2af-b9c4-4388-9fdf-038bf8a91abc",
-                    "path": "<Mouse>/radius/y",
+                    "path": "<Mouse>/position/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "DragRight",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "aad7cef2-5b9f-49b6-9983-b74ee374b607",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Delta",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
