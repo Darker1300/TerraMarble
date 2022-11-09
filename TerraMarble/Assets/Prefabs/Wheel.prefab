@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.689, g: 0.3789973, b: 0, a: 1}
+  color: {r: 0.94509804, g: 0.7607843, b: 0.5882353, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -69,9 +69,9 @@ MonoBehaviour:
   angUnitInput: 1
   angRadiansStart: 0
   angRadiansEnd: 6.2831855
-  radius: 2.7
+  radius: 2.65
   radiusSpace: 0
-  thickness: 0.1
+  thickness: 0.2
   thicknessSpace: 0
   arcEndCaps: 0
   matchDashSpacingToSize: 1
@@ -130,9 +130,9 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1262480151
+  m_SortingLayer: -3
+  m_SortingOrder: 1
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &974642577480620517
 GameObject:
@@ -283,7 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.2264151, g: 0.13500366, b: 0.045710213, a: 1}
+  color: {r: 0.39607844, g: 0.25726056, b: 0.12872548, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
