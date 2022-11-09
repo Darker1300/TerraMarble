@@ -18,6 +18,7 @@ public class InputManager : MonoBehaviour
     public float RightStartTime;
     public float TapTime;
 
+    public bool showDebug = false;
 
 
     private int screenWidth;
@@ -108,13 +109,13 @@ public class InputManager : MonoBehaviour
         //ctx =>
         //{
 
-        //    Debug.Log("click");
+        //    if (showDebug) Debug.Log("click");
 
         //};
         //inputAsset.Player.LeftClick.started +=
         //ctx =>
         //{
-        //    Debug.Log("Down");
+        //    if (showDebug) Debug.Log("Down");
         //    if (ctx.interaction is SlowTapInteraction)
         //    {
         //        //if ((Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(inputAsset.Player.DragLeft.ReadValue<Vector2>())).magnitude < minDragAmount)
@@ -127,7 +128,7 @@ public class InputManager : MonoBehaviour
         //        //TRIGGER SLOW TAP IF DRAG MAG Below ThreshHold
         //        //if ((Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(inputAsset.Player.DragLeft.ReadValue<Vector2>())).magnitude < minDragAmount)
         //        //{
-        //        //    Debug.Log("left SlowStart");
+        //        //    if (showDebug) Debug.Log("left SlowStart");
         //        //    slowTap = true;
         //        //    SlowTapLeftEvent?.Invoke(true);
 
@@ -136,11 +137,11 @@ public class InputManager : MonoBehaviour
         //        //{
         //        //    LeftDragEvent?.Invoke(true);
 
-        //        //    Debug.Log(" Drag Left Started");
+        //        //    if (showDebug) Debug.Log(" Drag Left Started");
         //        //}
         //        //Drag
 
-        //        // Debug.Log((Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(inputAsset.Player.DragLeft.ReadValue<Vector2>())).magnitude);
+        //        // if (showDebug) Debug.Log((Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(inputAsset.Player.DragLeft.ReadValue<Vector2>())).magnitude);
         //    }
         //};
         ////performed full charge (!have a canceled one to deal )
@@ -155,25 +156,25 @@ public class InputManager : MonoBehaviour
         //        //{
         //        //    //if (slowTap == true)
         //        //    //{
-        //        //    //    Debug.Log("Slow left TapFinished");
+        //        //    //    if (showDebug) Debug.Log("Slow left TapFinished");
         //        //    //    SlowTapLeftEvent?.Invoke(false);
         //        //    //    slowTap = false;
 
         //        //    //}
         //        //    //else if (ctx.interaction is not TapInteraction)
         //        //    //{
-        //        //    //    Debug.Log("Drag Left FInished");
+        //        //    //    if (showDebug) Debug.Log("Drag Left FInished");
         //        //    //    LeftDragEvent?.Invoke(false);
 
         //        //    //}
 
-        //        //    //Debug.Log("sLowTap" + inputAsset.Player.Drag.ReadValue<Vector2>());
+        //        //    //if (showDebug) Debug.Log("sLowTap" + inputAsset.Player.Drag.ReadValue<Vector2>());
 
 
         //        //}
         //        //else
         //        //{
-        //        //    Debug.Log("leftTap");
+        //        //    if (showDebug) Debug.Log("leftTap");
 
         //        //    TapLeftEvent?.Invoke(null, EventArgs.Empty);
 
@@ -198,14 +199,14 @@ public class InputManager : MonoBehaviour
 
         //        //    slowTap = true;
         //        //    SlowTapRightEvent?.Invoke(true);
-        //        //    Debug.Log("slow Right tapStart");
+        //        //    if (showDebug) Debug.Log("slow Right tapStart");
 
         //        //}
         //        //else
         //        //{
         //        //    RightDragEvent?.Invoke(true);
 
-        //        //    Debug.Log("Drag right Event Start");
+        //        //    if (showDebug) Debug.Log("Drag right Event Start");
         //        //    //Drag
 
         //        //}
@@ -222,19 +223,19 @@ public class InputManager : MonoBehaviour
         //          {
         //              if (slowTap == true)
         //              {
-        //                  Debug.Log("Slow Tap right finished");
+        //                  if (showDebug) Debug.Log("Slow Tap right finished");
         //                  SlowTapRightEvent?.Invoke(false);
         //                  slowTap = false;
 
         //              }
         //              else
         //              {
-        //                  Debug.Log("drag right finished");
+        //                  if (showDebug) Debug.Log("drag right finished");
         //                  RightDragEvent?.Invoke(false);
 
         //              }
 
-        //              //Debug.Log("sLowTap" + inputAsset.Player.Drag.ReadValue<Vector2>());
+        //              //if (showDebug) Debug.Log("sLowTap" + inputAsset.Player.Drag.ReadValue<Vector2>());
 
 
         //          }
@@ -245,7 +246,7 @@ public class InputManager : MonoBehaviour
         //              TapRightEvent?.Invoke(null, EventArgs.Empty);
 
         //              //Tap();
-        //              Debug.Log("RIght Tap");
+        //              if (showDebug) Debug.Log("RIght Tap");
 
         //          }
 
@@ -254,7 +255,7 @@ public class InputManager : MonoBehaviour
         //inputAsset.Player.OneButtonMultiTap.performed +=
         //    ctx =>
         //    {
-        //        //Debug.Log("MultiTap");
+        //        //if (showDebug) Debug.Log("MultiTap");
 
 
         //    };
@@ -268,7 +269,7 @@ public class InputManager : MonoBehaviour
         //        ctx =>
         //        {
 
-        //            Debug.Log("TwoStarted");
+        //            if (showDebug) Debug.Log("TwoStarted");
 
 
 
@@ -277,7 +278,7 @@ public class InputManager : MonoBehaviour
         //        ctx =>
         //        {
 
-        //            Debug.Log("TwoDragging");
+        //            if (showDebug) Debug.Log("TwoDragging");
 
 
 
@@ -286,7 +287,7 @@ public class InputManager : MonoBehaviour
         //ctx =>
         //{
 
-        //    Debug.Log("TwoDraggingFinished");
+        //    if (showDebug) Debug.Log("TwoDraggingFinished");
 
 
 
@@ -306,7 +307,7 @@ public class InputManager : MonoBehaviour
                    LeftStartTime = Time.time;
 
                    DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
-                   Debug.Log("Start");
+                   if (showDebug) Debug.Log("Start");
                    LeftDragEvent?.Invoke(true);
 
 
@@ -317,17 +318,17 @@ public class InputManager : MonoBehaviour
         inputAsset.Player.DragLeft.performed +=
             ctx =>
             {
-                //Debug.Log("Drag" + (Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>())).magnitude);
+                //if (showDebug) Debug.Log("Drag" + (Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>())).magnitude);
 
 
-                // Debug.Log("Dragging");
+                // if (showDebug) Debug.Log("Dragging");
                 //DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
 
                 //IF DRAG IS ABOVE X AMOUNT 
 
 
                 LeftDragVectorEvent?.Invoke( Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()) - Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos), mouseDelta);
-                Debug.Log("Drag"+(Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()) - Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos)));
+                if (showDebug) Debug.Log("Drag"+(Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()) - Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos)));
 
 
 
@@ -340,7 +341,7 @@ public class InputManager : MonoBehaviour
 
 
                mouseDelta = ctx.ReadValue<Vector2>();
-               Debug.Log("Delta" + ctx.ReadValue<Vector2>());
+               if (showDebug) Debug.Log("Delta" + ctx.ReadValue<Vector2>());
 
 
 
@@ -355,12 +356,12 @@ public class InputManager : MonoBehaviour
                 //how long since held down? is it a tap
                 if ((Time.time - LeftStartTime) <= TapTime)
                 {
-                    Debug.Log((Time.time - LeftStartTime) + " : tap");
+                    if (showDebug) Debug.Log((Time.time - LeftStartTime) + " : tap");
                     TapLeftEvent?.Invoke(null, EventArgs.Empty);
                 }
                 else
                 {
-                    Debug.Log("Drag End");
+                    if (showDebug) Debug.Log("Drag End");
                     LeftDragEvent?.Invoke(false);
                     LeftStartTime = 0;
                     DragLeftStartScreenPos = Vector2.zero;
@@ -389,7 +390,7 @@ public class InputManager : MonoBehaviour
                RightStartTime = Time.time;
 
                DragRightStartScreenPos = ctx.ReadValue<Vector2>();
-               Debug.Log("Start");
+               if (showDebug) Debug.Log("Start");
                RightDragEvent?.Invoke(true);
 
 
@@ -400,17 +401,17 @@ public class InputManager : MonoBehaviour
         inputAsset.Player.DragRight.performed +=
             ctx =>
             {
-                //Debug.Log("Drag" + (Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>())).magnitude);
+                //if (showDebug) Debug.Log("Drag" + (Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>())).magnitude);
 
 
-                // Debug.Log("Dragging");
+                // if (showDebug) Debug.Log("Dragging");
                 //DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
 
                 //IF DRAG IS ABOVE X AMOUNT 
                 //(Vector2)Camera.main.ScreenToWorldPoint(end) - (Vector2)Camera.main.ScreenToWorldPoint(start)
 
                 RightDragVectorEvent?.Invoke(Camera.main.ScreenToWorldPoint(DragRightStartScreenPos) -  Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()), mouseDelta);
-                Debug.Log("Drag");
+                if (showDebug) Debug.Log("Drag");
 
 
 
@@ -428,7 +429,7 @@ public class InputManager : MonoBehaviour
                     //how long since held down? is it a tap
                     if ((Time.time - RightStartTime) <= TapTime)
                     {
-                        Debug.Log((Time.time - RightStartTime) + " : tap");
+                        if (showDebug) Debug.Log((Time.time - RightStartTime) + " : tap");
                         TapRightEvent?.Invoke(null, EventArgs.Empty);
                     }
 
@@ -436,7 +437,7 @@ public class InputManager : MonoBehaviour
                 }
 
 
-                Debug.Log("Drag End");
+                if (showDebug) Debug.Log("Drag End");
                 RightDragEvent?.Invoke(false);
                 RightStartTime = 0;
                 DragRightStartScreenPos = Vector2.zero;
@@ -450,7 +451,7 @@ public class InputManager : MonoBehaviour
 
     private void MultiTapActivated()
     {
-        //Debug.Log("MultiTap");
+        //if (showDebug) Debug.Log("MultiTap");
     }
 
     private void Tap()
@@ -461,13 +462,13 @@ public class InputManager : MonoBehaviour
 
     private void SlowTapRelease()
     {
-        //Debug.Log("SlowTapRelease");
+        //if (showDebug) Debug.Log("SlowTapRelease");
 
     }
 
     private void SlowTapStarted()
     {
-        //Debug.Log("SlowTapStarted");
+        //if (showDebug) Debug.Log("SlowTapStarted");
 
     }
 
@@ -508,7 +509,7 @@ public class InputManager : MonoBehaviour
     //                //chache the start pos
 
     //                //StartPos = ctx.ReadValue<Vector2>();
-    //                //Debug.Log("DragStarted" + ctx.ReadValue<Vector2>() + "Magnitude" + ctx.control.EvaluateMagnitude());
+    //                //if (showDebug) Debug.Log("DragStarted" + ctx.ReadValue<Vector2>() + "Magnitude" + ctx.control.EvaluateMagnitude());
     //                //ctx.control.EvaluateMagnitude())
     //                if (IsTouchRight(ctx.ReadValue<Vector2>()))
     //                {
@@ -541,15 +542,15 @@ public class InputManager : MonoBehaviour
     //                        LeftDragVectorEvent?.Invoke(Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()));
 
     //        }
-    //                //Debug.Log((Camera.main.ScreenToWorldPoint(DragRightStartScreenPos) - Camera.main.ScreenToWorldPoint(inputAsset.Player.Drag.ReadValue<Vector2>())).magnitude); Debug.Log((Camera.main.ScreenToWorldPoint(DragRightStartScreenPos) - Camera.main.ScreenToWorldPoint(inputAsset.Player.Drag.ReadValue<Vector2>())).magnitude);
+    //                //if (showDebug) Debug.Log((Camera.main.ScreenToWorldPoint(DragRightStartScreenPos) - Camera.main.ScreenToWorldPoint(inputAsset.Player.Drag.ReadValue<Vector2>())).magnitude); if (showDebug) Debug.Log((Camera.main.ScreenToWorldPoint(DragRightStartScreenPos) - Camera.main.ScreenToWorldPoint(inputAsset.Player.Drag.ReadValue<Vector2>())).magnitude);
     //                //activate boost if not already active
     //                //SlowTapRelease();
 
-    //                //Debug.Log("DragStarted" + ctx.ReadValue<Vector2>() + "Magnitude" + ctx.control.EvaluateMagnitude());
+    //                //if (showDebug) Debug.Log("DragStarted" + ctx.ReadValue<Vector2>() + "Magnitude" + ctx.control.EvaluateMagnitude());
     //                //DragLeftScreenPosEvent()
 
 
-    //                //Debug.Log("DragStarted" + ctx.ReadValue<Vector2>() + "Magnitude" + ctx.control.EvaluateMagnitude());
+    //                //if (showDebug) Debug.Log("DragStarted" + ctx.ReadValue<Vector2>() + "Magnitude" + ctx.control.EvaluateMagnitude());
     //                //ctx.control.EvaluateMagnitude())
 
 
@@ -571,14 +572,14 @@ public class InputManager : MonoBehaviour
 
     //                   slowTap = true;
     //                   SlowTapRightEvent?.Invoke(true);
-    //    Debug.Log("slow Right tapStart");
+    //    if (showDebug) Debug.Log("slow Right tapStart");
 
     //               }
     //               else
     //{
     //    RightDragEvent?.Invoke(true);
 
-    //    Debug.Log("Drag right Event Start");
+    //    if (showDebug) Debug.Log("Drag right Event Start");
     //    //Drag
     //    //show Charging boost and should tracks charge ampunt
     //    //SlowTapStarted();
@@ -596,19 +597,19 @@ public class InputManager : MonoBehaviour
     //          {
     //              if (slowTap == true)
     //              {
-    //                  Debug.Log("Slow Tap right finished");
+    //                  if (showDebug) Debug.Log("Slow Tap right finished");
     //                  SlowTapRightEvent?.Invoke(false);
     //                  slowTap = false;
 
     //              }
     //              else
     //              {
-    //                  Debug.Log("drag right finished");
+    //                  if (showDebug) Debug.Log("drag right finished");
     //                  RightDragEvent?.Invoke(false);
 
     //              }
 
-    //                      //Debug.Log("sLowTap" + inputAsset.Player.Drag.ReadValue<Vector2>());
+    //                      //if (showDebug) Debug.Log("sLowTap" + inputAsset.Player.Drag.ReadValue<Vector2>());
 
     //                      //activate boost if not already active
     //                      //SlowTapRelease();
@@ -621,7 +622,7 @@ public class InputManager : MonoBehaviour
     //                      TapRightEvent?.Invoke(null, EventArgs.Empty);
 
     //                      //Tap();
-    //                      Debug.Log("RIght Tap");
+    //                      if (showDebug) Debug.Log("RIght Tap");
 
     //          }
 
