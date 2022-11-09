@@ -144,6 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 974642577480620519}
   - component: {fileID: 974642577480620518}
+  - component: {fileID: 219434092374494946}
   - component: {fileID: 1677859929584864527}
   m_Layer: 0
   m_Name: Wheel
@@ -182,12 +183,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 672a515380f5458478b09b95a0dd507c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionsParent: {fileID: 6838772309578044595}
+  regions: []
+--- !u!114 &219434092374494946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974642577480620517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762e3180f376c674ba48f2f2dc1936b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheel: {fileID: 974642577480620518}
   doCreateRegions: 0
   regionCount: 36
   regionRadius: 3
   pregenRegionDefault: {fileID: 3605296678509970538, guid: 13020c9ba4d2bd94583c9acc505f0df5, type: 3}
-  regionsParent: {fileID: 6838772309578044595}
-  regions: []
 --- !u!58 &1677859929584864527
 CircleCollider2D:
   m_ObjectHideFlags: 0
