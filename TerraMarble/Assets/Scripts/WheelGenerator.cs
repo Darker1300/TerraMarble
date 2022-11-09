@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using Shapes;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class WheelGenerator : MonoBehaviour
 {
     [Header("Config")]
     public Wheel wheel;
-    public bool doCreateRegions = false;
+    //public bool doCreateRegions = false;
     public int regionCount = 36;
     public float regionRadius = 3f;
     public GameObject pregenRegionDefault = null;
@@ -17,16 +18,22 @@ public class WheelGenerator : MonoBehaviour
     {
         wheel ??= GetComponent<Wheel>();
     }
-    
+
     void Update()
     {
-        if (doCreateRegions)
-        {
-            doCreateRegions = false;
-            ClearRegions();
-            CreateRegions();
-        }
+        //if (doCreateRegions)
+        //{
+        //    doCreateRegions = false;
+        //}
     }
+
+    [Button]
+    public void RecreateRegions()
+    {
+        ClearRegions();
+        CreateRegions();
+    }
+
     public void ClearRegions()
     {
         wheel ??= GetComponent<Wheel>();

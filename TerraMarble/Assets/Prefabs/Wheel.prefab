@@ -146,7 +146,8 @@ GameObject:
   - component: {fileID: 974642577480620518}
   - component: {fileID: 219434092374494946}
   - component: {fileID: 1677859929584864527}
-  m_Layer: 0
+  - component: {fileID: 7945488613457546148}
+  m_Layer: 7
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,8 +184,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 672a515380f5458478b09b95a0dd507c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frictionFactor: 20
+  idleVelocity: 3
+  dragFactor: 0.5
+  maxVelocity: 100
   regionsParent: {fileID: 6838772309578044595}
   regions: []
+  rigidbody2D: {fileID: 7945488613457546148}
+  velocity: 3
+  dragging: 0
+  dragTarget: {x: 0, y: 0}
 --- !u!114 &219434092374494946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,7 +207,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheel: {fileID: 974642577480620518}
-  doCreateRegions: 0
   regionCount: 36
   regionRadius: 3
   pregenRegionDefault: {fileID: 3605296678509970538, guid: 13020c9ba4d2bd94583c9acc505f0df5, type: 3}
@@ -218,6 +226,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 3.25
+--- !u!50 &7945488613457546148
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974642577480620517}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 3
 --- !u!1 &3162285273570117601
 GameObject:
   m_ObjectHideFlags: 0
