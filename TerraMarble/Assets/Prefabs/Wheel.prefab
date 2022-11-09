@@ -66,7 +66,7 @@ MonoBehaviour:
   colorInnerEnd: {r: 1, g: 1, b: 1, a: 1}
   colorOuterEnd: {r: 1, g: 1, b: 1, a: 1}
   geometry: 0
-  angUnitInput: 1
+  angUnitInput: 2
   angRadiansStart: 0
   angRadiansEnd: 6.2831855
   radius: 2.65
