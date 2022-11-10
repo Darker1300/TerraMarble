@@ -1,18 +1,18 @@
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class Wheel : MonoBehaviour
 {
     [Header("Config")]
     public float speedFactor = 20f;
-    [NaughtyAttributes.InfoBox("Min Speed", EInfoBoxType.Normal)]
     public float minSpeed = 0.1f;
     public float maxSpeed = 100f;
     public float idleSpeed = -.2f;
     public float decelerationSpeed = 4f;
 
-
+    public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
 
     [Header("Debug References")]
     public Transform grabber;
@@ -92,11 +92,7 @@ public class Wheel : MonoBehaviour
             grabber.position = wheelCollider2D.ClosestPoint(worldPoint);
         }
 
-        //if (grabbing)
-        //{
-        //    Vector3 dragStartWorldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
-        //    grabStartAngle
-        //}
+        GrabEvent.Invoke(state);
     }
 
     private void OnLeftDragUpdate(Vector2 currentLocalPosition, Vector2 mouseDelta)
