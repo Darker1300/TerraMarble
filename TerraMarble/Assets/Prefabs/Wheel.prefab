@@ -169,6 +169,7 @@ Transform:
   - {fileID: 1313580764816193004}
   - {fileID: 7824366555364530426}
   - {fileID: 6838772309578044595}
+  - {fileID: 8802114963895515217}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -184,16 +185,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 672a515380f5458478b09b95a0dd507c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frictionFactor: 20
-  idleVelocity: 3
-  dragFactor: 0.5
-  maxVelocity: 100
+  minSpeed: 3
+  maxSpeed: 100
+  idleSpeed: 5
+  decelerationSpeed: 5
+  dragTarget: {x: 0, y: 0, z: 0}
+  grabber: {fileID: 8802114963895515217}
   regionsParent: {fileID: 6838772309578044595}
-  regions: []
   rigidbody2D: {fileID: 7945488613457546148}
+  grabbing: 0
   velocity: 3
-  dragging: 0
-  dragTarget: {x: 0, y: 0}
+  grabCurrentAngle: 0
+  grabTargetAngle: 0
+  regions: []
 --- !u!114 &219434092374494946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +274,37 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3162285273570117601}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 974642577480620519}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6361480349789902028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8802114963895515217}
+  m_Layer: 7
+  m_Name: Grabber
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8802114963895515217
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6361480349789902028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
