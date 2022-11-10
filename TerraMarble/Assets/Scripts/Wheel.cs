@@ -62,7 +62,7 @@ public class Wheel : MonoBehaviour
             velocity = Mathf.MoveTowards(
                 velocity,
                 idleSpeed,
-                Mathf.Abs(velocity) * decelerationSpeed * Time.deltaTime);
+                 Mathf.Max(Mathf.Abs(velocity), minSpeed) * decelerationSpeed * Time.deltaTime);
         }
 
 
@@ -73,21 +73,21 @@ public class Wheel : MonoBehaviour
         // float currentAngle = transform.eulerAngles.z;
         //  // Direction
 
-            //  if (grabbing)
-            //  {
-            //      targetAngle = Mathf.Atan2(
-            //                        dragTarget.y - transform.position.y,
-            //                        dragTarget.x - transform.position.x)
-            //                    * Mathf.Rad2Deg;
-            //  }
-            //  else
-            //  {
-            //      targetAngle = currentAngle + Mathf.DeltaAngle(currentAngle, currentAngle - 10f);
-            //  }
+        //  if (grabbing)
+        //  {
+        //      targetAngle = Mathf.Atan2(
+        //                        dragTarget.y - transform.position.y,
+        //                        dragTarget.x - transform.position.x)
+        //                    * Mathf.Rad2Deg;
+        //  }
+        //  else
+        //  {
+        //      targetAngle = currentAngle + Mathf.DeltaAngle(currentAngle, currentAngle - 10f);
+        //  }
 
-            //  float deltaAngle = Mathf.DeltaAngle(currentAngle, targetAngle);
+        //  float deltaAngle = Mathf.DeltaAngle(currentAngle, targetAngle);
 
-            //  velocity = Mathf.Clamp(deltaAngle, -maxVelocity, maxVelocity);
+        //  velocity = Mathf.Clamp(deltaAngle, -maxVelocity, maxVelocity);
     }
 
     private void FixedUpdate()
