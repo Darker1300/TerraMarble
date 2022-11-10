@@ -99,8 +99,8 @@ public class GravityPlanetApplier : MonoBehaviour
     }
             private void OnTriggerEnter2D(Collider2D collision)
             {
-                //intialOrbitEnter = true;
-
+        //intialOrbitEnter = true;
+     
 
                // if (collision.gameObject.layer == 6 && collision.gameObject.tag != //planet)
                 {

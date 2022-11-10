@@ -28,7 +28,7 @@ public class UpdateGravityDirection : MonoBehaviour
 
 
        
-        rb.AddForce(direction.normalized * (1.0f - direction.magnitude / maxGravDist) * maxGravity);
+        rb.AddForce(direction.normalized * (0.50f - direction.magnitude / maxGravDist) * maxGravity);
     }
 
     public void UpdateDirectionToCentre()
@@ -46,10 +46,16 @@ public class UpdateGravityDirection : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        float dot = Vector2.Dot(-collision.contacts[0].normal, rb.velocity);
 
-        Debug.Log("coll" + dot);
+        Vector2 project =  2 * (Vector2.Dot(rb.velocity , collision.contacts[0].normal) * collision.contacts[0].normal);
+        project = rb.velocity.normalized -  project;
+        project =  Vector2.ClampMagnitude(project ,maxGravity);
 
-        rb.velocity = collision.contacts[0].normal * 10.0f;
+       rb.velocity.Set(0,0);
+        //Debug.Log("coll" + dot);
+
+
+        rb.AddForce(project);
+
     }
 }
