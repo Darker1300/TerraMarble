@@ -185,16 +185,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 672a515380f5458478b09b95a0dd507c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedFactor: 20
   minSpeed: 3
   maxSpeed: 100
-  idleSpeed: 5
-  decelerationSpeed: 5
-  dragTarget: {x: 0, y: 0, z: 0}
+  idleSpeed: -0.2
+  decelerationSpeed: 4
   grabber: {fileID: 8802114963895515217}
   regionsParent: {fileID: 6838772309578044595}
   rigidbody2D: {fileID: 7945488613457546148}
+  wheelCollider2D: {fileID: 1677859929584864527}
   grabbing: 0
-  velocity: 3
+  velocity: 0
   grabCurrentAngle: 0
   grabTargetAngle: 0
   regions: []

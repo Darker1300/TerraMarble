@@ -4,42 +4,39 @@ using UnityEngine;
 public class Wheel : MonoBehaviour
 {
     [Header("Config")]
-    public float minSpeed = 1f;
+    public float speedFactor = 20f;
+    public float minSpeed = 0.1f;
     public float maxSpeed = 100f;
-    public float idleSpeed = 5f; 
-    public float decelerationSpeed = 5f;
-    public Vector3 dragTarget = Vector3.zero;
+    public float idleSpeed = -.2f;
+    public float decelerationSpeed = 4f;
 
-    [Header("Debug")]
+    [Header("Debug References")]
     public Transform grabber;
     public Transform regionsParent;
     public new Rigidbody2D rigidbody2D;
+    public CircleCollider2D wheelCollider2D;
+
+    [Header("Debug Physics")]
     public bool grabbing = false;
     public float velocity = 0f;
     public float grabCurrentAngle = 0f;
     public float grabTargetAngle = 0f;
+    //private float decelSmoothCounter = 0f;
+    //public float decelerationTime = 0.3f;
+
+    [Header("Debug Data")]
     public Region[] regions;
-
-
-
-    // public float direction;
-    //public float velocity = 1f;
-    //public float targetAngle = 0f;
-
-    //public Vector3 dragTargetPrevious = Vector3.zero;
-
-    //public float frictionFactor = 0.99f;
-    //public float dragFactor = 0.1f;
 
     private void Start()
     {
         rigidbody2D ??= GetComponent<Rigidbody2D>();
+        wheelCollider2D ??= GetComponent<CircleCollider2D>();
         grabber ??= GameObject.Find("Grabber").transform;
 
         InputManager.LeftDragEvent += OnLeftDrag;
         InputManager.LeftDragVectorEvent += OnLeftDragUpdate;
 
-        velocity = minSpeed;
+        velocity = idleSpeed;
     }
 
     private void Update()
@@ -51,6 +48,24 @@ public class Wheel : MonoBehaviour
         {
             velocity = Mathf.DeltaAngle(grabCurrentAngle, grabTargetAngle);
         }
+        else
+        {
+            // Deceleration
+
+            //velocity = Mathf.SmoothDampAngle(
+            //    velocity,
+            //    idleSpeed,
+            //    ref decelSmoothCounter,
+            //    decelerationTime
+            //);
+
+            velocity = Mathf.MoveTowards(
+                velocity,
+                idleSpeed,
+                Mathf.Abs(velocity) * decelerationSpeed * Time.deltaTime);
+        }
+
+
 
 
 
@@ -105,11 +120,13 @@ public class Wheel : MonoBehaviour
 
         float newTargetAngle = transform.eulerAngles.z + velocity;
 
+        float speed = Mathf.Clamp(Mathf.Abs(velocity) * speedFactor, minSpeed, maxSpeed);
+
         Quaternion newTargetRotation = Quaternion.Euler(new Vector3(0, 0, newTargetAngle));
         var newRot = Quaternion.RotateTowards(
             transform.rotation,
             newTargetRotation,
-            100f * Time.fixedDeltaTime);
+            speed * Time.fixedDeltaTime);
 
         // Apply direction
         rigidbody2D.MoveRotation(newRot);
@@ -122,7 +139,7 @@ public class Wheel : MonoBehaviour
         {
             //Debug.Log(InputManager.DragLeftStartScreenPos);
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
-            grabber.position = rigidbody2D.ClosestPoint(worldPoint);
+            grabber.position = wheelCollider2D.ClosestPoint(worldPoint);
         }
 
         //if (grabbing)
