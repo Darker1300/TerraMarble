@@ -1,23 +1,19 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
-using UnityEngine.InputSystem.Interactions;
 
 public class TestInputNew : MonoBehaviour
 {
+#pragma warning disable 67
 
     private InputModule inputAsset;
     //Output Variables
 
     public Vector2 DragLeftStartScreenPos;
     public Vector2 DragRightStartScreenPos;
-    public float LeftStartTime; 
+    public float LeftStartTime;
     public float RightStartTime;
     public float TapTime;
- 
+
 
 
     private int screenWidth;
@@ -30,16 +26,12 @@ public class TestInputNew : MonoBehaviour
     public delegate void StartScreenPos(Vector2 StartScreenPos);
     public event StartScreenPos StartPosEvent;
 
-
-
-
     //CURRENT DRAG SCREENPOS
     public delegate void DragLeftUpdate(Vector2 currentScreenPosition);
     public event DragLeftUpdate LeftDragVectorEvent;
-
+    
     public delegate void DragRightUpdate(Vector2 currentScreenPosition);
     public event DragRightUpdate RightDragVectorEvent;
-
     public delegate void DragLeft(bool state);
     public event DragLeft LeftDragEvent;
     public event DragLeft RightDragEvent;
@@ -300,6 +292,6 @@ public class TestInputNew : MonoBehaviour
     }
 
 
-    
+
 
 }

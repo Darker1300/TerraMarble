@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 
@@ -5,10 +6,13 @@ public class Wheel : MonoBehaviour
 {
     [Header("Config")]
     public float speedFactor = 20f;
+    [NaughtyAttributes.InfoBox("Min Speed", EInfoBoxType.Normal)]
     public float minSpeed = 0.1f;
     public float maxSpeed = 100f;
     public float idleSpeed = -.2f;
     public float decelerationSpeed = 4f;
+
+
 
     [Header("Debug References")]
     public Transform grabber;
@@ -62,74 +66,20 @@ public class Wheel : MonoBehaviour
             velocity = Mathf.MoveTowards(
                 velocity,
                 idleSpeed,
-                 Mathf.Max(Mathf.Abs(velocity), minSpeed) * decelerationSpeed * Time.deltaTime);
+                Mathf.Max(Mathf.Abs(velocity), minSpeed) * decelerationSpeed * Time.deltaTime);
         }
-
-
-
-
-
-
-        // float currentAngle = transform.eulerAngles.z;
-        //  // Direction
-
-        //  if (grabbing)
-        //  {
-        //      targetAngle = Mathf.Atan2(
-        //                        dragTarget.y - transform.position.y,
-        //                        dragTarget.x - transform.position.x)
-        //                    * Mathf.Rad2Deg;
-        //  }
-        //  else
-        //  {
-        //      targetAngle = currentAngle + Mathf.DeltaAngle(currentAngle, currentAngle - 10f);
-        //  }
-
-        //  float deltaAngle = Mathf.DeltaAngle(currentAngle, targetAngle);
-
-        //  velocity = Mathf.Clamp(deltaAngle, -maxVelocity, maxVelocity);
     }
 
     private void FixedUpdate()
     {
-        //  // Direction
-        //  float angle = 0f;
-
-        //  if (grabbing)
-        //      angle = Mathf.Atan2(
-        //                  dragTarget.y - transform.position.y,
-        //                  dragTarget.x - transform.position.x)
-        //              * Mathf.Rad2Deg;
-        //  else angle = transform.eulerAngles.z - 10f;
-
-        //  Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        //  var newRot = Quaternion.RotateTowards(
-        //      transform.rotation, 
-        //      targetRotation, 
-        //      velocity * Time.fixedDeltaTime);
-
-        //  // Apply direction
-        //  rigidbody2D.MoveRotation(newRot);
-
-        //  // Friction
-        //  if (velocity > idleVelocity)
-        //      velocity = Mathf.MoveTowards(
-        //          velocity,
-        //          idleVelocity,
-        //          frictionFactor * Time.fixedDeltaTime);
-
-        float newTargetAngle = transform.eulerAngles.z + velocity;
+        float goalAngle = transform.eulerAngles.z + velocity;
+        Quaternion goalRotation = Quaternion.Euler(new Vector3(0, 0, goalAngle));
 
         float speed = Mathf.Clamp(Mathf.Abs(velocity) * speedFactor, minSpeed, maxSpeed);
+        Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, goalRotation, speed * Time.fixedDeltaTime);
 
-        Quaternion newTargetRotation = Quaternion.Euler(new Vector3(0, 0, newTargetAngle));
-        var newRot = Quaternion.RotateTowards(
-            transform.rotation,
-            newTargetRotation,
-            speed * Time.fixedDeltaTime);
-
-        // Apply direction
-        rigidbody2D.MoveRotation(newRot);
+        // Apply movement
+        rigidbody2D.MoveRotation(newRotation);
     }
 
     private void OnLeftDrag(bool state)

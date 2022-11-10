@@ -9,19 +9,19 @@ public class Region : MonoBehaviour
     public Wheel Wheel = null;
     public Disc Disc = null;
 
-    public Transform Anchor
-    {
-        get
-        {
-            if (_anchor == null)
-            {
-                _anchor = new GameObject("Anchor").transform;
-                _anchor.SetParent(transform, false);
-                // _anchor.position
-            }
-            return _anchor;
-        }
-    }
+    public Transform Anchor => TryCreateAnchor();
 
     public Vector3 EndPosition => Anchor.position;
+
+    private Transform TryCreateAnchor()
+    {
+        if (_anchor == null)
+        {
+            _anchor = new GameObject("Anchor").transform;
+            _anchor.SetParent(transform, false);
+            // _anchor.position
+        }
+
+        return _anchor;
+    }
 }
