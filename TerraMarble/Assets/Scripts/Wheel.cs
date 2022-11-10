@@ -71,8 +71,8 @@ public class Wheel : MonoBehaviour
     {
         // Debug.Log(delta);
         Camera gameCamera = Camera.main;
-        dragTarget = currentWorldPosition;
-        velocity = Mathf.Clamp(delta.magnitude * dragFactor, idleVelocity, maxVelocity);
+        dragTarget = currentWorldPosition + (Vector2) Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
+        velocity = Mathf.Clamp(currentWorldPosition.magnitude * dragFactor, idleVelocity, maxVelocity);
     }
 
     private void UpdateVelocity()
