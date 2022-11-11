@@ -12,10 +12,13 @@ public class Wheel : MonoBehaviour
     public float idleSpeed = -.2f;
     public float decelerationSpeed = 4f;
 
+#pragma warning disable 414
     [SerializeField] private bool showEvents = false;
-    [ShowIf("showEvents")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
-
     [SerializeField] private bool showDebugFields = false;
+#pragma warning restore 414
+
+    [ShowIf("showEvents")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
+    
     [Header("Debug References")]
     [ShowIf("showDebugFields")] public Transform grabber;
     [ShowIf("showDebugFields")] public Transform regionsParent;
