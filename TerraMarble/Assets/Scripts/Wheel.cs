@@ -12,24 +12,27 @@ public class Wheel : MonoBehaviour
     public float idleSpeed = -.2f;
     public float decelerationSpeed = 4f;
 
-    public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
+#pragma warning disable 414
+    [SerializeField] private bool showEvents = false;
+    [SerializeField] private bool showDebugFields = false;
+#pragma warning restore 414
 
+    [ShowIf("showEvents")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
+    
     [Header("Debug References")]
-    public Transform grabber;
-    public Transform regionsParent;
-    public new Rigidbody2D rigidbody2D;
-    public CircleCollider2D wheelCollider2D;
+    [ShowIf("showDebugFields")] public Transform grabber;
+    [ShowIf("showDebugFields")] public Transform regionsParent;
+    [ShowIf("showDebugFields")] public new Rigidbody2D rigidbody2D;
+    [ShowIf("showDebugFields")] public CircleCollider2D wheelCollider2D;
 
     [Header("Debug Physics")]
-    public bool grabbing = false;
-    public float velocity = 0f;
-    public float grabCurrentAngle = 0f;
-    public float grabTargetAngle = 0f;
-    //private float decelSmoothCounter = 0f;
-    //public float decelerationTime = 0.3f;
+    [ShowIf("showDebugFields")] [SerializeField] private bool grabbing = false;
+    [ShowIf("showDebugFields")] [SerializeField] private float velocity = 0f;
+    [ShowIf("showDebugFields")] [SerializeField] private float grabCurrentAngle = 0f;
+    [ShowIf("showDebugFields")] [SerializeField] private float grabTargetAngle = 0f;
 
     [Header("Debug Data")]
-    public Region[] regions;
+    [ShowIf("showDebugFields")] public Region[] regions;
 
     private void Start()
     {
@@ -55,14 +58,6 @@ public class Wheel : MonoBehaviour
         else
         {
             // Deceleration
-
-            //velocity = Mathf.SmoothDampAngle(
-            //    velocity,
-            //    idleSpeed,
-            //    ref decelSmoothCounter,
-            //    decelerationTime
-            //);
-
             velocity = Mathf.MoveTowards(
                 velocity,
                 idleSpeed,
@@ -100,21 +95,6 @@ public class Wheel : MonoBehaviour
         Vector3 dragStartWorldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
         Vector3 dragCurrentWorldPoint = (Vector3)currentLocalPosition + dragStartWorldPoint;
         grabTargetAngle = GetAngleFromPoint(dragCurrentWorldPoint);
-
-
-
-        //dragTarget = transform.InverseTransformPoint(dragCurrentWorldPoint);
-
-        // Debug.Log(mouseDelta);
-        //Camera gameCamera = Camera.main;
-        //velocity = Mathf.Clamp(currentLocalPosition.magnitude * dragFactor, idleVelocity, maxVelocity);
-
-        //Vector3 grabberToMouseVector = dragCurrentWorldPoint - grabber.position;
-    }
-
-    private void UpdateVelocity()
-    {
-
     }
 
     /// <summary>
@@ -124,13 +104,6 @@ public class Wheel : MonoBehaviour
     /// <returns>Degrees</returns>
     public float GetAngleFromPoint(Vector2 _point)
         => GetAngleFromDirection((_point - (Vector2)transform.position).normalized);
-
-    //{
-    //    return Mathf.Atan2(
-    //        _point.y - transform.position.y,
-    //        _point.x - transform.position.x)
-    //            * Mathf.Rad2Deg;
-    //}
 
     /// <summary>
     /// </summary>
