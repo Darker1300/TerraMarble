@@ -189,7 +189,10 @@ MonoBehaviour:
   minSpeed: 0.5
   maxSpeed: 100
   idleSpeed: -0.2
-  decelerationSpeed: 4
+  decelerationSpeed: 0.2
+  GrabEvent:
+    m_PersistentCalls:
+      m_Calls: []
   grabber: {fileID: 8802114963895515217}
   regionsParent: {fileID: 6838772309578044595}
   rigidbody2D: {fileID: 7945488613457546148}

@@ -12,27 +12,22 @@ public class Wheel : MonoBehaviour
     public float idleSpeed = -.2f;
     public float decelerationSpeed = 4f;
 
-#pragma warning disable 414
-    [SerializeField] private bool showEvents = false;
-    [SerializeField] private bool showDebugFields = false;
-#pragma warning restore 414
-
-    [ShowIf("showEvents")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
+    [Foldout("Show Events")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
     
     [Header("Debug References")]
-    [ShowIf("showDebugFields")] public Transform grabber;
-    [ShowIf("showDebugFields")] public Transform regionsParent;
-    [ShowIf("showDebugFields")] public new Rigidbody2D rigidbody2D;
-    [ShowIf("showDebugFields")] public CircleCollider2D wheelCollider2D;
+    [Foldout("Show Debug Fields")] public Transform grabber;
+    [Foldout("Show Debug Fields")] public Transform regionsParent;
+    [Foldout("Show Debug Fields")] public new Rigidbody2D rigidbody2D;
+    [Foldout("Show Debug Fields")] public CircleCollider2D wheelCollider2D;
 
     [Header("Debug Physics")]
-    [ShowIf("showDebugFields")] [SerializeField] private bool grabbing = false;
-    [ShowIf("showDebugFields")] [SerializeField] private float velocity = 0f;
-    [ShowIf("showDebugFields")] [SerializeField] private float grabCurrentAngle = 0f;
-    [ShowIf("showDebugFields")] [SerializeField] private float grabTargetAngle = 0f;
+    [Foldout("Show Debug Fields")] [SerializeField] private bool grabbing = false;
+    [Foldout("Show Debug Fields")] [SerializeField] private float velocity = 0f;
+    [Foldout("Show Debug Fields")] [SerializeField] private float grabCurrentAngle = 0f;
+    [Foldout("Show Debug Fields")] [SerializeField] private float grabTargetAngle = 0f;
 
     [Header("Debug Data")]
-    [ShowIf("showDebugFields")] public Region[] regions;
+    [Foldout("Show Debug Fields")] public Region[] regions;
 
     private void Start()
     {
