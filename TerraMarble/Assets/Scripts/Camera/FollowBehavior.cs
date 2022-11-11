@@ -3,12 +3,7 @@ using UnityEngine;
 public class FollowBehavior : MonoBehaviour
 {
     private bool CenterOfTwo;
-    [SerializeField]
-    float defaultCameraSize = 20f;
-    
-    private float cameraScaleVelocity;
-    [SerializeField]
-    private float cameraScaleSpeed;
+
     [SerializeField] protected float followSpeed;
 
     [SerializeField] protected bool isXlocked = false;
@@ -33,7 +28,6 @@ public class FollowBehavior : MonoBehaviour
 
     [SerializeField] private float yOffset;
 
-
     // Start is called before the first frame update
     private void Start()
     {
@@ -51,7 +45,6 @@ public class FollowBehavior : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-
         if (trackObject)
         {
             //is it two objects
@@ -76,7 +69,6 @@ public class FollowBehavior : MonoBehaviour
                 transform.eulerAngles = new Vector3
                     (transform.eulerAngles.x, transform.eulerAngles.y, trackingTarget2.eulerAngles.z);
         }
-        else CameraZoom();
 
 
         //transform.position = new Vector3(trackingTarget.position.x +xOffset, trackingTarget.position.y + yOffset, transform.position.z);
@@ -87,17 +79,5 @@ public class FollowBehavior : MonoBehaviour
         var target = trackingTarget2.transform.position - trackingTarget.transform.position;
         target = trackingTarget.transform.position + target * TargetTwoInfuence;
         return target;
-    }
-
-    public void CameraZoom()
-    {
-        
-        
-        float distance = Vector3.Distance(trackingTarget2.transform.position, trackingTarget.position);
-       float target = Mathf.Max(distance + 3.0f, defaultCameraSize);
-
-        Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, target, ref cameraScaleVelocity, cameraScaleSpeed);
-
-
     }
 }
