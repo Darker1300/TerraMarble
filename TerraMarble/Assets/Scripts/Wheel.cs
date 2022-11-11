@@ -11,6 +11,7 @@ public class Wheel : MonoBehaviour
     public float maxSpeed = 100f;
     public float idleSpeed = -.2f;
     public float decelerationSpeed = 4f;
+    public bool invertDragVelocity = false;
 
     [Foldout("Show Events")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
     
@@ -85,11 +86,12 @@ public class Wheel : MonoBehaviour
         GrabEvent.Invoke(state);
     }
 
-    private void OnLeftDragUpdate(Vector2 currentLocalPosition, Vector2 mouseDelta)
+    private void OnLeftDragUpdate(Vector2 currentDragOffset, Vector2 mouseDelta)
     {
         Vector3 dragStartWorldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
-        Vector3 dragCurrentWorldPoint = (Vector3)currentLocalPosition + dragStartWorldPoint;
-        grabTargetAngle = GetAngleFromPoint(dragCurrentWorldPoint);
+        Vector3 dragCurrentWorldPoint = (invertDragVelocity ? currentDragOffset * -1f : currentDragOffset);
+        Vector3 dragInvertedCurrentWorldPoint = dragStartWorldPoint + (Vector3)dragCurrentWorldPoint;
+        grabTargetAngle = GetAngleFromPoint(dragInvertedCurrentWorldPoint);
     }
 
     /// <summary>

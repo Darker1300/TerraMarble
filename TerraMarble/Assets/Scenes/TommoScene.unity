@@ -4150,6 +4150,10 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 974642577480620518, guid: 7afa0f03be408e44fb57affc5cb3222d, type: 3}
+      propertyPath: invertDragVelocity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 974642577480620518, guid: 7afa0f03be408e44fb57affc5cb3222d, type: 3}
       propertyPath: regions.Array.size
       value: 36
       objectReference: {fileID: 0}
@@ -6338,14 +6342,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followSpeed: 4
+  isXlocked: 0
+  isYlocked: 0
+  trackTarget1_ZRotation: 0
+  trackTarget2_ZRotation: 1
+  TargetTwoInfuence: 1
   trackingTarget: {fileID: 1261336195}
   trackingTarget2: {fileID: 1635295248}
+  trackObject: 1
   xOffset: 0
   yOffset: 0
-  isYlocked: 0
-  isXlocked: 0
-  trackObject: 1
-  TargetTwoInfuence: 0.454
 --- !u!1 &940497203
 GameObject:
   m_ObjectHideFlags: 0

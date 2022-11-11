@@ -2803,10 +2803,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LeftStartTime: 0
-  RightStartTime: 0
-  TapTime: 0
-  showDebug: 0
   minDragAmount: 0
+  RightStartTime: 0
+  showDebug: 0
+  TapTime: 0
 --- !u!114 &1006646343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5764,12 +5764,16 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 974642577480620518, guid: 7afa0f03be408e44fb57affc5cb3222d, type: 3}
+      propertyPath: showEvents
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 974642577480620518, guid: 7afa0f03be408e44fb57affc5cb3222d, type: 3}
       propertyPath: doCreateRegions
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 974642577480620518, guid: 7afa0f03be408e44fb57affc5cb3222d, type: 3}
-      propertyPath: decelerationSpeed
-      value: 0.2
+      propertyPath: showDebugFields
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 974642577480620519, guid: 7afa0f03be408e44fb57affc5cb3222d, type: 3}
       propertyPath: m_RootOrder
