@@ -3,7 +3,12 @@ using UnityEngine;
 public class FollowBehavior : MonoBehaviour
 {
     private bool CenterOfTwo;
+    [SerializeField]
+    float defaultCameraSize = 20f;
 
+    private float cameraScaleVelocity;
+    [SerializeField]
+    private float cameraScaleSpeed;
     [SerializeField] protected float followSpeed;
 
     [SerializeField] protected bool isXlocked = false;
@@ -71,6 +76,7 @@ public class FollowBehavior : MonoBehaviour
         }
 
 
+        CameraZoom();
         //transform.position = new Vector3(trackingTarget.position.x +xOffset, trackingTarget.position.y + yOffset, transform.position.z);
     }
 
@@ -79,5 +85,17 @@ public class FollowBehavior : MonoBehaviour
         var target = trackingTarget2.transform.position - trackingTarget.transform.position;
         target = trackingTarget.transform.position + target * TargetTwoInfuence;
         return target;
+    }
+
+    public void CameraZoom()
+    {
+
+
+        float distance = Vector3.Distance(trackingTarget2.transform.position, trackingTarget.position);
+        float target = Mathf.Max(distance + 3.0f, defaultCameraSize);
+
+        Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, target, ref cameraScaleVelocity, cameraScaleSpeed);
+
+
     }
 }
