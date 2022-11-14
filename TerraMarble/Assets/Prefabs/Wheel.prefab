@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 7945488613457546148}
   m_Layer: 7
   m_Name: Wheel
-  m_TagString: Untagged
+  m_TagString: Wheel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -190,7 +190,11 @@ MonoBehaviour:
   maxSpeed: 100
   idleSpeed: -0.2
   decelerationSpeed: 0.2
+  invertGrabVelocity: 0
   GrabEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  FixedRotationEvent:
     m_PersistentCalls:
       m_Calls: []
   grabber: {fileID: 8802114963895515217}

@@ -12,6 +12,7 @@ public class TrackSpin : MonoBehaviour
     public bool trackAntiClockwise = true;
     public bool invertRotation = false;
     public Transform trackedObject = null;
+    public float speedFactor = 1f;
     [Header("Debug")]
     public float lastFrameAngle = 0f;
 
@@ -38,9 +39,9 @@ public class TrackSpin : MonoBehaviour
         float currentAngle = transform.eulerAngles.z;
 
         if (trackClockwise && Math.Sign(delta) == 1)
-            currentAngle += (-delta * (invertRotation ? -1f : 1f));
+            currentAngle += (-delta * (invertRotation ? -1f : 1f)) * (1f / speedFactor);
         if (trackAntiClockwise && Math.Sign(delta) == -1)
-            currentAngle += (delta *2f * (invertRotation ? -1f : 1f));
+            currentAngle += (delta *2f * (invertRotation ? -1f : 1f)) * (speedFactor);
         
 
         transform.rotation = Quaternion.AngleAxis(currentAngle, Vector3.forward);

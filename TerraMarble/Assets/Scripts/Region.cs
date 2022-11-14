@@ -1,27 +1,148 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using MathUtility;
+using NaughtyAttributes;
 using Shapes;
 using UnityEngine;
 
 public class Region : MonoBehaviour
 {
-    private Transform _anchor = null;
     public Wheel Wheel = null;
-    public Disc Disc = null;
+    private Transform _base = null;
+    private Disc _regionDisc = null;
 
-    public Transform Anchor => TryCreateAnchor();
+    public Color forestColor;
+    public GameObject forestPrefab;
 
-    public Vector3 EndPosition => Anchor.position;
 
-    private Transform TryCreateAnchor()
+
+    public Disc RegionDisc
     {
-        if (_anchor == null)
+        get
         {
-            _anchor = new GameObject("Anchor").transform;
-            _anchor.SetParent(transform, false);
-            // _anchor.position
+            if (!_regionDisc) _regionDisc = GetComponent<Disc>();
+            return _regionDisc;
+        }
+        set => _regionDisc = value;
+    }
+
+    public Transform Base => TryCreateBase();
+
+    public float Thickness
+    {
+        get
+        {
+            if (RegionDisc.ThicknessSpace != ThicknessSpace.Meters)
+                RegionDisc.ThicknessSpace = ThicknessSpace.Meters;
+            return RegionDisc.Thickness;
+        }
+    }
+
+    public float ThicknessHalf => Thickness * 0.5f;
+
+    public float BaseRadius
+    {
+        get
+        {
+            if (RegionDisc.RadiusSpace != ThicknessSpace.Meters)
+                RegionDisc.RadiusSpace = ThicknessSpace.Meters;
+            return RegionDisc.Radius - ThicknessHalf;
+        }
+    }
+
+    public float FullRadius => RegionDisc.Radius + Thickness;
+
+    public float CenterAngle => Mathf.LerpAngle(StartAngle, EndAngle, 0.5f);
+
+    public float StartAngle => RegionDisc.AngRadiansStart * Mathf.Rad2Deg;
+
+    public float EndAngle => RegionDisc.AngRadiansEnd * Mathf.Rad2Deg;
+
+    public Vector2 CenterAngleVector => MathU.DegreeToVector2(CenterAngle);
+
+
+    [Header("Debug")]
+    [SerializeField]
+    [OnValueChanged("TestUpdateBasePos")]
+    [Range(0f, 1f)]
+    private float baseX = 0.5f;
+
+    [SerializeField]
+    [OnValueChanged("TestUpdateBasePos")]
+    [Range(0f, 1f)]
+    private float baseY = 0.0f;
+
+    private void Awake()
+    {
+        RegionDisc ??= GetComponent<Disc>();
+    }
+
+    [Button]
+    public Transform TryCreateBase()
+    {
+        if (_base == null)
+        {
+            RegionDisc ??= GetComponent<Disc>();
+            _base = new GameObject("Base").transform;
+            _base.SetParent(transform, false);
+            _base.position = transform.position
+                             + transform.TransformVector(
+                                 (Vector3)CenterAngleVector * BaseRadius);
+            _base.up = CenterAngleVector;
         }
 
-        return _anchor;
+        return _base;
+    }
+
+    /// <param name="_x">Percentage</param>
+    /// <param name="_y">Percentage</param>
+    /// <returns>World position</returns>
+    public Vector2 RegionPosition(float _x, float _y)
+    {
+        return transform.position + transform.TransformVector(
+                   (Vector3)MathU.DegreeToVector2(
+                       MathU.LerpAngleUnclamped(StartAngle, EndAngle, _x))
+                   * (BaseRadius + Mathf.LerpUnclamped(0f, Thickness, _y))
+               );
+    }
+
+    private void TestUpdateBasePos()
+    {
+        if (Base)
+            Base.position = RegionPosition(baseX, baseY);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(RegionPosition(baseX, baseY), 0.1f);
+    }
+
+    [Button()]
+    public void MakeForest()
+    {
+        for (int i = 0; i < Base.childCount; i++)
+        {
+            var child = Base.GetChild(i);
+            Destroy(child);
+        }
+
+        RegionDisc.Color = forestColor;
+
+        Instantiate(forestPrefab, Base, false);
+    }
+
+    [Button()]
+    public void Tick()
+    {
+        var ani = gameObject.GetComponentInChildren<Animator>();
+        int progress = ani.GetInteger("Progress");
+        int max = ani.GetInteger("MaxProgress");
+        ani.SetInteger("Progress", Math.Min(progress + 1, max));
+    }
+
+    [Button()]
+    public void ResetTick()
+    {
+        var ani = gameObject.GetComponentInChildren<Animator>();
+        ani.SetInteger("Progress", 0);
     }
 }
