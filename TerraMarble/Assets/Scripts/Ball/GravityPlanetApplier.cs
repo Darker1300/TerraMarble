@@ -84,14 +84,7 @@ public class GravityPlanetApplier : MonoBehaviour
                 transform.rotation = _rotation;
                 OnPlanetInfluence?.Invoke(force);
 
-                //planetGravity.planet = collision.gameObject;
-                //planetGravity.applyGravity = true;
-                //transform.rotation = rotation;
-                //Quaternion.Slerp(  transform.rotation, rotation, 0.01f * Time.deltaTime);
-                //transform.Rotate(rotation.eulerAngles);
-                //transform.Rotate()= Quaternion.Euler(rotation.x) rotation;
-
-                //CurrentState = playerStates.DEFAULT;
+               
 
 
             }

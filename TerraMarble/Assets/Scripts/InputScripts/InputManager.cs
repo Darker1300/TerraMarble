@@ -516,8 +516,8 @@ public class InputManager : MonoBehaviour
 
 
                 RightDragVectorEvent?.Invoke(
-                    Camera.main.ScreenToWorldPoint(DragRightStartScreenPos) -
-                    Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()), mouseDelta);
+                    Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()) - Camera.main.ScreenToWorldPoint(DragRightStartScreenPos
+                    ), mouseDelta);
 
                 if (showDebug) Debug.Log("Drag");
             };

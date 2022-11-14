@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TImeSlowDown : MonoBehaviour
+public class SlowTime : MonoBehaviour
 {
+    
     [Header("TimeControllerSettings")]
     public float TimeScale;
     private float startTimeScale;
@@ -18,20 +19,20 @@ public class TImeSlowDown : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void startSlowMotion()
     {
         Time.timeScale = TimeScale;
         Time.fixedDeltaTime = startFixedDeltaTime * TimeScale;
-    
+
     }
     public void StopSlowMotion()
     {
         Time.timeScale = startTimeScale;
         Time.fixedDeltaTime = startFixedDeltaTime;
-    
+
     }
 
     public void SlowDownSubscriber(bool shouldSlow)
@@ -41,7 +42,8 @@ public class TImeSlowDown : MonoBehaviour
             startSlowMotion();
         }
         else StopSlowMotion();
-    
+
     }
 
 }
+
