@@ -48,7 +48,7 @@ public class UpdateGravityDirection : MonoBehaviour
     private void OnCollisionStay2D(Collision2D collision)
     {
 
-        Vector2 project = Vector2.ClampMagnitude( rb.velocity.normalized - 2 * (Vector2.Dot(rb.velocity , collision.contacts[0].normal) * collision.contacts[0].normal), maxGravity);
+        Vector2 project = Vector2.ClampMagnitude( rb.velocity.normalized - 20 * (Vector2.Dot(rb.velocity , collision.contacts[0].normal) * collision.contacts[0].normal), maxGravity);
         //project =  project;
 
 
