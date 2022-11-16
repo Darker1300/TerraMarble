@@ -32,15 +32,16 @@ public class UpdateGravityDirection : MonoBehaviour
 
        
        
-        //if (ExtraForceVector != Vector3.zero)
-        //{
-        //    GetComponent<Rigidbody2D>().AddForce(ExtraForceVector.normalized * 100 * Time.fixedDeltaTime);
-
-        //}
-        //else
+        if (ExtraForceVector != Vector3.zero)
         {
-
-            rb.AddForce((direction.normalized * (20f - direction.magnitude / maxGravDist) * maxGravity)  * Time.fixedDeltaTime);
+            //rb.velocity = Vector2.zero;
+            rb.AddRelativeForce(ExtraForceVector.normalized * 10000 * Time.fixedDeltaTime);
+           
+        }
+        else
+        {
+           
+            rb.AddForce(((direction.normalized * (2f - direction.magnitude / maxGravDist) * maxGravity) *5) * Time.fixedDeltaTime);
             rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxGravity);
 
 
@@ -59,19 +60,43 @@ public class UpdateGravityDirection : MonoBehaviour
         direction =  planetCenter.transform.position -  transform.position;
     
     }
-
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         ExtraForceVector = Vector2.zero;
-        Vector2 project = Vector2.ClampMagnitude( rb.velocity.normalized - 20 * (Vector2.Dot(rb.velocity , collision.contacts[0].normal) * collision.contacts[0].normal), maxGravity);
-        //project =  project;
+        //Vector2 project = -2 * (Vector2.Dot(rb.velocity, collision.contacts[0].normal) * collision.contacts[0].normal + rb.velocity);
+        //rb.velocity = Vector2.zero;
+        //rb.velocity = project;
 
+
+
+
+
+
+
+
+
+        // Vector2 project = Vector2.ClampMagnitude( rb.velocity.normalized - 20 * (Vector2.Dot(rb.velocity , collision.contacts[0].normal) * collision.contacts[0].normal), maxGravity);
+        //project =  project;
 
 
         //rb.velocity.Set(0,0);
         //Debug.Log("coll" + dot);
+        //rb.AddForce(project);
+        //rb.AddRelativeForce(project*10);
 
-        rb.AddForce(project);
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+       // ExtraForceVector = Vector2.zero;
+        Vector2 project = Vector2.ClampMagnitude(rb.velocity.normalized - 20 * (Vector2.Dot(rb.velocity, collision.contacts[0].normal) * collision.contacts[0].normal), maxGravity);
+    //project =  project;
+
+
+
+    //rb.velocity.Set(0,0);
+    //Debug.Log("coll" + dot);
+
+    rb.AddForce(project* Time.fixedDeltaTime);
         //rb.AddRelativeForce(project*10);
 
     }
