@@ -1,6 +1,8 @@
+using MathUtility;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 
 public class Wheel : MonoBehaviour
@@ -11,10 +13,13 @@ public class Wheel : MonoBehaviour
     public float maxSpeed = 100f;
     public float idleSpeed = -.2f;
     public float decelerationSpeed = 4f;
-    public bool invertDragVelocity = false;
+
+    [FormerlySerializedAs("invertDragVelocity")]
+    public bool invertGrabVelocity = false;
 
     [Foldout("Show Events")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
-    
+    [Foldout("Show Events")] public UnityEvent<float> FixedRotationEvent = new UnityEvent<float>();
+
     [Header("Debug References")]
     [Foldout("Show Debug Fields")] public Transform grabber;
     [Foldout("Show Debug Fields")] public Transform regionsParent;
@@ -67,10 +72,13 @@ public class Wheel : MonoBehaviour
         Quaternion goalRotation = Quaternion.Euler(new Vector3(0, 0, goalAngle));
 
         float speed = Mathf.Clamp(Mathf.Abs(velocity) * speedFactor, minSpeed, maxSpeed);
-        Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, goalRotation, speed * Time.fixedDeltaTime);
+        float fixedSpeed = speed * Time.fixedDeltaTime;
+        Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, goalRotation, fixedSpeed);
 
         // Apply movement
         rigidbody2D.MoveRotation(newRotation);
+
+        FixedRotationEvent.Invoke(fixedSpeed);
     }
 
     private void OnLeftDrag(bool state)
@@ -88,9 +96,20 @@ public class Wheel : MonoBehaviour
 
     private void OnLeftDragUpdate(Vector2 currentDragOffset, Vector2 mouseDelta)
     {
-        Vector3 dragStartWorldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
-        Vector3 dragCurrentWorldPoint = (invertDragVelocity ? currentDragOffset * -1f : currentDragOffset);
-        Vector3 dragInvertedCurrentWorldPoint = dragStartWorldPoint + (Vector3)dragCurrentWorldPoint;
+        Vector2 dragStartWorldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
+        Vector2 dragCurrentWorldPoint;
+
+        if (invertGrabVelocity)
+        {
+            Vector2 normal = ((Vector2)transform.position - dragStartWorldPoint).normalized.RotatedByDegree(90f);
+            dragCurrentWorldPoint = Vector2.Reflect(currentDragOffset, normal);
+        }
+        else
+        {
+            dragCurrentWorldPoint = currentDragOffset;
+        }
+
+        Vector2 dragInvertedCurrentWorldPoint = dragStartWorldPoint + dragCurrentWorldPoint;
         grabTargetAngle = GetAngleFromPoint(dragInvertedCurrentWorldPoint);
     }
 
@@ -100,23 +119,7 @@ public class Wheel : MonoBehaviour
     /// <param name="_point"></param>
     /// <returns>Degrees</returns>
     public float GetAngleFromPoint(Vector2 _point)
-        => GetAngleFromDirection((_point - (Vector2)transform.position).normalized);
+        => MathU.Vector2ToDegree((_point - (Vector2)transform.position).normalized);
 
-    /// <summary>
-    /// </summary>
-    /// <param name="_direction"></param>
-    /// <returns>Degrees</returns>
-    public float GetAngleFromDirection(Vector2 _direction)
-    {
-        return Mathf.Atan2(
-                   _direction.y,
-                   _direction.x)
-               * Mathf.Rad2Deg;
-    }
-    public Vector2 GetDirectionFromAngle(float angle)
-    {
-        return new Vector2(
-            Mathf.Sin(Mathf.Deg2Rad * angle),
-            Mathf.Cos(Mathf.Deg2Rad * angle));
-    }
+
 }

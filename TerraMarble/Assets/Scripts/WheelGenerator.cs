@@ -71,6 +71,9 @@ public class WheelGenerator : MonoBehaviour
             newRegions[i] = newRegion;
             // Config
             newGO.name = "Region " + i.ToString("D2");
+
+            newRegion.RegionDisc = newDisc;
+
             newDisc.Radius = regionRadius;
             newDisc.AngRadiansStart = previousRadians;
             float newRadians = previousRadians + radianSize;
