@@ -78,7 +78,7 @@ public class RightAim : MonoBehaviour
 
         }
         float realAngle = 0;
-         realAngle += GetRelativeAimRotationAngle(AimStartingVector, dragDirection, 20.0f);
+         realAngle += GetRelativeAimRotationAngle(AimStartingVector, dragDirection, 90.0f);
 
         if (realAngle != 0)
         {
