@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Wheel
   layers:
   - Default
   - TransparentFX
@@ -50,12 +51,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: +1 Fore
+  - name: +1 No Lighting
     uniqueID: 3440646699
-    locked: 0
-  - name: +2 Fore
-    uniqueID: 1643596747
-    locked: 0
-  - name: +3 Fore
-    uniqueID: 1224781457
     locked: 0
