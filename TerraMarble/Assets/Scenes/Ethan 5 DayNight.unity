@@ -257,38 +257,7 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
---- !u!21 &110381137
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Light2D/Internal/Multiply
-  m_Shader: {fileID: 4800000, guid: 8f8b48660dacfbf4fb273a0cc7db3a0d, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 157824875}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
---- !u!84 &157824875
+--- !u!84 &110370000
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -302,8 +271,8 @@ RenderTexture:
   m_DownscaleFallback: 0
   m_IsAlphaChannelOptional: 0
   serializedVersion: 5
-  m_Width: 672
-  m_Height: 718
+  m_Width: 1130
+  m_Height: 636
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthStencilFormat: 0
@@ -430,104 +399,38 @@ MonoBehaviour:
   - {fileID: 0}
   getSpriteMesh: {fileID: 0}
   getMeshLight: {fileID: 1055686294}
---- !u!1 &223939818
+--- !u!1 &217112521
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 223939819}
-  - component: {fileID: 223939822}
-  - component: {fileID: 223939821}
-  - component: {fileID: 223939820}
+  - component: {fileID: 217112522}
   m_Layer: 0
-  m_Name: 'On Render: Camera Buffer (Default, RGB24, Id: 1, Camera: Main Camera )'
+  m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &223939819
+--- !u!4 &217112522
 Transform:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223939818}
-  m_LocalRotation: {x: -0, y: -0, z: 0.98536736, w: 0.17044434}
-  m_LocalPosition: {x: -10.805738, y: 2.8577242, z: -9.697}
-  m_LocalScale: {x: 33.768555, y: 18.997614, z: 1}
+  m_GameObject: {fileID: 217112521}
+  m_LocalRotation: {x: -0, y: -0, z: 0.46174848, w: 0.88701093}
+  m_LocalPosition: {x: -2.252668, y: 1.5773357, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1394975182947874165}
+  m_Children:
+  - {fileID: 1394975182409019223}
+  m_Father: {fileID: 1394975183505523120}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &223939820
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223939818}
-  m_Mesh: {fileID: 1767341320}
---- !u!23 &223939821
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223939818}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 0
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 1605672820}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &223939822
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223939818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b47c1ec6d2a33a409f80179aa609c94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 223939821}
-  meshFilter: {fileID: 223939820}
 --- !u!1 &335196171
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,6 +524,38 @@ MonoBehaviour:
     - {x: -0.4999999, y: -0.86602545}
   drawingEnabled: 1
   drawingTranslucencyEnabled: 0
+--- !u!1 &344057184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 344057185}
+  m_Layer: 0
+  m_Name: Base
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &344057185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344057184}
+  m_LocalRotation: {x: -0, y: -0, z: -0.4617486, w: 0.8870109}
+  m_LocalPosition: {x: 2.252668, y: 1.5773354, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1908197547}
+  m_Father: {fileID: 1394975183220678913}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &428929339
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,6 +783,204 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
+--- !u!1 &620335793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 620335794}
+  - component: {fileID: 620335799}
+  - component: {fileID: 620335798}
+  - component: {fileID: 620335797}
+  - component: {fileID: 620335796}
+  - component: {fileID: 620335795}
+  m_Layer: 7
+  m_Name: Tree, Top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &620335794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620335793}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1963783440}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &620335795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620335793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowType: 3
+  shadowLayer: 0
+  shadowDistance: 0
+  shadowDistanceMin: 0.5
+  shadowDistanceMax: 1
+  shadowTranslucency: 0.66
+  maskType: 5
+  maskLit: 0
+  maskPivot: 0
+  maskLayer: 0
+  maskLitCustom: 1
+  bumpMapMode:
+    type: 0
+    textureType: 0
+    texture: {fileID: 0}
+    sprite: {fileID: 0}
+    invertX: 0
+    invertY: 0
+    depth: 1
+    spriteRenderer: {fileID: 0}
+  mainShape:
+    shadowType: 3
+    maskType: 5
+    maskPivot: 0
+    transform: {fileID: 620335794}
+--- !u!60 &620335796
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620335793}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 0d794bbe0ee83b647847ebed2d7bad9e, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.1, y: 0}
+      - {x: 0, y: 0.3}
+      - {x: 0.1, y: 0}
+  m_UseDelaunayMesh: 0
+--- !u!23 &620335797
+MeshRenderer:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620335793}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a0b8f63d3a65ded40a795fe469ef8b49, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &620335798
+MeshFilter:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620335793}
+  m_Mesh: {fileID: 43069453304752982, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
+--- !u!114 &620335799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620335793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1a57c335497964c8472942019dfdb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blendMode: 0
+  scaleMode: 0
+  color: {r: 0.4392157, g: 0.4627451, b: 0.33333334, a: 1}
+  detailLevel: 2
+  renderQueue: -1
+  zTest: 4
+  zOffsetFactor: 0
+  zOffsetUnits: 0
+  colorMask: 15
+  stencilComp: 8
+  stencilOpPass: 0
+  stencilRefID: 0
+  stencilReadMask: 255
+  stencilWriteMask: 255
+  colorMode: 0
+  a: {x: -0.1, y: 0, z: 0}
+  b: {x: 0, y: 0.3, z: 0}
+  c: {x: 0.1, y: 0, z: 0}
+  border: 0
+  thickness: 0.5
+  thicknessSpace: 0
+  roundness: 0.1
+  colorB: {r: 1, g: 1, b: 1, a: 1}
+  colorC: {r: 1, g: 1, b: 1, a: 1}
+  matchDashSpacingToSize: 1
+  dashed: 0
+  dashStyle:
+    type: 0
+    space: -2
+    snap: 1
+    size: 16
+    spacing: 0.5
+    offset: 0
+    shapeModifier: 1
 --- !u!1 &666700920
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,6 +1113,135 @@ MonoBehaviour:
     snap: 1
     size: 16
     spacing: 0.5
+    offset: 0
+    shapeModifier: 1
+--- !u!1 &715093862
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 715093863}
+  - component: {fileID: 715093866}
+  - component: {fileID: 715093865}
+  - component: {fileID: 715093864}
+  m_Layer: 7
+  m_Name: Tree, Tiny (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &715093863
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715093862}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.15, y: 0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2118627241}
+  m_Father: {fileID: 1908197547}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &715093864
+MeshRenderer:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715093862}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 1a47a7c7dab20f140a06d68248ec7726, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 846231243
+  m_SortingLayer: -1
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &715093865
+MeshFilter:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715093862}
+  m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
+--- !u!114 &715093866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715093862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad38a8f0c6def84899724d5320b316a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blendMode: 0
+  scaleMode: 0
+  color: {r: 0.582, g: 0.2820136, b: 0.05703603, a: 1}
+  detailLevel: 2
+  renderQueue: -1
+  zTest: 4
+  zOffsetFactor: 0
+  zOffsetUnits: 0
+  colorMask: 15
+  stencilComp: 8
+  stencilOpPass: 0
+  stencilRefID: 0
+  stencilReadMask: 255
+  stencilWriteMask: 255
+  geometry: 0
+  colorMode: 0
+  colorEnd: {r: 1, g: 1, b: 1, a: 1}
+  start: {x: 0, y: 0.05, z: 0}
+  end: {x: 0, y: 0, z: 0}
+  thickness: 0.025
+  thicknessSpace: 0
+  endCaps: 2
+  matchDashSpacingToSize: 1
+  dashed: 0
+  dashStyle:
+    type: 0
+    space: -1
+    snap: 2
+    size: 4
+    spacing: 4
     offset: 0
     shapeModifier: 1
 --- !u!1 &740957701
@@ -1353,104 +1615,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1074300851
-GameObject:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1074300852}
-  - component: {fileID: 1074300855}
-  - component: {fileID: 1074300854}
-  - component: {fileID: 1074300853}
-  m_Layer: 0
-  m_Name: 'On Render: Camera Buffer (Default, RGB24, Id: 1, Camera: SceneCamera )'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1074300852
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074300851}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.2963824, y: -0.811194, z: -18.503641}
-  m_LocalScale: {x: 9.31666, y: 9.95346, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1394975182947874165}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1074300853
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074300851}
-  m_Mesh: {fileID: 1767341320}
---- !u!23 &1074300854
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074300851}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 0
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 110381137}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1074300855
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074300851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b47c1ec6d2a33a409f80179aa609c94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 1074300854}
-  meshFilter: {fileID: 1074300853}
 --- !u!1 &1080583815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1585,6 +1749,43 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
+--- !u!84 &1086073730
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 672
+  m_Height: 718
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 0
+  m_ColorFormat: 74
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1 &1089918237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,6 +2016,136 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1094069708
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1094069709}
+  m_Layer: 0
+  m_Name: Base
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1094069709
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094069708}
+  m_LocalRotation: {x: -0, y: -0, z: 0.887011, w: -0.46174833}
+  m_LocalPosition: {x: 2.252667, y: -1.5773367, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1394975182373437809}
+  m_Father: {fileID: 1394975183889901554}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1099910669
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1099910670}
+  - component: {fileID: 1099910673}
+  - component: {fileID: 1099910672}
+  - component: {fileID: 1099910671}
+  m_Layer: 0
+  m_Name: 'On Render: Camera Buffer (Default, RGB24, Id: 1, Camera: Main Camera )'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1099910670
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099910669}
+  m_LocalRotation: {x: -0, y: -0, z: 0.98536736, w: 0.17044434}
+  m_LocalPosition: {x: -10.805738, y: 2.8577242, z: -9.697}
+  m_LocalScale: {x: 33.745285, y: 18.997566, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1394975182947874165}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1099910671
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099910669}
+  m_Mesh: {fileID: 1784384038}
+--- !u!23 &1099910672
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099910669}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2008278688}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1099910673
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099910669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b47c1ec6d2a33a409f80179aa609c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 1099910672}
+  meshFilter: {fileID: 1099910671}
 --- !u!1 &1134043419
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,6 +2239,333 @@ MonoBehaviour:
     - {x: -0.4999999, y: -0.86602545}
   drawingEnabled: 1
   drawingTranslucencyEnabled: 1
+--- !u!1 &1153961875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1153961876}
+  - component: {fileID: 1153961881}
+  - component: {fileID: 1153961880}
+  - component: {fileID: 1153961879}
+  - component: {fileID: 1153961878}
+  - component: {fileID: 1153961877}
+  m_Layer: 7
+  m_Name: Tree, Top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1153961876
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153961875}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1728076567}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1153961877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153961875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowType: 3
+  shadowLayer: 0
+  shadowDistance: 0
+  shadowDistanceMin: 0.5
+  shadowDistanceMax: 1
+  shadowTranslucency: 0.66
+  maskType: 5
+  maskLit: 0
+  maskPivot: 0
+  maskLayer: 0
+  maskLitCustom: 1
+  bumpMapMode:
+    type: 0
+    textureType: 0
+    texture: {fileID: 0}
+    sprite: {fileID: 0}
+    invertX: 0
+    invertY: 0
+    depth: 1
+    spriteRenderer: {fileID: 0}
+  mainShape:
+    shadowType: 3
+    maskType: 5
+    maskPivot: 0
+    transform: {fileID: 0}
+--- !u!60 &1153961878
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153961875}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 0d794bbe0ee83b647847ebed2d7bad9e, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.1, y: 0}
+      - {x: 0, y: 0.3}
+      - {x: 0.1, y: 0}
+  m_UseDelaunayMesh: 0
+--- !u!23 &1153961879
+MeshRenderer:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153961875}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a0b8f63d3a65ded40a795fe469ef8b49, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1153961880
+MeshFilter:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153961875}
+  m_Mesh: {fileID: 43069453304752982, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
+--- !u!114 &1153961881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153961875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1a57c335497964c8472942019dfdb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blendMode: 0
+  scaleMode: 0
+  color: {r: 0.4392157, g: 0.4627451, b: 0.33333334, a: 1}
+  detailLevel: 2
+  renderQueue: -1
+  zTest: 4
+  zOffsetFactor: 0
+  zOffsetUnits: 0
+  colorMask: 15
+  stencilComp: 8
+  stencilOpPass: 0
+  stencilRefID: 0
+  stencilReadMask: 255
+  stencilWriteMask: 255
+  colorMode: 0
+  a: {x: -0.1, y: 0, z: 0}
+  b: {x: 0, y: 0.3, z: 0}
+  c: {x: 0.1, y: 0, z: 0}
+  border: 0
+  thickness: 0.5
+  thicknessSpace: 0
+  roundness: 0.1
+  colorB: {r: 1, g: 1, b: 1, a: 1}
+  colorC: {r: 1, g: 1, b: 1, a: 1}
+  matchDashSpacingToSize: 1
+  dashed: 0
+  dashStyle:
+    type: 0
+    space: -2
+    snap: 1
+    size: 16
+    spacing: 0.5
+    offset: 0
+    shapeModifier: 1
+--- !u!1 &1183377223
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1183377224}
+  - component: {fileID: 1183377227}
+  - component: {fileID: 1183377226}
+  - component: {fileID: 1183377225}
+  m_Layer: 0
+  m_Name: 'On Render: Camera Buffer (Default, RGB24, Id: 1, Camera: SceneCamera )'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1183377224
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183377223}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.723447, y: 1.3376555, z: -30.069735}
+  m_LocalScale: {x: 15.226036, y: 16.266747, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1394975182947874165}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1183377225
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183377223}
+  m_Mesh: {fileID: 1784384038}
+--- !u!23 &1183377226
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183377223}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 1237783092}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1183377227
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183377223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b47c1ec6d2a33a409f80179aa609c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 1183377226}
+  meshFilter: {fileID: 1183377225}
+--- !u!21 &1237783092
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Light2D/Internal/Multiply
+  m_Shader: {fileID: 4800000, guid: 8f8b48660dacfbf4fb273a0cc7db3a0d, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 1086073730}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &1242898176
 GameObject:
   m_ObjectHideFlags: 0
@@ -2970,37 +3628,6 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
---- !u!21 &1605672820
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Light2D/Internal/Multiply
-  m_Shader: {fileID: 4800000, guid: 8f8b48660dacfbf4fb273a0cc7db3a0d, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2068222483}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &1627899595
 GameObject:
   m_ObjectHideFlags: 0
@@ -3554,7 +4181,136 @@ MonoBehaviour:
     - {x: -0.4999999, y: -0.86602545}
   drawingEnabled: 1
   drawingTranslucencyEnabled: 1
---- !u!43 &1767341320
+--- !u!1 &1728076566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1728076567}
+  - component: {fileID: 1728076570}
+  - component: {fileID: 1728076569}
+  - component: {fileID: 1728076568}
+  m_Layer: 7
+  m_Name: Tree, Tiny (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1728076567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728076566}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.15, y: 0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1153961876}
+  m_Father: {fileID: 1908197547}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1728076568
+MeshRenderer:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728076566}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 1a47a7c7dab20f140a06d68248ec7726, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 846231243
+  m_SortingLayer: -1
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1728076569
+MeshFilter:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728076566}
+  m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
+--- !u!114 &1728076570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728076566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad38a8f0c6def84899724d5320b316a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blendMode: 0
+  scaleMode: 0
+  color: {r: 0.582, g: 0.2820136, b: 0.05703603, a: 1}
+  detailLevel: 2
+  renderQueue: -1
+  zTest: 4
+  zOffsetFactor: 0
+  zOffsetUnits: 0
+  colorMask: 15
+  stencilComp: 8
+  stencilOpPass: 0
+  stencilRefID: 0
+  stencilReadMask: 255
+  stencilWriteMask: 255
+  geometry: 0
+  colorMode: 0
+  colorEnd: {r: 1, g: 1, b: 1, a: 1}
+  start: {x: 0, y: 0.05, z: 0}
+  end: {x: 0, y: 0, z: 0}
+  thickness: 0.025
+  thicknessSpace: 0
+  endCaps: 2
+  matchDashSpacingToSize: 1
+  dashed: 0
+  dashStyle:
+    type: 0
+    space: -1
+    snap: 2
+    size: 4
+    spacing: 4
+    offset: 0
+    shapeModifier: 1
+--- !u!43 &1784384038
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3889,6 +4645,61 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
+--- !u!1 &1908197546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1908197547}
+  - component: {fileID: 1908197548}
+  m_Layer: 7
+  m_Name: Forest(Clone)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1908197547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908197546}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1963783440}
+  - {fileID: 1728076567}
+  - {fileID: 715093863}
+  m_Father: {fileID: 344057185}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1908197548
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908197546}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d2a63e9afdb60914b91b44ff30385897, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!84 &1926673921
 RenderTexture:
   m_ObjectHideFlags: 0
@@ -3963,43 +4774,166 @@ Material:
     m_Colors:
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []
---- !u!84 &2068222483
-RenderTexture:
+--- !u!1 &1963783439
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1963783440}
+  - component: {fileID: 1963783443}
+  - component: {fileID: 1963783442}
+  - component: {fileID: 1963783441}
+  m_Layer: 7
+  m_Name: Tree, Tiny (0)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1963783440
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963783439}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 620335794}
+  m_Father: {fileID: 1908197547}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1963783441
+MeshRenderer:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963783439}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 1a47a7c7dab20f140a06d68248ec7726, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 846231243
+  m_SortingLayer: -1
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1963783442
+MeshFilter:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963783439}
+  m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
+--- !u!114 &1963783443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963783439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad38a8f0c6def84899724d5320b316a, type: 3}
   m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 1129
-  m_Height: 635
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 74
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
+  m_EditorClassIdentifier: 
+  blendMode: 0
+  scaleMode: 0
+  color: {r: 0.582, g: 0.2820136, b: 0.05703603, a: 1}
+  detailLevel: 2
+  renderQueue: -1
+  zTest: 4
+  zOffsetFactor: 0
+  zOffsetUnits: 0
+  colorMask: 15
+  stencilComp: 8
+  stencilOpPass: 0
+  stencilRefID: 0
+  stencilReadMask: 255
+  stencilWriteMask: 255
+  geometry: 0
+  colorMode: 0
+  colorEnd: {r: 1, g: 1, b: 1, a: 1}
+  start: {x: 0, y: 0.05, z: 0}
+  end: {x: 0, y: 0, z: 0}
+  thickness: 0.025
+  thicknessSpace: 0
+  endCaps: 2
+  matchDashSpacingToSize: 1
+  dashed: 0
+  dashStyle:
+    type: 0
+    space: -1
+    snap: 2
+    size: 4
+    spacing: 4
+    offset: 0
+    shapeModifier: 1
+--- !u!21 &2008278688
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Light2D/Internal/Multiply
+  m_Shader: {fileID: 4800000, guid: 8f8b48660dacfbf4fb273a0cc7db3a0d, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 110370000}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &2118164620
 GameObject:
   m_ObjectHideFlags: 0
@@ -4031,6 +4965,204 @@ Transform:
   m_Father: {fileID: 1627899602}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2118627240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2118627241}
+  - component: {fileID: 2118627246}
+  - component: {fileID: 2118627245}
+  - component: {fileID: 2118627244}
+  - component: {fileID: 2118627243}
+  - component: {fileID: 2118627242}
+  m_Layer: 7
+  m_Name: Tree, Top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2118627241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118627240}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 715093863}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2118627242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118627240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowType: 3
+  shadowLayer: 0
+  shadowDistance: 0
+  shadowDistanceMin: 0.5
+  shadowDistanceMax: 1
+  shadowTranslucency: 0.66
+  maskType: 5
+  maskLit: 0
+  maskPivot: 0
+  maskLayer: 0
+  maskLitCustom: 1
+  bumpMapMode:
+    type: 0
+    textureType: 0
+    texture: {fileID: 0}
+    sprite: {fileID: 0}
+    invertX: 0
+    invertY: 0
+    depth: 1
+    spriteRenderer: {fileID: 0}
+  mainShape:
+    shadowType: 3
+    maskType: 5
+    maskPivot: 0
+    transform: {fileID: 0}
+--- !u!60 &2118627243
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118627240}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 0d794bbe0ee83b647847ebed2d7bad9e, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.1, y: 0}
+      - {x: 0, y: 0.3}
+      - {x: 0.1, y: 0}
+  m_UseDelaunayMesh: 0
+--- !u!23 &2118627244
+MeshRenderer:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118627240}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a0b8f63d3a65ded40a795fe469ef8b49, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &2118627245
+MeshFilter:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118627240}
+  m_Mesh: {fileID: 43069453304752982, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
+--- !u!114 &2118627246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118627240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1a57c335497964c8472942019dfdb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blendMode: 0
+  scaleMode: 0
+  color: {r: 0.4392157, g: 0.4627451, b: 0.33333334, a: 1}
+  detailLevel: 2
+  renderQueue: -1
+  zTest: 4
+  zOffsetFactor: 0
+  zOffsetUnits: 0
+  colorMask: 15
+  stencilComp: 8
+  stencilOpPass: 0
+  stencilRefID: 0
+  stencilReadMask: 255
+  stencilWriteMask: 255
+  colorMode: 0
+  a: {x: -0.1, y: 0, z: 0}
+  b: {x: 0, y: 0.3, z: 0}
+  c: {x: 0.1, y: 0, z: 0}
+  border: 0
+  thickness: 0.5
+  thicknessSpace: 0
+  roundness: 0.1
+  colorB: {r: 1, g: 1, b: 1, a: 1}
+  colorC: {r: 1, g: 1, b: 1, a: 1}
+  matchDashSpacingToSize: 1
+  dashed: 0
+  dashStyle:
+    type: 0
+    space: -2
+    snap: 1
+    size: 16
+    spacing: 0.5
+    offset: 0
+    shapeModifier: 1
 --- !u!198 &64938238167428688
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -9204,7 +10336,6 @@ GameObject:
   - component: {fileID: 1394975182008590504}
   - component: {fileID: 1394975182008590507}
   - component: {fileID: 1394975182008590506}
-  - component: {fileID: 1394975182008590508}
   m_Layer: 0
   m_Name: Region 15
   m_TagString: Untagged
@@ -9241,7 +10372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -9289,9 +10420,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975182008590506
@@ -9344,43 +10475,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182008590420}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975182008590508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182008590420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182008590421}
 --- !u!23 &1394975182036530088
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -9626,7 +10720,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182074044044}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -10028,9 +11122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!1 &1394975182119224157
@@ -10046,7 +11140,6 @@ GameObject:
   - component: {fileID: 1394975182119224145}
   - component: {fileID: 1394975182119224144}
   - component: {fileID: 1394975182119224147}
-  - component: {fileID: 1394975182119224158}
   m_Layer: 0
   m_Name: Region 29
   m_TagString: Untagged
@@ -10054,43 +11147,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1394975182119224158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182119224157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182119224146}
 --- !u!1 &1394975182123040548
 GameObject:
   m_ObjectHideFlags: 0
@@ -10104,7 +11160,6 @@ GameObject:
   - component: {fileID: 1394975182123040568}
   - component: {fileID: 1394975182123040571}
   - component: {fileID: 1394975182123040570}
-  - component: {fileID: 1394975182123040572}
   m_Layer: 0
   m_Name: Region 12
   m_TagString: Untagged
@@ -10141,7 +11196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -10189,9 +11244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975182123040570
@@ -10244,43 +11299,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182123040548}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975182123040572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182123040548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182123040549}
 --- !u!114 &1394975182195398498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10293,9 +11311,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!1 &1394975182195398505
@@ -10311,7 +11329,6 @@ GameObject:
   - component: {fileID: 1394975182195398509}
   - component: {fileID: 1394975182195398508}
   - component: {fileID: 1394975182195398511}
-  - component: {fileID: 1394975182195398512}
   m_Layer: 0
   m_Name: Region 02
   m_TagString: Untagged
@@ -10434,43 +11451,6 @@ MeshRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1394975182195398512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182195398505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182195398510}
 --- !u!1 &1394975182213817684
 GameObject:
   m_ObjectHideFlags: 0
@@ -10558,7 +11538,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182213817684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -10657,7 +11637,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182257146179}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -10779,7 +11759,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -10827,9 +11807,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975182261174260
@@ -10895,7 +11875,6 @@ GameObject:
   - component: {fileID: 1394975182261174218}
   - component: {fileID: 1394975182261174261}
   - component: {fileID: 1394975182261174260}
-  - component: {fileID: 1394975182261174264}
   m_Layer: 0
   m_Name: Region 30
   m_TagString: Untagged
@@ -10918,43 +11897,6 @@ Transform:
   m_Father: {fileID: 5599031685026967219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1394975182261174264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182261174262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182261174263}
 --- !u!114 &1394975182373437770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11020,12 +11962,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182373437808}
-  m_LocalRotation: {x: -0, y: -0, z: -0.8870109, w: 0.46174863}
-  m_LocalPosition: {x: 2.38, y: -1.69, z: 0}
+  m_LocalRotation: {x: -0, y: 0, z: -0.00000032782555, w: -1}
+  m_LocalPosition: {x: 0, y: 0.175, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1394975183212796182}
+  m_Father: {fileID: 1094069709}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -125}
 --- !u!33 &1394975182373437812
@@ -11365,7 +12307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -11413,9 +12355,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975182385724140
@@ -11481,7 +12423,6 @@ GameObject:
   - component: {fileID: 1394975182385724130}
   - component: {fileID: 1394975182385724141}
   - component: {fileID: 1394975182385724140}
-  - component: {fileID: 1394975182385724144}
   m_Layer: 0
   m_Name: Region 31
   m_TagString: Untagged
@@ -11504,43 +12445,6 @@ Transform:
   m_Father: {fileID: 5599031685026967219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1394975182385724144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182385724142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182385724143}
 --- !u!114 &1394975182391348874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11733,12 +12637,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182409019222}
-  m_LocalRotation: {x: -0, y: -0, z: 0.46174863, w: 0.8870109}
-  m_LocalPosition: {x: -2.38, y: 1.69, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.00000017881392, w: 1}
+  m_LocalPosition: {x: 0, y: 0.175, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1394975183212796182}
+  m_Father: {fileID: 217112522}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 55}
 --- !u!114 &1394975182409019304
@@ -11845,7 +12749,6 @@ GameObject:
   - component: {fileID: 1394975182413261108}
   - component: {fileID: 1394975182413261111}
   - component: {fileID: 1394975182413261110}
-  - component: {fileID: 1394975182413261112}
   m_Layer: 0
   m_Name: Region 28
   m_TagString: Untagged
@@ -11930,9 +12833,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975182413261110
@@ -11985,43 +12888,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182413261104}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975182413261112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182413261104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182413261105}
 --- !u!1 &1394975182522930132
 GameObject:
   m_ObjectHideFlags: 0
@@ -12037,7 +12903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1394975182522930133
 Transform:
   m_ObjectHideFlags: 0
@@ -12153,7 +13019,6 @@ GameObject:
   - component: {fileID: 1394975182557873310}
   - component: {fileID: 1394975182557873305}
   - component: {fileID: 1394975182557873304}
-  - component: {fileID: 1394975182557873312}
   m_Layer: 0
   m_Name: Region 27
   m_TagString: Untagged
@@ -12238,48 +13103,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
---- !u!114 &1394975182557873312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182557873306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182557873307}
 --- !u!4 &1394975182585605760
 Transform:
   m_ObjectHideFlags: 0
@@ -12350,7 +13178,6 @@ GameObject:
   - component: {fileID: 1394975182585605767}
   - component: {fileID: 1394975182585605766}
   - component: {fileID: 1394975182585605761}
-  - component: {fileID: 1394975182585605768}
   m_Layer: 0
   m_Name: Region 10
   m_TagString: Untagged
@@ -12370,9 +13197,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!33 &1394975182585605766
@@ -12433,43 +13260,6 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
---- !u!114 &1394975182585605768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182585605763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182585605760}
 --- !u!114 &1394975182593040272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12532,9 +13322,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975182593040274
@@ -12600,7 +13390,6 @@ GameObject:
   - component: {fileID: 1394975182593040272}
   - component: {fileID: 1394975182593040275}
   - component: {fileID: 1394975182593040274}
-  - component: {fileID: 1394975182593040286}
   m_Layer: 0
   m_Name: Region 01
   m_TagString: Untagged
@@ -12623,43 +13412,6 @@ Transform:
   m_Father: {fileID: 5599031685026967219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1394975182593040286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182593040284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182593040285}
 --- !u!114 &1394975182638657968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12722,9 +13474,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975182638657970
@@ -12790,7 +13542,6 @@ GameObject:
   - component: {fileID: 1394975182638657968}
   - component: {fileID: 1394975182638657971}
   - component: {fileID: 1394975182638657970}
-  - component: {fileID: 1394975182638657982}
   m_Layer: 0
   m_Name: Region 20
   m_TagString: Untagged
@@ -12813,43 +13564,6 @@ Transform:
   m_Father: {fileID: 5599031685026967219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1394975182638657982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182638657980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182638657981}
 --- !u!114 &1394975182656595012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13058,9 +13772,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!1 &1394975182698255829
@@ -13076,7 +13790,6 @@ GameObject:
   - component: {fileID: 1394975182698254889}
   - component: {fileID: 1394975182698254888}
   - component: {fileID: 1394975182698254891}
-  - component: {fileID: 1394975182698255830}
   m_Layer: 0
   m_Name: Region 17
   m_TagString: Untagged
@@ -13084,43 +13797,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1394975182698255830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182698255829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182698254890}
 --- !u!1 &1394975182784672808
 GameObject:
   m_ObjectHideFlags: 0
@@ -13134,7 +13810,6 @@ GameObject:
   - component: {fileID: 1394975182784672812}
   - component: {fileID: 1394975182784672815}
   - component: {fileID: 1394975182784672814}
-  - component: {fileID: 1394975182784672816}
   m_Layer: 0
   m_Name: Region 24
   m_TagString: Untagged
@@ -13219,9 +13894,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975182784672814
@@ -13274,43 +13949,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182784672808}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975182784672816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182784672808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182784672809}
 --- !u!1 &1394975182798899865
 GameObject:
   m_ObjectHideFlags: 0
@@ -13405,7 +14043,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182798899865}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -13510,7 +14148,6 @@ GameObject:
   - component: {fileID: 1394975182818977319}
   - component: {fileID: 1394975182818977318}
   - component: {fileID: 1394975182818977313}
-  - component: {fileID: 1394975182818977320}
   m_Layer: 0
   m_Name: Region 35
   m_TagString: Untagged
@@ -13530,9 +14167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!33 &1394975182818977318
@@ -13593,43 +14230,6 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
---- !u!114 &1394975182818977320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182818977315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182818977312}
 --- !u!60 &1394975182920469396
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -13841,7 +14441,6 @@ GameObject:
   - component: {fileID: 1394975182921398440}
   - component: {fileID: 1394975182921398443}
   - component: {fileID: 1394975182921398442}
-  - component: {fileID: 1394975182921398444}
   m_Layer: 0
   m_Name: Region 08
   m_TagString: Untagged
@@ -13926,9 +14525,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975182921398442
@@ -13981,43 +14580,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975182921398356}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975182921398444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975182921398356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975182921398357}
 --- !u!114 &1394975182947874164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14075,8 +14637,8 @@ Transform:
   m_Children:
   - {fileID: 1170675694241037163}
   - {fileID: 202390767}
-  - {fileID: 223939819}
-  - {fileID: 1074300852}
+  - {fileID: 1099910670}
+  - {fileID: 1183377224}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14169,7 +14731,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -14217,9 +14779,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975183002189586
@@ -14285,7 +14847,6 @@ GameObject:
   - component: {fileID: 1394975183002189584}
   - component: {fileID: 1394975183002189587}
   - component: {fileID: 1394975183002189586}
-  - component: {fileID: 1394975183002189598}
   m_Layer: 0
   m_Name: Region 34
   m_TagString: Untagged
@@ -14308,43 +14869,6 @@ Transform:
   m_Father: {fileID: 5599031685026967219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1394975183002189598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183002189596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183002189597}
 --- !u!1 &1394975183018848329
 GameObject:
   m_ObjectHideFlags: 0
@@ -14366,7 +14890,7 @@ GameObject:
   m_IsActive: 1
 --- !u!33 &1394975183018848332
 MeshFilter:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14434,7 +14958,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -5}
 --- !u!23 &1394975183018848335
 MeshRenderer:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14850,7 +15374,6 @@ GameObject:
   - component: {fileID: 1394975183149765176}
   - component: {fileID: 1394975183149765179}
   - component: {fileID: 1394975183149765178}
-  - component: {fileID: 1394975183149765180}
   m_Layer: 0
   m_Name: Region 11
   m_TagString: Untagged
@@ -14935,9 +15458,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975183149765178
@@ -14990,80 +15513,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975183149765156}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975183149765180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183149765156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183149765157}
---- !u!114 &1394975183174549160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2224024823119029221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 3
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 5
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 3
-    maskType: 5
-    maskPivot: 0
-    transform: {fileID: 2224024823119029223}
 --- !u!1 &1394975183212796177
 GameObject:
   m_ObjectHideFlags: 0
@@ -15091,9 +15540,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1394975182409019223}
-  - {fileID: 1394975182373437809}
+  m_Children: []
   m_Father: {fileID: 2224024823119029223}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15110,7 +15557,6 @@ GameObject:
   - component: {fileID: 1394975183220678916}
   - component: {fileID: 1394975183220678919}
   - component: {fileID: 1394975183220678918}
-  - component: {fileID: 1394975183220678920}
   m_Layer: 0
   m_Name: Region 03
   m_TagString: Untagged
@@ -15129,7 +15575,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 344057185}
   m_Father: {fileID: 5599031685026967219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15161,9 +15608,9 @@ MonoBehaviour:
   stencilWriteMask: 255
   type: 3
   colorMode: 0
-  colorOuterStart: {r: 1, g: 1, b: 1, a: 1}
-  colorInnerEnd: {r: 1, g: 1, b: 1, a: 1}
-  colorOuterEnd: {r: 1, g: 1, b: 1, a: 1}
+  colorOuterStart: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  colorInnerEnd: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  colorOuterEnd: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
   geometry: 0
   angUnitInput: 1
   angRadiansStart: 0.5235988
@@ -15195,9 +15642,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975183220678918
@@ -15250,43 +15697,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975183220678912}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975183220678920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183220678912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183220678913}
 --- !u!1 &1394975183244230180
 GameObject:
   m_ObjectHideFlags: 0
@@ -15300,7 +15710,6 @@ GameObject:
   - component: {fileID: 1394975183244230200}
   - component: {fileID: 1394975183244230203}
   - component: {fileID: 1394975183244230202}
-  - component: {fileID: 1394975183244230204}
   m_Layer: 0
   m_Name: Region 23
   m_TagString: Untagged
@@ -15385,9 +15794,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975183244230202
@@ -15440,43 +15849,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975183244230180}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975183244230204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183244230180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183244230181}
 --- !u!114 &1394975183298318130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15489,9 +15861,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!1 &1394975183298318137
@@ -15507,7 +15879,6 @@ GameObject:
   - component: {fileID: 1394975183298318141}
   - component: {fileID: 1394975183298318140}
   - component: {fileID: 1394975183298318143}
-  - component: {fileID: 1394975183298318144}
   m_Layer: 0
   m_Name: Region 09
   m_TagString: Untagged
@@ -15630,43 +16001,6 @@ MeshRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1394975183298318144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183298318137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183298318142}
 --- !u!114 &1394975183302883720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15729,9 +16063,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975183302883722
@@ -15797,7 +16131,6 @@ GameObject:
   - component: {fileID: 1394975183302883720}
   - component: {fileID: 1394975183302883723}
   - component: {fileID: 1394975183302883722}
-  - component: {fileID: 1394975183302883766}
   m_Layer: 0
   m_Name: Region 18
   m_TagString: Untagged
@@ -15820,43 +16153,6 @@ Transform:
   m_Father: {fileID: 5599031685026967219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1394975183302883766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183302883764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183302883765}
 --- !u!1 &1394975183318986917
 GameObject:
   m_ObjectHideFlags: 0
@@ -15870,7 +16166,6 @@ GameObject:
   - component: {fileID: 1394975183318986937}
   - component: {fileID: 1394975183318986936}
   - component: {fileID: 1394975183318986939}
-  - component: {fileID: 1394975183318986943}
   m_Layer: 0
   m_Name: Region 00
   m_TagString: Untagged
@@ -16005,48 +16300,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
---- !u!114 &1394975183318986943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183318986917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183318986938}
 --- !u!4 &1394975183331266580
 Transform:
   m_ObjectHideFlags: 0
@@ -16117,7 +16375,6 @@ GameObject:
   - component: {fileID: 1394975183331266667}
   - component: {fileID: 1394975183331266666}
   - component: {fileID: 1394975183331266581}
-  - component: {fileID: 1394975183331266668}
   m_Layer: 0
   m_Name: Region 16
   m_TagString: Untagged
@@ -16137,9 +16394,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!33 &1394975183331266666
@@ -16164,7 +16421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -16200,43 +16457,6 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
---- !u!114 &1394975183331266668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183331266583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183331266580}
 --- !u!4 &1394975183342249296
 Transform:
   m_ObjectHideFlags: 0
@@ -16545,7 +16765,6 @@ GameObject:
   - component: {fileID: 1394975183471926268}
   - component: {fileID: 1394975183471926271}
   - component: {fileID: 1394975183471926270}
-  - component: {fileID: 1394975183471926272}
   m_Layer: 0
   m_Name: Region 13
   m_TagString: Untagged
@@ -16582,7 +16801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -16630,9 +16849,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975183471926270
@@ -16685,43 +16904,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975183471926264}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975183471926272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183471926264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183471926265}
 --- !u!4 &1394975183495514120
 Transform:
   m_ObjectHideFlags: 0
@@ -16792,7 +16974,6 @@ GameObject:
   - component: {fileID: 1394975183495514127}
   - component: {fileID: 1394975183495514126}
   - component: {fileID: 1394975183495514121}
-  - component: {fileID: 1394975183495514128}
   m_Layer: 0
   m_Name: Region 05
   m_TagString: Untagged
@@ -16812,9 +16993,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!33 &1394975183495514126
@@ -16875,43 +17056,6 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
---- !u!114 &1394975183495514128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183495514123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183495514120}
 --- !u!4 &1394975183505523120
 Transform:
   m_ObjectHideFlags: 0
@@ -16923,7 +17067,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 217112522}
   m_Father: {fileID: 5599031685026967219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16982,7 +17127,6 @@ GameObject:
   - component: {fileID: 1394975183505523127}
   - component: {fileID: 1394975183505523126}
   - component: {fileID: 1394975183505523121}
-  - component: {fileID: 1394975183505523128}
   m_Layer: 0
   m_Name: Region 14
   m_TagString: Untagged
@@ -17002,9 +17146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!33 &1394975183505523126
@@ -17029,7 +17173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -17065,43 +17209,6 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
---- !u!114 &1394975183505523128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183505523123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183505523120}
 --- !u!4 &1394975183511113408
 Transform:
   m_ObjectHideFlags: 0
@@ -17442,7 +17549,6 @@ GameObject:
   - component: {fileID: 1394975183577621260}
   - component: {fileID: 1394975183577621263}
   - component: {fileID: 1394975183577621262}
-  - component: {fileID: 1394975183577621264}
   m_Layer: 0
   m_Name: Region 06
   m_TagString: Untagged
@@ -17527,9 +17633,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975183577621262
@@ -17582,43 +17688,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975183577621256}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975183577621264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183577621256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183577621257}
 --- !u!114 &1394975183649345226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17875,9 +17944,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!1 &1394975183725156021
@@ -17893,7 +17962,6 @@ GameObject:
   - component: {fileID: 1394975183725155977}
   - component: {fileID: 1394975183725155976}
   - component: {fileID: 1394975183725155979}
-  - component: {fileID: 1394975183725156022}
   m_Layer: 0
   m_Name: Region 25
   m_TagString: Untagged
@@ -17901,43 +17969,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1394975183725156022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183725156021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183725155978}
 --- !u!114 &1394975183768633666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17950,9 +17981,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!1 &1394975183768633673
@@ -17968,7 +17999,6 @@ GameObject:
   - component: {fileID: 1394975183768633677}
   - component: {fileID: 1394975183768633676}
   - component: {fileID: 1394975183768633679}
-  - component: {fileID: 1394975183768633680}
   m_Layer: 0
   m_Name: Region 21
   m_TagString: Untagged
@@ -18091,43 +18121,6 @@ MeshRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1394975183768633680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183768633673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183768633678}
 --- !u!4 &1394975183776487832
 Transform:
   m_ObjectHideFlags: 0
@@ -18198,7 +18191,6 @@ GameObject:
   - component: {fileID: 1394975183776487839}
   - component: {fileID: 1394975183776487838}
   - component: {fileID: 1394975183776487833}
-  - component: {fileID: 1394975183776487840}
   m_Layer: 0
   m_Name: Region 07
   m_TagString: Untagged
@@ -18218,9 +18210,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!33 &1394975183776487838
@@ -18281,43 +18273,6 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
---- !u!114 &1394975183776487840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183776487835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183776487832}
 --- !u!114 &1394975183790489362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18330,9 +18285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!1 &1394975183790489369
@@ -18348,7 +18303,6 @@ GameObject:
   - component: {fileID: 1394975183790489373}
   - component: {fileID: 1394975183790489372}
   - component: {fileID: 1394975183790489375}
-  - component: {fileID: 1394975183790489376}
   m_Layer: 0
   m_Name: Region 04
   m_TagString: Untagged
@@ -18471,43 +18425,6 @@ MeshRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1394975183790489376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183790489369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183790489374}
 --- !u!114 &1394975183793303362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18844,9 +18761,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!1 &1394975183849700465
@@ -18862,7 +18779,6 @@ GameObject:
   - component: {fileID: 1394975183849700469}
   - component: {fileID: 1394975183849700468}
   - component: {fileID: 1394975183849700471}
-  - component: {fileID: 1394975183849700472}
   m_Layer: 0
   m_Name: Region 26
   m_TagString: Untagged
@@ -18985,43 +18901,6 @@ MeshRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1394975183849700472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183849700465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183849700470}
 --- !u!23 &1394975183862117848
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -19165,7 +19044,6 @@ GameObject:
   - component: {fileID: 1394975183866662228}
   - component: {fileID: 1394975183866662231}
   - component: {fileID: 1394975183866662230}
-  - component: {fileID: 1394975183866662232}
   m_Layer: 0
   m_Name: Region 22
   m_TagString: Untagged
@@ -19250,9 +19128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!23 &1394975183866662230
@@ -19305,43 +19183,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975183866662224}
   m_Mesh: {fileID: 43100795730674332, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
---- !u!114 &1394975183866662232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183866662224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183866662225}
 --- !u!4 &1394975183871916136
 Transform:
   m_ObjectHideFlags: 0
@@ -19549,7 +19390,6 @@ GameObject:
   - component: {fileID: 1394975183874239193}
   - component: {fileID: 1394975183874239192}
   - component: {fileID: 1394975183874239195}
-  - component: {fileID: 1394975183874239199}
   m_Layer: 0
   m_Name: Region 33
   m_TagString: Untagged
@@ -19579,7 +19419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -19684,48 +19524,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
---- !u!114 &1394975183874239199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183874239173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183874239194}
 --- !u!33 &1394975183889901552
 MeshFilter:
   m_ObjectHideFlags: 2
@@ -19748,7 +19551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   scaleMode: 0
-  color: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  color: {r: 0.323988, g: 0.32843468, b: 0.348, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -19795,7 +19598,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1094069709}
   m_Father: {fileID: 5599031685026967219}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19853,9 +19657,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
 --- !u!1 &1394975183889901565
@@ -19871,7 +19675,6 @@ GameObject:
   - component: {fileID: 1394975183889901553}
   - component: {fileID: 1394975183889901552}
   - component: {fileID: 1394975183889901555}
-  - component: {fileID: 1394975183889901566}
   m_Layer: 0
   m_Name: Region 32
   m_TagString: Untagged
@@ -19879,43 +19682,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1394975183889901566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183889901565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183889901554}
 --- !u!23 &1394975183899868920
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -19979,7 +19745,6 @@ GameObject:
   - component: {fileID: 1394975183899868926}
   - component: {fileID: 1394975183899868921}
   - component: {fileID: 1394975183899868920}
-  - component: {fileID: 1394975183899868928}
   m_Layer: 0
   m_Name: Region 19
   m_TagString: Untagged
@@ -20064,48 +19829,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2058686c9ae7140bdc5863341113e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wheel: {fileID: 0}
-  forestColor: {r: 0, g: 0, b: 0, a: 0}
-  forestPrefab: {fileID: 0}
+  Wheel: {fileID: 2224024823119029222}
+  forestColor: {r: 0.34509805, g: 0.45490196, b: 0.32941177, a: 1}
+  forestPrefab: {fileID: 563828416788737350, guid: 8c149ac3c68d57b4ea4a641cae2e7669, type: 3}
   baseX: 0.5
   baseY: 0
---- !u!114 &1394975183899868928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1394975183899868922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowType: 1
-  shadowLayer: 0
-  shadowDistance: 0
-  shadowDistanceMin: 0.5
-  shadowDistanceMax: 1
-  shadowTranslucency: 0
-  maskType: 0
-  maskLit: 0
-  maskPivot: 0
-  maskLayer: 0
-  maskLitCustom: 1
-  bumpMapMode:
-    type: 0
-    textureType: 0
-    texture: {fileID: 0}
-    sprite: {fileID: 0}
-    invertX: 0
-    invertY: 0
-    depth: 1
-    spriteRenderer: {fileID: 0}
-  mainShape:
-    shadowType: 1
-    maskType: 0
-    maskPivot: 0
-    transform: {fileID: 1394975183899868923}
 --- !u!33 &1394975183914126920
 MeshFilter:
   m_ObjectHideFlags: 2
@@ -20485,7 +20213,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975183992663374}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -20932,7 +20660,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394975184119715345}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -21116,7 +20844,6 @@ GameObject:
   - component: {fileID: 1175550198068983010}
   - component: {fileID: 293585267990312719}
   - component: {fileID: 9016199056721015204}
-  - component: {fileID: 1394975183174549160}
   m_Layer: 7
   m_Name: Wheel
   m_TagString: Untagged
@@ -21200,7 +20927,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2224024823119029221}
-  m_LocalRotation: {x: -0, y: -0, z: -0.98536736, w: -0.17044438}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
@@ -22293,6 +22020,8 @@ GameObject:
   - component: {fileID: 5052998671781914739}
   - component: {fileID: 4925155708690203998}
   - component: {fileID: 7802778753969229501}
+  - component: {fileID: 9209378985906938620}
+  - component: {fileID: 9209378985906938619}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -22622,3 +22351,56 @@ Transform:
   m_Father: {fileID: 2224024823119029223}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9209378985906938619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8018190737305376056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowType: 3
+  shadowLayer: 0
+  shadowDistance: 0
+  shadowDistanceMin: 0.5
+  shadowDistanceMax: 1
+  shadowTranslucency: 0
+  maskType: 5
+  maskLit: 0
+  maskPivot: 0
+  maskLayer: 0
+  maskLitCustom: 1
+  bumpMapMode:
+    type: 0
+    textureType: 0
+    texture: {fileID: 0}
+    sprite: {fileID: 0}
+    invertX: 0
+    invertY: 0
+    depth: 1
+    spriteRenderer: {fileID: 0}
+  mainShape:
+    shadowType: 3
+    maskType: 5
+    maskPivot: 0
+    transform: {fileID: 9209378985906938618}
+--- !u!58 &9209378985906938620
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8018190737305376056}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 0d794bbe0ee83b647847ebed2d7bad9e, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2.75
