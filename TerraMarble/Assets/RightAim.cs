@@ -14,6 +14,7 @@ public class RightAim : MonoBehaviour
 
     private Vector3 linePosition;
     UpdateGravityDirection updateGravityScript;
+    public Disc Ui;
 
     public SlowTime timeSlowDown;
     // Start is called before the first frame update
@@ -21,12 +22,22 @@ public class RightAim : MonoBehaviour
     {
         goumpalineIndicator = GetComponent<LineRenderer>();
         updateGravityScript = GetComponent<UpdateGravityDirection>();
-        InputManager.RightDragVectorEvent += AimRestrictor;
-        InputManager.RightDragEvent += Release;
+       
        timeSlowDown = GetComponent<SlowTime>();
     }
 
-
+    private void OnEnable()
+    {
+        InputManager.RightDragVectorEvent += AimRestrictor;
+        InputManager.RightDragEvent += Release;
+        Ui.enabled = true;
+    }
+    private void OnDisable()
+    {
+        InputManager.RightDragVectorEvent -= AimRestrictor;
+        InputManager.RightDragEvent -= Release;
+        Ui.enabled = false;
+    }
 
     private void FixedUpdate()
     {
