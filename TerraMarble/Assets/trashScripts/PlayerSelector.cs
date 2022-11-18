@@ -25,6 +25,7 @@ public class PlayerSelector : MonoBehaviour
     {
         Debug.DrawLine(transform.position, transform.position + Camera.main.transform.rotation* -(Vector3)drag);
         GameObject temp = FindClosestTarget("Ball",drag);
+
         if (currentObj == null)
         {
             currentObj = temp;

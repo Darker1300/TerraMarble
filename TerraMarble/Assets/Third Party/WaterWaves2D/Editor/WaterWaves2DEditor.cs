@@ -96,7 +96,7 @@ public class WaterWaves2DEditor:Editor{
 		float size=HandleUtility.GetHandleSize(Vector3.zero)*0.06f;
 		//Left handle
 		EditorGUI.BeginChangeCheck();
-		var fmh_101_4_638035924055117550 = script.transform.rotation; Vector3 lh=Handles.FreeMoveHandle(
+		var fmh_101_4_638043963767881664 = script.transform.rotation; Vector3 lh=Handles.FreeMoveHandle(
 			script.transform.TransformPoint(new Vector3(script.bounds.min.x,script.bounds.center.y,0f)),
 			size,
 			Vector3.zero,
@@ -115,7 +115,7 @@ public class WaterWaves2DEditor:Editor{
 
 		//Right handle
 		EditorGUI.BeginChangeCheck();
-		var fmh_121_4_638035924055175643 = script.transform.rotation; Vector3 rh=Handles.FreeMoveHandle(
+		var fmh_121_4_638043963767929395 = script.transform.rotation; Vector3 rh=Handles.FreeMoveHandle(
 			script.transform.TransformPoint(new Vector3(script.bounds.max.x,script.bounds.center.y,0f)),
 			size,
 			Vector3.zero,
@@ -134,7 +134,7 @@ public class WaterWaves2DEditor:Editor{
 
 		//Bottom handle
 		EditorGUI.BeginChangeCheck();
-		var fmh_141_4_638035924055182939 = script.transform.rotation; Vector3 bh=Handles.FreeMoveHandle(
+		var fmh_141_4_638043963767936747 = script.transform.rotation; Vector3 bh=Handles.FreeMoveHandle(
 			script.transform.TransformPoint(new Vector3(script.bounds.center.x,script.bounds.min.y,0f)),
 			size,
 			Vector3.zero,
@@ -153,7 +153,7 @@ public class WaterWaves2DEditor:Editor{
 
 		//Bottom handle
 		EditorGUI.BeginChangeCheck();
-		var fmh_161_4_638035924055190073 = script.transform.rotation; Vector3 th=Handles.FreeMoveHandle(
+		var fmh_161_4_638043963767943618 = script.transform.rotation; Vector3 th=Handles.FreeMoveHandle(
 			script.transform.TransformPoint(new Vector3(script.bounds.center.x,script.bounds.max.y,0f)),
 			size,
 			Vector3.zero,
