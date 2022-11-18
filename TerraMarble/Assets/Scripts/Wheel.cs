@@ -121,5 +121,13 @@ public class Wheel : MonoBehaviour
     public float GetAngleFromPoint(Vector2 _point)
         => MathU.Vector2ToDegree((_point - (Vector2)transform.position).normalized);
 
-
+    [Button]
+    public void FindRegions()
+    {
+        Region[] regs = GetComponentsInChildren<Region>();
+        for (int i = 0; i < regs.Length && i < regions.Length; i++)
+        {
+            regions[i] = regs[i];
+        }
+    }
 }

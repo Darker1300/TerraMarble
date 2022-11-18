@@ -49,5 +49,34 @@ namespace MathUtility
                 num -= 360f;
             return a + num * t;
         }
+
+        /// <summary>
+        ///   <para>Calculates the shortest difference between two given numbers in a repeating range.</para>
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="target"></param>
+        /// <param name="max"></param>
+        public static float DeltaRange(float current, float target, float max)
+        {
+            float num = Mathf.Repeat(target - current, max);
+            if ((double)num > max * .5f)
+                num -= max;
+            return num;
+        }
+
+        /// <summary>
+        ///   <para>Same as MoveTowards but makes sure the values interpolate correctly when they wrap around 360 degrees.</para>
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="target"></param>
+        /// <param name="maxDelta"></param>
+        public static float MoveTowardsRange(float current, float target, float maxDelta, float maxRange)
+        {
+            float num = DeltaRange(current, target, maxRange);
+            if (-(double)maxDelta < (double)num && (double)num < (double)maxDelta)
+                return target;
+            target = current + num;
+            return Mathf.MoveTowards(current, target, maxDelta);
+        }
     }
 }

@@ -1,8 +1,11 @@
 using System;
+using System.Numerics;
 using MathUtility;
 using NaughtyAttributes;
 using Shapes;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class Region : MonoBehaviour
 {
@@ -49,7 +52,7 @@ public class Region : MonoBehaviour
         }
     }
 
-    public float FullRadius => RegionDisc.Radius + Thickness;
+    public float FullRadius => BaseRadius + Thickness;
 
     public float CenterAngle => Mathf.LerpAngle(StartAngle, EndAngle, 0.5f);
 
@@ -103,6 +106,20 @@ public class Region : MonoBehaviour
                        MathU.LerpAngleUnclamped(StartAngle, EndAngle, _x))
                    * (BaseRadius + Mathf.LerpUnclamped(0f, Thickness, _y))
                );
+    }
+    /// <param name="_regX">Percentage</param>
+    /// <param name="_regY">Percentage</param>
+    /// <returns>World position</returns>
+    public Vector2 WorldToRegion(Vector2 worldPos)
+    {
+        Vector2 localPos = transform.InverseTransformPoint(worldPos);
+        float angle = MathU.Vector2ToDegree(localPos.normalized);
+        float segments = angle * (1f / Mathf.DeltaAngle(StartAngle, EndAngle));
+
+        float totalDst = Vector2.Distance(transform.position, localPos);
+        float height = (totalDst - BaseRadius) * (1f / Thickness);
+
+        return new Vector2(segments, height);
     }
 
     private void TestUpdateBasePos()
