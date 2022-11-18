@@ -14,7 +14,7 @@ public class TrackWheelSpin : MonoBehaviour
     void Awake()
     {
         wheel = GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
-        wheel.FixedRotationEvent.AddListener(OnWheelSpin);
+        //wheel.FixedRotationEvent.AddListener(OnWheelSpin);
     }
 
     private void OnWheelSpin(float fixedDeltaSpin)

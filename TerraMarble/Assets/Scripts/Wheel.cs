@@ -18,7 +18,7 @@ public class Wheel : MonoBehaviour
     public bool invertGrabVelocity = false;
 
     [Foldout("Show Events")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
-    [Foldout("Show Events")] public UnityEvent<float> FixedRotationEvent = new UnityEvent<float>();
+    //[Foldout("Show Events")] public UnityEvent<float> FixedRotationEvent = new UnityEvent<float>();
 
     [Header("Debug References")]
     [Foldout("Show Debug Fields")] public Transform grabber;
@@ -78,7 +78,7 @@ public class Wheel : MonoBehaviour
         // Apply movement
         rigidbody2D.MoveRotation(newRotation);
 
-        FixedRotationEvent.Invoke(fixedSpeed);
+        //FixedRotationEvent.Invoke(fixedSpeed);
     }
 
     private void OnLeftDrag(bool state)
