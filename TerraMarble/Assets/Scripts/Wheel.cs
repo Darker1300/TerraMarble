@@ -105,7 +105,7 @@ public class Wheel : MonoBehaviour
     private void OnLeftDragUpdate(Vector2 currentDragOffset, Vector2 mouseDelta)
     {
 
-        Debug.Log("DRAG: |" + currentDragOffset.ToString() + " | " + mouseDelta.ToString());
+        //Debug.Log("DRAG: |" + currentDragOffset.ToString() + " | " + mouseDelta.ToString());
         Vector2 dragStartWorldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
         Vector2 dragCurrentWorldPoint;
 
