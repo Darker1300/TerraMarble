@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Shapes;
+using System.Linq;
 
 public class PlayerSelector : MonoBehaviour
 {
     public List<GameObject> Balls;
     public GameObject currentObj;
-
+    public List<Disc> BallUI;
+    public Transform Wheel;
     // Start is called before the first frame update
     void Start()
     {
-        
+        InputManager.RightDragVectorEvent += Selector;
     }
 
     // Update is called once per frame
@@ -18,6 +21,30 @@ public class PlayerSelector : MonoBehaviour
     {
         
     }
+    public void Selector(Vector2 drag, Vector2 dragDelta)
+    {
+        Debug.DrawLine(transform.position, transform.position + Camera.main.transform.rotation* -(Vector3)drag);
+        GameObject temp = FindClosestTarget("Ball",drag);
+        if (currentObj == null)
+        {
+            currentObj = temp;
+            currentObj.GetComponent<RightAim>().enabled = true;
+        }
+        else if (currentObj != temp)
+        {
+            currentObj.GetComponent<RightAim>().enabled = false;
+            currentObj = temp;
+            currentObj.GetComponent<RightAim>().enabled = true;
+        }
+
+    }
+
+    GameObject FindClosestTarget(string trgt,Vector2 drag)
+{
+    Vector3 position = transform.position + (Vector3)drag;
+    return GameObject.FindGameObjectsWithTag(trgt).OrderBy(o => (o.transform.position - position).sqrMagnitude)
+        .FirstOrDefault();
+}
 
     //drag out angle 
 
