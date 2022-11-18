@@ -1,3 +1,4 @@
+using System;
 using MathUtility;
 using NaughtyAttributes;
 using UnityEngine;
@@ -12,13 +13,14 @@ public class Wheel : MonoBehaviour
     public float minSpeed = 0.1f;
     public float maxSpeed = 100f;
     public float idleSpeed = -.2f;
-    public float decelerationSpeed = 4f;
+    public float decelerationSpeed = 0f;
+    float minGrabDistance = 0.1f;
 
     [FormerlySerializedAs("invertDragVelocity")]
     public bool invertGrabVelocity = false;
 
     [Foldout("Show Events")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
-    [Foldout("Show Events")] public UnityEvent<float> FixedRotationEvent = new UnityEvent<float>();
+    //[Foldout("Show Events")] public UnityEvent<float> FixedRotationEvent = new UnityEvent<float>();
 
     [Header("Debug References")]
     [Foldout("Show Debug Fields")] public Transform grabber;
@@ -43,8 +45,14 @@ public class Wheel : MonoBehaviour
 
         InputManager.LeftDragEvent += OnLeftDrag;
         InputManager.LeftDragVectorEvent += OnLeftDragUpdate;
+        InputManager.TapLeftEvent += OnTapLeft;
 
         velocity = idleSpeed;
+    }
+
+    private void OnTapLeft(object sender, EventArgs args)
+    {
+        ReverseSpin();
     }
 
     private void Update()
@@ -78,7 +86,7 @@ public class Wheel : MonoBehaviour
         // Apply movement
         rigidbody2D.MoveRotation(newRotation);
 
-        FixedRotationEvent.Invoke(fixedSpeed);
+        //FixedRotationEvent.Invoke(fixedSpeed);
     }
 
     private void OnLeftDrag(bool state)
@@ -96,6 +104,8 @@ public class Wheel : MonoBehaviour
 
     private void OnLeftDragUpdate(Vector2 currentDragOffset, Vector2 mouseDelta)
     {
+
+        //Debug.Log("DRAG: |" + currentDragOffset.ToString() + " | " + mouseDelta.ToString());
         Vector2 dragStartWorldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
         Vector2 dragCurrentWorldPoint;
 
@@ -108,6 +118,8 @@ public class Wheel : MonoBehaviour
         {
             dragCurrentWorldPoint = currentDragOffset;
         }
+
+        if (Vector2.Distance(dragStartWorldPoint, dragCurrentWorldPoint) < minGrabDistance) return;
 
         Vector2 dragInvertedCurrentWorldPoint = dragStartWorldPoint + dragCurrentWorldPoint;
         grabTargetAngle = GetAngleFromPoint(dragInvertedCurrentWorldPoint);
@@ -129,5 +141,12 @@ public class Wheel : MonoBehaviour
         {
             regions[i] = regs[i];
         }
+    }
+
+
+    [Button]
+    public void ReverseSpin()
+    {
+        velocity = -velocity;
     }
 }

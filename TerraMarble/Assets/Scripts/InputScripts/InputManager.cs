@@ -18,6 +18,8 @@ public class InputManager : MonoBehaviour
     public delegate void DragRightUpdate(Vector2 currentScreenPosition, Vector2 Delta);
 
     public static Vector2 DragLeftStartScreenPos;
+    public static Vector2 DragLeftEndScreenPos;
+
     public static Vector2 DragRightStartScreenPos;
 
     [SerializeField] private InputModule inputAsset;
@@ -395,6 +397,7 @@ public class InputManager : MonoBehaviour
 
 
                 DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
+                DragLeftEndScreenPos = DragLeftStartScreenPos;
 
                 if (showDebug) Debug.Log("Start");
 
@@ -418,14 +421,20 @@ public class InputManager : MonoBehaviour
 
                 //IF DRAG IS ABOVE X AMOUNT 
 
+                Vector2 currentScreenPos = ctx.ReadValue<Vector2>();
 
-                LeftDragVectorEvent?.Invoke(
-                    Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()) -
-                    Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos), mouseDelta);
+                if ((currentScreenPos - DragLeftStartScreenPos).magnitude > minDragAmount)
+                {
+                    LeftDragVectorEvent?.Invoke(
+                        Camera.main.ScreenToWorldPoint(currentScreenPos) -
+                        Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos), mouseDelta);
 
-                if (showDebug)
-                    Debug.Log("Drag" + (Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()) -
-                                        Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos)));
+                    DragLeftEndScreenPos = currentScreenPos;
+
+                    if (showDebug)
+                        Debug.Log("Drag" + (Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()) -
+                                            Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos)));
+                }
             };
 
         //DRAG DELTA
