@@ -14,7 +14,8 @@ public class Wheel : MonoBehaviour
     public float maxSpeed = 100f;
     public float idleSpeed = -.2f;
     public float decelerationSpeed = 0f;
-    float minGrabDistance = 0.1f;
+    public float minGrabDistance = 0.1f;
+    public float reverseSpeedUpFactor = 10f;
 
     [FormerlySerializedAs("invertDragVelocity")]
     public bool invertGrabVelocity = false;
@@ -147,6 +148,6 @@ public class Wheel : MonoBehaviour
     [Button]
     public void ReverseSpin()
     {
-        velocity = -velocity;
+        velocity = Mathf.Clamp(-velocity * reverseSpeedUpFactor, -maxSpeed, maxSpeed);
     }
 }
