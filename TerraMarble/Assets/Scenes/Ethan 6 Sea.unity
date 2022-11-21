@@ -181,23 +181,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6781455105575259615, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
       propertyPath: IsToggled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6781455105575259615, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
       propertyPath: ShapeRenderers.Array.data[0].Toggled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6781455105575259615, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
       propertyPath: ShapeRenderers.Array.data[1].Toggled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6781455107078460292, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6781455107078460294, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6781455107078460294, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
       propertyPath: m_SortingLayer
@@ -270,6 +270,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6781455105575259603, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455105575259615, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: IsToggled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455105575259615, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: ShapeRenderers.Array.data[0].Toggled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455105575259615, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: ShapeRenderers.Array.data[1].Toggled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455107078460292, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455107078460294, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2202,6 +2222,26 @@ PrefabInstance:
     - target: {fileID: 6781455105575259603, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455105575259615, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: IsToggled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455105575259615, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: ShapeRenderers.Array.data[0].Toggled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455105575259615, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: ShapeRenderers.Array.data[1].Toggled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455107078460292, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6781455107078460294, guid: 89f9235051c87c144b9ae8e2e871f557, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -26973,7 +27013,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8134302457834593327
 Transform:
   m_ObjectHideFlags: 0
