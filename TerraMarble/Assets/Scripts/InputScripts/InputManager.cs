@@ -460,19 +460,21 @@ public class InputManager : MonoBehaviour
             {
                 //if below drag threshold 
 
+           
+                    //how long since held down? is it a tap
 
-                //how long since held down? is it a tap
-
-                if (Time.time - LeftStartTime <= TapTime)
+                    if (Time.time - LeftStartTime <= TapTime && (Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) -
+                     Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>())).magnitude < minDragAmount)
 
                 {
-                    if (showDebug) Debug.Log(Time.time - LeftStartTime + " : tap");
+                    if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
 
                     TapLeftEvent?.Invoke(null, EventArgs.Empty);
+                    LeftStartTime = 0;
                 }
 
+               
                 else
-
                 {
                     if (showDebug) Debug.Log("Drag End");
 
@@ -540,23 +542,25 @@ public class InputManager : MonoBehaviour
 
                 //THIS IS A SAFE HOLD SO QUICK DRAG IS NOT COUNTED AS A TAP
 
-                if ((Camera.main.ScreenToWorldPoint(DragRightStartScreenPos) -
-                     Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>())).magnitude < minDragAmount)
+                //if ((Camera.main.ScreenToWorldPoint(DragRightStartScreenPos) -
+                //     Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>())).magnitude < minDragAmount)
 
                     //how long since held down? is it a tap
 
                     if (Time.time - RightStartTime <= TapTime)
 
                     {
-                        if (showDebug) Debug.Log(Time.time - RightStartTime + " : tap");
-
+                        if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
+                        
                         TapRightEvent?.Invoke(null, EventArgs.Empty);
+                        RightStartTime = 0;
+                        DragRightStartScreenPos = Vector2.zero;
                     }
 
                 //LeftDragEvent.Invoke(Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()));   
 
 
-                if (showDebug) Debug.Log("Drag End");
+                else if (showDebug) Debug.Log("Drag End");
 
                 RightDragEvent?.Invoke(false);
 

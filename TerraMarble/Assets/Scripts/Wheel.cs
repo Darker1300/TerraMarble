@@ -147,6 +147,7 @@ public class Wheel : MonoBehaviour
     [Button]
     public void ReverseSpin()
     {
-        velocity = -velocity;
+        
+        velocity = -velocity*10.5f;
     }
 }
