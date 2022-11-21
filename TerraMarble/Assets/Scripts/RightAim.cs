@@ -30,13 +30,13 @@ public class RightAim : MonoBehaviour
     {
         InputManager.RightDragVectorEvent += AimRestrictor;
         InputManager.RightDragEvent += Release;
-        Ui.enabled = true;
+       // Ui.enabled = true;
     }
     private void OnDisable()
     {
         InputManager.RightDragVectorEvent -= AimRestrictor;
         InputManager.RightDragEvent -= Release;
-        Ui.enabled = false;
+       // Ui.enabled = false;
     }
 
     private void FixedUpdate()
