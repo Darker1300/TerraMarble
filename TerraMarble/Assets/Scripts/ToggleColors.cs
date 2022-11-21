@@ -30,8 +30,7 @@ public class ToggleColors : Toggle
 
     public ShapeColorPair[] ShapeRenderers;
 
-    [Button]
-    public void ToggleAllColor()
+    private void ToggleAllColor()
     {
         for (var index = 0; index < ShapeRenderers.Length; index++)
         {
@@ -54,18 +53,19 @@ public class ToggleColors : Toggle
             // Toggle
             ShapeRenderers[index].Toggled = !shapeColorPair.Toggled;
         }
-
-        if (ShapeRenderers[0] != null)
-        {
-            DoToggle();
-        }
+    }
+    
+    public override void DoToggle()
+    {
+        ToggleAllColor();
+        base.DoToggle();
     }
 
     [Header("Config")]
     public Color defaultEndColor = Color.gray;
 
     [Button]
-    public void GetStartColors()
+    public void ResetStartColors()
     {
         for (var index = 0; index < ShapeRenderers.Length; index++)
         {

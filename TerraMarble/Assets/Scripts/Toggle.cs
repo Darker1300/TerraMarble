@@ -11,7 +11,8 @@ public class Toggle : MonoBehaviour
 
     public bool IsToggled = false;
 
-    public void DoToggle()
+    [Button]
+    public virtual void DoToggle()
     {
         IsToggled = !IsToggled;
         ToggleEvent.Invoke(IsToggled);
