@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using System;
 
 public class UpdateGravityDirection : MonoBehaviour
 {
@@ -13,7 +15,8 @@ public class UpdateGravityDirection : MonoBehaviour
     private float maxGravDist = 4.0f;
     [SerializeField]
     private float maxGravity = 35.0f;
-    
+    public event EventHandler HitSurface;
+
     public Vector3 direction;
     //
     
@@ -66,7 +69,7 @@ public class UpdateGravityDirection : MonoBehaviour
         //Vector2 project = -2 * (Vector2.Dot(rb.velocity, collision.contacts[0].normal) * collision.contacts[0].normal + rb.velocity);
         //rb.velocity = Vector2.zero;
         //rb.velocity = project;
-
+        HitSurface?.Invoke(this, EventArgs.Empty);
 
 
 
@@ -89,14 +92,14 @@ public class UpdateGravityDirection : MonoBehaviour
     {
        // ExtraForceVector = Vector2.zero;
         Vector2 project = Vector2.ClampMagnitude(rb.velocity.normalized - 20 * (Vector2.Dot(rb.velocity, collision.contacts[0].normal) * collision.contacts[0].normal), maxGravity);
-    //project =  project;
-
+        //project =  project;
+        
 
 
     //rb.velocity.Set(0,0);
     //Debug.Log("coll" + dot);
 
-    rb.AddForce(project* Time.fixedDeltaTime);
+        rb.AddForce(project* Time.fixedDeltaTime);
         //rb.AddRelativeForce(project*10);
 
     }

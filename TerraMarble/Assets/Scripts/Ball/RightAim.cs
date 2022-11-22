@@ -15,11 +15,12 @@ public class RightAim : MonoBehaviour
     private Vector3 linePosition;
     UpdateGravityDirection updateGravityScript;
     public Disc Ui;
-
+    public BallStateTracker ballState;
     public SlowTime timeSlowDown;
     // Start is called before the first frame update
     void Start()
     {
+        ballState = GetComponent<BallStateTracker>();
         goumpalineIndicator = GetComponent<LineRenderer>();
         updateGravityScript = GetComponent<UpdateGravityDirection>();
        
@@ -61,6 +62,8 @@ public class RightAim : MonoBehaviour
             // GetComponent<Rigidbody2D>().AddRelativeForce(aimDirection.normalized * 100);
             //add and extra force value for our gravity script
             updateGravityScript.ExtraForceVector = aimDirection;
+            ballState.Goomba = true;
+            
 
         }
         else if (buttonDown)

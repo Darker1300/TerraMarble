@@ -1,0 +1,454 @@
+fileFormatVersion: 2
+guid: 287c30537c44a444197f6a8dadaee584
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 370.6667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b50f999080d290845bdc283569781dc3
+      internalID: -748793072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_1
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 370.6667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5937f4c92fb1ab741915209f5530d1f1
+      internalID: 473512907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_2
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 370.6667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80f6c515a0b7c834d959c20e69f0ad6c
+      internalID: 100768301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_3
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 370.6667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b43850e2e42ae5e4ba4ce1bb3618fced
+      internalID: -1414990451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_4
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 370.6667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f93c5a90b0e798c4888743345e86802f
+      internalID: 773022869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 185.66667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82ea129b862d442419b880db50ccafcf
+      internalID: 1131186232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_6
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 185.66667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ced6472b997785249802d8244079f1f0
+      internalID: 1963500556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_7
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 185.66667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 397517231ac30664e9f635e86020abed
+      internalID: -435467322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_8
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 185.66667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ad273faf1f8aee41b25aff990192489
+      internalID: 469800418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_9
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 185.66667
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e09b25436ea6360418295bebf976702a
+      internalID: 320258370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0.66667175
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6240cd0f0b912c14bac95110535da49e
+      internalID: -1244005316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_11
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 0.66667175
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ea04a9353d07634896e32c20aadb315
+      internalID: -16074603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_12
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 0.66667175
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77302cdd8dd1148429fd083bdd6a06c6
+      internalID: 2070109372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_13
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 0.66667175
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 150eabb9a7939bf40bab55112ef26876
+      internalID: 1432172653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 45-453039_dust-sprite-sheet-particle-hd-png-download_14
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 0.66667175
+        width: 172
+        height: 185.33333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55317a080747795469fa434d511d3822
+      internalID: -1664546198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      45-453039_dust-sprite-sheet-particle-hd-png-download_1: 473512907
+      45-453039_dust-sprite-sheet-particle-hd-png-download_9: 320258370
+      45-453039_dust-sprite-sheet-particle-hd-png-download_11: -16074603
+      45-453039_dust-sprite-sheet-particle-hd-png-download_0: -748793072
+      45-453039_dust-sprite-sheet-particle-hd-png-download_5: 1131186232
+      45-453039_dust-sprite-sheet-particle-hd-png-download_8: 469800418
+      45-453039_dust-sprite-sheet-particle-hd-png-download_2: 100768301
+      45-453039_dust-sprite-sheet-particle-hd-png-download_7: -435467322
+      45-453039_dust-sprite-sheet-particle-hd-png-download_10: -1244005316
+      45-453039_dust-sprite-sheet-particle-hd-png-download_4: 773022869
+      45-453039_dust-sprite-sheet-particle-hd-png-download_6: 1963500556
+      45-453039_dust-sprite-sheet-particle-hd-png-download_12: 2070109372
+      45-453039_dust-sprite-sheet-particle-hd-png-download_13: 1432172653
+      45-453039_dust-sprite-sheet-particle-hd-png-download_3: -1414990451
+      45-453039_dust-sprite-sheet-particle-hd-png-download_14: -1664546198
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
