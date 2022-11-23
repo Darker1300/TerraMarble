@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class SeedDisperser : MonoBehaviour
 {
- 
+    //prefab to spawn
+    public GameObject spawnableObject;
+
+    //where to shoot seeds out
+    public Transform SpawnPoint;
     //how many seeds it has
     [SerializeField]
     int SeedAmount;
@@ -12,13 +16,17 @@ public class SeedDisperser : MonoBehaviour
     [SerializeField]
     int HitDisperseAmount;
 
+    [SerializeField]
+    int SeedsPerGrowth;
     //How Many seeds disperse from hit
     //[SerializeField]
     //int HitDisperseAmount;
 
-    public void GrownAddSeeds(int Seeds)
-    { 
-        
+    //seeds dispersed 
+    
+    public void GrownAddSeeds()
+    {
+        SeedAmount += SeedsPerGrowth;
     
     }
     // Start is called before the first frame update
@@ -38,10 +46,6 @@ public class SeedDisperser : MonoBehaviour
         //FindWheelSection(collision.contacts[0].point);
         if (collision.gameObject.name == "Ball")
         {
-            //if (collision.gameObject.GetComponent<>)
-            //{
-
-            //}
 
         }
     }

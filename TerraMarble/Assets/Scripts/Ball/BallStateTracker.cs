@@ -24,6 +24,7 @@ public class BallStateTracker : MonoBehaviour
 
     public void GoombaStompDisabled(object sender,EventArgs e)
     {
+        
         Debug.Log("Gooomba");
         Goomba = false;
     }
