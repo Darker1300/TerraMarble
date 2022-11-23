@@ -150,4 +150,18 @@ public class Wheel : MonoBehaviour
     {
         velocity = Mathf.Clamp(-velocity * reverseSpeedUpFactor, -maxSpeed, maxSpeed);
     }
+
+    /// <summary>
+    /// Returns Index + 0..1f
+    /// </summary>
+    public float GetClosestRegionIndex(Vector2 _worldPos)
+    {
+        if (regions[0] == null) FindRegions();
+        return regions[0].WheelToPointRegionIndex(_worldPos);
+    }
+
+    public Region GetClosestRegion(Vector2 _worldPos)
+    {
+        return regions[(int)Mathf.Floor(GetClosestRegionIndex(_worldPos))];
+    }
 }

@@ -42,7 +42,7 @@ public class Region : MonoBehaviour
 
     public float ThicknessHalf => Thickness * 0.5f;
 
-    public float BaseRadius
+    public float RadiusBase
     {
         get
         {
@@ -52,15 +52,17 @@ public class Region : MonoBehaviour
         }
     }
 
-    public float FullRadius => BaseRadius + Thickness;
+    public float RadiusFull => RadiusBase + Thickness;
 
-    public float CenterAngle => Mathf.LerpAngle(StartAngle, EndAngle, 0.5f);
+    public float AngleCenter => Mathf.LerpAngle(AngleStart, AngleEnd, 0.5f);
 
-    public float StartAngle => RegionDisc.AngRadiansStart * Mathf.Rad2Deg;
+    public float AngleStart => RegionDisc.AngRadiansStart * Mathf.Rad2Deg;
 
-    public float EndAngle => RegionDisc.AngRadiansEnd * Mathf.Rad2Deg;
+    public float AngleEnd => RegionDisc.AngRadiansEnd * Mathf.Rad2Deg;
 
-    public Vector2 CenterAngleVector => MathU.DegreeToVector2(CenterAngle);
+    public float AngleSize => Mathf.DeltaAngle(AngleStart, AngleEnd);
+
+    public Vector2 AngleCenterVector => MathU.DegreeToVector2(AngleCenter);
 
 
     [Header("Debug")]
@@ -89,35 +91,44 @@ public class Region : MonoBehaviour
             _base.SetParent(transform, false);
             _base.position = transform.position
                              + transform.TransformVector(
-                                 (Vector3)CenterAngleVector * BaseRadius);
-            _base.up = CenterAngleVector;
+                                 (Vector3)AngleCenterVector * RadiusBase);
+            _base.up = AngleCenterVector;
         }
 
         return _base;
     }
 
-    /// <param name="_x">Percentage</param>
+    /// <param name="_x">Percentage of region</param>
     /// <param name="_y">Percentage</param>
     /// <returns>World position</returns>
-    public Vector2 RegionPosition(float _x, float _y)
+    public Vector2 RegionPosition(float _x, float _y = 1f)
     {
         return transform.position + transform.TransformVector(
                    (Vector3)MathU.DegreeToVector2(
-                       MathU.LerpAngleUnclamped(StartAngle, EndAngle, _x))
-                   * (BaseRadius + Mathf.LerpUnclamped(0f, Thickness, _y))
+                       MathU.LerpAngleUnclamped(AngleStart, AngleEnd, _x))
+                   * (RadiusBase + Mathf.LerpUnclamped(0f, Thickness, _y))
                );
     }
-    /// <param name="_regX">Percentage</param>
-    /// <param name="_regY">Percentage</param>
-    /// <returns>World position</returns>
+
+    /// <returns>Returns Regions array index + 0..1</returns>
+    public float WheelToPointRegionIndex(Vector2 worldPos)
+    {
+        Vector2 localPos = transform.InverseTransformPoint(worldPos);
+        float angle = MathU.Vector2ToDegree(localPos.normalized);
+        float segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
+        return segments;
+    }
+
+    /// <returns> X: Regions array index + 0..1;
+    /// Y: typically 0..1, this corresponds to multiples of Thickness, starting from the Base radius.</returns>
     public Vector2 WorldToRegion(Vector2 worldPos)
     {
         Vector2 localPos = transform.InverseTransformPoint(worldPos);
         float angle = MathU.Vector2ToDegree(localPos.normalized);
-        float segments = angle * (1f / Mathf.DeltaAngle(StartAngle, EndAngle));
+        float segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
 
         float totalDst = Vector2.Distance(transform.position, localPos);
-        float height = (totalDst - BaseRadius) * (1f / Thickness);
+        float height = (totalDst - RadiusBase) * (1f / Thickness);
 
         return new Vector2(segments, height);
     }

@@ -25,7 +25,7 @@ public class WheelTransform : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(wheel.transform.position, 
-            regionLeader.transform.lossyScale.x * regionLeader.FullRadius);
+            regionLeader.transform.lossyScale.x * regionLeader.RadiusFull);
     }
 
 }
