@@ -63,18 +63,13 @@ public class Region : MonoBehaviour
     public float AngleSize => Mathf.DeltaAngle(AngleStart, AngleEnd);
 
     public Vector2 AngleCenterVector => MathU.DegreeToVector2(AngleCenter);
-
-
-    [Header("Debug")]
-    [SerializeField]
-    [OnValueChanged("TestUpdateBasePos")]
+    
     [Range(0f, 1f)]
     private float baseX = 0.5f;
-
-    [SerializeField]
-    [OnValueChanged("TestUpdateBasePos")]
     [Range(0f, 1f)]
     private float baseY = 0.0f;
+
+    private string defaultBaseName = "Base";
 
     private void Awake()
     {
@@ -96,7 +91,7 @@ public class Region : MonoBehaviour
     {
         if (_base == null)
         {
-            _base = new GameObject("Base").transform;
+            _base = new GameObject(defaultBaseName).transform;
             _base.SetParent(transform, false);
             InitBase();
         }
@@ -184,5 +179,10 @@ public class Region : MonoBehaviour
     {
         var ani = gameObject.GetComponentInChildren<Animator>();
         ani.SetInteger("Progress", 0);
+    }
+
+    public void FindBase()
+    {
+        if (_base == null) _base = transform.Find(defaultBaseName);
     }
 }

@@ -1,30 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class BallStateTracker : MonoBehaviour
 {
- 
-    public enum BallState {Fire,Goomba,NoEffector};
+    public enum BallState
+    {
+        Fire,
+        Goomba,
+        NoEffector
+    }
+
+    public bool Goomba;
 
     public BallState thisBallState;
 
-
-    public bool Goomba = false;
     private void Start()
     {
-        GetComponent<UpdateGravityDirection>().HitSurface += GoombaStompDisabled;
+        GetComponent<UpdateGravityDirection>().HitSurface.AddListener(GoombaStompDisabled);
     }
+
     public void StateChange(BallState state)
     {
-
         thisBallState = state;
     }
 
-    public void GoombaStompDisabled(object sender,EventArgs e)
+    public void GoombaStompDisabled(Collision2D _collision2D)
     {
-        
         Debug.Log("Gooomba");
         Goomba = false;
     }

@@ -140,6 +140,7 @@ public class Wheel : MonoBehaviour
         Region[] regs = GetComponentsInChildren<Region>(true);
         for (int i = 0; i < regs.Length && i < regions.Length; i++)
         {
+            regs[i].FindBase();
             regions[i] = regs[i];
         }
     }
