@@ -9,10 +9,13 @@ public class UpdateGravityDirection : MonoBehaviour
     public Vector3 ExtraForceVector;
     [HideInInspector] public UnityEvent<Collision2D> HitSurface;
 
-    [SerializeField] private float maxGravDist = 4.0f;
+    public float maxGravDist = 4.0f;
+    public float maxGravity = 35.0f;
 
-    [SerializeField] private float maxGravity = 35.0f;
     // Start is called before the first frame update
+    [SerializeField]
+    [Range(0,1)]
+    private float MaxOrbitLeftInfluence;
 
     private Transform planetCenter;
 
@@ -44,10 +47,23 @@ public class UpdateGravityDirection : MonoBehaviour
         }
         else
         {
-            float magnitude = (2f - direction.magnitude / maxGravDist) * maxGravity * 2;
-            rb.AddForce(direction.normalized * magnitude * Time.fixedDeltaTime);
+            float dist = direction.magnitude;
+            if (dist <= maxGravDist)
+            {
+                //velocity to planet direction , how much is orbiting 
+                float dot = Vector2.Dot(rb.velocity, direction);
 
-            rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxGravity);
+
+                rb.AddForce(direction.normalized * (1.0f - dist / maxGravDist) * maxGravity);
+
+                
+
+
+
+
+
+                rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxGravity);
+            }
         }
     }
 
