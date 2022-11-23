@@ -81,21 +81,33 @@ public class Region : MonoBehaviour
         RegionDisc ??= GetComponent<Disc>();
     }
 
+    private Transform InitBase()
+    {
+        RegionDisc ??= GetComponent<Disc>();
+        _base.position = transform.position
+                         + transform.TransformVector(
+                             (Vector3)AngleCenterVector * RadiusBase);
+        _base.up = transform.TransformVector(AngleCenterVector);
+        return _base;
+    }
+
     [Button]
     public Transform TryCreateBase()
     {
         if (_base == null)
         {
-            RegionDisc ??= GetComponent<Disc>();
             _base = new GameObject("Base").transform;
             _base.SetParent(transform, false);
-            _base.position = transform.position
-                             + transform.TransformVector(
-                                 (Vector3)AngleCenterVector * RadiusBase);
-            _base.up = AngleCenterVector;
+            InitBase();
         }
 
         return _base;
+    }
+
+    public Transform ResetBase()
+    {
+        if (_base == null) TryCreateBase();
+        return InitBase();
     }
 
     /// <param name="_x">Percentage of region</param>

@@ -137,13 +137,33 @@ public class Wheel : MonoBehaviour
     [Button]
     public void FindRegions()
     {
-        Region[] regs = GetComponentsInChildren<Region>();
+        Region[] regs = GetComponentsInChildren<Region>(true);
         for (int i = 0; i < regs.Length && i < regions.Length; i++)
         {
             regions[i] = regs[i];
         }
     }
 
+    [Button]
+    public void MakeRegionBases()
+    {
+        for (int i = 0; i < regions.Length; i++)
+        {
+            if (regions[i] == null) continue;
+            regions[i].TryCreateBase();
+        }
+    }
+    [Button]
+    public void ResetEmptyRegionBases()
+    {
+        for (int i = 0; i < regions.Length; i++)
+        {
+            if (regions[i] == null) continue;
+            Transform rBase = regions[i].Base;
+            if (rBase != null && rBase.childCount == 0)
+                regions[i].ResetBase();
+        }
+    }
 
     [Button]
     public void ReverseSpin()
