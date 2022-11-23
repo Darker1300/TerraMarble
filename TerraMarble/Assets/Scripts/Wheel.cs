@@ -151,6 +151,13 @@ public class Wheel : MonoBehaviour
         velocity = Mathf.Clamp(-velocity * reverseSpeedUpFactor, -maxSpeed, maxSpeed);
     }
 
+    public Region GetRegion(Vector2 _worldPos)
+    {
+        return regions[(int)Mathf.Floor(regions[0].WorldToRegion(_worldPos).x)];
+
+
+    }
+
     /// <summary>
     /// Returns Index + 0..1f
     /// </summary>

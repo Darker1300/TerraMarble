@@ -157,7 +157,7 @@ public class Region : MonoBehaviour
 
         Instantiate(forestPrefab, Base, false);
     }
-
+    //0 = nothing on tile
     [Button()]
     public void Tick()
     {
