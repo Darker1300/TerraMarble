@@ -3,15 +3,15 @@ using UnityEngine.Events;
 
 public class UpdateGravityDirection : MonoBehaviour
 {
-    [SerializeField] private readonly bool canBounce = true;
+    [SerializeField] private bool canBounce = true;
 
     public Vector3 direction;
     public Vector3 ExtraForceVector;
-    public UnityEvent<Collision2D> HitSurface;
+    [HideInInspector] public UnityEvent<Collision2D> HitSurface;
 
-    [SerializeField] private readonly float maxGravDist = 4.0f;
+    [SerializeField] private float maxGravDist = 4.0f;
 
-    [SerializeField] private readonly float maxGravity = 35.0f;
+    [SerializeField] private float maxGravity = 35.0f;
     // Start is called before the first frame update
 
     private Transform planetCenter;
@@ -19,9 +19,10 @@ public class UpdateGravityDirection : MonoBehaviour
     private Rigidbody2D rb;
 
     //how much influence of magnitude carries over
-    [SerializeField] [Range(0, 1)] private readonly float SlideFactor = 1;
+    [SerializeField] [Range(0, 1)] private float SlideFactor = 1;
 
-    [SerializeField] private float slideMax;
+    [SerializeField] private float slideMax = 50f;
+    [SerializeField] private float slideMin = 0f;
 
     private void Start()
     {
@@ -38,20 +39,13 @@ public class UpdateGravityDirection : MonoBehaviour
         if (ExtraForceVector != Vector3.zero)
         {
             //rb.velocity = Vector2.zero;
-            rb.AddRelativeForce(ExtraForceVector.normalized * 10000 * Time.fixedDeltaTime);
-        }
-        else if (canBounce)
-
-        {
-            rb.AddForce(direction.normalized * (2f - direction.magnitude / maxGravDist) * maxGravity * 2 *
-                        Time.fixedDeltaTime);
-            rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxGravity);
+            Vector3 force = ExtraForceVector.normalized * 10000;
+            rb.AddRelativeForce(force * Time.fixedDeltaTime);
         }
         else
         {
-            rb.AddForce(direction.normalized * (2f - direction.magnitude / maxGravDist) * maxGravity * 2 *
-                        Time.fixedDeltaTime);
-
+            float magnitude = (2f - direction.magnitude / maxGravDist) * maxGravity * 2;
+            rb.AddForce(direction.normalized * magnitude * Time.fixedDeltaTime);
 
             rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxGravity);
         }
@@ -76,14 +70,18 @@ public class UpdateGravityDirection : MonoBehaviour
         }
         else
         {
-            Vector2 SurfaceDirection = Vector3.Cross(collision.contacts[0].normal, Vector3.forward);
-            var dot = Vector2.Dot(rb.velocity, SurfaceDirection);
+            Vector2 surfaceDirection = Vector3.Cross(collision.contacts[0].normal, Vector3.forward);
+            float dot = Vector2.Dot(rb.velocity, surfaceDirection);
+
             Debug.Log("dot" + dot);
+
             //if above zero facing relativly same direction
+            float magnitude = Mathf.Clamp(rb.velocity.magnitude * SlideFactor, slideMin, slideMax);
+            Vector2 velocity = surfaceDirection * magnitude;
             if (dot > 0)
-                rb.velocity = SurfaceDirection * Mathf.Clamp(rb.velocity.magnitude * SlideFactor, 0, slideMax);
+                rb.velocity = velocity;
             else if (dot < 0)
-                rb.velocity = -SurfaceDirection * Mathf.Clamp(rb.velocity.magnitude * SlideFactor, 0, slideMax);
+                rb.velocity = -velocity;
             else Bounce(collision.contacts[0].normal);
 
 
