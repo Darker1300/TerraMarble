@@ -1,21 +1,22 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BallStateTracker : MonoBehaviour
 {
     public enum BallState
     {
         Fire,
-        Goomba,
+        Stomp,
         NoEffector
     }
 
-    public bool Goomba;
+    public bool Stomp;
 
     public BallState thisBallState;
 
     private void Start()
     {
-        GetComponent<UpdateGravityDirection>().HitSurface.AddListener(GoombaStompDisabled);
+        GetComponent<BallBounce>().HitSurface.AddListener(BallStompDisabled);
     }
 
     public void StateChange(BallState state)
@@ -23,9 +24,9 @@ public class BallStateTracker : MonoBehaviour
         thisBallState = state;
     }
 
-    public void GoombaStompDisabled(Collision2D _collision2D)
+    public void BallStompDisabled(Collision2D _collision2D)
     {
         Debug.Log("Gooomba");
-        Goomba = false;
+        Stomp = false;
     }
 }
