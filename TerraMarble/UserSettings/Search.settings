@@ -7,9 +7,9 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.8BEC98E7" = "Wheel"
+	"last_search.8BEC98E7" = "player"
 	"OpenInspectorPreview.8BEC98E7" = "1"
-	"currentGroup.8BEC98E7" = "asset"
+	"currentGroup.8BEC98E7" = "scene"
 }
 providers = {
 	adb = {
@@ -68,5 +68,5 @@ expandedQueries = [
 ]
 queryBuilder = false
 ignoredProperties = "id;name;classname;imagecontentshash"
-helperWidgetCurrentArea = "all"
+helperWidgetCurrentArea = "h:"
 disabledIndexers = ""

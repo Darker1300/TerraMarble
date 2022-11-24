@@ -61,7 +61,7 @@ public class RightAim : MonoBehaviour
             hasMin = false;
             // GetComponent<Rigidbody2D>().AddRelativeForce(aimDirection.normalized * 100);
             //add and extra force value for our gravity script
-            updateGravityScript.ExtraForceVector = aimDirection;
+            updateGravityScript.ExtraForceVector = aimDirection*2;
             ballState.Goomba = true;
             
 

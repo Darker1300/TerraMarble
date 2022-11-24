@@ -26,6 +26,8 @@ public class UpdateGravityDirection : MonoBehaviour
 
     [SerializeField] private float slideMax = 50f;
     [SerializeField] private float slideMin = 0f;
+    [SerializeField]
+    private float slamVlue;
 
     private void Start()
     {
@@ -42,8 +44,8 @@ public class UpdateGravityDirection : MonoBehaviour
         if (ExtraForceVector != Vector3.zero)
         {
             //rb.velocity = Vector2.zero;
-            Vector3 force = ExtraForceVector.normalized * 10000;
-            rb.AddRelativeForce(force * Time.fixedDeltaTime);
+            Vector3 force = ExtraForceVector * slamVlue;
+            rb.velocity = (force * Time.fixedDeltaTime);
         }
         else
         {
