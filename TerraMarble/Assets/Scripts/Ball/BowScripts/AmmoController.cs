@@ -18,6 +18,10 @@ public class AmmoController : MonoBehaviour
     public void GetProjectile(BallStateTracker.BallState state)
     {
        currentProjectile =  pooler.SpawnFromPool(transform.position, this.gameObject.transform, false);
+        //MAKE SURE PROJECTILE FROM POOL IS CONFIGURED
+        currentProjectile.GetComponent<Projectile>().StateConfigure(state);
+        //PASS IN TARGET 
+
     
     }
     ///CONFIGURE AMMO TYPE
