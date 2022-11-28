@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WheelTransform : MonoBehaviour
@@ -10,21 +8,21 @@ public class WheelTransform : MonoBehaviour
     void Awake()
     {
         wheel ??= GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
-        regionLeader ??= wheel.regions[0];
+        regionLeader ??= wheel.regions.regionTemplate;
     }
 
     void Update()
     {
-        
+
     }
 
     private void OnDrawGizmosSelected()
     {
         wheel ??= GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
-        regionLeader ??= wheel.regions[0];
+        regionLeader ??= wheel.regions.regionTemplate;
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(wheel.transform.position, 
+        Gizmos.DrawWireSphere(wheel.transform.position,
             regionLeader.transform.lossyScale.x * regionLeader.RadiusFull);
     }
 

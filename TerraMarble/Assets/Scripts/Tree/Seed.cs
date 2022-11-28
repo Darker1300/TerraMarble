@@ -8,14 +8,10 @@ public class Seed : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         //FindWheelSection(collision.contacts[0].point);
         if (collision.gameObject.name == "Wheel")
-        {
-            collision.gameObject.GetComponent<Wheel>().GetRegion(transform.position).MakeForest();
-
-        }
-
-
+            collision.gameObject.GetComponent<Wheel>().regions
+                .GetClosestRegion(transform.position)
+                .MakeForest();
     }
 }

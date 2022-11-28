@@ -4,7 +4,7 @@ using UnityEngine;
 public class Walker : MonoBehaviour
 {
     private Wheel wheel = null;
-    private Region regionLeader = null;
+    private Region regionTemplate = null;
 
     [Header("Config")]
     public float speed = 3f;
@@ -18,16 +18,16 @@ public class Walker : MonoBehaviour
     void Awake()
     {
         wheel ??= GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
-        regionLeader ??= wheel.regions[0];
+        regionTemplate ??= wheel.regions.regionTemplate;
 
-        currentWheel = regionLeader.WorldToRegion(transform.position);
+        currentWheel = regionTemplate.WorldToRegion(transform.position);
         targetWheelPos = currentWheel;
         currentGoalWheel = targetWheelPos;
     }
 
     void Update()
     {
-        currentWheel = regionLeader.WorldToRegion(transform.position);
+        currentWheel = regionTemplate.WorldToRegion(transform.position);
 
         float currentSpeed = speed * 2f * Time.deltaTime;
         currentGoalWheel = new Vector2(
@@ -38,16 +38,16 @@ public class Walker : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 target = regionLeader.RegionPosition(currentGoalWheel.x, currentGoalWheel.y);
+        Vector2 target = regionTemplate.RegionPosition(currentGoalWheel.x, currentGoalWheel.y);
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.fixedDeltaTime);
     }
 
     private void OnDrawGizmosSelected()
     {
         wheel ??= GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
-        regionLeader ??= wheel.regions[0];
+        regionTemplate ??= wheel.regions.regions[0];
 
-        Vector2 target = regionLeader.RegionPosition(currentGoalWheel.x, currentGoalWheel.y);
+        Vector2 target = regionTemplate.RegionPosition(currentGoalWheel.x, currentGoalWheel.y);
         Gizmos.color = Color.white;
 
         if (currentWheel != currentGoalWheel)

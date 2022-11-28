@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using NaughtyAttributes;
 using Shapes;
 using UnityEngine;
@@ -38,7 +36,7 @@ public class WheelGenerator : MonoBehaviour
     {
         wheel ??= GetComponent<Wheel>();
 
-        Region[] childRegions = wheel.regionsParent.GetComponentsInChildren<Region>();
+        Region[] childRegions = wheel.regions.regionsParent.GetComponentsInChildren<Region>();
         foreach (Region childRegion in childRegions)
         {
             if (Application.isEditor && !Application.isPlaying)
@@ -63,7 +61,7 @@ public class WheelGenerator : MonoBehaviour
         float previousRadians = 0f;
         for (int i = 0; i < regionCount; i++)
         {
-            GameObject newGO = GameObject.Instantiate(pregenRegionDefault, Vector3.zero, Quaternion.identity, wheel.regionsParent);
+            GameObject newGO = GameObject.Instantiate(pregenRegionDefault, Vector3.zero, Quaternion.identity, wheel.regions.regionsParent);
 
             Region newRegion = newGO.GetComponent<Region>();
             Disc newDisc = newGO.GetComponentInChildren<Disc>();
@@ -82,6 +80,6 @@ public class WheelGenerator : MonoBehaviour
             previousRadians = newRadians;
         }
 
-        wheel.regions = newRegions;
+        wheel.regions.regions = newRegions;
     }
 }

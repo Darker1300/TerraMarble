@@ -1,8 +1,7 @@
-using System;
-using System.Numerics;
 using MathUtility;
 using NaughtyAttributes;
 using Shapes;
+using System;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -63,7 +62,7 @@ public class Region : MonoBehaviour
     public float AngleSize => Mathf.DeltaAngle(AngleStart, AngleEnd);
 
     public Vector2 AngleCenterVector => MathU.DegreeToVector2(AngleCenter);
-    
+
     [Range(0f, 1f)]
     private float baseX = 0.5f;
     [Range(0f, 1f)]
@@ -117,20 +116,31 @@ public class Region : MonoBehaviour
                );
     }
 
+    public Vector2 RegionPosition(Vector2 _regionPosition) => RegionPosition(_regionPosition.x, _regionPosition.y);
+
     /// <returns>Returns Regions array index + 0..1</returns>
-    public float WheelToPointRegionIndex(Vector2 worldPos)
+    public float WorldToRegionDistance(Vector2 _worldPos)
     {
-        Vector2 localPos = transform.InverseTransformPoint(worldPos);
+        Vector2 localPos = transform.InverseTransformPoint(_worldPos);
         float angle = MathU.Vector2ToDegree(localPos.normalized);
         float segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
         return segments;
     }
 
+    /// <returns>Returns Regions array index + 0..1</returns>
+    public int WorldToRegionIndex(Vector2 _worldPos)
+    {
+        return (int)
+            Mathf.Floor(
+            Mathf.Repeat(
+                WorldToRegionDistance(_worldPos), Wheel.regions.regions.Length - 1));
+    }
+
     /// <returns> X: Regions array index + 0..1;
     /// Y: typically 0..1, this corresponds to multiples of Thickness, starting from the Base radius.</returns>
-    public Vector2 WorldToRegion(Vector2 worldPos)
+    public Vector2 WorldToRegion(Vector2 _worldPos)
     {
-        Vector2 localPos = transform.InverseTransformPoint(worldPos);
+        Vector2 localPos = transform.InverseTransformPoint(_worldPos);
         float angle = MathU.Vector2ToDegree(localPos.normalized);
         float segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
 
@@ -156,8 +166,8 @@ public class Region : MonoBehaviour
     {
         for (int i = 0; i < Base.childCount; i++)
         {
-            var child = Base.GetChild(i);
-            Destroy(child);
+            Transform child = Base.GetChild(i);
+            Destroy(child.gameObject);
         }
 
         RegionDisc.Color = forestColor;
