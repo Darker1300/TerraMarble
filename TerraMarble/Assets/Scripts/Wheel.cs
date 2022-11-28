@@ -125,10 +125,10 @@ public class Wheel : MonoBehaviour
     /// <summary>
     /// World space Point
     /// </summary>
-    /// <param name="_point"></param>
+    /// <param name="_worldPoint"></param>
     /// <returns>Degrees</returns>
-    public float GetAngleFromPoint(Vector2 _point)
-        => MathU.Vector2ToDegree((_point - (Vector2)transform.position).normalized);
+    public float GetAngleFromPoint(Vector2 _worldPoint)
+        => MathU.Vector2ToDegree((_worldPoint - (Vector2)transform.position).normalized);
 
 
 

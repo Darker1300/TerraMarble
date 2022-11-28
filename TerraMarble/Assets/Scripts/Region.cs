@@ -133,7 +133,7 @@ public class Region : MonoBehaviour
         return (int)
             Mathf.Floor(
             Mathf.Repeat(
-                WorldToRegionDistance(_worldPos), Wheel.regions.regions.Length - 1));
+                WorldToRegionDistance(_worldPos), Wheel.regions.RegionCount - 1));
     }
 
     /// <returns> X: Regions array index + 0..1;
@@ -174,6 +174,7 @@ public class Region : MonoBehaviour
 
         Instantiate(forestPrefab, Base, false);
     }
+    
     //0 = nothing on tile
     [Button()]
     public void Tick()

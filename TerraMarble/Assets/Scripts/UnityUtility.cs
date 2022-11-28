@@ -16,8 +16,8 @@ namespace UnityUtility
             if (type != target.GetType()) return null; // type mis-match
             BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Default | BindingFlags.DeclaredOnly;
             PropertyInfo[] pinfos = type.GetProperties(flags)
-                .Where(property => !property.CustomAttributes
-                    .Any(attribute => attribute.AttributeType == typeof(ObsoleteAttribute)))
+                .Where(property => property.CustomAttributes
+                    .All(attribute => attribute.AttributeType != typeof(ObsoleteAttribute)))
                 .ToArray();
 
             foreach (PropertyInfo pinfo in pinfos)

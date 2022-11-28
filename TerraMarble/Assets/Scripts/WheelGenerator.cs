@@ -80,6 +80,6 @@ public class WheelGenerator : MonoBehaviour
             previousRadians = newRadians;
         }
 
-        wheel.regions.regions = newRegions;
+        wheel.regions.SetRegions(newRegions);
     }
 }
