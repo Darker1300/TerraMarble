@@ -78,5 +78,14 @@ namespace MathUtility
             target = current + num;
             return Mathf.MoveTowards(current, target, maxDelta);
         }
+
+        public static Vector3 Towards(this Transform self, Transform target)
+            => target.position - self.position;
+
+        public static Vector3 Towards(this Vector3 self, Vector3 target)
+            => target - self;
+
+        public static Vector2 Towards(this Vector2 self, Vector2 target)
+            => target - self;
     }
 }
