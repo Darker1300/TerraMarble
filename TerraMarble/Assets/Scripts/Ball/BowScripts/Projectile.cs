@@ -11,13 +11,15 @@ public class Projectile : MonoBehaviour
     public Vector2 TargetDirection;
     [SerializeField]
     private float moveSpeed;
+    private Transform planetCenter;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
         moveSpeed =50;
-       
+        planetCenter = GameObject.FindGameObjectWithTag("Wheel").transform;
     }
     public void StateConfigure(BallStateTracker.BallState state)
     {
@@ -41,7 +43,7 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (TargetDirection != null)
+        if (TargetDirection != null && Vector3.Distance(transform.position,planetCenter.position) < 500)
         {
             transform.Translate(transform.rotation* TargetDirection.normalized * moveSpeed * Time.deltaTime);
            
@@ -51,7 +53,7 @@ public class Projectile : MonoBehaviour
 
 
     }
-
+    
     //public void ConfigureThisDirPos()
     //{
     //    transform.position - targetTrans.position;
