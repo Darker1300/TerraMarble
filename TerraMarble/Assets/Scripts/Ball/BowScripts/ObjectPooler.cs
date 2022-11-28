@@ -68,7 +68,11 @@ public class ObjectPooler : MonoBehaviour
         }
 
         temp.transform.position = position;
+        if (parent != null)
+        {
         temp.transform.SetParent(parent, worldPosStays);
+
+        }
         temp.SetActive(true);
         activeObjects.Enqueue(temp);
         return temp;

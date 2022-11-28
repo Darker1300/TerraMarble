@@ -1,16 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MathUtility;
 
 public class Projectile : MonoBehaviour
 {
 
     BallStateTracker.BallState effector;
-   
+    public ObjectPooler pooler;
+    public Vector2 TargetDirection;
+    [SerializeField]
+    private float moveSpeed;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        moveSpeed =50;
+       
     }
     public void StateConfigure(BallStateTracker.BallState state)
     {
@@ -34,17 +41,35 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (TargetDirection != null)
+        {
+            transform.Translate(transform.rotation* TargetDirection.normalized * moveSpeed * Time.deltaTime);
+           
+            //transform.position = Vector2.MoveTowards(transform.position, targetTrans, moveSpeed * Time.deltaTime);
+        }
         
+
+
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    //public void ConfigureThisDirPos()
+    //{
+    //    transform.position - targetTrans.position;
+
+    //}
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        //if (collision.collider.)
+        //if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag(""))
         //{
-
+            pooler.ReturnToPool(this.gameObject);
         //}
-
-
     }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (!collision.gameObject.CompareTag("Ball"))
+    //    {
+    //        pooler.ReturnToPool(this.gameObject);
+    //    }
+    //}
+   
 }

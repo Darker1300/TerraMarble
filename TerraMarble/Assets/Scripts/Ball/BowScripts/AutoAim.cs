@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using MathUtility;
 
 public class AutoAim : MonoBehaviour
 {
@@ -11,11 +12,17 @@ public class AutoAim : MonoBehaviour
     //CircleCollider2D collider;
     [SerializeField]
     private string TargetTag;
+    [SerializeField]
     private List<GameObject> nearbyTargets = new List<GameObject>();
+    RaycastHit2D hit;
+    [SerializeField]
+    private LayerMask hitlayer;
+    CircleCollider2D col;
+
     void Start()
     {
         //collider = GetComponent<CircleCollider2D>();
-
+        col = GetComponent<CircleCollider2D>();
 
 
     }
@@ -26,25 +33,45 @@ public class AutoAim : MonoBehaviour
 
     }
     //real one
-    //public GameObject FindClosestTarget()
-    //{
+    public GameObject FindClosestTarget()
+    {
 
-    //    float minDst = float.MaxValue;
-    //    GameObject minDstObj = null;
-    //    foreach (var gObj in nearbyTargets)
-    //    {
-    //        if (!CheckLineOfSight(gObj)) continue;
-    //        float dst = (gObj.transform.position - transform.position).sqrMagnitude;
-    //        if (dst < minDst)
-    //            minDstObj = gObj;
-    //    }
+        float minDst = float.MaxValue;
+        GameObject minDstObj = null;
+        foreach (var gObj in nearbyTargets)
+        {
+            if (!CheckLineOfSight(gObj)) continue;
+            float dst = (gObj.transform.position - transform.position).sqrMagnitude;
+            if (dst < minDst)
+            {
+                minDst = dst;
+                minDstObj = gObj;
+                
+            
+            }
+        Debug.Log("foundOne");
+            
 
-    //}
+        }
+        return minDstObj;
 
-    //private bool CheckLineOfSight(GameObject gObj)
-    //{
+    }
 
-    //}
+    private bool CheckLineOfSight(GameObject gObj)
+    {
+       
+
+        hit = Physics2D.Raycast(transform.position,transform.Towards(gObj.transform).normalized,col.radius,hitlayer.value);
+      
+       // Debug.DrawLine(transform.position,transform.position + transform.Towards(gObj.transform));
+        if (hit != null && hit.collider.gameObject == gObj)
+        {
+            return true;
+        }
+        else return false;
+
+
+    }
 
 
     //pass in a tag Enemy ect
@@ -92,17 +119,27 @@ public class AutoAim : MonoBehaviour
 
 
 
-        
+
 
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.CompareTag(TargetTag))
+        {
         nearbyTargets.Add(collision.gameObject);
+
+        }
+
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        nearbyTargets.Remove(collision.gameObject);
+
+        if (collision.gameObject.CompareTag(TargetTag))
+        {
+            nearbyTargets.Remove(collision.gameObject);
+
+        }
     }
 
 }

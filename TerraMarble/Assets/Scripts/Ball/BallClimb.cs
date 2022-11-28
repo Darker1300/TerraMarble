@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class BallClimb : MonoBehaviour
 {
-    private UpdateGravity gravityDir;
+    private seadWeirdGravity gravityDir;
     private Rigidbody2D rb;
 
     [HideInInspector] public UnityEvent<Collision2D> HitSurface;
@@ -15,7 +15,7 @@ public class BallClimb : MonoBehaviour
     private void Start()
     {
         rb ??= GetComponent<Rigidbody2D>();
-        gravityDir ??= GetComponent<UpdateGravity>();
+        gravityDir ??= GetComponent<seadWeirdGravity>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
