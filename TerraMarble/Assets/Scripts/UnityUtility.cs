@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UnityUtility
 {
-    public static class UnityUtility
+    public static class UnityU
     {
         /// <summary>
         /// Sets self to be like target.

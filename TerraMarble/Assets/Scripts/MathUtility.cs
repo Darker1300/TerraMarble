@@ -78,7 +78,8 @@ namespace MathUtility
             target = current + num;
             return Mathf.MoveTowards(current, target, maxDelta);
         }
-
+        
+        /// <returns>World-space vector starting from position to target's position</returns>
         public static Vector3 Towards(this Transform self, Transform target)
             => target.position - self.position;
 

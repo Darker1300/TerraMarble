@@ -8,11 +8,11 @@ public class WheelRegionsManager : MonoBehaviour
     public Transform regionsParent = null;
 
     public Region[] regions;
-
     public Region regionTemplate = null;
 
     void Awake()
     {
+        
         if (regionsParent == null)
             regionsParent = transform.Find("Regions");
 
