@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Shapes;
+using System;
 
 public class RightAim : MonoBehaviour
 {
@@ -19,6 +20,12 @@ public class RightAim : MonoBehaviour
     public BallStateTracker ballState;
 
     public SlowTime timeSlowDown;
+    public int tapAmount;
+    public enum tapState
+    {
+        DEFAULT, ONE, WAITING, TWO
+    }
+    public tapState STATE;
 
     // Start is called before the first frame update
     private void Start()
@@ -32,10 +39,14 @@ public class RightAim : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.RightDragVectorEvent += AimRestrictor;
-        InputManager.RightDragEvent += Release;
+
+        InputManager.LeftDragEvent += Release;
+        InputManager.LeftAlternateEvent += AlternateStart;
+        //InputManager.RightDragEvent += TapDrag;
+        InputManager.LeftAlternateDragVectorEvent += AimRestrictor;
         // Ui.enabled = true;
     }
+
 
     private void OnDisable()
     {
@@ -47,6 +58,16 @@ public class RightAim : MonoBehaviour
     private void FixedUpdate()
     {
     }
+    private void AlternateStart(object sender, EventArgs e)
+    {
+        lineIndicator.enabled = true;
+        timeSlowDown.startSlowMotion();
+       
+        
+        //timeSlowDown.startSlowMotion();
+
+    }
+
 
     // Update is called once per frame
     private void Update()
@@ -67,18 +88,90 @@ public class RightAim : MonoBehaviour
             //add and extra force value for our gravity script
             updateGravityScript.stompForceVector = aimDirection * 2;
             ballState.Stomp = true;
+            Ui.enabled = false;
+            aimDirection = Vector2.zero;
         }
         else if (buttonDown)
 
         {
-            lineIndicator.enabled = true;
             timeSlowDown.startSlowMotion();
-            //timeSlowDown.startSlowMotion();
+            StartCoroutine(Countdown());
         }
     }
+    private IEnumerator Countdown()
+    {
+        float duration = 0.08f; // 3 seconds you can change this 
+        //Ui.gameObject.SetActive(true);                 //to whatever you want
+        float normalizedTime = 0;
+        Ui.Radius = 5;
+        while (normalizedTime <= 1f)
+        {
+           // Ui.Radius = 10 - normalizedTime;
+            //countdownImage.fillAmount = normalizedTime;
+            normalizedTime += Time.deltaTime / duration;
+            yield return null;
+        }
+        Ui.enabled = true;
+        //STATE = tapState.DEFAULT;
+    }
 
+    //public void TapDrag(bool tap)
+    //{
+    //    if (tap)
+    //    {
+
+
+    //        switch (STATE)
+    //        {
+    //            case tapState.DEFAULT:
+    //                StartCoroutine(Countdown());
+    //                STATE = tapState.ONE;
+    //                break;
+    //            case tapState.ONE:
+
+    //                InputManager.RightDragVectorEvent += AimRestrictor;
+    //                STATE = tapState.WAITING;
+    //                break;
+    //            case tapState.WAITING:
+    //                break;
+    //            case tapState.TWO:
+    //                break;
+    //            default:
+    //                break;
+    //        }
+    //    }
+    //    else if (STATE == tapState.WAITING)
+    //    {
+    //        InputManager.RightDragVectorEvent -= AimRestrictor;
+    //    }
+
+    //}
+    //    public void TapDrag(Vector2 dragDirection,Vector2 delta)
+    //{
+
+    //    switch (STATE)
+    //    {
+    //        case tapState.DEFAULT:
+
+    //            STATE = tapState.ONE;
+    //            break;
+    //        case tapState.ONE:
+    //            //ui on 
+    //            StartCoroutine(Countdown());
+    //            STATE = tapState.WAITING;
+    //            break;
+    //        case tapState.WAITING:
+
+    //            break;
+    //        case tapState.TWO:
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
     public void AimRestrictor(Vector2 dragDirection, Vector2 delta)
     {
+        
         //Debug.DrawLine(transform.position, transform.position + (Vector3)(transform.rotation * dragDirection * 30), Color.blue);
         //
         //dragDirection = transform.rotation * dragDirection;
@@ -105,12 +198,10 @@ public class RightAim : MonoBehaviour
             //our Draw back  magnitude and cap our aim limiter to the this v
             //float DrawBackTrueMagOne = ProjectileAimLimiter(ref aimDirection, 45.0f, ref percentOfMaxDrawOne);
 
-            Debug.DrawLine(transform.position, transform.position + (Vector3) (aimDirection * 30), Color.cyan);
+            Debug.DrawLine(transform.position, transform.position + (Vector3)(aimDirection * 30), Color.cyan);
 
             //lineIndicator.End = transform.InverseTransformVector( (Vector3)(aimDirection * 30));
-
-            linePosition = transform.position + (Vector3) (aimDirection * 30);
-
+            linePosition = transform.position + (Vector3)(aimDirection * 30);
 
             //leftDragStartLine.End = leftDragStartThumbRad.gameObject.transform.rotation * (aimDirection.normalized * (percentOfMaxDrawOne * 45));
             //leftDragStartThumbIndicator.gameObject.transform.up = leftDragStartThumbRad.gameObject.transform.rotation * aimDirection;
@@ -181,7 +272,7 @@ public class RightAim : MonoBehaviour
 
     public Vector2 RotateToAngle(Vector2 AimDirection, float angle)
     {
-        AimDirection = (Vector2) (Quaternion.Euler(0, 0, angle) * updateGravityScript.wheelDir.normalized);
+        AimDirection = (Vector2)(Quaternion.Euler(0, 0, angle) * updateGravityScript.wheelDir.normalized);
         //Vector2 dirFake = (Vector2)(Quaternion.Euler(0, 0, absFakeAngle) * Vector2.up);
         //Vector3 direction = new Vector2((float)Mathf.Cos(angle * Mathf.PI / 180), (float)Mathf.Sin(angle * Mathf.PI / 180));
         //Debug.Log("angle" + absFakeAngle);
@@ -204,7 +295,7 @@ public class RightAim : MonoBehaviour
 
 
         Debug.DrawLine(transform.position,
-            transform.position + (transform.position + (Vector3) TooVectorToCompare * 10), Color.blue);
+            transform.position + (transform.position + (Vector3)TooVectorToCompare * 10), Color.blue);
         //start Direction
         //Debug.DrawLine(test.gameObject.transform.position, test.gameObject.transform.position +(Vector3)startDragVectorDirection, Color.yellow);
 

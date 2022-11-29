@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Shapes;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class PlayerSelector : MonoBehaviour
 {
@@ -19,12 +18,12 @@ public class PlayerSelector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void Selector(Vector2 drag, Vector2 dragDelta)
     {
-        Debug.DrawLine(transform.position, transform.position + Camera.main.transform.rotation* -(Vector3)drag);
-        GameObject temp = FindClosestTarget("Ball",drag);
+        Debug.DrawLine(transform.position, transform.position + Camera.main.transform.rotation * -(Vector3)drag);
+        GameObject temp = FindClosestTarget("Ball", drag);
 
         if (currentObj == null)
         {
@@ -40,12 +39,12 @@ public class PlayerSelector : MonoBehaviour
 
     }
 
-    GameObject FindClosestTarget(string trgt,Vector2 drag)
-{
-    Vector3 position = transform.position + (Vector3)drag;
-    return GameObject.FindGameObjectsWithTag(trgt).OrderBy(o => (o.transform.position - position).sqrMagnitude)
-        .FirstOrDefault();
-}
+    GameObject FindClosestTarget(string trgt, Vector2 drag)
+    {
+        Vector3 position = transform.position + (Vector3)drag;
+        return GameObject.FindGameObjectsWithTag(trgt).OrderBy(o => (o.transform.position - position).sqrMagnitude)
+            .FirstOrDefault();
+    }
 
     //drag out angle 
 
@@ -67,21 +66,21 @@ public class PlayerSelector : MonoBehaviour
     //        //if less than current then overwrite current
 
     //    }
-    
+
     //}
 
     public Vector2 RotateToAngle(Vector2 AimDirection, float angle)
     {
-       // AimDirection = (Vector2)(Quaternion.Euler(0, 0, angle) * updateGravityScript.direction.normalized);
-       
+        // AimDirection = (Vector2)(Quaternion.Euler(0, 0, angle) * updateGravityScript.direction.normalized);
+
         AimDirection = (AimDirection * 20);
         //Debug.DrawLine(transform.position, transform.position + transform.rotation * (Vector3)AimDirection, Color.red);
         //Debug.DrawLine(transform.position, transform.position + transform.rotation * (Vector3)dirFake, Color.blue);
         return AimDirection;
     }
     public void swapOut()
-    { 
-    
-    
+    {
+
+
     }
 }
