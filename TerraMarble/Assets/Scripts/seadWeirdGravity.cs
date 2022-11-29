@@ -20,6 +20,7 @@ public class seadWeirdGravity : MonoBehaviour
     {
         rb ??= GetComponent<Rigidbody2D>();
         wheelCenter ??= FindObjectOfType<Wheel>().transform;
+        UpdateDirectionToCentre();
     }
 
     private void FixedUpdate()

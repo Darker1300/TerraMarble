@@ -20,6 +20,9 @@ public class BallClimb : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.collider.gameObject.layer != LayerMask.NameToLayer("Wheel")
+            && collision.collider.gameObject.layer != LayerMask.NameToLayer("Surface")) return;
+
         HitSurface.Invoke(collision);
 
         Vector2 surfaceDirection = Vector3.Cross(collision.contacts[0].normal, Vector3.forward);

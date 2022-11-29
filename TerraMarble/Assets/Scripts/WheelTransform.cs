@@ -5,15 +5,14 @@ public class WheelTransform : MonoBehaviour
     private Wheel wheel = null;
     private Region regionLeader = null;
 
-    void Awake()
+    private void Awake()
     {
         wheel ??= GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
         regionLeader ??= wheel.regions.regionTemplate;
     }
 
-    void Update()
+    private void Update()
     {
-
     }
 
     private void OnDrawGizmosSelected()
@@ -25,5 +24,4 @@ public class WheelTransform : MonoBehaviour
         Gizmos.DrawWireSphere(wheel.transform.position,
             regionLeader.transform.lossyScale.x * regionLeader.RadiusFull);
     }
-
 }

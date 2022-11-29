@@ -2,43 +2,51 @@ using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using System.Linq;
+using Newtonsoft.Json.Converters;
+using Shapes;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityUtility;
 
 public class WheelRegionsManager : MonoBehaviour
 {
-    public enum RegionID
-    {
-        Water,
-        Rock,
-        Dirt,
-        Grass,
-        Forest,
-        SIZE
-    }
-
     [Serializable]
     public class RegionConfig
     {
-        public RegionID ID;
+        public Region.RegionID ID;
         public Color RegionColor;
         public GameObject SurfacePrefab;
     }
 
-    [Header("Config")]
-    public Transform regionsParent = null;
+    [Serializable]
+    public class RegionConfigs : Dictionary<Region.RegionID, RegionConfig>
+    {
+        public List<RegionConfig> SetupData = new((int) Region.RegionID.SIZE);
 
-    [SerializeField] private RegionConfig[] configs = new RegionConfig[(int)RegionID.SIZE];
+        public void Initialise()
+        {
+            foreach (var config in SetupData)
+                Add(config.ID, config);
+            SetupData.Clear();
+        }
+    }
 
-    [Header("Data")]
-    public Region regionTemplate = null;
-    private Region[] regions;
+    [Header("Config")] public Transform regionsParent = null;
+
+    [SerializeField] private RegionConfigs configs = new();
+
+    [Header("Data")] public Region regionTemplate = null;
+    [SerializeField] private Region[] regions;
 
     public int RegionCount => GetComponent<WheelGenerator>().regionCount;
-    public void SetRegions(Region[] _regions) => regions = _regions;
 
-    void Awake()
+    public void SetRegions(Region[] _regions)
+    {
+        regions = _regions;
+    }
+
+    private void Awake()
     {
         // Connect with existing Regions
         if (regionsParent == null)
@@ -50,22 +58,27 @@ public class WheelRegionsManager : MonoBehaviour
         // Initialise RegionTemplate, who's Disc properties we use to calculation positions on the Wheel.
         if (regionTemplate == null)
         {
-            GameObject go = new GameObject("Region Template");
-            go.AddComponent<Region>(regions.First());
+            var go = new GameObject("Region Template");
+            go.transform.SetParent(transform, false);
+            var d = go.AddComponent<Disc>(regions.First().RegionDisc);
+            d.enabled = false;
+            var r = go.AddComponent<Region>(regions.First());
+            r.RegionDisc = d;
+            regionTemplate = r;
         }
 
-
+        configs.Initialise();
     }
 
     [Button]
     public void FindRegions()
     {
-        Region[] regs = regionsParent.GetComponentsInChildren<Region>(true);
+        var regs = regionsParent.GetComponentsInChildren<Region>(true);
 
-        if (regions.Length != regs.Length)
+        if (regions == null || regions.Length != regs.Length)
             regions = new Region[regs.Length];
 
-        for (int i = 0; i < regs.Length; i++)
+        for (var i = 0; i < regs.Length; i++)
         {
             regs[i].FindBase();
             regions[i] = regs[i];
@@ -75,33 +88,40 @@ public class WheelRegionsManager : MonoBehaviour
     [Button]
     public void MakeRegionBases()
     {
-        for (int i = 0; i < regions.Length; i++)
+        for (var i = 0; i < regions.Length; i++)
         {
             if (regions[i] == null) continue;
             regions[i].TryCreateBase();
         }
     }
+
     [Button]
     public void ResetEmptyRegionBases()
     {
-        for (int i = 0; i < regions.Length; i++)
+        for (var i = 0; i < regions.Length; i++)
         {
             if (regions[i] == null) continue;
-            Transform rBase = regions[i].Base;
+            var rBase = regions[i].Base;
             if (rBase != null && rBase.childCount == 0)
                 regions[i].ResetBase();
         }
     }
 
     public int WorldToRegionIndex(Vector2 _worldPos)
-        => regionTemplate.WorldToRegionIndex(_worldPos);
+    {
+        return regionTemplate.WorldToRegionIndex(_worldPos);
+    }
 
     /// <summary>
     /// Returns Index + 0..1f
     /// </summary>
     public float WorldToRegionDistance(Vector2 _worldPos)
-        => regionTemplate.WorldToRegionDistance(_worldPos);
+    {
+        return regionTemplate.WorldToRegionDistance(_worldPos);
+    }
 
     public Region GetClosestRegion(Vector2 _worldPos)
-        => regions[WorldToRegionIndex(_worldPos)];
+    {
+        return regions[WorldToRegionIndex(_worldPos)];
+    }
 }
