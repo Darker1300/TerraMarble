@@ -346,8 +346,11 @@ public class WaterWaves2D:MonoBehaviour{
 	
 	#region Impact
 
-	private void OnTriggerEnter2D(Collider2D other){
-		Vector2 closest=new Vector2();
+	private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.isTrigger) return;
+
+        Vector2 closest=new Vector2();
 		#if UNIT2019_0_1_OR_NEWER
 			closest=other.ClosestPoint(other.transform.position)
 		#else
@@ -362,7 +365,10 @@ public class WaterWaves2D:MonoBehaviour{
 		PlayEnterSound();
 	}
 	
-	private void OnTriggerExit2D(Collider2D other){
+	private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.isTrigger) return;
+
 		Vector2 closest=new Vector2();
 		#if UNIT2019_0_1_OR_NEWER
 			closest=other.ClosestPoint(other.transform.position)
