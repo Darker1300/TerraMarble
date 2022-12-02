@@ -47,7 +47,8 @@ public class Region : MonoBehaviour
         set => _regionDisc = value;
     }
 
-    public Transform Base => TryCreateBase();
+    public Transform Base
+        => TryCreateBase();
 
     public float Thickness
     {
@@ -59,7 +60,8 @@ public class Region : MonoBehaviour
         }
     }
 
-    public float ThicknessHalf => Thickness * 0.5f;
+    public float ThicknessHalf
+        => Thickness * 0.5f;
 
     public float RadiusBase
     {
@@ -71,21 +73,70 @@ public class Region : MonoBehaviour
         }
     }
 
-    public float RadiusFull => RadiusBase + Thickness;
+    public float RadiusFull
+        => RadiusBase + Thickness;
 
-    public float AngleCenter => Mathf.LerpAngle(AngleStart, AngleEnd, 0.5f);
+    public float AngleCenter
+        => Mathf.LerpAngle(AngleStart, AngleEnd, 0.5f);
 
-    public float AngleStart => RegionDisc.AngRadiansStart * Mathf.Rad2Deg;
+    public float AngleStart
+        => RegionDisc.AngRadiansStart * Mathf.Rad2Deg;
 
-    public float AngleEnd => RegionDisc.AngRadiansEnd * Mathf.Rad2Deg;
+    public float AngleEnd
+        => RegionDisc.AngRadiansEnd * Mathf.Rad2Deg;
 
-    public float AngleSize => Mathf.DeltaAngle(AngleStart, AngleEnd);
+    public float AngleSize
+        => Mathf.DeltaAngle(AngleStart, AngleEnd);
 
-    public Vector2 AngleCenterVector => MathU.DegreeToVector2(AngleCenter);
+    public Vector2 AngleCenterVector 
+        => MathU.DegreeToVector2(AngleCenter);
 
     #endregion
 
 
+    private void Update()
+    {
+        animTerraform.Update();
+    }
+
+    private void Awake()
+    {
+        RegionDisc ??= GetComponent<Disc>();
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(RegionPosition(defaultBasePosition), 0.1f);
+    }
+
+    private Transform InitBase()
+    {
+        RegionDisc ??= GetComponent<Disc>();
+        _base.position = transform.position
+                         + transform.TransformVector(
+                             (Vector3) AngleCenterVector * RadiusBase);
+        _base.up = transform.TransformVector(AngleCenterVector);
+        return _base;
+    }
+
+    [Button] public Transform TryCreateBase()
+    {
+        if (_base == null)
+        {
+            _base = new GameObject(defaultBaseName).transform;
+            _base.SetParent(transform, false);
+            InitBase();
+        }
+
+        return _base;
+    }
+
+    public Transform ResetBase()
+    {
+        if (_base == null) TryCreateBase();
+        return InitBase();
+    }
+    
     public void TerraformRegion(RegionID targetID)
     {
         transformID = targetID;
@@ -119,61 +170,11 @@ public class Region : MonoBehaviour
         animTerraform.Finished.AddListener(finishAction);
     }
 
-    [Button]
-    public void TerraformToWater()
-    {
-        TerraformRegion(RegionID.Water);
-    }
+    [Button] public void TerraformToWater()
+        => TerraformRegion(RegionID.Water);
 
-    [Button]
-    public void TerraformToDirt()
-    {
-        TerraformRegion(RegionID.Dirt);
-    }
-
-    private void Update()
-    {
-        animTerraform.Update();
-    }
-
-    private void Awake()
-    {
-        RegionDisc ??= GetComponent<Disc>();
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(RegionPosition(defaultBasePosition), 0.1f);
-    }
-
-    private Transform InitBase()
-    {
-        RegionDisc ??= GetComponent<Disc>();
-        _base.position = transform.position
-                         + transform.TransformVector(
-                             (Vector3) AngleCenterVector * RadiusBase);
-        _base.up = transform.TransformVector(AngleCenterVector);
-        return _base;
-    }
-
-    [Button]
-    public Transform TryCreateBase()
-    {
-        if (_base == null)
-        {
-            _base = new GameObject(defaultBaseName).transform;
-            _base.SetParent(transform, false);
-            InitBase();
-        }
-
-        return _base;
-    }
-
-    public Transform ResetBase()
-    {
-        if (_base == null) TryCreateBase();
-        return InitBase();
-    }
+    [Button] public void TerraformToDirt()
+        => TerraformRegion(RegionID.Dirt);
 
     #region Spatial Helpers
 
@@ -198,8 +199,8 @@ public class Region : MonoBehaviour
     public float WorldToRegionDistance(Vector2 _worldPos)
     {
         Vector2 localPos = transform.InverseTransformPoint(_worldPos);
-        var angle = MathU.Vector2ToDegree(localPos.normalized);
-        var segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
+        float angle = MathU.Vector2ToDegree(localPos.normalized);
+        float segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
         return segments;
     }
 
@@ -234,8 +235,7 @@ public class Region : MonoBehaviour
     }
 
 
-    [Button()]
-    public void MakeForest()
+    [Button] public void MakeForest()
     {
         for (var i = 0; i < Base.childCount; i++)
         {
@@ -249,8 +249,7 @@ public class Region : MonoBehaviour
     }
 
     //0 = nothing on tile
-    [Button()]
-    public void Tick()
+    [Button] public void Tick()
     {
         var ani = gameObject.GetComponentInChildren<Animator>();
         var progress = ani.GetInteger("Progress");
@@ -258,8 +257,7 @@ public class Region : MonoBehaviour
         ani.SetInteger("Progress", Math.Min(progress + 1, max));
     }
 
-    [Button()]
-    public void ResetTick()
+    [Button] public void ResetTick()
     {
         var ani = gameObject.GetComponentInChildren<Animator>();
         ani.SetInteger("Progress", 0);
