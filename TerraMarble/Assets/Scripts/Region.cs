@@ -25,10 +25,11 @@ public class Region : MonoBehaviour
 
     public AnimCurve animTerraform = new();
 
-    public RegionID currentID = RegionID.Water;
-    public RegionID transformID = RegionID.Water;
+    public RegionID regionID = RegionID.Water;
+    [Header("Debug")]
+    [SerializeField] private RegionID targetID = RegionID.Water;
 
-    private Transform _base = null;
+    [SerializeField] private Transform _base = null;
     private Disc _regionDisc = null;
 
     private readonly string defaultBaseName = "Base";
@@ -50,6 +51,9 @@ public class Region : MonoBehaviour
     public Transform Base
         => TryCreateBase();
 
+    public Region regionTemplate
+        => Wheel.regions.RegionTemplate;
+
     public float Thickness
     {
         get
@@ -57,6 +61,12 @@ public class Region : MonoBehaviour
             if (RegionDisc.ThicknessSpace != ThicknessSpace.Meters)
                 RegionDisc.ThicknessSpace = ThicknessSpace.Meters;
             return RegionDisc.Thickness;
+        }
+        set
+        {
+            if (RegionDisc.ThicknessSpace != ThicknessSpace.Meters)
+                RegionDisc.ThicknessSpace = ThicknessSpace.Meters;
+            RegionDisc.Thickness = value;
         }
     }
 
@@ -88,7 +98,7 @@ public class Region : MonoBehaviour
     public float AngleSize
         => Mathf.DeltaAngle(AngleStart, AngleEnd);
 
-    public Vector2 AngleCenterVector 
+    public Vector2 AngleCenterVector
         => MathU.DegreeToVector2(AngleCenter);
 
     #endregion
@@ -102,11 +112,17 @@ public class Region : MonoBehaviour
     private void Awake()
     {
         RegionDisc ??= GetComponent<Disc>();
+        targetID = regionID;
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(RegionPosition(defaultBasePosition), 0.1f);
+        Gizmos.DrawWireSphere(
+            transform.position + transform.TransformVector(
+                (Vector3)MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
+                * (RadiusBase + Mathf.LerpUnclamped(0f, regionTemplate.Thickness, defaultBasePosition.y))
+            ),
+        transform.lossyScale.magnitude * 0.05f);
     }
 
     private Transform InitBase()
@@ -114,12 +130,13 @@ public class Region : MonoBehaviour
         RegionDisc ??= GetComponent<Disc>();
         _base.position = transform.position
                          + transform.TransformVector(
-                             (Vector3) AngleCenterVector * RadiusBase);
+                             (Vector3)AngleCenterVector * RadiusBase);
         _base.up = transform.TransformVector(AngleCenterVector);
         return _base;
     }
 
-    [Button] public Transform TryCreateBase()
+    [Button]
+    public Transform TryCreateBase()
     {
         if (_base == null)
         {
@@ -136,32 +153,32 @@ public class Region : MonoBehaviour
         if (_base == null) TryCreateBase();
         return InitBase();
     }
-    
+
     public void TerraformRegion(RegionID targetID)
     {
-        transformID = targetID;
-        if (transformID == currentID || animTerraform.Animating) return;
-        currentID = transformID;
+        this.targetID = targetID;
+        if (this.targetID == regionID || animTerraform.Animating) return;
+        regionID = this.targetID;
 
         animTerraform.Reset();
         animTerraform.Play();
 
         UnityAction<float> updateAction;
-        updateAction = targetID == RegionID.Water
-            ? delegate(float value)
-            {
-                if (RegionDisc.ThicknessSpace != ThicknessSpace.Meters)
-                    RegionDisc.ThicknessSpace = ThicknessSpace.Meters;
-                RegionDisc.Thickness = Mathf.Lerp(Wheel.regions.regionTemplate.Thickness, 0, value);
-                Debug.Log(RegionDisc.Thickness);
-            }
-            : delegate(float value)
-            {
-                if (RegionDisc.ThicknessSpace != ThicknessSpace.Meters)
-                    RegionDisc.ThicknessSpace = ThicknessSpace.Meters;
-                RegionDisc.Thickness = Mathf.Lerp(0, Wheel.regions.regionTemplate.Thickness, value);
-                Debug.Log(RegionDisc.Thickness);
-            };
+        switch (targetID)
+        {
+            case RegionID.Water:
+                updateAction = delegate (float value)
+                {
+                    Thickness = Mathf.Lerp(Wheel.regions.RegionTemplate.Thickness, 0f, value);
+                };
+                break;
+            default:
+                updateAction = delegate (float value)
+                {
+                    Thickness = Mathf.Lerp(0f, Wheel.regions.RegionTemplate.Thickness, value);
+                };
+                break;
+        }
 
         animTerraform.Updated.AddListener(updateAction);
 
@@ -170,10 +187,12 @@ public class Region : MonoBehaviour
         animTerraform.Finished.AddListener(finishAction);
     }
 
-    [Button] public void TerraformToWater()
+    [Button]
+    public void TerraformToWater()
         => TerraformRegion(RegionID.Water);
 
-    [Button] public void TerraformToDirt()
+    [Button]
+    public void TerraformToDirt()
         => TerraformRegion(RegionID.Dirt);
 
     #region Spatial Helpers
@@ -184,7 +203,7 @@ public class Region : MonoBehaviour
     public Vector2 RegionPosition(float _x, float _y = 1f)
     {
         return transform.position + transform.TransformVector(
-            (Vector3) MathU.DegreeToVector2(
+            (Vector3)MathU.DegreeToVector2(
                 MathU.LerpAngleUnclamped(AngleStart, AngleEnd, _x))
             * (RadiusBase + Mathf.LerpUnclamped(0f, Thickness, _y))
         );
@@ -209,7 +228,7 @@ public class Region : MonoBehaviour
     {
         var distance = WorldToRegionDistance(_worldPos);
         var repeat = Mathf.Repeat(distance, Wheel.regions.RegionCount - 0.9999f);
-        return (int) Mathf.Floor(repeat);
+        return (int)Mathf.Floor(repeat);
     }
 
     /// <returns> X: Regions array index + 0..1;
@@ -228,28 +247,29 @@ public class Region : MonoBehaviour
 
     #endregion
 
-    private void TestUpdateBasePos()
-    {
-        if (Base)
-            Base.position = RegionPosition(defaultBasePosition);
-    }
+    //private void TestUpdateBasePos()
+    //{
+    //    if (Base)
+    //        Base.position = RegionPosition(defaultBasePosition);
+    //}
 
+    ////[Button]
+    //public void MakeForest()
+    //{
+    //    for (var i = 0; i < Base.childCount; i++)
+    //    {
+    //        var child = Base.GetChild(i);
+    //        Destroy(child.gameObject);
+    //    }
 
-    [Button] public void MakeForest()
-    {
-        for (var i = 0; i < Base.childCount; i++)
-        {
-            var child = Base.GetChild(i);
-            Destroy(child.gameObject);
-        }
+    //    //RegionDisc.Color = forestColor;
 
-        //RegionDisc.Color = forestColor;
-
-        //Instantiate(forestPrefab, Base, false);
-    }
+    //    //Instantiate(forestPrefab, Base, false);
+    //}
 
     //0 = nothing on tile
-    [Button] public void Tick()
+    [Button]
+    public void Tick()
     {
         var ani = gameObject.GetComponentInChildren<Animator>();
         var progress = ani.GetInteger("Progress");
@@ -257,7 +277,8 @@ public class Region : MonoBehaviour
         ani.SetInteger("Progress", Math.Min(progress + 1, max));
     }
 
-    [Button] public void ResetTick()
+    [Button]
+    public void ResetTick()
     {
         var ani = gameObject.GetComponentInChildren<Animator>();
         ani.SetInteger("Progress", 0);

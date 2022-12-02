@@ -26679,7 +26679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1554468838531597798}
   m_Layer: 0
-  m_Name: fun
+  m_Name: SceneBackup Fun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

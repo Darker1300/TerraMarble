@@ -22,7 +22,7 @@ public class WheelRegionsManager : MonoBehaviour
     [Serializable]
     public class RegionConfigs : Dictionary<Region.RegionID, RegionConfig>
     {
-        public List<RegionConfig> SetupData = new((int) Region.RegionID.SIZE);
+        public List<RegionConfig> SetupData = new((int)Region.RegionID.SIZE);
 
         public void Initialise()
         {
@@ -36,10 +36,20 @@ public class WheelRegionsManager : MonoBehaviour
 
     [SerializeField] private RegionConfigs configs = new();
 
-    [Header("Data")] public Region regionTemplate = null;
+    [Header("Data")] private Region regionTemplate = null;
     [SerializeField] private Region[] regions;
 
     public int RegionCount => GetComponent<WheelGenerator>().regionCount;
+
+    public Region RegionTemplate
+    {
+        get
+        {
+            if (regionTemplate == null) InitRegionTemplate();
+            return regionTemplate;
+        }
+        set => regionTemplate = value;
+    }
 
     public void SetRegions(Region[] _regions)
     {
@@ -56,18 +66,31 @@ public class WheelRegionsManager : MonoBehaviour
             FindRegions();
 
         // Initialise RegionTemplate, who's Disc properties we use to calculation positions on the Wheel.
-        if (regionTemplate == null)
+        if (RegionTemplate == null)
         {
-            var go = new GameObject("Region Template");
-            go.transform.SetParent(transform, false);
-            var d = go.AddComponent<Disc>(regions.First().RegionDisc);
-            d.enabled = false;
-            var r = go.AddComponent<Region>(regions.First());
-            r.RegionDisc = d;
-            regionTemplate = r;
+            InitRegionTemplate();
         }
 
         configs.Initialise();
+    }
+
+    [Button]
+    private void InitRegionTemplate()
+    {
+        if (regionTemplate != null)
+        {
+            if (Application.isEditor && !Application.isPlaying)
+                DestroyImmediate(regionTemplate.gameObject);
+            else Destroy(regionTemplate.gameObject);
+        }
+
+        var go = new GameObject("Region Template");
+        go.transform.SetParent(transform, false);
+        var d = go.AddComponent<Disc>(regions.First().RegionDisc);
+        d.enabled = false;
+        var r = go.AddComponent<Region>(regions.First());
+        r.RegionDisc = d;
+        regionTemplate = r;
     }
 
     [Button]
@@ -109,7 +132,7 @@ public class WheelRegionsManager : MonoBehaviour
 
     public int WorldToRegionIndex(Vector2 _worldPos)
     {
-        return regionTemplate.WorldToRegionIndex(_worldPos);
+        return RegionTemplate.WorldToRegionIndex(_worldPos);
     }
 
     /// <summary>
@@ -117,7 +140,7 @@ public class WheelRegionsManager : MonoBehaviour
     /// </summary>
     public float WorldToRegionDistance(Vector2 _worldPos)
     {
-        return regionTemplate.WorldToRegionDistance(_worldPos);
+        return RegionTemplate.WorldToRegionDistance(_worldPos);
     }
 
     public Region GetClosestRegion(Vector2 _worldPos)

@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 1693492225551409858}
   - component: {fileID: 1693492225551409880}
   m_Layer: 6
-  m_Name: Crabby
+  m_Name: CrabbySeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -8,7 +8,7 @@ public class WheelTransform : MonoBehaviour
     private void Awake()
     {
         wheel ??= GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
-        regionLeader ??= wheel.regions.regionTemplate;
+        regionLeader ??= wheel.regions.RegionTemplate;
     }
 
     private void Update()
@@ -18,7 +18,7 @@ public class WheelTransform : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         wheel ??= GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
-        regionLeader ??= wheel.regions.regionTemplate;
+        regionLeader ??= wheel.regions.RegionTemplate;
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(wheel.transform.position,
