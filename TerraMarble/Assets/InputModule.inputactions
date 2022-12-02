@@ -70,6 +70,50 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "DragLeft",
+                    "id": "db0c39dd-84d5-4ea2-b93d-338c4258d768",
+                    "path": "MouseDrag",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragLeft",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Button",
+                    "id": "5a969369-ba92-4838-8c4c-2dae2a5e081e",
+                    "path": "<Touchscreen>/primaryTouch/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "DragLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Axis1",
+                    "id": "0b8497a6-8289-41c1-915a-8504632b1166",
+                    "path": "<Touchscreen>/position/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "DragLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Axis2",
+                    "id": "38c321c4-d1f9-401d-a15b-f99adbec206d",
+                    "path": "<Touchscreen>/position/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "DragLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "DragRight",
                     "id": "6c9ef743-942a-47ac-8636-36bd454dcc03",
                     "path": "MouseDrag",
