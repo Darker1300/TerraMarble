@@ -20,7 +20,8 @@ public class BallClimb : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        gravityDir.stompForceVector = Vector2.zero;
+        if (collision.collider.gameObject.layer != LayerMask.NameToLayer("Wheel")
+            && collision.collider.gameObject.layer != LayerMask.NameToLayer("Surface")) return;
 
         HitSurface.Invoke(collision);
 

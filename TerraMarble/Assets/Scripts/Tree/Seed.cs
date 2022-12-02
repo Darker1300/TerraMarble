@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Seed : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private WheelRegionsManager regionsMan;
+
+    private void Awake()
+    {
+        regionsMan = FindObjectOfType<WheelRegionsManager>();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-        //FindWheelSection(collision.contacts[0].point);
-        if (collision.gameObject.name == "Wheel")
-        {
-            collision.gameObject.GetComponent<Wheel>().GetRegion(transform.position).MakeForest();
-
-        }
-
-
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Wheel"))
+            regionsMan
+                .GetClosestRegion(collision.GetContact(0).point)
+                .TerraformRegion(Region.RegionID.Dirt);
     }
 }

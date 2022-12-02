@@ -144,6 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 974642577480620519}
   - component: {fileID: 974642577480620518}
+  - component: {fileID: 5536028361659905348}
   - component: {fileID: 219434092374494946}
   - component: {fileID: 1677859929584864527}
   - component: {fileID: 7945488613457546148}
@@ -191,22 +192,35 @@ MonoBehaviour:
   maxSpeed: 100
   idleSpeed: -0.2
   decelerationSpeed: 0
+  minGrabDistance: 0.1
+  reverseSpeedUpFactor: 10
   invertGrabVelocity: 1
   GrabEvent:
     m_PersistentCalls:
       m_Calls: []
-  FixedRotationEvent:
-    m_PersistentCalls:
-      m_Calls: []
   grabber: {fileID: 8802114963895515217}
-  regionsParent: {fileID: 6838772309578044595}
   rigidbody2D: {fileID: 7945488613457546148}
   wheelCollider2D: {fileID: 1677859929584864527}
+  regions: {fileID: 0}
   grabbing: 0
   velocity: 0
   grabCurrentAngle: 0
   grabTargetAngle: 0
+--- !u!114 &5536028361659905348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974642577480620517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d1f97972faa6b24e820b14a2f13bb0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionsParent: {fileID: 6838772309578044595}
   regions: []
+  regionTemplate: {fileID: 0}
 --- !u!114 &219434092374494946
 MonoBehaviour:
   m_ObjectHideFlags: 0

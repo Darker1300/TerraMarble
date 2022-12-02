@@ -25,8 +25,6 @@ public class BallBounce : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        gravityDir.stompForceVector = Vector2.zero;
-
         HitSurface.Invoke(collision);
 
         if (canBounce)

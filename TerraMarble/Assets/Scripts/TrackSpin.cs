@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class TrackSpin : MonoBehaviour
 {
@@ -41,8 +38,8 @@ public class TrackSpin : MonoBehaviour
         if (trackClockwise && Math.Sign(delta) == 1)
             currentAngle += (-delta * (invertRotation ? -1f : 1f)) * (1f / speedFactor);
         if (trackAntiClockwise && Math.Sign(delta) == -1)
-            currentAngle += (delta *2f * (invertRotation ? -1f : 1f)) * (speedFactor);
-        
+            currentAngle += (delta * 2f * (invertRotation ? -1f : 1f)) * (speedFactor);
+
 
         transform.rotation = Quaternion.AngleAxis(currentAngle, Vector3.forward);
 

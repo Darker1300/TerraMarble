@@ -1,15 +1,13 @@
-using System;
 using MathUtility;
 using NaughtyAttributes;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 
 public class Wheel : MonoBehaviour
 {
-    [Header("Config")]
-    public float speedFactor = 20f;
+    [Header("Config")] public float speedFactor = 20f;
     public float minSpeed = 0.1f;
     public float maxSpeed = 100f;
     public float idleSpeed = -.2f;
@@ -17,32 +15,36 @@ public class Wheel : MonoBehaviour
     public float minGrabDistance = 0.1f;
     public float reverseSpeedUpFactor = 10f;
 
-    [FormerlySerializedAs("invertDragVelocity")]
-    public bool invertGrabVelocity = false;
+    public bool invertGrabVelocity = true;
 
-    [Foldout("Show Events")] public UnityEvent<bool> GrabEvent = new UnityEvent<bool>();
+    [Foldout("Show Events")] public UnityEvent<bool> GrabEvent = new();
     //[Foldout("Show Events")] public UnityEvent<float> FixedRotationEvent = new UnityEvent<float>();
 
-    [Header("Debug References")]
-    [Foldout("Show Debug Fields")] public Transform grabber;
-    [Foldout("Show Debug Fields")] public Transform regionsParent;
+    [Header("Debug References")] [Foldout("Show Debug Fields")]
+    public Transform grabber;
+
     [Foldout("Show Debug Fields")] public new Rigidbody2D rigidbody2D;
     [Foldout("Show Debug Fields")] public CircleCollider2D wheelCollider2D;
+    [Foldout("Show Debug Fields")] public WheelRegionsManager regions;
 
-    [Header("Debug Physics")]
-    [Foldout("Show Debug Fields")] [SerializeField] private bool grabbing = false;
-    [Foldout("Show Debug Fields")] [SerializeField] private float velocity = 0f;
-    [Foldout("Show Debug Fields")] [SerializeField] private float grabCurrentAngle = 0f;
-    [Foldout("Show Debug Fields")] [SerializeField] private float grabTargetAngle = 0f;
+    [Header("Debug Physics")] [Foldout("Show Debug Fields")] [SerializeField]
+    private bool grabbing = false;
 
-    [Header("Debug Data")]
-    [Foldout("Show Debug Fields")] public Region[] regions;
+    [Foldout("Show Debug Fields")] [SerializeField]
+    private float velocity = 0f;
+
+    [Foldout("Show Debug Fields")] [SerializeField]
+    private float grabCurrentAngle = 0f;
+
+    [Foldout("Show Debug Fields")] [SerializeField]
+    private float grabTargetAngle = 0f;
 
     private void Start()
     {
         rigidbody2D ??= GetComponent<Rigidbody2D>();
         wheelCollider2D ??= GetComponent<CircleCollider2D>();
         grabber ??= GameObject.Find("Grabber").transform;
+        regions ??= GetComponent<WheelRegionsManager>();
 
         InputManager.LeftDragEvent += OnLeftDrag;
         InputManager.LeftDragVectorEvent += OnLeftDragUpdate;
@@ -62,27 +64,23 @@ public class Wheel : MonoBehaviour
 
         // Calc Velocity
         if (grabbing)
-        {
             velocity = Mathf.DeltaAngle(grabCurrentAngle, grabTargetAngle);
-        }
         else
-        {
             // Deceleration
             velocity = Mathf.MoveTowards(
                 velocity,
                 idleSpeed,
                 Mathf.Max(Mathf.Abs(velocity), minSpeed) * decelerationSpeed * Time.deltaTime);
-        }
     }
 
     private void FixedUpdate()
     {
-        float goalAngle = transform.eulerAngles.z + velocity;
-        Quaternion goalRotation = Quaternion.Euler(new Vector3(0, 0, goalAngle));
+        var goalAngle = transform.eulerAngles.z + velocity;
+        var goalRotation = Quaternion.Euler(new Vector3(0, 0, goalAngle));
 
-        float speed = Mathf.Clamp(Mathf.Abs(velocity) * speedFactor, minSpeed, maxSpeed);
-        float fixedSpeed = speed * Time.fixedDeltaTime;
-        Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, goalRotation, fixedSpeed);
+        var speed = Mathf.Clamp(Mathf.Abs(velocity) * speedFactor, minSpeed, maxSpeed);
+        var fixedSpeed = speed * Time.fixedDeltaTime;
+        var newRotation = Quaternion.RotateTowards(transform.rotation, goalRotation, fixedSpeed);
 
         // Apply movement
         rigidbody2D.MoveRotation(newRotation);
@@ -96,7 +94,7 @@ public class Wheel : MonoBehaviour
         if (grabbing)
         {
             //Debug.Log(InputManager.DragLeftStartScreenPos);
-            Vector3 worldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
+            var worldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
             grabber.position = wheelCollider2D.ClosestPoint(worldPoint);
         }
 
@@ -105,14 +103,13 @@ public class Wheel : MonoBehaviour
 
     private void OnLeftDragUpdate(Vector2 currentDragOffset, Vector2 mouseDelta)
     {
-
         //Debug.Log("DRAG: |" + currentDragOffset.ToString() + " | " + mouseDelta.ToString());
         Vector2 dragStartWorldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
         Vector2 dragCurrentWorldPoint;
 
         if (invertGrabVelocity)
         {
-            Vector2 normal = ((Vector2)transform.position - dragStartWorldPoint).normalized.RotatedByDegree(90f);
+            var normal = ((Vector2) transform.position - dragStartWorldPoint).normalized.RotatedByDegree(90f);
             dragCurrentWorldPoint = Vector2.Reflect(currentDragOffset, normal);
         }
         else
@@ -122,74 +119,24 @@ public class Wheel : MonoBehaviour
 
         if (Vector2.Distance(dragStartWorldPoint, dragCurrentWorldPoint) < minGrabDistance) return;
 
-        Vector2 dragInvertedCurrentWorldPoint = dragStartWorldPoint + dragCurrentWorldPoint;
+        var dragInvertedCurrentWorldPoint = dragStartWorldPoint + dragCurrentWorldPoint;
         grabTargetAngle = GetAngleFromPoint(dragInvertedCurrentWorldPoint);
     }
 
     /// <summary>
     /// World space Point
     /// </summary>
-    /// <param name="_point"></param>
+    /// <param name="_worldPoint"></param>
     /// <returns>Degrees</returns>
-    public float GetAngleFromPoint(Vector2 _point)
-        => MathU.Vector2ToDegree((_point - (Vector2)transform.position).normalized);
-
-    [Button]
-    public void FindRegions()
+    public float GetAngleFromPoint(Vector2 _worldPoint)
     {
-        Region[] regs = GetComponentsInChildren<Region>(true);
-        for (int i = 0; i < regs.Length && i < regions.Length; i++)
-        {
-            regs[i].FindBase();
-            regions[i] = regs[i];
-        }
+        return MathU.Vector2ToDegree((_worldPoint - (Vector2) transform.position).normalized);
     }
 
-    [Button]
-    public void MakeRegionBases()
-    {
-        for (int i = 0; i < regions.Length; i++)
-        {
-            if (regions[i] == null) continue;
-            regions[i].TryCreateBase();
-        }
-    }
-    [Button]
-    public void ResetEmptyRegionBases()
-    {
-        for (int i = 0; i < regions.Length; i++)
-        {
-            if (regions[i] == null) continue;
-            Transform rBase = regions[i].Base;
-            if (rBase != null && rBase.childCount == 0)
-                regions[i].ResetBase();
-        }
-    }
 
     [Button]
     public void ReverseSpin()
     {
         velocity = Mathf.Clamp(-velocity * reverseSpeedUpFactor, -maxSpeed, maxSpeed);
-    }
-
-    public Region GetRegion(Vector2 _worldPos)
-    {
-        return regions[(int)Mathf.Floor(regions[0].WorldToRegion(_worldPos).x)];
-
-
-    }
-
-    /// <summary>
-    /// Returns Index + 0..1f
-    /// </summary>
-    public float GetClosestRegionIndex(Vector2 _worldPos)
-    {
-        if (regions[0] == null) FindRegions();
-        return regions[0].WheelToPointRegionIndex(_worldPos);
-    }
-
-    public Region GetClosestRegion(Vector2 _worldPos)
-    {
-        return regions[(int)Mathf.Floor(GetClosestRegionIndex(_worldPos))];
     }
 }
