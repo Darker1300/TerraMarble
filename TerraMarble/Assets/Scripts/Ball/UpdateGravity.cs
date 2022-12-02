@@ -49,4 +49,9 @@ public class UpdateGravity : MonoBehaviour
     {
         wheelDir = wheelCenter.transform.position - transform.position;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        stompForceVector = Vector3.zero;
+    }
 }
