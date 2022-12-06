@@ -1,7 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using MathUtility;
 using NaughtyAttributes;
 using Shapes;
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityUtility.Tween;
@@ -21,17 +23,18 @@ public class Region : MonoBehaviour
         SIZE
     }
 
-    public Wheel Wheel = null;
-
+    [Header("Config")]
     public AnimCurve animTerraform = new();
-
     public RegionID regionID = RegionID.Water;
+
     [Header("Debug")]
+    public List<Growable> surfaceObjects = new();
     [SerializeField] private RegionID targetID = RegionID.Water;
-
     [SerializeField] private Transform _base = null;
-    private Disc _regionDisc = null;
 
+    private Wheel _wheel = null;
+    private Disc _regionDisc = null;
+    private PolygonCollider2D _regionCollider = null;
     private readonly string defaultBaseName = "Base";
     private readonly Vector2 defaultBasePosition = new(0.5f, 0f);
 
@@ -51,8 +54,27 @@ public class Region : MonoBehaviour
     public Transform Base
         => TryCreateBase();
 
-    public Region regionTemplate
+    public Wheel Wheel
+    {
+        get => _wheel == null
+            ? _wheel = FindObjectOfType<Wheel>()
+            : _wheel;
+        set => _wheel = value;
+    }
+
+    public WheelRegionsManager RegionsMan
+        => Wheel.regions;
+
+    public Region RegionTemplate
         => Wheel.regions.RegionTemplate;
+
+    public PolygonCollider2D RegionCollider
+    {
+        get => _regionCollider == null
+            ? _regionCollider = Base.GetComponent<PolygonCollider2D>()
+            : _regionCollider;
+        set => _regionCollider = value;
+    }
 
     public float Thickness
     {
@@ -104,6 +126,8 @@ public class Region : MonoBehaviour
     #endregion
 
 
+    #region Events
+
     private void Update()
     {
         animTerraform.Update();
@@ -113,6 +137,7 @@ public class Region : MonoBehaviour
     {
         RegionDisc ??= GetComponent<Disc>();
         targetID = regionID;
+        surfaceObjects = GetComponentsInChildren<Growable>().ToList();
     }
 
     private void OnDrawGizmosSelected()
@@ -120,10 +145,12 @@ public class Region : MonoBehaviour
         Gizmos.DrawWireSphere(
             transform.position + transform.TransformVector(
                 (Vector3)MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
-                * (RadiusBase + Mathf.LerpUnclamped(0f, regionTemplate.Thickness, defaultBasePosition.y))
+                * (RadiusBase + Mathf.LerpUnclamped(0f, RegionTemplate.Thickness, defaultBasePosition.y))
             ),
-        transform.lossyScale.magnitude * 0.05f);
+            transform.lossyScale.magnitude * 0.05f);
     }
+
+    #endregion
 
     private Transform InitBase()
     {
@@ -132,6 +159,7 @@ public class Region : MonoBehaviour
                          + transform.TransformVector(
                              (Vector3)AngleCenterVector * RadiusBase);
         _base.up = transform.TransformVector(AngleCenterVector);
+        _regionCollider = GetComponent<PolygonCollider2D>();
         return _base;
     }
 
@@ -150,50 +178,136 @@ public class Region : MonoBehaviour
 
     public Transform ResetBase()
     {
-        if (_base == null) TryCreateBase();
+        if (_base == null) return TryCreateBase();
         return InitBase();
     }
 
-    public void TerraformRegion(RegionID targetID)
+    public void FindBase()
     {
-        this.targetID = targetID;
-        if (this.targetID == regionID || animTerraform.Animating) return;
-        regionID = this.targetID;
+        if (_base == null) _base = transform.Find(defaultBaseName);
+    }
+
+    public void TerraformRegion(RegionID _targetID)
+    {
+        if (!Application.isPlaying) return;
+
+        if (targetID == _targetID ||
+            _targetID == regionID ||
+            animTerraform.Animating)
+            return;
+
+        targetID = _targetID;
 
         animTerraform.Reset();
         animTerraform.Play();
 
-        UnityAction<float> updateAction;
-        switch (targetID)
+        UnityAction<float> updateAction = value => { };
+        UnityAction<float> finishAction = value => { };
+
+        bool targetIsWater = _targetID == RegionID.Water;
+        if (targetIsWater || regionID == RegionID.Water)
         {
-            case RegionID.Water:
-                updateAction = delegate (float value)
+            if (targetIsWater)
+                // Land to Water
+                updateAction += value =>
                 {
-                    Thickness = Mathf.Lerp(Wheel.regions.RegionTemplate.Thickness, 0f, value);
+                    Thickness = Mathf.Lerp(RegionTemplate.Thickness, 0f, value);
+                    RegionCollider.offset = Vector2.down * (RegionTemplate.Thickness - Thickness);
                 };
-                break;
-            default:
-                updateAction = delegate (float value)
+            else
+                // Water to Land
+                updateAction += value =>
                 {
-                    Thickness = Mathf.Lerp(0f, Wheel.regions.RegionTemplate.Thickness, value);
+                    Thickness = Mathf.Lerp(0f, RegionTemplate.Thickness, value);
+                    RegionCollider.offset = Vector2.down * (RegionTemplate.Thickness - RegionDisc.Thickness);
                 };
-                break;
         }
 
-        animTerraform.Updated.AddListener(updateAction);
+        // Set Color
+        updateAction += value =>
+        {
+            RegionDisc.Color = Color.Lerp(
+                RegionsMan.configs[regionID].RegionColor,
+                RegionsMan.configs[targetID].RegionColor,
+                value);
+        };
 
-        UnityAction<float> finishAction =
-            delegate { animTerraform.Updated.RemoveListener(updateAction); };
+        GameObject goalPrefab = RegionsMan.configs[targetID].SurfacePrefab;
+        bool goalBlankTag = goalPrefab == null || goalPrefab.CompareTag("Untagged");
+
+        // Destroy inappropriate surface objects
+        for (int index = 0; index < surfaceObjects.Count; index++)
+        {
+            Growable surfaceObject = surfaceObjects[index];
+            if (goalPrefab == null)
+                surfaceObjects[index].Destroy();
+            // if goal is untagged or objects do not match goal objects
+            else if ((goalBlankTag || !surfaceObject.gameObject.CompareTag(goalPrefab.tag)) &&
+                !surfaceObject.isDestroyed)
+                surfaceObjects[index].Destroy();
+        }
+        // Trim list of dying objects
+        surfaceObjects = surfaceObjects
+            .Where(growObj => growObj !=null && !growObj.isDestroyed)
+            .ToList();
+
+        // Spawn new surface obj
+        if (goalPrefab != null)
+        {
+            GameObject newSurfaceObj = Instantiate(goalPrefab, Base, false);
+            Growable newGrowable = newSurfaceObj.GetComponentInChildren<Growable>(true);
+            surfaceObjects.Add(newGrowable);
+        }
+
+        finishAction += value =>
+        {
+            // Remove Update action
+            animTerraform.Updated.RemoveListener(updateAction);
+            // Set new RegionID
+            regionID = targetID;
+
+            animTerraform.Finished.RemoveListener(finishAction);
+        };
+
+        animTerraform.Updated.AddListener(updateAction);
         animTerraform.Finished.AddListener(finishAction);
     }
 
     [Button]
     public void TerraformToWater()
-        => TerraformRegion(RegionID.Water);
+    {
+        TerraformRegion(RegionID.Water);
+    }
 
     [Button]
     public void TerraformToDirt()
-        => TerraformRegion(RegionID.Dirt);
+    {
+        TerraformRegion(RegionID.Dirt);
+    }
+
+    [Button]
+    public void TerraformToForest()
+    {
+        TerraformRegion(RegionID.Forest);
+    }
+
+    [Button]
+    public void Grow()
+    {
+        foreach (Growable surfaceObject in surfaceObjects)
+        {
+            surfaceObject.TryGrowState();
+        }
+    }
+
+    [Button]
+    public void Reset()
+    {
+        foreach (Growable surfaceObject in surfaceObjects)
+        {
+            surfaceObject.ResetState();
+        }
+    }
 
     #region Spatial Helpers
 
@@ -218,8 +332,8 @@ public class Region : MonoBehaviour
     public float WorldToRegionDistance(Vector2 _worldPos)
     {
         Vector2 localPos = transform.InverseTransformPoint(_worldPos);
-        float angle = MathU.Vector2ToDegree(localPos.normalized);
-        float segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
+        var angle = MathU.Vector2ToDegree(localPos.normalized);
+        var segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
         return segments;
     }
 
@@ -266,26 +380,4 @@ public class Region : MonoBehaviour
 
     //    //Instantiate(forestPrefab, Base, false);
     //}
-
-    //0 = nothing on tile
-    [Button]
-    public void Tick()
-    {
-        var ani = gameObject.GetComponentInChildren<Animator>();
-        var progress = ani.GetInteger("Progress");
-        var max = ani.GetInteger("MaxProgress");
-        ani.SetInteger("Progress", Math.Min(progress + 1, max));
-    }
-
-    [Button]
-    public void ResetTick()
-    {
-        var ani = gameObject.GetComponentInChildren<Animator>();
-        ani.SetInteger("Progress", 0);
-    }
-
-    public void FindBase()
-    {
-        if (_base == null) _base = transform.Find(defaultBaseName);
-    }
 }

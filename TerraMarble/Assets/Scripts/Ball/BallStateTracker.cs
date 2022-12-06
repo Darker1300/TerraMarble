@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class BallStateTracker : MonoBehaviour
@@ -12,7 +13,16 @@ public class BallStateTracker : MonoBehaviour
 
     public bool Stomp;
 
-    public BallState thisBallState;
+    public BallState ballState;
+
+    [HideInInspector]
+    public UnityEvent<Collision2D, BallStateTracker> BounceHit
+        = new UnityEvent<Collision2D, BallStateTracker>();
+    [HideInInspector]
+    public UnityEvent<Collision2D, BallStateTracker> StompHit
+        = new UnityEvent<Collision2D, BallStateTracker>();
+
+    [SerializeField] private bool DoDebug = false;
 
     private void Start()
     {
@@ -21,12 +31,21 @@ public class BallStateTracker : MonoBehaviour
 
     public void StateChange(BallState state)
     {
-        thisBallState = state;
+        ballState = state;
     }
 
     public void BallStompDisabled(Collision2D _collision2D)
     {
-        Debug.Log("Gooomba");
+        if (DoDebug) Debug.Log("Gooomba");
         Stomp = false;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (ballState == BallState.Stomp)
+            StompHit.Invoke(collision, this);
+        else
+            BounceHit.Invoke(collision, this);
+    }
+
 }

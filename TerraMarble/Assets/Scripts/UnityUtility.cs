@@ -1,5 +1,6 @@
 ﻿using NaughtyAttributes;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -43,6 +44,59 @@ namespace UnityUtility
         {
             return _gameObject.AddComponent<T>().Copy(target) as T;
         }
+
+
+        ///   <para>Returns transform with tag or any of its children. Works recursively.</para>
+        public static List<Transform> FindChildrenWithTag(this Transform parent, string tag, List<Transform> results = null)
+        {
+            if (results == null) results = new List<Transform>();
+
+            if (parent.gameObject.CompareTag(tag))
+                results.Add(parent);
+
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                Transform child = parent.GetChild(i);
+                FindChildrenWithTag(child, tag, results);
+            }
+            return results;
+        }
+        /// <summary>
+        ///   <para>Returns transform with tag or the first of its children with the tag. Works recursively.</para>
+        /// </summary>
+        public static Transform FindChildWithTag(this Transform parent, string tag)
+        {
+            if (parent.gameObject.CompareTag(tag))
+                return parent;
+
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                Transform child = parent.GetChild(i);
+                Transform search = FindChildWithTag(child, tag);
+                if (search != null) return search;
+            }
+
+            return null;
+        }
+
+        //public static List<GameObject> FindChildrenWithTag(this Transform parent, string tag)
+        //{
+        //    List<GameObject> taggedGameObjects = new List<GameObject>();
+
+        //    for (int i = 0; i < parent.childCount; i++)
+        //    {
+        //        Transform child = parent.GetChild(i);
+        //        if (child.tag == tag)
+        //        {
+        //            taggedGameObjects.Add(child.gameObject);
+        //        }
+        //        if (child.childCount > 0)
+        //        {
+        //            taggedGameObjects.AddRange(FindChildrenWithTag(child, tag));
+        //        }
+        //    }
+        //    return taggedGameObjects;
+        //}
     }
 
     public static class Tween

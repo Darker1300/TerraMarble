@@ -22,7 +22,7 @@ public class WheelRegionsManager : MonoBehaviour
     [Serializable]
     public class RegionConfigs : Dictionary<Region.RegionID, RegionConfig>
     {
-        public List<RegionConfig> SetupData = new((int)Region.RegionID.SIZE);
+        public List<RegionConfig> SetupData = new((int) Region.RegionID.SIZE);
 
         public void Initialise()
         {
@@ -34,12 +34,13 @@ public class WheelRegionsManager : MonoBehaviour
 
     [Header("Config")] public Transform regionsParent = null;
 
-    [SerializeField] private RegionConfigs configs = new();
+    public RegionConfigs configs;
 
     [Header("Data")] private Region regionTemplate = null;
     [SerializeField] private Region[] regions;
 
-    public int RegionCount => GetComponent<WheelGenerator>().regionCount;
+    private WheelGenerator _wheelGenerator = null;
+
 
     public Region RegionTemplate
     {
@@ -51,10 +52,22 @@ public class WheelRegionsManager : MonoBehaviour
         set => regionTemplate = value;
     }
 
+    public Region this[int key] => regions[key];
+
     public void SetRegions(Region[] _regions)
     {
         regions = _regions;
     }
+
+    public WheelGenerator WheelGenerator
+    {
+        get => _wheelGenerator == null
+            ? _wheelGenerator = FindObjectOfType<WheelGenerator>()
+            : _wheelGenerator;
+        set => _wheelGenerator = value;
+    }
+
+    public int RegionCount => WheelGenerator.regionCount;
 
     private void Awake()
     {
@@ -66,10 +79,7 @@ public class WheelRegionsManager : MonoBehaviour
             FindRegions();
 
         // Initialise RegionTemplate, who's Disc properties we use to calculation positions on the Wheel.
-        if (RegionTemplate == null)
-        {
-            InitRegionTemplate();
-        }
+        if (RegionTemplate == null) InitRegionTemplate();
 
         configs.Initialise();
     }

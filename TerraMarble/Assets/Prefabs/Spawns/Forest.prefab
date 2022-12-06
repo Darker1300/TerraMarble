@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397646456881526835}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -139,9 +139,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2683090624587966540}
   - component: {fileID: 8678023789653398491}
+  - component: {fileID: 9182775131186741986}
   m_Layer: 7
   m_Name: Forest
-  m_TagString: Untagged
+  m_TagString: Forest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -184,6 +185,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &9182775131186741986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563828416788737350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1056afd5e5631df4da20da35bfc9a0b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animGoalIndex: 0
+  animPercentage: 0
+  animMaxIndex: 0
+  isDestroyed: 0
+  Destroyed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2152491106593146975
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +429,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2652154559641590972}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15, y: 0.05, z: 0}
+  m_LocalPosition: {x: 0.15, y: 0.05, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -934,7 +954,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6988999165131037977}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.15, y: 0.05, z: 0}
+  m_LocalPosition: {x: -0.15, y: 0.05, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:

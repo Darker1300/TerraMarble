@@ -16,8 +16,12 @@ public class Seed : MonoBehaviour
         if (!regionsMan) return;
 
         if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Wheel"))
-            regionsMan
-                .GetClosestRegion(collision.GetContact(0).point)
-                .TerraformRegion(Region.RegionID.Dirt);
+        {
+            Region reg = regionsMan.GetClosestRegion(collision.GetContact(0).point);
+            if (reg.regionID == Region.RegionID.Sand ||
+                reg.regionID == Region.RegionID.Dirt ||
+                reg.regionID == Region.RegionID.Grass)
+                reg.TerraformRegion(Region.RegionID.Forest);
+        }
     }
 }
