@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityUtility;
 
 public class BallStateTracker : MonoBehaviour
 {
@@ -8,20 +9,26 @@ public class BallStateTracker : MonoBehaviour
 
     public enum BallState
     {
-        Fire,
+        NoEffector,
         Stomp,
-        NoEffector
+        Fire
     }
 
     public bool Stomp;
 
     public BallState ballState;
 
-    [SerializeField] private bool DoDebug = false;
+    private string baseName;
+    private LayerMask surfaceLayer;
+    private LayerMask wheelLayer;
 
     private void Awake()
     {
         regionsMan = FindObjectOfType<WheelRegionsManager>();
+
+        baseName = "Base";
+        surfaceLayer = LayerMask.NameToLayer("Surface");
+        wheelLayer = LayerMask.NameToLayer("Wheel");
     }
 
     public void StateChange(BallState state)
@@ -29,9 +36,13 @@ public class BallStateTracker : MonoBehaviour
         ballState = state;
     }
 
-    public void BallStompDisabled(Collision2D _collision2D)
+    public void StartStomp()
     {
-        if (DoDebug) Debug.Log("Gooomba");
+        Stomp = true;
+    }
+
+    public void StopStomp()
+    {
         Stomp = false;
     }
 
@@ -39,6 +50,7 @@ public class BallStateTracker : MonoBehaviour
     {
         Region.RegionHitInfo info = ProcessHit(collision);
         info?.region.BallHitEnter.Invoke(info);
+        StopStomp();
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -55,24 +67,41 @@ public class BallStateTracker : MonoBehaviour
         if (hitSurfaceObj || hitRegion)
         {
             Region.RegionHitInfo info = new();
-            Region r = regionsMan.GetClosestRegion(collision.GetContact(0).point);
 
+            // Find Region from Surface Object
+            Region r = null;
             if (hitSurfaceObj)
-                info.surfaceObj = info.collision.gameObject;
-            else if (hitRegion)
-                info.surfaceObj = null;
+            {
+                //Transform b = collision.collider.transform.FindChildOfParentWithName(baseName);
+                r = collision.collider.transform.GetComponentInParent<Region>();
+                info.surfaceObj = collision.collider.gameObject;
+            }
+            else info.surfaceObj = null;
+
+            if (r == null) // if failed, find Region from contact point
+            {
+                Vector2 p = collision.contactCount > 0
+                    ? collision.GetContact(0).point // contact position
+                    : transform.position; // Ball position
+                r = regionsMan.GetClosestRegion(p);
+            }
 
             info.ballState = this;
             info.collision = collision;
             info.region = r;
             return info;
         }
+
         return null;
     }
 
     private bool IsHitSurfaceObj(Collision2D collision)
-        => collision.collider.gameObject.layer == LayerMask.NameToLayer("Surface");
+    {
+        return collision.collider.gameObject.layer == surfaceLayer;
+    }
 
     private bool IsHitRegion(Collision2D collision)
-        => collision.collider.gameObject.layer == LayerMask.NameToLayer("Wheel");
+    {
+        return collision.collider.gameObject.layer == wheelLayer;
+    }
 }

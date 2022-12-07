@@ -6,7 +6,7 @@ using NaughtyAttributes;
 using Shapes;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityUtility.Tween;
+using static UnityUtility.TweenUtility;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -39,7 +39,7 @@ public class Region : MonoBehaviour
     [HideInInspector] public UnityEvent<RegionHitInfo> BallHitExit = new();
 
     [Header("Debug")]
-    public List<Growable> surfaceObjects = new();
+    public List<SurfaceObject> surfaceObjects = new();
     [SerializeField] private RegionID targetID = RegionID.Water;
     [SerializeField] private Transform _base = null;
 
@@ -150,7 +150,7 @@ public class Region : MonoBehaviour
     {
         RegionDisc ??= GetComponent<Disc>();
         targetID = regionID;
-        surfaceObjects = GetComponentsInChildren<Growable>().ToList();
+        surfaceObjects = GetComponentsInChildren<SurfaceObject>().ToList();
     }
 
     private void OnDrawGizmosSelected()
@@ -259,13 +259,13 @@ public class Region : MonoBehaviour
         // Destroy inappropriate surface objects
         for (int index = 0; index < surfaceObjects.Count; index++)
         {
-            Growable surfaceObject = surfaceObjects[index];
+            SurfaceObject surfaceObject = surfaceObjects[index];
             if (goalPrefab == null)
-                surfaceObjects[index].Destroy();
+                surfaceObjects[index].DoDestroy();
             // if goal is untagged or objects do not match goal objects
             else if ((goalBlankTag || !surfaceObject.gameObject.CompareTag(goalPrefab.tag)) &&
                 !surfaceObject.isDestroyed)
-                surfaceObjects[index].Destroy();
+                surfaceObjects[index].DoDestroy();
         }
         // Trim list of dying objects
         surfaceObjects = surfaceObjects
@@ -276,7 +276,7 @@ public class Region : MonoBehaviour
         if (goalPrefab != null)
         {
             GameObject newSurfaceObj = Instantiate(goalPrefab, Base, false);
-            Growable newGrowable = newSurfaceObj.GetComponentInChildren<Growable>(true);
+            SurfaceObject newGrowable = newSurfaceObj.GetComponentInChildren<SurfaceObject>(true);
             surfaceObjects.Add(newGrowable);
         }
 
@@ -315,18 +315,22 @@ public class Region : MonoBehaviour
     [Button]
     public void Grow()
     {
-        foreach (Growable surfaceObject in surfaceObjects)
+        Growable growable;
+        foreach (SurfaceObject surfaceObject in surfaceObjects)
         {
-            surfaceObject.TryGrowState();
+            growable = surfaceObject.GetComponent<Growable>();
+            if (growable != null) growable.TryGrowState();
         }
     }
 
     [Button]
     public void Reset()
     {
-        foreach (Growable surfaceObject in surfaceObjects)
+        Growable growable;
+        foreach (SurfaceObject surfaceObject in surfaceObjects)
         {
-            surfaceObject.ResetState();
+            growable = surfaceObject.GetComponent<Growable>();
+            if (growable != null) growable.ResetState();
         }
     }
 

@@ -36,7 +36,9 @@ public class WheelRegionsManager : MonoBehaviour
 
     public RegionConfigs configs;
 
-    [Header("Data")] private Region regionTemplate = null;
+    [Header("Data")]
+    [SerializeField] 
+    private Region regionTemplate = null;
     [SerializeField] private Region[] regions;
 
     private WheelGenerator _wheelGenerator = null;
@@ -79,7 +81,8 @@ public class WheelRegionsManager : MonoBehaviour
             FindRegions();
 
         // Initialise RegionTemplate, who's Disc properties we use to calculation positions on the Wheel.
-        if (RegionTemplate == null) InitRegionTemplate();
+        if (RegionTemplate == null) 
+            InitRegionTemplate();
 
         configs.Initialise();
     }
@@ -92,6 +95,7 @@ public class WheelRegionsManager : MonoBehaviour
             if (Application.isEditor && !Application.isPlaying)
                 DestroyImmediate(regionTemplate.gameObject);
             else Destroy(regionTemplate.gameObject);
+            regionTemplate = null;
         }
 
         var go = new GameObject("Region Template");

@@ -8,6 +8,7 @@ using UnityEngine.Events;
 
 public class Growable : MonoBehaviour
 {
+    private SurfaceObject _surfaceObject = null;
     private Animator _animator = null;
 
     public Animator Animator
@@ -20,52 +21,32 @@ public class Growable : MonoBehaviour
 
     [Header("Data")]
     public int animGoalIndex = 0;
-    //[Range(0f, 1f)]
-    //[SerializeField] private float animPercentage = 0.0f;
     public int animMaxIndex = 0;
 
     private readonly int idProgress = Animator.StringToHash("Progress");
     private readonly int idProgressMax = Animator.StringToHash("MaxProgress");
     private readonly int tagEmpty = Animator.StringToHash("Empty");
 
-    public bool isDestroyed = false;
-
     [HideInInspector]
     public UnityEvent<Growable> Destroyed = new UnityEvent<Growable>();
 
     void Awake()
     {
+        _surfaceObject = GetComponent<SurfaceObject>();
         animMaxIndex = Animator.GetInteger(idProgressMax);
 
         if (animGoalIndex != 0)
             TrySetState(animGoalIndex);
-
-        //CalcTotalPercentage();
-    }
-
-    void Update()
-    {
-        if (isDestroyed
-            //& Animator.IsInTransition(0)
-            & Animator.GetCurrentAnimatorStateInfo(0).tagHash == tagEmpty)
-        {
-            if (!Application.isPlaying) return;
-
-            Destroy(gameObject);
-        }
-    }
-
-    [Button]
-    public void Destroy()
-    {
-        isDestroyed = true;
-        ResetState();
     }
 
     //0 = nothing on tile
     [Button]
     public bool TryGrowState()
         => TrySetState(animGoalIndex + 1);
+
+    [Button]
+    public bool TryShrinkState()
+        => TrySetState(animGoalIndex - 1);
 
     [Button]
     public void ResetState()
@@ -85,6 +66,11 @@ public class Growable : MonoBehaviour
         }
         else return false;
     }
+
+    public bool IsInEmptyState()
+        => Animator.GetCurrentAnimatorStateInfo(0).tagHash == tagEmpty;
+    public bool IsGrowable()
+        => animGoalIndex < animMaxIndex && !_surfaceObject.isDestroyed;
 
     //private float CalcTotalPercentage()
     //{

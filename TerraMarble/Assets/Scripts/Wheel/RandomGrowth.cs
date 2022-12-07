@@ -88,8 +88,9 @@ public class RandomGrowth : MonoBehaviour
             bool isGrowable = false;
             for (var index = 0; index < region.surfaceObjects.Count; index++)
             {
-                Growable surfaceObject = region.surfaceObjects[index];
-                if (surfaceObject.animGoalIndex < surfaceObject.animMaxIndex)
+                SurfaceObject surfaceObject = region.surfaceObjects[index];
+                Growable growable = surfaceObject.GetComponent<Growable>();
+                if (growable != null && growable.IsGrowable())
                 {
                     isGrowable = true;
                     break;
