@@ -12,6 +12,14 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Region : MonoBehaviour
 {
+    public class RegionHitInfo
+    {
+        public Collision2D collision = null;
+        public BallStateTracker ballState = null;
+        public Region region = null;
+        public GameObject surfaceObj = null;
+    }
+
     public enum RegionID
     {
         Water,
@@ -27,6 +35,9 @@ public class Region : MonoBehaviour
     public AnimCurve animTerraform = new();
     public RegionID regionID = RegionID.Water;
 
+    [HideInInspector] public UnityEvent<RegionHitInfo> BallHitEnter = new();
+    [HideInInspector] public UnityEvent<RegionHitInfo> BallHitExit = new();
+
     [Header("Debug")]
     public List<Growable> surfaceObjects = new();
     [SerializeField] private RegionID targetID = RegionID.Water;
@@ -38,8 +49,7 @@ public class Region : MonoBehaviour
     private readonly string defaultBaseName = "Base";
     private readonly Vector2 defaultBasePosition = new(0.5f, 0f);
 
-
-    #region Properties
+    #region References Properties
 
     public Disc RegionDisc
     {
@@ -75,6 +85,10 @@ public class Region : MonoBehaviour
             : _regionCollider;
         set => _regionCollider = value;
     }
+
+    #endregion
+
+    #region Properties
 
     public float Thickness
     {
@@ -125,7 +139,6 @@ public class Region : MonoBehaviour
 
     #endregion
 
-
     #region Events
 
     private void Update()
@@ -145,20 +158,26 @@ public class Region : MonoBehaviour
         Gizmos.DrawWireSphere(
             transform.position + transform.TransformVector(
                 (Vector3)MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
-                * (RadiusBase + Mathf.LerpUnclamped(0f, RegionTemplate.Thickness, defaultBasePosition.y))
+                * (RegionTemplate.RadiusBase + Mathf.LerpUnclamped(0f, RegionTemplate.Thickness, defaultBasePosition.y))
             ),
             transform.lossyScale.magnitude * 0.05f);
     }
 
     #endregion
 
+    #region Base Transform Functions
+
     private Transform InitBase()
     {
         RegionDisc ??= GetComponent<Disc>();
+
+        Vector2 centerVector = AngleCenterVector;
+        Vector3 angleVector = (Vector3)centerVector * RegionTemplate.RadiusBase;
+
         _base.position = transform.position
                          + transform.TransformVector(
-                             (Vector3)AngleCenterVector * RadiusBase);
-        _base.up = transform.TransformVector(AngleCenterVector);
+                             angleVector);
+        _base.up = transform.TransformVector(centerVector);
         _regionCollider = GetComponent<PolygonCollider2D>();
         return _base;
     }
@@ -186,6 +205,8 @@ public class Region : MonoBehaviour
     {
         if (_base == null) _base = transform.Find(defaultBaseName);
     }
+
+    #endregion
 
     public void TerraformRegion(RegionID _targetID)
     {
@@ -248,7 +269,7 @@ public class Region : MonoBehaviour
         }
         // Trim list of dying objects
         surfaceObjects = surfaceObjects
-            .Where(growObj => growObj !=null && !growObj.isDestroyed)
+            .Where(growObj => growObj != null && !growObj.isDestroyed)
             .ToList();
 
         // Spawn new surface obj
