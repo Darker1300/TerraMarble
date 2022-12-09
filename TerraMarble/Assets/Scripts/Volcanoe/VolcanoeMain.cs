@@ -8,6 +8,11 @@ public class VolcanoeMain : MonoBehaviour
     public List<GameObject> VolcanoStagesObj = new List<GameObject>();
     public ObjectPooler pooler;
 
+    //color change 
+
+    [SerializeField]
+    private Color[] colors;
+
     [SerializeField]
     private float speed = 5f;
 
@@ -29,10 +34,18 @@ public class VolcanoeMain : MonoBehaviour
         GameObject Rock = pooler.SpawnFromPool(transform.position, null, true);
         //Rock.gameObject.SetActive(true);
 
-        Rock.GetComponent<Rigidbody2D>().AddForce(Vector2.up * speed * Time.deltaTime);
+        Rock.GetComponent<Rigidbody2D>().AddForce(Vector2.up * speed );
     }
-    
 
+
+    //IEnumerator ColorCool()
+    //{ 
+    ////lerp color 0-1 
+    
+    
+    
+    
+    //}
 
 
 
@@ -42,6 +55,7 @@ public class VolcanoeMain : MonoBehaviour
         
     }
 
+   
     // Start is called before the first frame update
 
 

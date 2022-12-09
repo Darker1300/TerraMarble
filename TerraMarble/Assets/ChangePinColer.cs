@@ -21,6 +21,8 @@ public class ChangePinColer : MonoBehaviour
     [SerializeField]
     private float endScale;
 
+
+
     [SerializeField]
     private bool shouldScale;
 
