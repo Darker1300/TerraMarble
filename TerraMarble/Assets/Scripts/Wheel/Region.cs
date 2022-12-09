@@ -6,6 +6,7 @@ using NaughtyAttributes;
 using Shapes;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using static UnityUtility.TweenUtility;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -17,7 +18,7 @@ public class Region : MonoBehaviour
         public Collision2D collision = null;
         public BallStateTracker ballState = null;
         public Region region = null;
-        public GameObject surfaceObj = null;
+        public SurfaceObject surfaceObj = null;
     }
 
     public enum RegionID
@@ -31,15 +32,13 @@ public class Region : MonoBehaviour
         SIZE
     }
 
-    [Header("Config")]
-    public AnimCurve animTerraform = new();
+    [Header("Config")] public AnimCurve animTerraform = new();
     public RegionID regionID = RegionID.Water;
 
     [HideInInspector] public UnityEvent<RegionHitInfo> BallHitEnter = new();
     [HideInInspector] public UnityEvent<RegionHitInfo> BallHitExit = new();
 
-    [Header("Debug")]
-    public List<SurfaceObject> surfaceObjects = new();
+    [Header("Debug")] public List<SurfaceObject> surfaceObjects = new();
     [SerializeField] private RegionID targetID = RegionID.Water;
     [SerializeField] private Transform _base = null;
 
@@ -151,13 +150,17 @@ public class Region : MonoBehaviour
         RegionDisc ??= GetComponent<Disc>();
         targetID = regionID;
         surfaceObjects = GetComponentsInChildren<SurfaceObject>().ToList();
+
+        SceneManager.sceneUnloaded += scene => animTerraform.Stop();
+
+        SetRegionCollider(regionID == RegionID.Water ? 0f : 1f);
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(
             transform.position + transform.TransformVector(
-                (Vector3)MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
+                (Vector3) MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
                 * (RegionTemplate.RadiusBase + Mathf.LerpUnclamped(0f, RegionTemplate.Thickness, defaultBasePosition.y))
             ),
             transform.lossyScale.magnitude * 0.05f);
@@ -172,7 +175,7 @@ public class Region : MonoBehaviour
         RegionDisc ??= GetComponent<Disc>();
 
         Vector2 centerVector = AngleCenterVector;
-        Vector3 angleVector = (Vector3)centerVector * RegionTemplate.RadiusBase;
+        Vector3 angleVector = (Vector3) centerVector * RegionTemplate.RadiusBase;
 
         _base.position = transform.position
                          + transform.TransformVector(
@@ -233,7 +236,7 @@ public class Region : MonoBehaviour
                 updateAction += value =>
                 {
                     Thickness = Mathf.Lerp(RegionTemplate.Thickness, 0f, value);
-                    RegionCollider.offset = Vector2.down * (RegionTemplate.Thickness - Thickness);
+                    SetRegionCollider(value);
                 };
             else
                 // Water to Land
@@ -241,6 +244,7 @@ public class Region : MonoBehaviour
                 {
                     Thickness = Mathf.Lerp(0f, RegionTemplate.Thickness, value);
                     RegionCollider.offset = Vector2.down * (RegionTemplate.Thickness - RegionDisc.Thickness);
+                    SetRegionCollider(value);
                 };
         }
 
@@ -253,7 +257,8 @@ public class Region : MonoBehaviour
                 value);
         };
 
-        GameObject goalPrefab = RegionsMan.configs[targetID].SurfacePrefab;
+        WheelRegionsManager.RegionConfig goalConfig = RegionsMan.configs[targetID];
+        GameObject goalPrefab = goalConfig.SurfacePrefab;
         bool goalBlankTag = goalPrefab == null || goalPrefab.CompareTag("Untagged");
 
         // Destroy inappropriate surface objects
@@ -264,9 +269,10 @@ public class Region : MonoBehaviour
                 surfaceObjects[index].DoDestroy();
             // if goal is untagged or objects do not match goal objects
             else if ((goalBlankTag || !surfaceObject.gameObject.CompareTag(goalPrefab.tag)) &&
-                !surfaceObject.isDestroyed)
+                     !surfaceObject.isDestroyed)
                 surfaceObjects[index].DoDestroy();
         }
+
         // Trim list of dying objects
         surfaceObjects = surfaceObjects
             .Where(growObj => growObj != null && !growObj.isDestroyed)
@@ -294,6 +300,15 @@ public class Region : MonoBehaviour
         animTerraform.Finished.AddListener(finishAction);
     }
 
+    /// <param name="state">0..1f</param>
+    public void SetRegionCollider(float state = 1f)
+    {
+        RegionCollider.offset = Vector2.down *
+                                Mathf.Lerp(RegionTemplate.Thickness - RegionDisc.Thickness,
+                                    RegionTemplate.Thickness - Thickness,
+                                    state);
+    }
+
     [Button]
     public void TerraformToWater()
     {
@@ -315,10 +330,9 @@ public class Region : MonoBehaviour
     [Button]
     public void Grow()
     {
-        Growable growable;
         foreach (SurfaceObject surfaceObject in surfaceObjects)
         {
-            growable = surfaceObject.GetComponent<Growable>();
+            Growable growable = surfaceObject.GetComponent<Growable>();
             if (growable != null) growable.TryGrowState();
         }
     }
@@ -326,10 +340,9 @@ public class Region : MonoBehaviour
     [Button]
     public void Reset()
     {
-        Growable growable;
         foreach (SurfaceObject surfaceObject in surfaceObjects)
         {
-            growable = surfaceObject.GetComponent<Growable>();
+            Growable growable = surfaceObject.GetComponent<Growable>();
             if (growable != null) growable.ResetState();
         }
     }
@@ -342,7 +355,7 @@ public class Region : MonoBehaviour
     public Vector2 RegionPosition(float _x, float _y = 1f)
     {
         return transform.position + transform.TransformVector(
-            (Vector3)MathU.DegreeToVector2(
+            (Vector3) MathU.DegreeToVector2(
                 MathU.LerpAngleUnclamped(AngleStart, AngleEnd, _x))
             * (RadiusBase + Mathf.LerpUnclamped(0f, Thickness, _y))
         );
@@ -367,7 +380,7 @@ public class Region : MonoBehaviour
     {
         var distance = WorldToRegionDistance(_worldPos);
         var repeat = Mathf.Repeat(distance, Wheel.regions.RegionCount - 0.9999f);
-        return (int)Mathf.Floor(repeat);
+        return (int) Mathf.Floor(repeat);
     }
 
     /// <returns> X: Regions array index + 0..1;
@@ -385,24 +398,4 @@ public class Region : MonoBehaviour
     }
 
     #endregion
-
-    //private void TestUpdateBasePos()
-    //{
-    //    if (Base)
-    //        Base.position = RegionPosition(defaultBasePosition);
-    //}
-
-    ////[Button]
-    //public void MakeForest()
-    //{
-    //    for (var i = 0; i < Base.childCount; i++)
-    //    {
-    //        var child = Base.GetChild(i);
-    //        Destroy(child.gameObject);
-    //    }
-
-    //    //RegionDisc.Color = forestColor;
-
-    //    //Instantiate(forestPrefab, Base, false);
-    //}
 }

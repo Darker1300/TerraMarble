@@ -29,8 +29,8 @@ public class RandomGrowth : MonoBehaviour
     {
         if (!doGrow) return;
 
-        terraformTimer += Time.deltaTime * (1f / (terraformRate / 60f));
-        growTimer += Time.deltaTime * (1f / (growRate / 60f));
+        terraformTimer += Time.deltaTime * (1f * (terraformRate / 60f));
+        growTimer += Time.deltaTime * (1f * (growRate / 60f));
 
         while (terraformTimer > 1f)
         {

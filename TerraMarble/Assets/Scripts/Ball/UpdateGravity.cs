@@ -29,6 +29,7 @@ public class UpdateGravity : MonoBehaviour
         {
             var force = stompForceVector * stompPower;
             rb.velocity = force * Time.fixedDeltaTime;
+            // TODO make force weaker the further away from wheel, eventually pulling back to wheel
         }
         else // Apply Gravity
         {

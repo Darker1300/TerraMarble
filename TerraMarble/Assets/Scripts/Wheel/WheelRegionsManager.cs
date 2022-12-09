@@ -22,7 +22,7 @@ public class WheelRegionsManager : MonoBehaviour
     [Serializable]
     public class RegionConfigs : Dictionary<Region.RegionID, RegionConfig>
     {
-        public List<RegionConfig> SetupData = new((int) Region.RegionID.SIZE);
+        public List<RegionConfig> SetupData = new((int)Region.RegionID.SIZE);
 
         public void Initialise()
         {
@@ -37,7 +37,7 @@ public class WheelRegionsManager : MonoBehaviour
     public RegionConfigs configs;
 
     [Header("Data")]
-    [SerializeField] 
+    [SerializeField]
     private Region regionTemplate = null;
     [SerializeField] private Region[] regions;
 
@@ -81,10 +81,10 @@ public class WheelRegionsManager : MonoBehaviour
             FindRegions();
 
         // Initialise RegionTemplate, who's Disc properties we use to calculation positions on the Wheel.
-        if (RegionTemplate == null) 
+        if (RegionTemplate == null)
             InitRegionTemplate();
 
-        configs.Initialise();
+        if (configs.SetupData.Count > 0) configs.Initialise();
     }
 
     [Button]

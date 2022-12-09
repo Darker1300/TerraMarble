@@ -10,9 +10,9 @@ namespace UnityUtility
             return NamesToMask(layerNames);
         }
 
-        public static LayerMask Create(params int[] layerNumbers)
+        public static LayerMask Create(params int[] layerValues)
         {
-            return LayerNumbersToMask(layerNumbers);
+            return layerValuesToMask(layerValues);
         }
 
         public static LayerMask NamesToMask(params string[] layerNames)
@@ -22,10 +22,10 @@ namespace UnityUtility
             return ret;
         }
 
-        public static LayerMask LayerNumbersToMask(params int[] layerNumbers)
+        public static LayerMask layerValuesToMask(params int[] layerValues)
         {
             LayerMask ret = (LayerMask) 0;
-            foreach (var layer in layerNumbers) ret |= 1 << layer;
+            foreach (var layer in layerValues) ret |= 1 << layer;
             return ret;
         }
 
@@ -62,19 +62,19 @@ namespace UnityUtility
             return output.ToArray();
         }
 
-        public static string MaskToString(this LayerMask original)
-        {
-            return MaskToString(original, ", ");
-        }
-
-        public static string MaskToString(this LayerMask original, string delimiter)
+        public static string NamesToString(this LayerMask original, string delimiter = ", ")
         {
             return string.Join(delimiter, MaskToNames(original));
         }
 
-        public static bool IsInLayerMask(this GameObject obj, LayerMask mask)
+        public static bool CompareLayerMask(this GameObject obj, LayerMask mask)
         {
             return (mask.value & (1 << obj.layer)) > 0;
+        }
+
+        public static bool CompareLayerMask(this GameObject obj, string mask)
+        {
+            return (LayerMask.NameToLayer(mask) & (1 << obj.layer)) > 0;
         }
     }
 }
