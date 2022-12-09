@@ -43,7 +43,7 @@ MonoBehaviour:
     m_Value: 1
   speed:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.06
   mask:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -69,22 +69,22 @@ MonoBehaviour:
     m_Value: 0
   strength:
     m_OverrideState: 1
-    m_Value: 0.003
+    m_Value: 0.0003
   speed:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.006
   size:
     m_OverrideState: 1
     m_Value: 0.3
   fade:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.011
   RGBSplit:
     m_OverrideState: 1
-    m_Value: 0.36
+    m_Value: 0.04
   randomActivateAmount:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.009
   mask:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -184,16 +184,16 @@ MonoBehaviour:
     m_Value: 0
   fade:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.391
   amount:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.709
   randomActivateAmount:
     m_OverrideState: 1
-    m_Value: 0.9
+    m_Value: 0.011
   size:
     m_OverrideState: 1
-    m_Value: 16
+    m_Value: 0.7
   mask:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -572,19 +572,19 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.61023533, z: 0.7709915, w: 1}
+    m_Value: {x: 1, y: 0.96997887, z: 0.8434294, w: 0.058116194}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 0.9763235, y: 1, z: 0.76453567, w: -0.2623266}
+    m_Value: {x: 0.5191903, y: 1, z: 0.524455, w: 0.1785552}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 0.99641174, y: 1, z: 0.41593295, w: 0}
+    m_Value: {x: 0.7225668, y: 0.99340093, z: 1, w: -0.40080166}
   shadowsStart:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   shadowsEnd:
-    m_OverrideState: 0
-    m_Value: 0.3
+    m_OverrideState: 1
+    m_Value: 0.78
   highlightsStart:
     m_OverrideState: 0
     m_Value: 0.55
@@ -697,19 +697,19 @@ MonoBehaviour:
     m_Value: 1
   x:
     m_OverrideState: 1
-    m_Value: 179
+    m_Value: 95
   y:
     m_OverrideState: 1
-    m_Value: 10002
+    m_Value: 5026
   z:
     m_OverrideState: 1
-    m_Value: 200
+    m_Value: 97
   fade:
     m_OverrideState: 0
     m_Value: 1
   amount:
     m_OverrideState: 1
-    m_Value: 0.025
+    m_Value: 0.005
   stretch:
     m_OverrideState: 1
     m_Value: 0.02
@@ -718,7 +718,7 @@ MonoBehaviour:
     m_Value: 0.029
   rMultiplier:
     m_OverrideState: 1
-    m_Value: 1.4
+    m_Value: -0.82
   gMultiplier:
     m_OverrideState: 1
     m_Value: 0.34

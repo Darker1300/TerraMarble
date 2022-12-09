@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: planeMat
+  m_Name: planeMat 1
   m_Shader: {fileID: 4800000, guid: 8d2bb70cbf9db8d4da26e15b26e74248, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -110,8 +110,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.7924528, g: 0.22054112, b: 0.78550285, a: 1}
-    - _Color: {r: 0.7924528, g: 0.22054109, b: 0.78550285, a: 1}
+    - _BaseColor: {r: 0.7924528, g: 0.24296904, b: 0.7873362, a: 1}
+    - _Color: {r: 0.7924528, g: 0.242969, b: 0.7873362, a: 1}
     - _EmissionColor: {r: 0.57254905, g: 0.44705883, b: 0.5176471, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
