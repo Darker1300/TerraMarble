@@ -18,7 +18,6 @@ public class BallStateTracker : MonoBehaviour
 
     public BallState ballState;
 
-    private string baseName;
     private LayerMask surfaceLayer;
     private LayerMask wheelLayer;
 
@@ -26,7 +25,6 @@ public class BallStateTracker : MonoBehaviour
     {
         regionsMan = FindObjectOfType<WheelRegionsManager>();
 
-        baseName = "Base";
         surfaceLayer = LayerMask.NameToLayer("Surface");
         wheelLayer = LayerMask.NameToLayer("Wheel");
     }
@@ -69,26 +67,24 @@ public class BallStateTracker : MonoBehaviour
             Region.RegionHitInfo info = new();
 
             // Find Region from Surface Object
-            Region r = null;
-            if (hitSurfaceObj)
-            {
-                //Transform b = collision.collider.transform.FindChildOfParentWithName(baseName);
-                r = collision.collider.transform.GetComponentInParent<Region>();
-                info.surfaceObj = collision.collider.gameObject;
-            }
-            else info.surfaceObj = null;
+            Region regionSearch = collision.collider.GetComponentInParent<Region>();
 
-            if (r == null) // if failed, find Region from contact point
+            // Alternative Find region
+            if (regionSearch == null) // if failed, find Region from contact point
             {
-                Vector2 p = collision.contactCount > 0
+                Vector2 p = collision.contactCount > 0  // use Contact.point if possible
                     ? collision.GetContact(0).point // contact position
                     : transform.position; // Ball position
-                r = regionsMan.GetClosestRegion(p);
+                regionSearch = regionsMan.GetClosestRegion(p);
             }
+
+            if (hitSurfaceObj)
+                info.surfaceObj = collision.collider.GetComponentInParent<SurfaceObject>();
+            else info.surfaceObj = null;
 
             info.ballState = this;
             info.collision = collision;
-            info.region = r;
+            info.region = regionSearch;
             return info;
         }
 
