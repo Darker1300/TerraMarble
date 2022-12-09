@@ -16,7 +16,7 @@ public class Walker : MonoBehaviour
     private void Awake()
     {
         wheel ??= GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
-        regionTemplate ??= wheel.regions.regionTemplate;
+        regionTemplate ??= wheel.regions.RegionTemplate;
 
         currentWheel = regionTemplate.WorldToRegion(transform.position);
         targetWheelPos = currentWheel;
@@ -43,7 +43,7 @@ public class Walker : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         wheel ??= GameObject.FindGameObjectWithTag("Wheel").GetComponent<Wheel>();
-        regionTemplate ??= wheel.regions.regionTemplate;
+        regionTemplate ??= wheel.regions.RegionTemplate;
 
         var target = regionTemplate.RegionPosition(currentGoalWheel.x, currentGoalWheel.y);
         Gizmos.color = Color.white;

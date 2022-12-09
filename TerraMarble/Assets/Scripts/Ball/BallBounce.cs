@@ -7,8 +7,6 @@ public class BallBounce : MonoBehaviour
 
     private UpdateGravity gravityDir;
 
-    [HideInInspector] public UnityEvent<Collision2D> HitSurface;
-
     private Rigidbody2D rb;
 
     //how much influence of magnitude carries over
@@ -25,8 +23,6 @@ public class BallBounce : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        HitSurface.Invoke(collision);
-
         if (canBounce)
         {
             Bounce(collision.contacts[0].normal);

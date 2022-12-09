@@ -1,51 +1,11 @@
-﻿using NaughtyAttributes;
-using System;
+﻿using System;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace UnityUtility
 {
-    public static class UnityU
-    {
-        /// <summary>
-        /// Sets self to be like target.
-        /// </summary>
-        public static T Copy<T>(this Component _self, T target) where T : Component
-        {
-            var type = _self.GetType();
-            if (type != target.GetType()) return null; // type mis-match
-            var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Default |
-                        BindingFlags.DeclaredOnly;
-            var pinfos = type.GetProperties(flags)
-                .Where(property => property.CustomAttributes
-                    .All(attribute => attribute.AttributeType != typeof(ObsoleteAttribute)))
-                .ToArray();
-
-            foreach (var pinfo in pinfos)
-                if (pinfo.CanWrite)
-                    try
-                    {
-                        pinfo.SetValue(_self, pinfo.GetValue(target, null), null);
-                    }
-                    catch
-                    {
-                    } // In case of NotImplementedException being thrown.
-
-            var finfos = type.GetFields(flags);
-            foreach (var finfo in finfos)
-                finfo.SetValue(_self, finfo.GetValue(target));
-            return _self as T;
-        }
-
-        public static T AddComponent<T>(this GameObject _gameObject, T target) where T : Component
-        {
-            return _gameObject.AddComponent<T>().Copy(target) as T;
-        }
-    }
-
-    public static class Tween
+    public static class TweenUtility
     {
         [Serializable]
         public class AnimCurve
@@ -82,10 +42,12 @@ namespace UnityUtility
                 Speed = _speed;
                 Progress = _progress;
 
-                if (_curveType == CurveType.Linear)
-                    Curve = AnimationCurve.Linear(0, Progress, 1, Duration);
-                else if (_curveType == CurveType.EaseInOut)
-                    Curve = AnimationCurve.EaseInOut(0, Progress, 1, Duration);
+                Curve = _curveType switch
+                {
+                    CurveType.Linear => AnimationCurve.Linear(0, Progress, 1, Duration),
+                    CurveType.EaseInOut => AnimationCurve.EaseInOut(0, Progress, 1, Duration),
+                    _ => Curve
+                };
                 Curve.Evaluate(Progress);
             }
 

@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 2518716902585684224}
   - component: {fileID: 3483135227553100649}
   m_Layer: 0
-  m_Name: Wheel Shadow
+  m_Name: Backup Wheel Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

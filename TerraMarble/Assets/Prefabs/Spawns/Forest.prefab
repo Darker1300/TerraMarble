@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 329861440089529274}
   - component: {fileID: 3843311432104254641}
   - component: {fileID: 7274446228475489826}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Tree, Tiny (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397646456881526835}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -138,10 +138,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2683090624587966540}
+  - component: {fileID: 388916125100886063}
+  - component: {fileID: 2693663592527185687}
   - component: {fileID: 8678023789653398491}
-  m_Layer: 7
+  - component: {fileID: 9182775131186741986}
+  m_Layer: 8
   m_Name: Forest
-  m_TagString: Untagged
+  m_TagString: Forest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,6 +167,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &388916125100886063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563828416788737350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3bdf72aad38d4f49afcd013a2d2bb89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDestroyed: 0
+  DestroyStart:
+    m_PersistentCalls:
+      m_Calls: []
+  DestroyEnd:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &2693663592527185687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563828416788737350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b0f0e2a6a95ff40a8ef6d6fbc3402e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &8678023789653398491
 Animator:
   serializedVersion: 4
@@ -184,6 +218,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &9182775131186741986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563828416788737350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1056afd5e5631df4da20da35bfc9a0b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animGoalIndex: 0
+  animMaxIndex: 0
+  Destroyed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2152491106593146975
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +249,7 @@ GameObject:
   - component: {fileID: 9152684149015135861}
   - component: {fileID: 850674831761503367}
   - component: {fileID: 7270237927064059564}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Tree, Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,7 +445,7 @@ GameObject:
   - component: {fileID: 2464277658633866495}
   - component: {fileID: 5404927609797981524}
   - component: {fileID: 9099631265059484462}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Tree, Tiny (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,7 +460,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2652154559641590972}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15, y: 0.05, z: 0}
+  m_LocalPosition: {x: 0.15, y: 0.05, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -525,7 +576,7 @@ GameObject:
   - component: {fileID: 7663110229555347415}
   - component: {fileID: 1830858076827248866}
   - component: {fileID: 1628675602284816245}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Tree, Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -723,7 +774,7 @@ GameObject:
   - component: {fileID: 1111055637549488759}
   - component: {fileID: 3802811877081278412}
   - component: {fileID: 8037550656923651170}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Tree, Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -919,7 +970,7 @@ GameObject:
   - component: {fileID: 8233570213879977208}
   - component: {fileID: 3302812355941243074}
   - component: {fileID: 6748655787387219895}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Tree, Tiny (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -934,7 +985,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6988999165131037977}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.15, y: 0.05, z: 0}
+  m_LocalPosition: {x: -0.15, y: 0.05, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:

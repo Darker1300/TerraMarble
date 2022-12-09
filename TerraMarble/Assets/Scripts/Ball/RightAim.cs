@@ -87,7 +87,7 @@ public class RightAim : MonoBehaviour
             // GetComponent<Rigidbody2D>().AddRelativeForce(aimDirection.normalized * 100);
             //add and extra force value for our gravity script
             updateGravityScript.stompForceVector = aimDirection * 2;
-            ballState.Stomp = true;
+            ballState.StartStomp();
             Ui.enabled = false;
             aimDirection = Vector2.zero;
         }
