@@ -303,11 +303,15 @@ public class Region : MonoBehaviour
     /// <param name="state">0..1f</param>
     public void SetRegionCollider(float state = 1f)
     {
+        if (RegionCollider != null)
+        {
         RegionCollider.offset = Vector2.down *
                                 Mathf.Lerp(RegionTemplate.Thickness - RegionDisc.Thickness,
                                     RegionTemplate.Thickness - Thickness,
                                     state);
     }
+
+        }
 
     [Button]
     public void TerraformToWater()

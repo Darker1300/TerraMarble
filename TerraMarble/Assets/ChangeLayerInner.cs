@@ -18,11 +18,15 @@ public class ChangeLayerInner : MonoBehaviour
     private Polygon polygon;
     [SerializeField]
     private Color endColor;
+    private void OnEnable()
+    {
+        StartCoroutine(HuffPuff(120, 30f));
+    }
     // Start is called before the first frame update
     void Start()
     {
 
-        StartCoroutine(HuffPuff(120,30f));
+        
        // polygon = GetComponent<Polygon>();
     }
 
@@ -57,6 +61,7 @@ public class ChangeLayerInner : MonoBehaviour
                 yield return null;
             }
             overallTimer = overallTimer + inbetween;
+            this.gameObject.SetActive(false);
         }
     }
 
@@ -86,7 +91,7 @@ public class ChangeLayerInner : MonoBehaviour
         if (other.gameObject.layer != LayerMask.NameToLayer("Inner"))
         {
             //other.transform.up = transform.up;
-            other.GetComponent<Rigidbody2D>().AddForce(force * HuffSpeed * Time.deltaTime);
+            other?.GetComponent<Rigidbody2D>().AddForce(force * HuffSpeed * Time.deltaTime);
             //if (other.gameObject.layer == LayerMask.NameToLayer("Ball"))
             //{
 
