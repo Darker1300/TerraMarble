@@ -62,7 +62,7 @@ public class volcanoeUI : MonoBehaviour
         {
 
             Timer = Timer + Time.deltaTime;
-            float percent = moveCurve.Evaluate(Mathf.Clamp01(Timer / duration));
+            float percent = Mathf.Clamp01(Timer / duration);
 
             Circle.Radius = Mathf.Lerp(start, startExpandVal,percent);
              float change = Mathf.Lerp(0, 1, percent);
@@ -78,7 +78,7 @@ public class volcanoeUI : MonoBehaviour
             Timer = Timer + Time.deltaTime;
             float percent = moveCurve.Evaluate( Mathf.Clamp01(Timer / duration));
 
-            Circle.Radius = Mathf.Lerp(startExpandVal, start, percent);
+            Circle.Radius = Mathf.Lerp(startExpandVal, start, moveCurve.Evaluate( percent));
             float change = Mathf.Lerp(1, 0, percent);
             transform.localPosition = new Vector3(0, change, 0);
 
