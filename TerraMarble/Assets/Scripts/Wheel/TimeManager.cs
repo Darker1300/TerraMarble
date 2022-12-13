@@ -24,16 +24,17 @@ public class TimeManager : MonoBehaviour
     [Header("Night Effects")] [SerializeField]
     private Light2D[] lights;
 
-    [SerializeField] private ParticleSystem starsParticles;
-    [SerializeField] private Material starsMaterial;
+    [SerializeField] private ParticleSystem starsParticles = null;
     [Header("Debug")] [SerializeField] private LightCycle lightCycle = null;
     [SerializeField] private Volume nightVolume = null;
 
+    private Material starsMaterial = null;
 
     private void Awake()
     {
         lightCycle ??= FindObjectOfType<LightCycle>();
         nightVolume ??= Camera.main.gameObject.GetComponent<Volume>();
+        starsMaterial ??= starsParticles?.GetComponent<ParticleSystemRenderer>()?.material;
     }
 
     private void Update()
@@ -62,6 +63,8 @@ public class TimeManager : MonoBehaviour
 
         if (starsParticles)
         {
+            if (!starsMaterial)
+                starsMaterial ??= starsParticles?.GetComponent<ParticleSystemRenderer>()?.material;
             if (starsMaterial)
             {
                 Color starsMaterialTint = starsMaterial.color;
