@@ -31,12 +31,19 @@ public class VolcanoeMain : MonoBehaviour
 
 
   
-    public void ShootVolcanicRock(bool start,int stage)
+    public void ShootVolcanicRock(bool start,int stage,float explosionYheightStart)
     {
-        GameObject Rock = pooler.SpawnFromPool(transform.position, null, true);
-        //Rock.gameObject.SetActive(true);
-
-        Rock.GetComponent<Rigidbody2D>().AddForce(transform.up * speed );
+        if (start)
+        {
+            GameObject Rock = pooler.SpawnFromPool(transform.position + transform.up * explosionYheightStart , null, false);
+            Rock.transform.up = transform.up;
+            
+            //Rock.transform.position = new Vector3(Rock.transform.position.x,Rock.transform.position.y + explosionYheightStart+10,Rock.transform.position.z);
+            //Rock.gameObject.SetActive(true);
+            //Rock.transform.Translate(,Space.World );
+            Rock.GetComponent<Rigidbody2D>().AddForce(transform.up * speed);
+        }
+        
     }
 
 

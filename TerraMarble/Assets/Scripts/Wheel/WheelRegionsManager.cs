@@ -4,7 +4,7 @@ using NaughtyAttributes;
 using System.Linq;
 using Newtonsoft.Json.Converters;
 using Shapes;
-using UnityEditor.AnimatedValues;
+
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityUtility;

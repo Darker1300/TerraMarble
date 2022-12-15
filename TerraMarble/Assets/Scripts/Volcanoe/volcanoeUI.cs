@@ -8,9 +8,15 @@ public class volcanoeUI : MonoBehaviour
     [SerializeField]
     private float [] Height;
     [SerializeField]
+    private float [] RockSpawnOffset;
+
+    [SerializeField]
     public List<GameObject> volcanoes = new List<GameObject>(); 
     [SerializeField]
     private float moveUpAmount;
+
+    [SerializeField]
+    private float startVolcanoYPos = -0.35f;
     //Start position 
     private Vector3 startPosition;
     //end position 
@@ -19,7 +25,7 @@ public class volcanoeUI : MonoBehaviour
     //move animation curve
     public AnimationCurve moveCurve;
     [SerializeField]
-    float HitAmount;
+    int HitAmount;
     [SerializeField]
     int VolcanoStage;
 
@@ -43,13 +49,15 @@ public class volcanoeUI : MonoBehaviour
 
     private Disc Circle;
     public bool Test;
-   
+    public bool debug;
     public delegate void ExploPercent(int stage,float ExploPercent);
     public event ExploPercent exploEvent;
-    public delegate void ExploStartEnd(bool start,int stage);
+    public delegate void ExploStartEnd(bool start,int stage,float volcanoExplosionHeightOffset);
     public event ExploStartEnd exploStartEndEvent;
     public GameObject InhaleExhale;
     private Region region = null;
+    //
+    
 
     // Start is called before the first frame update
     void Start()
@@ -79,13 +87,21 @@ public class volcanoeUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (debug)
+        {
+            if (Test)
+            {
+                StartCoroutine(buildingUp());
+                Test = false;
+            }
+        }
         
     }
     public void Stomp()
     {
-        if ( HitAmount < 4)
+        if ( HitAmount <= 3 )
         {
-            HitAmount++;
+           // HitAmount++;
             StartCoroutine(buildingUp());
            
         }
@@ -95,7 +111,7 @@ public class volcanoeUI : MonoBehaviour
         
         float Timer = 0f;
         //break time 
-
+        HitAmount++;
         Circle.enabled = true;
         while (Timer <= duration)
         {
@@ -104,14 +120,16 @@ public class volcanoeUI : MonoBehaviour
             float percent = Mathf.Clamp01(Timer / duration);
 
             Circle.Radius = Mathf.Lerp(DefaultSize, startExpandVal,percent);
-             float change = Mathf.Lerp(0, 1, percent);
+             float change = Mathf.Lerp(startVolcanoYPos, Height[VolcanoStage], percent);
             transform.localPosition = new Vector3(0,  change, 0);
+
+
 
 
             yield return null;
         }
         Timer = 0;
-        if (HitAmount != 3)
+        if (HitAmount < 3)
         {
 
 
@@ -122,36 +140,44 @@ public class volcanoeUI : MonoBehaviour
                 float percent = moveCurve.Evaluate(Mathf.Clamp01(Timer / duration));
 
                 Circle.Radius = Mathf.Lerp(startExpandVal, DefaultSize, moveCurve.Evaluate(percent));
-                float change = Mathf.Lerp(1, 0, percent);
+                float change = Mathf.Lerp( Height[VolcanoStage],startVolcanoYPos , percent);
                 transform.localPosition = new Vector3(0, change, 0);
 
 
                 yield return null;
             }
+
         }
         else // explode
         {
             VolcanoStage++;
             Circle.enabled = false;
             //check 
-            SetVolcanoe(VolcanoStage );
-            exploStartEndEvent?.Invoke(true,VolcanoStage);
+
+           
+            exploStartEndEvent?.Invoke(true,VolcanoStage, RockSpawnOffset[VolcanoStage-1]);
             while (Timer <= XploDuration)
             {
                 Timer = Timer + Time.deltaTime;
                 float percent = moveCurve.Evaluate(Mathf.Clamp01(Timer / XploDuration));
                 exploEvent?.Invoke(VolcanoStage, percent);
+
+
                 yield return null;
 
 
             }
-            exploStartEndEvent?.Invoke(false, VolcanoStage);
+            SetVolcanoe(VolcanoStage);
 
+            exploStartEndEvent?.Invoke(false, VolcanoStage, RockSpawnOffset[VolcanoStage - 1]);
 
             HitAmount = 0;
+            InhaleExhale.SetActive(true);
         }
-        InhaleExhale.SetActive(true);
+        
+        
         Circle.Radius = startExpandVal;
+        Circle.transform.position = new Vector3(0, startVolcanoYPos,0);
         //CHECK HERE IF YOU WANT TO DISABLE THIS VOLCANOE OR QUE ITS CHANGE TO rOCK
     }
 

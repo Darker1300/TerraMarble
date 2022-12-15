@@ -11,7 +11,7 @@
                     "id": "b20cce49-13e1-4ffc-a5f8-ff94c8cbd658",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": "MouseDrag",
+                    "interactions": "",
                     "initialStateCheck": true
                 },
                 {
@@ -27,53 +27,9 @@
             "bindings": [
                 {
                     "name": "DragLeft",
-                    "id": "2ebf1406-5d57-45ae-a810-a99357aac7a4",
-                    "path": "MouseDrag",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DragLeft",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Button",
-                    "id": "253740da-1bbf-4b73-ace9-1ec219b2530d",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DragLeft",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Axis1",
-                    "id": "276e57ea-3750-4923-953a-1cb1a74409ca",
-                    "path": "<Mouse>/position/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DragLeft",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Axis2",
-                    "id": "528f337c-5e1b-42ab-b025-4ef28955635a",
-                    "path": "<Mouse>/position/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DragLeft",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "DragLeft",
                     "id": "db0c39dd-84d5-4ea2-b93d-338c4258d768",
                     "path": "MouseDrag",
-                    "interactions": "",
+                    "interactions": "MouseDrag",
                     "processors": "",
                     "groups": "",
                     "action": "DragLeft",
@@ -83,10 +39,10 @@
                 {
                     "name": "Button",
                     "id": "5a969369-ba92-4838-8c4c-2dae2a5e081e",
-                    "path": "<Touchscreen>/primaryTouch/press",
+                    "path": "<Touchscreen>/Press",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Touch",
+                    "groups": "",
                     "action": "DragLeft",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -97,7 +53,7 @@
                     "path": "<Touchscreen>/position/x",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Touch",
+                    "groups": "",
                     "action": "DragLeft",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -108,7 +64,51 @@
                     "path": "<Touchscreen>/position/y",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Touch",
+                    "groups": "",
+                    "action": "DragLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "DragLeft",
+                    "id": "1b69c8ef-5661-478b-bf56-0a6e2b7a90c5",
+                    "path": "MouseDrag",
+                    "interactions": "MouseDrag",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragLeft",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Button",
+                    "id": "bacb6e3f-96f8-46bf-a529-9b758dcbcda7",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Axis1",
+                    "id": "5a870dee-57fb-4ce2-b48f-a289e5aefda0",
+                    "path": "<Mouse>/position/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Axis2",
+                    "id": "c62f2867-2342-4da5-bdfd-427ebfe44aae",
+                    "path": "<Mouse>/position/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "DragLeft",
                     "isComposite": false,
                     "isPartOfComposite": true
