@@ -520,7 +520,7 @@ MonoBehaviour:
   RockSpawnOffset:
   - 0.1
   - 0.75
-  - 1.61
+  - 2.68
   volcanoes:
   - {fileID: 9073341853297827664}
   - {fileID: 9073341852592247168}
