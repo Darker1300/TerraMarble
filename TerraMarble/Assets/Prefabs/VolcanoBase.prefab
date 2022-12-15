@@ -87,7 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.52156866, g: 0.61960787, b: 0.6431373, a: 0.7294118}
+  color: {r: 0.53333336, g: 0.6, b: 0.62352943, a: 0.8509804}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -394,7 +394,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9073341853146364884}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.38, z: 0}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -415,7 +415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.745283, g: 0.4253738, b: 0.6474284, a: 1}
+  color: {r: 0.745283, g: 0.4253738, b: 0.6474284, a: 0.6509804}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -427,7 +427,7 @@ MonoBehaviour:
   stencilRefID: 0
   stencilReadMask: 255
   stencilWriteMask: 255
-  type: 0
+  type: 2
   colorMode: 0
   colorOuterStart: {r: 1, g: 1, b: 1, a: 1}
   colorInnerEnd: {r: 1, g: 1, b: 1, a: 1}
@@ -436,9 +436,9 @@ MonoBehaviour:
   angUnitInput: 1
   angRadiansStart: 0
   angRadiansEnd: 2.3561945
-  radius: 0.26
+  radius: 0.3
   radiusSpace: 0
-  thickness: 0.5
+  thickness: 0.29
   thicknessSpace: 0
   arcEndCaps: 0
   matchDashSpacingToSize: 1
@@ -479,7 +479,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 35eb9f982684e7745b8ef050ccf0604b, type: 2}
+  - {fileID: 2100000, guid: d72c5e047d4188246887ffb9389e25a7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -517,11 +517,16 @@ MonoBehaviour:
   - 0.1
   - 0.3
   - 2
+  RockSpawnOffset:
+  - 0.1
+  - 0.75
+  - 2.68
   volcanoes:
   - {fileID: 9073341853297827664}
   - {fileID: 9073341852592247168}
   - {fileID: 9073341853924618610}
   moveUpAmount: 2
+  startVolcanoYPos: -0.35
   moveCurve:
     serializedVersion: 2
     m_Curve:
@@ -548,7 +553,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   HitAmount: 0
   VolcanoStage: 0
-  DefaultSize: 0
+  DefaultSize: -0.35
   startExpandVal: 0.6
   endExpandVal: 3
   expandEnd:
@@ -578,6 +583,7 @@ MonoBehaviour:
   duration: 0.4
   XploDuration: 5
   Test: 1
+  debug: 0
   InhaleExhale: {fileID: 9073341853017489394}
 --- !u!1 &9073341853166487253
 GameObject:
@@ -724,7 +730,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.5234959, g: 0.6186681, b: 0.6415094, a: 1}
+  color: {r: 0.53333336, g: 0.6, b: 0.62352943, a: 0.8509804}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -873,7 +879,7 @@ Transform:
   - {fileID: 9073341853017489393}
   - {fileID: 9073341853146364907}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9073341853924124930
 MonoBehaviour:
@@ -887,7 +893,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a337a1c2a9855d49be731c4b52002ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VolcanoStagesObj: []
+  VolcanoStagesObj:
+  - {fileID: 9073341853297827664}
+  - {fileID: 9073341852592247168}
+  - {fileID: 9073341853924618610}
   pooler: {fileID: 9073341853924124929}
   colors: []
   speed: 28.89
@@ -1013,7 +1022,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.5234959, g: 0.6186681, b: 0.6415094, a: 0.7294118}
+  color: {r: 0.53333336, g: 0.6, b: 0.62352943, a: 0.8509804}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
