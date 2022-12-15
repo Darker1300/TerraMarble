@@ -28,6 +28,7 @@ public class volcanoeUI : MonoBehaviour
     int HitAmount;
     [SerializeField]
     int VolcanoStage;
+    private bool isErupting;
 
     //start expand to(meaning how much it will expand to , to start with )
     [SerializeField]
@@ -99,7 +100,7 @@ public class volcanoeUI : MonoBehaviour
     }
     public void Stomp()
     {
-        if ( HitAmount <= 3 )
+        if ( HitAmount <= 3 && !isErupting)
         {
            // HitAmount++;
             StartCoroutine(buildingUp());
@@ -154,8 +155,8 @@ public class volcanoeUI : MonoBehaviour
             Circle.enabled = false;
             //check 
 
-           
-            exploStartEndEvent?.Invoke(true,VolcanoStage, RockSpawnOffset[VolcanoStage-1]);
+            isErupting = true;
+             exploStartEndEvent?.Invoke(true,VolcanoStage, RockSpawnOffset[VolcanoStage-1]);
             while (Timer <= XploDuration)
             {
                 Timer = Timer + Time.deltaTime;
@@ -168,7 +169,7 @@ public class volcanoeUI : MonoBehaviour
 
             }
             SetVolcanoe(VolcanoStage);
-
+            isErupting = false;
             exploStartEndEvent?.Invoke(false, VolcanoStage, RockSpawnOffset[VolcanoStage - 1]);
 
             HitAmount = 0;
