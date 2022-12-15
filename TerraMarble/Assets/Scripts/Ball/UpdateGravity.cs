@@ -3,9 +3,6 @@ using UnityEngine.Events;
 
 public class UpdateGravity : MonoBehaviour
 {
-    public Vector3 wheelDir;
-    public Vector3 stompForceVector;
-
     public float maxGravityDist = 132.0f;
     public float maxGravity = 35.0f;
 
@@ -14,6 +11,8 @@ public class UpdateGravity : MonoBehaviour
     private Rigidbody2D rb;
 
     [SerializeField] private float stompPower = 38f;
+    public Vector3 stompForceVector;
+    public Vector3 wheelDir;
 
     private void Start()
     {

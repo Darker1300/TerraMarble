@@ -36,7 +36,7 @@ public class ForestController : MonoBehaviour
 
     void OnBallHitEnter(Region.RegionHitInfo info)
     {
-        if (info.ballState.Stomp)
+        if (info.ballState is not null && info.ballState.Stomp)
             OnBallStompEnter(info);
     }
 
