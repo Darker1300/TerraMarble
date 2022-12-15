@@ -29,6 +29,8 @@ public class Region : MonoBehaviour
         Dirt,
         Grass,
         Forest,
+        Mountain,
+        Volcano,
         SIZE
     }
 

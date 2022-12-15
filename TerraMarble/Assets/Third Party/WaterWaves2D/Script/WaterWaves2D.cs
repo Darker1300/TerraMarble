@@ -347,10 +347,15 @@ public class WaterWaves2D:MonoBehaviour{
 	#region Impact
 
 	private void OnTriggerEnter2D(Collider2D other)
-    {
+	{
+        // Ignore Trigger colliders
         if (other.isTrigger) return;
 
-        Vector2 closest=new Vector2();
+        // Ignore colliders without Rigidbody2D
+        Rigidbody2D otherRb = other.GetComponent<Rigidbody2D>();
+        if (otherRb == null) return;
+
+		Vector2 closest=new Vector2();
 		#if UNIT2019_0_1_OR_NEWER
 			closest=other.ClosestPoint(other.transform.position)
 		#else
@@ -359,15 +364,20 @@ public class WaterWaves2D:MonoBehaviour{
 		StartCoroutine(DelayedImpact(
 			closest,
 			(Vector2)other.bounds.extents,
-			other.GetComponent<Rigidbody2D>().velocity,
+            otherRb.velocity,
 			0.1f
 		));
 		PlayEnterSound();
 	}
 	
 	private void OnTriggerExit2D(Collider2D other)
-    {
+	{
+        // Ignore Trigger colliders
         if (other.isTrigger) return;
+
+        // Ignore colliders without Rigidbody2D
+        Rigidbody2D otherRb = other.GetComponent<Rigidbody2D>();
+        if (otherRb == null) return;
 
 		Vector2 closest=new Vector2();
 		#if UNIT2019_0_1_OR_NEWER
@@ -378,7 +388,7 @@ public class WaterWaves2D:MonoBehaviour{
 		Impact(
 			closest,
 			(Vector2)other.bounds.extents,
-			other.GetComponent<Rigidbody2D>().velocity
+            otherRb.velocity
 		);
 		PlayExitSound();
 	}

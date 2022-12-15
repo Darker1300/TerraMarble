@@ -7,42 +7,37 @@ using UnityEngine.Rendering;
 
 public class TimeManager : MonoBehaviour
 {
-
-    [Header("Config")]
-    [CurveRange(0f, 0f, 1f, 1f)]
+    [Header("Config")] [CurveRange(0f, 0f, 1f, 1f)]
     public AnimationCurve dayCurve;
 
-    [Range(0f, 1f)]
-    [OnValueChanged("UpdateSunTimeEffects")]
+    [Range(0f, 1f)] [OnValueChanged("UpdateSunTimeEffects")]
     public float sunTimeCurrent = 0f;
 
     public float timeSpeed = 0.05f;
 
-    [CurveRange(0f, 0f, 1f, 1f)]
-    public AnimationCurve cameraEffectCurve;
+    [CurveRange(0f, 0f, 1f, 1f)] public AnimationCurve cameraEffectCurve;
 
     public bool advancingDay = true;
 
-    [Header("Data")]
-    [Range(0f, 2f)]
-    public float realDayTime = 0f;
+    [Header("Data")] [Range(0f, 2f)] public float realDayTime = 0f;
 
-    [Header("Night Effects")]
-    [SerializeField] private Light2D[] lights;
-    [SerializeField] private ParticleSystem starsParticles;
-    [SerializeField] private Material starsMaterial;
-    [Header("Debug")]
-    [SerializeField] private LightCycle lightCycle = null;
+    [Header("Night Effects")] [SerializeField]
+    private Light2D[] lights;
+
+    [SerializeField] private ParticleSystem starsParticles = null;
+    [Header("Debug")] [SerializeField] private LightCycle lightCycle = null;
     [SerializeField] private Volume nightVolume = null;
 
+    private Material starsMaterial = null;
 
-    void Awake()
+    private void Awake()
     {
-        lightCycle ??= GameObject.FindObjectOfType<LightCycle>();
+        lightCycle ??= FindObjectOfType<LightCycle>();
         nightVolume ??= Camera.main.gameObject.GetComponent<Volume>();
+        starsMaterial ??= starsParticles?.GetComponent<ParticleSystemRenderer>()?.material;
     }
 
-    void Update()
+    private void Update()
     {
         if (!advancingDay) return;
 
@@ -55,28 +50,39 @@ public class TimeManager : MonoBehaviour
 
     private void UpdateSunTimeEffects()
     {
-        lightCycle ??= GameObject.FindObjectOfType<LightCycle>();
+        lightCycle ??= FindObjectOfType<LightCycle>();
         nightVolume ??= Camera.main.gameObject.GetComponent<Volume>();
 
-        lightCycle.time = sunTimeCurrent;
+        if (lightCycle) lightCycle.time = sunTimeCurrent;
         float nightWeight = cameraEffectCurve.Evaluate(sunTimeCurrent);
-        nightVolume.weight = nightWeight;
+        if (nightVolume) nightVolume.weight = nightWeight;
 
         foreach (Light2D light2D in lights)
-            light2D.color.a = nightWeight;
+            if (light2D)
+                light2D.color.a = nightWeight;
 
-        Color starsMaterialTint = starsMaterial.color; starsMaterialTint.a = nightWeight;
-        starsMaterial.color = starsMaterialTint;
+        if (starsParticles)
+        {
+            if (!starsMaterial)
+                starsMaterial ??= starsParticles?.GetComponent<ParticleSystemRenderer>()?.material;
+            if (starsMaterial)
+            {
+                Color starsMaterialTint = starsMaterial.color;
+                starsMaterialTint.a = nightWeight;
+                starsMaterial.color = starsMaterialTint;
+            }
 
-        if (sunTimeCurrent <= 0f && !starsParticles.isPaused)
-            starsParticles.Pause();
-        else if (sunTimeCurrent > 0f && starsParticles.isPaused)
-            starsParticles.Play();
+            if (sunTimeCurrent <= 0f && !starsParticles.isPaused)
+                starsParticles.Pause();
+            else if (sunTimeCurrent > 0f && starsParticles.isPaused)
+                starsParticles.Play();
+        }
     }
 
     private void OnApplicationQuit()
     {
-        Color starsMaterialTint = starsMaterial.color; starsMaterialTint.a = 1f;
+        Color starsMaterialTint = starsMaterial.color;
+        starsMaterialTint.a = 1f;
         starsMaterial.color = starsMaterialTint;
     }
 }

@@ -27,6 +27,8 @@ public class RightAim : MonoBehaviour
     }
     public tapState STATE;
 
+    [SerializeField] private bool DoDebug = false;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -327,9 +329,9 @@ public class RightAim : MonoBehaviour
             ////////////////////////////////////////////
 
             if (trueAngle < -1.0f)
-                Debug.Log("angle left" + trueAngle);
+                if (DoDebug) Debug.Log("angle left" + trueAngle);
             if (trueAngle > 1.0f)
-                Debug.Log("angle right" + trueAngle);
+                if (DoDebug) Debug.Log("angle right" + trueAngle);
 
 
             return isCorrectAngle;
