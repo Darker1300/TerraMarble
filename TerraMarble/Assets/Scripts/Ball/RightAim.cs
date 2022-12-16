@@ -28,6 +28,9 @@ public class RightAim : MonoBehaviour
     public tapState STATE;
 
     [SerializeField] private bool DoDebug = false;
+    [SerializeField]
+    [Range(0.0f,1)]
+    private float AimSensitivity= 0.5f;
 
     // Start is called before the first frame update
     private void Start()
@@ -192,7 +195,7 @@ public class RightAim : MonoBehaviour
         if (realAngle != 0)
         {
             //get one vector from both drag angles
-            aimDirection = RotateToAngle(aimDirection, realAngle);
+            aimDirection = RotateToAngle(aimDirection, realAngle* AimSensitivity);
             //transform.up = -updateGravityScript.direction;
 
 

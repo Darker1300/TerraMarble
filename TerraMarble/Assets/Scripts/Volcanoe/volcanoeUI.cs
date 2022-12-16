@@ -6,12 +6,12 @@ using System;
 public class volcanoeUI : MonoBehaviour
 {
     [SerializeField]
-    private float [] Height;
+    private float[] Height;
     [SerializeField]
-    private float [] RockSpawnOffset;
+    private float[] RockSpawnOffset;
 
     [SerializeField]
-    public List<GameObject> volcanoes = new List<GameObject>(); 
+    public List<GameObject> volcanoes = new List<GameObject>();
     [SerializeField]
     private float moveUpAmount;
 
@@ -35,7 +35,7 @@ public class volcanoeUI : MonoBehaviour
     private float DefaultSize;
 
     [SerializeField]
-    private float startExpandVal= 0.2f;
+    private float startExpandVal = 0.2f;
     //end size;
     [SerializeField]
     private float endExpandVal = 3;
@@ -51,18 +51,33 @@ public class volcanoeUI : MonoBehaviour
     private Disc Circle;
     public bool Test;
     public bool debug;
-    public delegate void ExploPercent(int stage,float ExploPercent);
+    public delegate void ExploPercent(int stage, float ExploPercent);
     public event ExploPercent exploEvent;
-    public delegate void ExploStartEnd(bool start,int stage,float volcanoExplosionHeightOffset);
+    public delegate void ExploStartEnd(bool start, int stage, float volcanoExplosionHeightOffset);
     public event ExploStartEnd exploStartEndEvent;
     public GameObject InhaleExhale;
     private Region region = null;
+    public ObjectPooler explosion;
+    public ObjectPooler explosionSmoke;
+
+
+    [Header("Space Inbetween FireBalls")]
+    [SerializeField]
+    private float FireBallDelay = 0.4f;
+    [SerializeField]
+    private int FireballsPerEruption = 3;
     //
-    
+
+    private ObjectPooler fireBallPool;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        fireBallPool = GetComponent<ObjectPooler>();
+        fireBallPool.CreatePool(18);
+        explosion.CreatePool(10);
+        explosionSmoke.CreatePool(10);
 
         startPosition = new Vector3(0, -4, 0);
         Circle = GetComponent<Disc>();
@@ -96,20 +111,21 @@ public class volcanoeUI : MonoBehaviour
                 Test = false;
             }
         }
-        
+
     }
     public void Stomp()
     {
-        if ( HitAmount <= 3 && !isErupting)
+        if (HitAmount <= 3 && !isErupting)
         {
-           // HitAmount++;
+            // HitAmount++;
             StartCoroutine(buildingUp());
-           
+
         }
     }
+
     public IEnumerator buildingUp()
     {
-        
+
         float Timer = 0f;
         //break time 
         HitAmount++;
@@ -120,9 +136,9 @@ public class volcanoeUI : MonoBehaviour
             Timer = Timer + Time.deltaTime;
             float percent = Mathf.Clamp01(Timer / duration);
 
-            Circle.Radius = Mathf.Lerp(DefaultSize, startExpandVal,percent);
-             float change = Mathf.Lerp(startVolcanoYPos, Height[VolcanoStage], percent);
-            transform.localPosition = new Vector3(0,  change, 0);
+            Circle.Radius = Mathf.Lerp(DefaultSize, startExpandVal, percent);
+            float change = Mathf.Lerp(startVolcanoYPos, Height[VolcanoStage], percent);
+            transform.localPosition = new Vector3(0, change, 0);
 
 
 
@@ -141,7 +157,7 @@ public class volcanoeUI : MonoBehaviour
                 float percent = moveCurve.Evaluate(Mathf.Clamp01(Timer / duration));
 
                 Circle.Radius = Mathf.Lerp(startExpandVal, DefaultSize, moveCurve.Evaluate(percent));
-                float change = Mathf.Lerp( Height[VolcanoStage],startVolcanoYPos , percent);
+                float change = Mathf.Lerp(Height[VolcanoStage], startVolcanoYPos, percent);
                 transform.localPosition = new Vector3(0, change, 0);
 
 
@@ -156,39 +172,68 @@ public class volcanoeUI : MonoBehaviour
             //check 
 
             isErupting = true;
-             exploStartEndEvent?.Invoke(true,VolcanoStage, RockSpawnOffset[VolcanoStage-1]);
+
+            //fireBallSpawn
+            for (int i = 0; i < FireballsPerEruption; i++)
+            {
+                Explosion(Vector3.up * RockSpawnOffset[VolcanoStage - 1]);
+                GameObject fireball = fireBallPool.SpawnFromPool(transform.position + transform.up * RockSpawnOffset[VolcanoStage - 1], null, false);
+
+                yield return new WaitForSeconds(FireBallDelay);
+            }
+            Explosion(Vector3.up * RockSpawnOffset[VolcanoStage - 1]);
+            exploStartEndEvent?.Invoke(true, VolcanoStage, RockSpawnOffset[VolcanoStage - 1]);
+            SetVolcanoe(VolcanoStage);
+
             while (Timer <= XploDuration)
             {
                 Timer = Timer + Time.deltaTime;
                 float percent = moveCurve.Evaluate(Mathf.Clamp01(Timer / XploDuration));
                 exploEvent?.Invoke(VolcanoStage, percent);
 
+                Debug.Log("fireball delay result " + (Mathf.Abs(percent % FireBallDelay)));
+
+
+
+
 
                 yield return null;
 
 
             }
-            SetVolcanoe(VolcanoStage);
+           
             isErupting = false;
             exploStartEndEvent?.Invoke(false, VolcanoStage, RockSpawnOffset[VolcanoStage - 1]);
 
             HitAmount = 0;
             InhaleExhale.SetActive(true);
         }
-        
-        
+
+
         Circle.Radius = startExpandVal;
-        Circle.transform.position = new Vector3(0, startVolcanoYPos,0);
+        Circle.transform.position = new Vector3(0, startVolcanoYPos, 0);
         //CHECK HERE IF YOU WANT TO DISABLE THIS VOLCANOE OR QUE ITS CHANGE TO rOCK
     }
+    public void Explosion(Vector3 height)
+    {
 
+        GameObject gg = explosion.SpawnFromPool(transform.position + transform.up * RockSpawnOffset[VolcanoStage - 1], null, false);
+        GameObject smoke = explosionSmoke.SpawnFromPool(transform.position + transform.up * RockSpawnOffset[VolcanoStage - 1], null, false);
+
+        gg.transform.localScale = new Vector3(2, 2, 2);
+        smoke.transform.localScale = new Vector3(2,2,2);
+      
+        
+
+        //explosion.GetComponent<ParticleSystem>().Play();
+    }
     private void SetVolcanoe(int volcanoStage)
     {
         switch (volcanoStage)
         {
             case 1:
                 //stage is indexer of height value
-                moveUpAmount = Height[volcanoStage-1];
+                moveUpAmount = Height[volcanoStage - 1];
                 //actually 2nd stage
                 volcanoes[1].SetActive(true);
                 volcanoes[0].SetActive(false);
@@ -196,19 +241,19 @@ public class volcanoeUI : MonoBehaviour
 
             case 2:
                 //stage is indexer of height value
-                moveUpAmount = Height[volcanoStage-1];
+                moveUpAmount = Height[volcanoStage - 1];
                 //actually 3rd stage
                 volcanoes[2].SetActive(true);
                 volcanoes[1].SetActive(false);
                 break;
             case 3:
                 //stage is indexer of height value
-                moveUpAmount = Height[volcanoStage -1 ];
+                moveUpAmount = Height[volcanoStage - 1];
                 //actually 1st stage
                 volcanoes[0].SetActive(true);
                 volcanoes[2].SetActive(false);
                 break;
         }
-        
+
     }
 }
