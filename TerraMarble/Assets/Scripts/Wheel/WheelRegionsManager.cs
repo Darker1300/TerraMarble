@@ -34,6 +34,9 @@ public class WheelRegionsManager : MonoBehaviour
 
     [Header("Config")] public Transform regionsParent = null;
 
+    public LayerMask surfaceLayer;
+    public LayerMask wheelLayer;
+
     public RegionConfigs configs;
 
     [Header("Data")]
@@ -85,6 +88,9 @@ public class WheelRegionsManager : MonoBehaviour
             InitRegionTemplate();
 
         if (configs.SetupData.Count > 0) configs.Initialise();
+        
+        if (surfaceLayer.value == 0) surfaceLayer = LayerMask.NameToLayer("Surface");
+        if (wheelLayer.value == 0) wheelLayer = LayerMask.NameToLayer("Wheel");
     }
 
     [Button]
@@ -160,5 +166,50 @@ public class WheelRegionsManager : MonoBehaviour
     public Region GetClosestRegion(Vector2 _worldPos)
     {
         return regions[WorldToRegionIndex(_worldPos)];
+    }
+
+
+    public Region.RegionHitInfo ProcessWheelHit(Collision2D collision, BallStateTracker ballState)
+    {
+        bool hitSurfaceObj = IsHitSurfaceObj(collision);
+        bool hitRegion = IsHitRegion(collision);
+
+        if (hitSurfaceObj || hitRegion)
+        {
+            Region.RegionHitInfo info = new();
+
+            // Find Region from Surface Object
+            Region regionSearch = collision.collider.GetComponentInParent<Region>();
+
+            // Alternative Find region
+            if (regionSearch == null) // if failed, find Region from contact point
+            {
+                Vector2 p = collision.contactCount > 0  // use Contact.point if possible
+                    ? collision.GetContact(0).point // contact position
+                    : transform.position; // Ball position
+                regionSearch = GetClosestRegion(p);
+            }
+
+            if (hitSurfaceObj)
+                info.surfaceObj = collision.collider.GetComponentInParent<SurfaceObject>();
+            else info.surfaceObj = null;
+
+            info.ballState = ballState;
+            info.collision = collision;
+            info.region = regionSearch;
+            return info;
+        }
+
+        return null;
+    }
+
+    private bool IsHitSurfaceObj(Collision2D collision)
+    {
+        return collision.collider.gameObject.layer == surfaceLayer;
+    }
+
+    private bool IsHitRegion(Collision2D collision)
+    {
+        return collision.collider.gameObject.layer == wheelLayer;
     }
 }
