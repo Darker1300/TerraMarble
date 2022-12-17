@@ -67,14 +67,14 @@ public class volcanoeUI : MonoBehaviour
     [SerializeField]
     private int FireballsPerEruption = 3;
     //
-
+    [SerializeField]
     private ObjectPooler fireBallPool;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        fireBallPool = GetComponent<ObjectPooler>();
+       // fireBallPool = GetComponent<ObjectPooler>();
         fireBallPool.CreatePool(18);
         explosion.CreatePool(10);
         explosionSmoke.CreatePool(10);
