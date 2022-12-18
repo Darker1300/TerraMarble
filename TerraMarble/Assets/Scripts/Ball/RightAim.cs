@@ -193,8 +193,23 @@ public class RightAim : MonoBehaviour
         }
         if (!aimReAdjust)
         {
-            aimDirection = dragDirection;
-            linePosition = transform.position + (Vector3)(aimDirection * 30);
+           
+
+            //if Forward do nothing
+            //if not forward
+            if (Vector2.Dot((Vector2)updateGravityScript.wheelDir.normalized, dragDirection) <= 0)
+            {
+                aimDirection = -dragDirection;
+                linePosition = transform.position + (Vector3)(aimDirection * 30);
+
+            }
+            else//NORMAL DRAG FORWARD
+            {
+
+                aimDirection = dragDirection;
+                linePosition = transform.position + (Vector3)(aimDirection * 30);
+            }
+
         }
         else
         {
