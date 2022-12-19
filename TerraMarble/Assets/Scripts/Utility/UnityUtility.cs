@@ -1,10 +1,10 @@
-﻿using NaughtyAttributes;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.Events;
+using Object = UnityEngine.Object;
 
 namespace UnityUtility
 {
@@ -47,7 +47,8 @@ namespace UnityUtility
 
 
         ///   <para>Returns transform with tag or any of its children. Works recursively.</para>
-        public static List<Transform> FindChildrenWithTag(this Transform parent, string tag, List<Transform> results = null)
+        public static List<Transform> FindChildrenWithTag(this Transform parent, string tag,
+            List<Transform> results = null)
         {
             if (results == null) results = new List<Transform>();
 
@@ -59,8 +60,10 @@ namespace UnityUtility
                 Transform child = parent.GetChild(i);
                 FindChildrenWithTag(child, tag, results);
             }
+
             return results;
         }
+
         /// <summary>
         ///   <para>Returns transform with tag or the first of its children with the tag. Works recursively.</para>
         /// </summary>
@@ -90,8 +93,10 @@ namespace UnityUtility
                     return child;
                 return FindChildOfParentWithName(child.parent, name);
             }
+
             return null;
         }
+
         /// <summary>
         ///   <para>Finds the first transform that has a parent with a matching tag, returning the parent's child. Works recursively.</para>
         /// </summary>
@@ -104,6 +109,24 @@ namespace UnityUtility
                 return FindChildOfParentWithTag(child.parent, tag);
             }
             return null;
+        }
+
+        public static Coroutine StartCoroutine(this MonoBehaviour mb, (object, Func<object, YieldInstruction>) funcs)
+        {
+            return mb.StartCoroutine(CoroutineGroup(new (object, Func<object, YieldInstruction>)[] { funcs }));
+        }
+
+        public static Coroutine StartCoroutine(this MonoBehaviour mb, params (object, Func<object, YieldInstruction>)[] funcs)
+        {
+            return mb.StartCoroutine(CoroutineGroup(funcs));
+        }
+
+        private static IEnumerator CoroutineGroup((object, Func<object, YieldInstruction>)[] funcs)
+        {
+            foreach (var func in funcs)
+            {
+                yield return func.Item2.Invoke(func.Item1);
+            }
         }
     }
 

@@ -57,11 +57,13 @@ public class WheelRegionsManager : MonoBehaviour
         set => regionTemplate = value;
     }
 
-    public Region this[int key] => regions[key];
+    public Region this[int key]
+        => regions[key];
 
-    public void SetRegions(Region[] _regions)
+    public Region[] Regions
     {
-        regions = _regions;
+        get => regions;
+        set => regions = value;
     }
 
     public WheelGenerator WheelGenerator
@@ -88,7 +90,7 @@ public class WheelRegionsManager : MonoBehaviour
             InitRegionTemplate();
 
         if (configs.SetupData.Count > 0) configs.Initialise();
-        
+
         if (surfaceLayer.value == 0) surfaceLayer = LayerMask.NameToLayer("Surface");
         if (wheelLayer.value == 0) wheelLayer = LayerMask.NameToLayer("Wheel");
     }
@@ -193,7 +195,7 @@ public class WheelRegionsManager : MonoBehaviour
             if (hitSurfaceObj)
                 info.surfaceObj = collision.collider.GetComponentInParent<SurfaceObject>();
             else info.surfaceObj = null;
-
+            
             info.ballState = ballState;
             info.collision = collision;
             info.region = regionSearch;

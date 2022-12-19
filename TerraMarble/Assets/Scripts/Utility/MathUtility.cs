@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MathUtility
@@ -51,7 +52,7 @@ namespace MathUtility
         public static float LerpAngleUnclamped(float a, float b, float t)
         {
             var num = Mathf.Repeat(b - a, 360f);
-            if ((double) num > 180.0)
+            if ((double)num > 180.0)
                 num -= 360f;
             return a + num * t;
         }
@@ -65,10 +66,32 @@ namespace MathUtility
         public static float DeltaRange(float current, float target, float max)
         {
             var num = Mathf.Repeat(target - current, max);
-            if ((double) num > max * .5f)
+            if ((double)num > max * .5f)
                 num -= max;
             return num;
         }
+
+        public static int Repeat(int current, int min, int max)
+        {
+            int range = Math.Abs(min) + Math.Abs(max);
+            while (current < min) current += range;
+            while (current > max) current -= range;
+            return current;
+        }
+
+        //  /// <summary>
+        //  ///   <para>Calculates the shortest difference between two given numbers in a repeating range.</para>
+        //  /// </summary>
+        //  /// <param name="current"></param>
+        //  /// <param name="target"></param>
+        //  /// <param name="max"></param>
+        //  public static int DeltaRange(int current, int target, int max)
+        //  {
+        //      float num = (target - current) % (max + 1);
+        //      if ((float)num > max * 0.5f)
+        //          num -= max;
+        //      return Mathf.RoundToInt(num);
+        //  }
 
         /// <summary>
         ///   <para>Same as MoveTowards but makes sure the values interpolate correctly when they wrap around 360 degrees.</para>
@@ -79,7 +102,7 @@ namespace MathUtility
         public static float MoveTowardsRange(float current, float target, float maxDelta, float maxRange)
         {
             var num = DeltaRange(current, target, maxRange);
-            if (-(double) maxDelta < (double) num && (double) num < (double) maxDelta)
+            if (-(double)maxDelta < (double)num && (double)num < (double)maxDelta)
                 return target;
             target = current + num;
             return Mathf.MoveTowards(current, target, maxDelta);

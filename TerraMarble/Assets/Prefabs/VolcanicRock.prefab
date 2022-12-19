@@ -954,6 +954,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32baee500eade3f49904d88c4f11ee74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SmokePrefab: {fileID: 486057909583739305, guid: 5f7d4c1da89aea243aa232d3f789c833, type: 3}
+  IsAlive: 1
+  isMovingDownward: 0
 --- !u!50 &1981081390250743139
 Rigidbody2D:
   serializedVersion: 4
