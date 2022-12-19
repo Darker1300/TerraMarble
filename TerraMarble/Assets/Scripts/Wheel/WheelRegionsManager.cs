@@ -195,7 +195,7 @@ public class WheelRegionsManager : MonoBehaviour
             if (hitSurfaceObj)
                 info.surfaceObj = collision.collider.GetComponentInParent<SurfaceObject>();
             else info.surfaceObj = null;
-            
+
             info.ballState = ballState;
             info.collision = collision;
             info.region = regionSearch;
@@ -207,11 +207,11 @@ public class WheelRegionsManager : MonoBehaviour
 
     private bool IsHitSurfaceObj(Collision2D collision)
     {
-        return collision.collider.gameObject.layer == surfaceLayer;
+        return surfaceLayer.Contains(collision.collider.gameObject);
     }
 
     private bool IsHitRegion(Collision2D collision)
     {
-        return collision.collider.gameObject.layer == wheelLayer;
+        return wheelLayer.Contains(collision.collider.gameObject);
     }
 }

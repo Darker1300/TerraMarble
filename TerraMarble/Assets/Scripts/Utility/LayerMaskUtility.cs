@@ -69,7 +69,17 @@ namespace UnityUtility
 
         public static bool CompareLayerMask(this GameObject obj, LayerMask mask)
         {
-            return (mask.value & (1 << obj.layer)) > 0;
+            return mask.Contains(obj);
+        }
+
+        public static bool Contains(this LayerMask mask, GameObject obj)
+        {
+            return mask.Contains(obj.layer);
+        }
+
+        public static bool Contains(this LayerMask mask, int layerValue)
+        {
+            return (mask.value & (1 << layerValue)) > 0;
         }
 
         public static bool CompareLayerMask(this GameObject obj, string mask)

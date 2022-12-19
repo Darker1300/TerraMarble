@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityUtility;
@@ -5,25 +6,42 @@ using UnityUtility;
 public class VolcanicRockController : MonoBehaviour
 {
     private WheelRegionsManager regionsMan;
+    private new Collider2D collider2D;
     private new Rigidbody2D rigidbody2D;
+    private PoolObject poolObject;
     [SerializeField] private GameObject SmokePrefab = null;
     [SerializeField] private bool IsAlive = false;
     [SerializeField] private bool isMovingDownward = false;
 
+    [SerializeField] private List<Collider2D> ignoredColliders = new List<Collider2D>();
+
+    private Vector2 lastFrameVelocity = Vector2.zero;
+
     void Start()
     {
         regionsMan ??= FindObjectOfType<WheelRegionsManager>();
+        poolObject ??= GetComponent<PoolObject>();
+        collider2D = GetComponent<Collider2D>();
         rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
     {
         IsAlive = true;
+        foreach (Collider2D col in ignoredColliders)
+            Physics2D.IgnoreCollision(collider2D, col, false);
+        ignoredColliders.Clear();
     }
 
     private void OnDisable()
     {
         IsAlive = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (IsAlive)
+            lastFrameVelocity = rigidbody2D.velocity;
     }
 
     private void DoDestroy(Region.RegionHitInfo info)
@@ -32,11 +50,15 @@ public class VolcanicRockController : MonoBehaviour
         IsAlive = false;
 
         if (!SmokePrefab) return;
-        Vector3 p = info.region.Base.InverseTransformPoint(info.collision.GetContact(0).point);
-        GameObject go = Instantiate(SmokePrefab,
-            p,
-            Quaternion.identity,
-            info.region.Base);
+
+        // Particle fx
+        GameObject go = Instantiate(SmokePrefab, info.region.Base, false);
+        go.transform.position = info.collision.GetContact(0).point;
+        go.transform.localRotation = SmokePrefab.transform.localRotation;
+
+        if (poolObject is not null)
+            poolObject.Pool.ReturnToPool(gameObject);
+        else Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -53,8 +75,8 @@ public class VolcanicRockController : MonoBehaviour
             {
                 // do create Land
                 info.region.TerraformRegion(Region.RegionID.Rock);
-
-                this.StartCoroutine(
+                doDestroy = true;
+                info.region.StartCoroutine(
                     (null, o => new WaitForSeconds(0.15f)),
                     (info as object, o =>
                         {
@@ -65,7 +87,7 @@ public class VolcanicRockController : MonoBehaviour
                                 .TerraformRegion(Region.RegionID.Rock);
                             return null;
                         }
-                    )
+                )
                 );
             }
             else
@@ -76,8 +98,8 @@ public class VolcanicRockController : MonoBehaviour
                 {
                     // hit a Land region, destroy land
                     info.region.TerraformRegion(Region.RegionID.Water);
-
-                    this.StartCoroutine(
+                    doDestroy = true;
+                    info.region.StartCoroutine(
                             (null, o => new WaitForSeconds(0.15f)),
                             (info as object, o =>
                             {
@@ -85,16 +107,21 @@ public class VolcanicRockController : MonoBehaviour
                                 rInfo.region.GetAdjacentRegion(1)
                                     .TerraformRegion(Region.RegionID.Water);
                                 rInfo.region.GetAdjacentRegion(-1)
-                                    .TerraformRegion(Region.RegionID.Water); 
+                                    .TerraformRegion(Region.RegionID.Water);
                                 return null;
-                            })
+                            }
+                    )
                         );
-
                 }
                 else if (hitObject)
                 {
                     // hit tree or other surface object
                     info.surfaceObj.DoDestroy();
+
+                    // ignore collision and keep going
+                    ignoredColliders.Add(info.collision.collider);
+                    Physics2D.IgnoreCollision(collider2D, info.collision.collider, true);
+                    info.collision.otherRigidbody.velocity = lastFrameVelocity;
                 }
             }
 
