@@ -54,8 +54,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Clouds_Mat_2
-  m_Shader: {fileID: -6465566751694194690, guid: 2e53a686dbc484b5a9415f1500504b6f, type: 3}
+  m_Name: Clouds_Mat_ParticleE0
+  m_Shader: {fileID: -6465566751694194690, guid: 7a46989119332524b9ea9c3169283a43, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -145,7 +145,7 @@ Material:
     - Space_0: 0
     - Space_1: 0
     - _AlphaClip: 0
-    - _BaseVerticalOffset: 0.85
+    - _BaseVerticalOffset: 1
     - _Billboard: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -161,7 +161,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HeightGradientStrength: 1
+    - _HeightGradientStrength: 0.5
     - _Metallic: 0
     - _ObjectPositionImpact: 0
     - _OcclusionStrength: 1
@@ -185,10 +185,15 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OffsetSpeed: {r: 0.4, g: 0.01, b: 0, a: 0}
     - _RandomOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _Rotation: {r: 0, g: 0, b: 0, a: 0}
     - _ShadowCenter: {r: 1, g: 0.15, b: 0, a: 0}
     - _ShadowColor: {r: 0.3999644, g: 0.573121, b: 0.7924528, a: 1}
     - _ShadowRange: {r: 0.3, g: 0.85, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TestOffsetS: {r: 1, g: 1, b: 0, a: 0}
+    - _TestOffsetV: {r: 0, g: 0, b: 0, a: 0}
+    - _TestRotation: {r: 0, g: 0, b: 0, a: 0}
+    - __Vector2_TestOffsetV: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!28 &4078262240538509541
 Texture2D:
