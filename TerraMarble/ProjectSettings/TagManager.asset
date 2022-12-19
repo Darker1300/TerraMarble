@@ -7,6 +7,10 @@ TagManager:
   - Wheel
   - Enemy
   - Ball
+  - Mountain
+  - Tree
+  - Forest
+  - Worm
   layers:
   - Default
   - TransparentFX
