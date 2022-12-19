@@ -28,7 +28,12 @@ public class RightAim : MonoBehaviour
     public tapState STATE;
 
     [SerializeField] private bool DoDebug = false;
-
+    [Header("Aim Tweaks")]
+    [SerializeField]
+    [Range(0.0f,1)]
+    private float AimSensitivity= 0.5f;
+    [SerializeField]
+    private bool aimReAdjust;
     // Start is called before the first frame update
     private void Start()
     {
@@ -174,6 +179,7 @@ public class RightAim : MonoBehaviour
     public void AimRestrictor(Vector2 dragDirection, Vector2 delta)
     {
         
+
         //Debug.DrawLine(transform.position, transform.position + (Vector3)(transform.rotation * dragDirection * 30), Color.blue);
         //
         //dragDirection = transform.rotation * dragDirection;
@@ -185,69 +191,91 @@ public class RightAim : MonoBehaviour
             AimStartingVector = dragDirection;
             hasMin = true;
         }
-
-        float realAngle = 0;
-        realAngle += GetRelativeAimRotationAngle(AimStartingVector, dragDirection, 90.0f);
-
-        if (realAngle != 0)
+        if (!aimReAdjust)
         {
-            //get one vector from both drag angles
-            aimDirection = RotateToAngle(aimDirection, realAngle);
-            //transform.up = -updateGravityScript.direction;
+           
+
+            //if Forward do nothing
+            //if not forward
+            if (Vector2.Dot((Vector2)updateGravityScript.wheelDir.normalized, dragDirection) <= 0)
+            {
+                aimDirection = -dragDirection;
+                linePosition = transform.position + (Vector3)(aimDirection * 30);
+
+            }
+            else//NORMAL DRAG FORWARD
+            {
+
+                aimDirection = dragDirection;
+                linePosition = transform.position + (Vector3)(aimDirection * 30);
+            }
+
+        }
+        else
+        {
+            float realAngle = 0;
+            realAngle += GetRelativeAimRotationAngle(AimStartingVector, dragDirection, 90.0f);
+
+            if (realAngle != 0)
+            {
+                //get one vector from both drag angles
+                aimDirection = RotateToAngle(aimDirection, realAngle * AimSensitivity);
+                //transform.up = -updateGravityScript.direction;
 
 
-            // ___________________________CALCULATE DRAWBACK VALUE________________________________
-            //our Draw back  magnitude and cap our aim limiter to the this v
-            //float DrawBackTrueMagOne = ProjectileAimLimiter(ref aimDirection, 45.0f, ref percentOfMaxDrawOne);
+                // ___________________________CALCULATE DRAWBACK VALUE________________________________
+                //our Draw back  magnitude and cap our aim limiter to the this v
+                //float DrawBackTrueMagOne = ProjectileAimLimiter(ref aimDirection, 45.0f, ref percentOfMaxDrawOne);
 
-            Debug.DrawLine(transform.position, transform.position + (Vector3)(aimDirection * 30), Color.cyan);
+                Debug.DrawLine(transform.position, transform.position + (Vector3)(aimDirection * 30), Color.cyan);
 
-            //lineIndicator.End = transform.InverseTransformVector( (Vector3)(aimDirection * 30));
-            linePosition = transform.position + (Vector3)(aimDirection * 30);
+                //lineIndicator.End = transform.InverseTransformVector( (Vector3)(aimDirection * 30));
+                linePosition = transform.position + (Vector3)(aimDirection * 30);
 
-            //leftDragStartLine.End = leftDragStartThumbRad.gameObject.transform.rotation * (aimDirection.normalized * (percentOfMaxDrawOne * 45));
-            //leftDragStartThumbIndicator.gameObject.transform.up = leftDragStartThumbRad.gameObject.transform.rotation * aimDirection;
+                //leftDragStartLine.End = leftDragStartThumbRad.gameObject.transform.rotation * (aimDirection.normalized * (percentOfMaxDrawOne * 45));
+                //leftDragStartThumbIndicator.gameObject.transform.up = leftDragStartThumbRad.gameObject.transform.rotation * aimDirection;
 
-            //leftDragStartThumbIndicator.ColorOuter = new Color(colorAim.r, colorAim.g, colorAim.b, percentOfMaxDrawOne);
+                //leftDragStartThumbIndicator.ColorOuter = new Color(colorAim.r, colorAim.g, colorAim.b, percentOfMaxDrawOne);
 
-            //TwoFingerDrawBackEvent?.Invoke(percentOfMaxDrawOne);
+                //TwoFingerDrawBackEvent?.Invoke(percentOfMaxDrawOne);
 
-            //// ___________________________APPLY EVERYTHING________________________________
-            ////-WINGS-Rotation lerp
-            ////Wing Holder Rotation
-            //WingsHolderLocal.localRotation = Quaternion.LookRotation(Vector3.forward, (Vector3)aimDirection.normalized);
-            ////Wing Left Rotation
-            //WingLeftLocal.localRotation = Quaternion.LookRotation(Vector3.forward, (Vector3)Vector2.Lerp(new Vector2(-0.95f, -0.05f), new Vector2(0.5f, 0.5f), percentOfMaxDrawOne));
-            ////Wing Right Rotation
-            //WingRightLocal.localRotation = Quaternion.LookRotation(Vector3.forward, (Vector3)Vector2.Lerp(new Vector2(0.95f, -0.05f), new Vector2(-0.5f, 0.5f), percentOfMaxDrawOne));
-
-
-            ////-WINGS-position LERP  make it more angle like reduce to the 1.5 times factor to 1.2
-            ////X
-            //float wingX = (float)Mathf.LerpUnclamped(WingObjectChargeStartPosX, WingObjectChargeEndPosX, percentOfMaxDrawOne * 1.5f);
-            ////Y
-            //float wingY = (float)Mathf.LerpUnclamped(WingObjectChargeStartPosY, WingObjectChargeEndPosY, percentOfMaxDrawOne * 1.5f);
-            //WingLeftLocal.localPosition = new Vector3(-wingX, wingY, 0);
-            //WingRightLocal.localPosition = new Vector3(wingX, wingY, 0);
-            ////_________________
-            //float ArmX = (float)Mathf.LerpUnclamped(TopObjectChargeStartPosX, TopObjectChargeEndPosX, percentOfMaxDrawOne);
-            //float ArmY = (float)Mathf.LerpUnclamped(TopObjectChargeStartPosY, TopObjectChargeEndPosY, percentOfMaxDrawOne);
-            //TopLeft.transform.localPosition = new Vector3(-ArmX, ArmY, 0);
-            //TopRight.transform.localPosition = new Vector3(ArmX, ArmY, 0);
-            ////_________________  
-            //Eye.localPosition = Vector3.SlerpUnclamped(EyeChargeStartPos, EyeChargeEndPos, percentOfMaxDrawOne * 1.2f);
+                //// ___________________________APPLY EVERYTHING________________________________
+                ////-WINGS-Rotation lerp
+                ////Wing Holder Rotation
+                //WingsHolderLocal.localRotation = Quaternion.LookRotation(Vector3.forward, (Vector3)aimDirection.normalized);
+                ////Wing Left Rotation
+                //WingLeftLocal.localRotation = Quaternion.LookRotation(Vector3.forward, (Vector3)Vector2.Lerp(new Vector2(-0.95f, -0.05f), new Vector2(0.5f, 0.5f), percentOfMaxDrawOne));
+                ////Wing Right Rotation
+                //WingRightLocal.localRotation = Quaternion.LookRotation(Vector3.forward, (Vector3)Vector2.Lerp(new Vector2(0.95f, -0.05f), new Vector2(-0.5f, 0.5f), percentOfMaxDrawOne));
 
 
-            ////-PROJECTILE-
-            ////Projectile Charge Position
-            //float ProjectileDrawBackVect = (float)Mathf.Lerp(ProjObjectChargeStartPos, ProjObjectChargeEndPos, percentOfMaxDrawOne * 1.2f);
+                ////-WINGS-position LERP  make it more angle like reduce to the 1.5 times factor to 1.2
+                ////X
+                //float wingX = (float)Mathf.LerpUnclamped(WingObjectChargeStartPosX, WingObjectChargeEndPosX, percentOfMaxDrawOne * 1.5f);
+                ////Y
+                //float wingY = (float)Mathf.LerpUnclamped(WingObjectChargeStartPosY, WingObjectChargeEndPosY, percentOfMaxDrawOne * 1.5f);
+                //WingLeftLocal.localPosition = new Vector3(-wingX, wingY, 0);
+                //WingRightLocal.localPosition = new Vector3(wingX, wingY, 0);
+                ////_________________
+                //float ArmX = (float)Mathf.LerpUnclamped(TopObjectChargeStartPosX, TopObjectChargeEndPosX, percentOfMaxDrawOne);
+                //float ArmY = (float)Mathf.LerpUnclamped(TopObjectChargeStartPosY, TopObjectChargeEndPosY, percentOfMaxDrawOne);
+                //TopLeft.transform.localPosition = new Vector3(-ArmX, ArmY, 0);
+                //TopRight.transform.localPosition = new Vector3(ArmX, ArmY, 0);
+                ////_________________  
+                //Eye.localPosition = Vector3.SlerpUnclamped(EyeChargeStartPos, EyeChargeEndPos, percentOfMaxDrawOne * 1.2f);
 
-            ////ProjectChamber.transform.localPosition = aimDirection * (DrawBackTrueMagOne);
-            //ProjectChamber.transform.localPosition = aimDirection * ProjectileDrawBackVect;
-            ////Projectile Rotation
-            //ProjectChamber.transform.localRotation = WingsHolderLocal.localRotation;
-            //BowStringUpdatePullbackPos(ProjectChamber.transform.position);
-            ////Debug.Log("projState" + percentOfMaxDrawOne);
+
+                ////-PROJECTILE-
+                ////Projectile Charge Position
+                //float ProjectileDrawBackVect = (float)Mathf.Lerp(ProjObjectChargeStartPos, ProjObjectChargeEndPos, percentOfMaxDrawOne * 1.2f);
+
+                ////ProjectChamber.transform.localPosition = aimDirection * (DrawBackTrueMagOne);
+                //ProjectChamber.transform.localPosition = aimDirection * ProjectileDrawBackVect;
+                ////Projectile Rotation
+                //ProjectChamber.transform.localRotation = WingsHolderLocal.localRotation;
+                //BowStringUpdatePullbackPos(ProjectChamber.transform.position);
+                ////Debug.Log("projState" + percentOfMaxDrawOne);
+            }
         }
     }
 

@@ -7,7 +7,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.8BEC98E7" = "player"
+	"last_search.8BEC98E7" = ""
 	"OpenInspectorPreview.8BEC98E7" = "1"
 	"currentGroup.8BEC98E7" = "scene"
 }
