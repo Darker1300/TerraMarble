@@ -5,9 +5,9 @@ using UnityEngine;
 public class ObjectPooler : MonoBehaviour
 {
     [Header("Object type")]
-    public string poolName = "Pool";
-    [SerializeField] public GameObject objectPrefab = null;
+    [SerializeField] GameObject objectPrefab = null;
     [SerializeField] int objectAmount = 0;
+    public string poolName = "Pool";
     Queue<GameObject> activeObjects;
     Queue<GameObject> deactivatedObjects;
     private Transform _poolTransform = null;
@@ -51,6 +51,7 @@ public class ObjectPooler : MonoBehaviour
         {
             GameObject temp = Instantiate(objectPrefab, PoolTransform);
             temp.name = objectPrefab.name + " " + i;
+            PoolObject po = temp.AddComponent<PoolObject>(); po.Pool = this;
             temp.SetActive(false);
             deactivatedObjects.Enqueue(temp);
         }
@@ -66,6 +67,8 @@ public class ObjectPooler : MonoBehaviour
         else
         {
             temp = Instantiate(objectPrefab);
+            temp.name = objectPrefab.name + " Spawn";
+            PoolObject po = temp.AddComponent<PoolObject>(); po.Pool = this;
             objectAmount += 1;
         }
 

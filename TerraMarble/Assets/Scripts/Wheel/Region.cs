@@ -1,9 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using MathUtility;
 using NaughtyAttributes;
 using Shapes;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -31,6 +31,7 @@ public class Region : MonoBehaviour
         Forest,
         Mountain,
         Volcano,
+        Men,
         SIZE
     }
 
@@ -42,8 +43,9 @@ public class Region : MonoBehaviour
 
     [Header("Debug")] public List<SurfaceObject> surfaceObjects = new();
     [SerializeField] private RegionID targetID = RegionID.Water;
-    [SerializeField] private Transform _base = null;
 
+    private int _regionIndex = -1;
+    [SerializeField] private Transform _base = null;
     private Wheel _wheel = null;
     private Disc _regionDisc = null;
     private PolygonCollider2D _regionCollider = null;
@@ -51,6 +53,34 @@ public class Region : MonoBehaviour
     private readonly Vector2 defaultBasePosition = new(0.5f, 0f);
 
     #region References Properties
+
+    public int RegionIndex
+    {
+        get
+        {
+            if (_regionIndex == -1)
+            {
+                int id = this.GetInstanceID();
+                _regionIndex = Array.FindIndex(RegionsMan.Regions, r => r.GetInstanceID() == id);
+            }
+            return _regionIndex;
+        }
+    }
+
+    public int GetAdjacentRegionIndex(int indexIncrement)
+    {
+        int result = RegionIndex;
+        return MathU.Repeat(
+            result + indexIncrement,
+            0,
+            RegionsMan.RegionCount - 1);
+    }
+
+    public Region GetAdjacentRegion(int indexIncrement)
+    {
+        int result = GetAdjacentRegionIndex(indexIncrement);
+        return RegionsMan[result];
+    }
 
     public Disc RegionDisc
     {
@@ -162,7 +192,7 @@ public class Region : MonoBehaviour
     {
         Gizmos.DrawWireSphere(
             transform.position + transform.TransformVector(
-                (Vector3) MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
+                (Vector3)MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
                 * (RegionTemplate.RadiusBase + Mathf.LerpUnclamped(0f, RegionTemplate.Thickness, defaultBasePosition.y))
             ),
             transform.lossyScale.magnitude * 0.05f);
@@ -177,7 +207,7 @@ public class Region : MonoBehaviour
         RegionDisc ??= GetComponent<Disc>();
 
         Vector2 centerVector = AngleCenterVector;
-        Vector3 angleVector = (Vector3) centerVector * RegionTemplate.RadiusBase;
+        Vector3 angleVector = (Vector3)centerVector * RegionTemplate.RadiusBase;
 
         _base.position = transform.position
                          + transform.TransformVector(
@@ -307,13 +337,13 @@ public class Region : MonoBehaviour
     {
         if (RegionCollider != null)
         {
-        RegionCollider.offset = Vector2.down *
-                                Mathf.Lerp(RegionTemplate.Thickness - RegionDisc.Thickness,
-                                    RegionTemplate.Thickness - Thickness,
-                                    state);
-    }
-
+            RegionCollider.offset = Vector2.down *
+                                    Mathf.Lerp(RegionTemplate.Thickness - RegionDisc.Thickness,
+                                        RegionTemplate.Thickness - Thickness,
+                                        state);
         }
+
+    }
 
     [Button]
     public void TerraformToWater()
@@ -361,7 +391,7 @@ public class Region : MonoBehaviour
     public Vector2 RegionPosition(float _x, float _y = 1f)
     {
         return transform.position + transform.TransformVector(
-            (Vector3) MathU.DegreeToVector2(
+            (Vector3)MathU.DegreeToVector2(
                 MathU.LerpAngleUnclamped(AngleStart, AngleEnd, _x))
             * (RadiusBase + Mathf.LerpUnclamped(0f, Thickness, _y))
         );
@@ -386,7 +416,7 @@ public class Region : MonoBehaviour
     {
         var distance = WorldToRegionDistance(_worldPos);
         var repeat = Mathf.Repeat(distance, Wheel.regions.RegionCount - 0.9999f);
-        return (int) Mathf.Floor(repeat);
+        return (int)Mathf.Floor(repeat);
     }
 
     /// <returns> X: Regions array index + 0..1;

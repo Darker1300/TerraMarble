@@ -29,6 +29,11 @@ public class CloudController : MonoBehaviour
             new Keyframe(0.5f, 1f),
             new Keyframe(1f, 0f));
 
+    public class ShaderParam
+    {
+        public static int Opacity = Shader.PropertyToID("_Opacity");
+    }
+
     private void Awake()
     {
         particleSystem ??= GetComponentInChildren<ParticleSystem>();
@@ -79,8 +84,9 @@ public class CloudController : MonoBehaviour
     public void UpdateClouds()
     {
         //if (currentParticles == null || currentParticles.Length != particleSystem.particleCount)
-        currentParticles = new Particle[particleSystem.particleCount];
-
+        //currentParticles = new Particle[particleSystem.particleCount];
+        if (currentParticles == null || particleSystem.particleCount > currentParticles.Length)
+            currentParticles = new Particle[particleSystem.particleCount];
         int currentAliveCount = particleSystem.GetParticles(currentParticles);
 
         //// Untested:
@@ -127,10 +133,7 @@ public class CloudController : MonoBehaviour
         for (int i = 0; i < prevParticles.Keys.Count; i++)
         {
             Particle existPart = prevParticles.Keys.ElementAt(i);
-            bool exists = currentParticles.Contains(existPart);
-
-            if (!exists)
-                DestroyCloud(existPart);
+            DestroyCloud(existPart);
         }
 
         //// Create
@@ -144,10 +147,17 @@ public class CloudController : MonoBehaviour
         }
 
         // Update
-        foreach (var particle in prevParticles.Keys)
-            UpdateCloud(particle);
+        foreach (var particlePair in prevParticles)
+        {
+            bool exists = currentParticles.Contains(particlePair.Key);
+            if (!exists) continue;
 
-        particleSystem.SetParticles(currentParticles);
+            //bool exists = prevParticles.TryGetValue(particle, out GameObject cloudGO);
+            //if (!exists) continue;
+            UpdateCloud(particlePair);
+        }
+
+        // particleSystem.SetParticles(currentParticles);
 
         #region OLD
 
@@ -233,26 +243,40 @@ public class CloudController : MonoBehaviour
         cT.position = isWorld
             ? particle.position
             : particleSystem.transform.TransformPoint(particle.position);
+        // sort
+        cT.position += Vector3.forward * Mathf.InverseLerp(
+            particleSystem.main.startSize.constantMax,
+            particleSystem.main.startSize.constantMin,
+            particle.startSize);
         // Rotation
         cT.up = ((Vector2)wheel.transform.position)
             .Towards((Vector2)cT.position)
             .normalized;
         // Scale
         cT.localScale = particle.startSize * Vector3.one;
+
+        //cloudGO.GetComponent<MeshRenderer>().material.SetFloat(ShaderParam.Opacity, factor);
     }
 
-    private void UpdateCloud(Particle particle)
+    private void UpdateCloud(KeyValuePair<Particle, GameObject> partGOPair)
     {
-        GameObject cloudGO = prevParticles[particle];
-        float size = particle.startSize;
-        float factor = Mathf.InverseLerp(particle.startLifetime, 0f, particle.remainingLifetime);
+        float size = partGOPair.Key.startSize;
+        float factor = Mathf.InverseLerp(partGOPair.Key.startLifetime, 0f, partGOPair.Key.remainingLifetime);
         factor = curve.Evaluate(factor);
-        cloudGO.transform.localScale = new Vector3(size, size * factor, size);
+
+        partGOPair.Value.transform.localScale = new Vector3(size, size * factor, size);
+
+        partGOPair.Value
+            .GetComponent<MeshRenderer>()
+            .material
+            .SetFloat(ShaderParam.Opacity, factor);
     }
 
     private void DestroyCloud(Particle particle)
     {
-        prevParticles.Remove(particle, out GameObject cloudGo);
+        bool exists = prevParticles.Remove(particle, out GameObject cloudGo);
+        if (!exists) return;
+
         cloudPool.Release(cloudGo);
     }
 }
