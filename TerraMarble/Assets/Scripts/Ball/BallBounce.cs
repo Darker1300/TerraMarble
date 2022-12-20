@@ -60,7 +60,7 @@ public class BallBounce : MonoBehaviour
 
         Vector2 bounceClamped = surfaceReflect * Mathf.Max(minBounceForce, initialMag);
 
-        rb.velocity = bounceClamped;
+        rb.velocity =  bounceClamped;
 
         // // Old Bounce code
         //var project = Vector2.ClampMagnitude(rb.velocity.normalized -20 * (Vector2.Dot(rb.velocity, normal) * normal),
