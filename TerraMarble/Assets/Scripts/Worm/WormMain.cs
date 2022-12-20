@@ -33,4 +33,24 @@ public class WormMain : MonoBehaviour
     
 
     }
+    public void HitOuterRim()
+    { 
+    
+        //if is big enough to drag human in
+
+        //start coroutine of trying to pull human(consist of hum being bobbed down and flash)
+        
+        //
+
+
+    
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("InnerRimCol"))
+        {
+
+        }
+    }
+    //IEnumerator
 }

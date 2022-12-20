@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -21,6 +22,9 @@ public class BallBounce : MonoBehaviour
     [SerializeField] private float slideMin = 0f;
 
     private bool isHit = false;
+    [SerializeField]
+    [Range(-1, 1)]
+    private float bounceRange = 0.0f;
 
     private void Start()
     {
@@ -36,13 +40,33 @@ public class BallBounce : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isHit) return;
-
-        if (canBounce)
+        //CheckDotProduct(collision.contacts[0].normal, rb.velocity.normalized, bounceRange)
+        //Debug.Log("slideDot" + (Vector2.Dot(collision.contacts[0].normal, rb.velocity.normalized)));
+        //                  check upwards
+        if (canBounce && CheckDotProduct(updateGravity.wheelDir, rb.velocity.normalized,0.0f) && MovingWithWind()  )
             Bounce(collision.contacts[0].normal);
+        
         else
             Slide(collision.contacts[0].normal);
 
         isHit = true;
+    }
+    public bool CheckDotProduct(Vector2 lft,Vector2 rght,float range)
+    {
+        //if 
+        if (Vector2.Dot(lft, rght) > range )
+        {
+            Debug.Log("Bounce");
+            return true;
+        }
+        else
+            return false;
+
+    }
+
+    private bool MovingWithWind()
+    {
+        throw new NotImplementedException();
     }
 
     public void Bounce(Vector2 surfaceNormal)
@@ -60,7 +84,7 @@ public class BallBounce : MonoBehaviour
 
         Vector2 bounceClamped = surfaceReflect * Mathf.Max(minBounceForce, initialMag);
 
-        rb.velocity =  bounceClamped;
+        rb.velocity = bounceClamped;
 
         // // Old Bounce code
         //var project = Vector2.ClampMagnitude(rb.velocity.normalized -20 * (Vector2.Dot(rb.velocity, normal) * normal),
