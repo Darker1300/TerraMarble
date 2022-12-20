@@ -91,8 +91,8 @@ public class WheelRegionsManager : MonoBehaviour
 
         if (configs.SetupData.Count > 0) configs.Initialise();
 
-        if (surfaceLayer.value == 0) surfaceLayer = LayerMask.NameToLayer("Surface");
-        if (wheelLayer.value == 0) wheelLayer = LayerMask.NameToLayer("Wheel");
+        if (surfaceLayer.value == 0) surfaceLayer = LayerMaskUtility.Create("Surface");
+        if (wheelLayer.value == 0) wheelLayer = LayerMaskUtility.Create("Wheel");
     }
 
     [Button]
