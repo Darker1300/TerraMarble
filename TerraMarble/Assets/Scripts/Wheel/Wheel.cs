@@ -1,8 +1,12 @@
 using MathUtility;
 using NaughtyAttributes;
 using System;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.Events;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 
 public class Wheel : MonoBehaviour
@@ -138,5 +142,15 @@ public class Wheel : MonoBehaviour
     public void ReverseSpin()
     {
         velocity = Mathf.Clamp(-velocity * reverseSpeedUpFactor, -maxSpeed, maxSpeed);
+    }
+
+    public bool IsMovingWithWheel(Vector2 _worldPos, Vector2 _worldVector)
+    {
+        Vector2 wheelVector = _worldPos.Towards(transform.position);
+        float degreesFrom = -Vector2.SignedAngle(_worldVector.normalized, wheelVector.normalized);
+        int degreesFromSign = Math.Sign(degreesFrom);
+
+        return Math.Abs(degreesFrom) < 10f
+               || degreesFromSign == -Math.Sign(velocity);
     }
 }
