@@ -38,6 +38,8 @@ public class WheelRegionsManager : MonoBehaviour
     public LayerMask wheelLayer;
 
     public RegionConfigs configs;
+    public GameObject entityPrefabMan = null;
+    public GameObject entityPrefabBeast = null;
 
     [Header("Data")]
     [SerializeField]

@@ -1,7 +1,7 @@
-using System;
 using MathUtility;
 using NaughtyAttributes;
 using Shapes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -35,52 +35,30 @@ public class Region : MonoBehaviour
         SIZE
     }
 
-    [Header("Config")] public AnimCurve animTerraform = new();
-    public RegionID regionID = RegionID.Water;
 
-    [HideInInspector] public UnityEvent<RegionHitInfo> BallHitEnter = new();
-    [HideInInspector] public UnityEvent<RegionHitInfo> BallHitExit = new();
+
+    [Header("Config")] public RegionID regionID = RegionID.Water;
+    public AnimCurve animTerraform = new();
 
     [Header("Debug")] public List<SurfaceObject> surfaceObjects = new();
-    [SerializeField] private RegionID targetID = RegionID.Water;
+    public List<EntityObject> entityChildren = new();
+    public List<EntityObject> entitysOnRegion = new();
 
-    private int _regionIndex = -1;
+    [SerializeField] private RegionID targetID = RegionID.Water;
+    private int _regionIndex = -1; 
+
     [SerializeField] private Transform _base = null;
     private Wheel _wheel = null;
     private Disc _regionDisc = null;
     private PolygonCollider2D _regionCollider = null;
+
     private readonly string defaultBaseName = "Base";
     private readonly Vector2 defaultBasePosition = new(0.5f, 0f);
 
+    [HideInInspector] public UnityEvent<RegionHitInfo> BallHitEnter = new();
+    [HideInInspector] public UnityEvent<RegionHitInfo> BallHitExit = new();
+
     #region References Properties
-
-    public int RegionIndex
-    {
-        get
-        {
-            if (_regionIndex == -1)
-            {
-                int id = this.GetInstanceID();
-                _regionIndex = Array.FindIndex(RegionsMan.Regions, r => r.GetInstanceID() == id);
-            }
-            return _regionIndex;
-        }
-    }
-
-    public int GetAdjacentRegionIndex(int indexIncrement)
-    {
-        int result = RegionIndex;
-        return MathU.Repeat(
-            result + indexIncrement,
-            0,
-            RegionsMan.RegionCount - 1);
-    }
-
-    public Region GetAdjacentRegion(int indexIncrement)
-    {
-        int result = GetAdjacentRegionIndex(indexIncrement);
-        return RegionsMan[result];
-    }
 
     public Disc RegionDisc
     {
@@ -168,6 +146,19 @@ public class Region : MonoBehaviour
     public Vector2 AngleCenterVector
         => MathU.DegreeToVector2(AngleCenter);
 
+    public int RegionIndex
+    {
+        get
+        {
+            if (_regionIndex == -1)
+            {
+                int id = this.GetInstanceID();
+                _regionIndex = Array.FindIndex(RegionsMan.Regions, r => r.GetInstanceID() == id);
+            }
+            return _regionIndex;
+        }
+    }
+
     #endregion
 
     #region Events
@@ -243,6 +234,8 @@ public class Region : MonoBehaviour
 
     #endregion
 
+    #region Terraform Functions
+
     public void TerraformRegion(RegionID _targetID)
     {
         if (!Application.isPlaying) return;
@@ -263,31 +256,14 @@ public class Region : MonoBehaviour
         bool targetIsWater = _targetID == RegionID.Water;
         if (targetIsWater || regionID == RegionID.Water)
         {
-            if (targetIsWater)
-                // Land to Water
-                updateAction += value =>
-                {
-                    Thickness = Mathf.Lerp(RegionTemplate.Thickness, 0f, value);
-                    SetRegionCollider(value);
-                };
-            else
-                // Water to Land
-                updateAction += value =>
-                {
-                    Thickness = Mathf.Lerp(0f, RegionTemplate.Thickness, value);
-                    RegionCollider.offset = Vector2.down * (RegionTemplate.Thickness - RegionDisc.Thickness);
-                    SetRegionCollider(value);
-                };
+            if (targetIsWater) // Land to Water
+                updateAction += UpdateLandToWater;
+            else // Water to Land
+                updateAction += UpdateWaterToLand;
         }
 
         // Set Color
-        updateAction += value =>
-        {
-            RegionDisc.Color = Color.Lerp(
-                RegionsMan.configs[regionID].RegionColor,
-                RegionsMan.configs[targetID].RegionColor,
-                value);
-        };
+        updateAction += UpdateRegionColor;
 
         WheelRegionsManager.RegionConfig goalConfig = RegionsMan.configs[targetID];
         GameObject goalPrefab = goalConfig.SurfacePrefab;
@@ -331,6 +307,26 @@ public class Region : MonoBehaviour
         animTerraform.Updated.AddListener(updateAction);
         animTerraform.Finished.AddListener(finishAction);
     }
+
+    private void UpdateRegionColor(float value)
+    {
+        RegionDisc.Color = Color.Lerp(RegionsMan.configs[regionID].RegionColor, RegionsMan.configs[targetID].RegionColor, value);
+    }
+
+    private void UpdateWaterToLand(float value)
+    {
+        Thickness = Mathf.Lerp(0f, RegionTemplate.Thickness, value);
+        RegionCollider.offset = Vector2.down * (RegionTemplate.Thickness - RegionDisc.Thickness);
+        SetRegionCollider(value);
+    }
+
+    private void UpdateLandToWater(float value)
+    {
+        Thickness = Mathf.Lerp(RegionTemplate.Thickness, 0f, value);
+        SetRegionCollider(value);
+    }
+
+    #endregion
 
     /// <param name="state">0..1f</param>
     public void SetRegionCollider(float state = 1f)
@@ -431,6 +427,21 @@ public class Region : MonoBehaviour
         var height = (totalDst - RadiusBase) * (1f / Thickness);
 
         return new Vector2(segments, height);
+    }
+
+    public int GetAdjacentRegionIndex(int indexIncrement)
+    {
+        int result = RegionIndex;
+        return MathU.Repeat(
+            result + indexIncrement,
+            0,
+            RegionsMan.RegionCount - 1);
+    }
+
+    public Region GetAdjacentRegion(int indexIncrement)
+    {
+        int result = GetAdjacentRegionIndex(indexIncrement);
+        return RegionsMan[result];
     }
 
     #endregion
