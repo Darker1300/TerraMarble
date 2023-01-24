@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Main.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TomSea.unity
     guid: 5f7b5aaeffe6fe740b3986ef316ecae9
+  - enabled: 1
+    path: Assets/Scenes/PinBallMiddle.unity
+    guid: 24a9d04894ae7ef4ba9ccd5e6ef9cd6b
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 2e79acf917cd7c04a93114c19812d2b9, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: f12587db1ac34f24489e27e4db5ca797, type: 2}

@@ -11,6 +11,7 @@ TagManager:
   - Tree
   - Forest
   - Worm
+  - InnerRimCol
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Projectile
   - Enemy
   - Inner
-  - 
+  - Ground
   - 
   - 
   - 

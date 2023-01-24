@@ -1,0 +1,38 @@
+v1.1
+- Body Stabilization hide on Advanced Settings == false
+- Legs were lerping too fast, Changed speed to pl2d_PlayerController.bodyAcceleration
+- Improved ground check with legs grounded check
+- PL2D_PlayerController.Move refactored to facilitate reuse and customization, added keycode parameters
+- Improved Jump, added pre jump led bend time setting
+- Removed bodySpeed reference from the Jump up velocity, new it depends only on jumpForce
+- FlipBodyOnMousePos refactored and added FlipBody to facilitate reuse
+- Fix: body occasionally getting stuck in the air if hit.transform == null
+- Fix: Vertical body positioning multiplier, improved "Wall Walk" disabled movement. Recommended to use "wall walk" only for soft angled and round corners grounds.
+- Fix: leg glitch on Grounded
+- Fix: isJump not being true until jump end
+- Fix: Angle solver type "Keep Vertical" not initializing correctly
+- Fix: Breaking angle solving on flip due to negative scale
+- Fix: Some variables previously initialized didn't save changes
+
+v1.1.1
+- "Octopus Like" body added
+- Fix: Glitch on jumping on Raycast angle solver type. Removed setting isJumping from the middle of the coroutine
+
+v1.2
+- Code refactoring for performance optimization
+- added variable foot hit raycast distance
+- detection range of the ground adjusted
+- adjusted body y lerp velocity
+- jump control refactored and improved
+- jumpForce now corresponds to the force aplyied by RigdBody.AddForce()
+- added jump variable "horizontalVelocityMultiplierForce"
+- currentPathPoint made public for acess
+- removed body reference from File classes and added method to directly get json values to body
+- added helper class that uses SimpleJSON to parse needed Unity types
+- fix: avoids full rotation of the foot
+- fix: setting playerControllerEnable didn't work
+- fix: avoid jump while arlready jumping
+- fix: animation name not updating
+- fix: warnings on creating body parts from json
+- note: using SimpleJSON.cs from http://wiki.unity3d.com/index.php/SimpleJSON
+- note: new Mecha scene added

@@ -14,6 +14,7 @@ namespace z
     /// </summary>
 #if UNITY_EDITOR
     [InitializeOnLoad]
+
 #endif
     public class MouseDragInteraction : IInputInteraction
     {
@@ -24,6 +25,7 @@ namespace z
 
         public void Reset()
         {
+
         }
 
         public void Process(ref InputInteractionContext context)
@@ -64,14 +66,14 @@ namespace z
                     break;
                 case InputActionPhase.Canceled:
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(phase), phase, null);
+               
             }
         }
 
         [RuntimeInitializeOnLoadMethod]
         private static void Init()
         {
+           
         }
     }
 }

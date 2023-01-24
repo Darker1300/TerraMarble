@@ -1,0 +1,360 @@
+fileFormatVersion: 2
+guid: d0e8df4f45bfa66aa824de64058ec642
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5310133618501275260
+    second: SampleGamePlayer_0
+  - first:
+      213: -8174508070965515880
+    second: SampleGamePlayer_1
+  - first:
+      213: -1956573171749264652
+    second: SampleGamePlayer_2
+  - first:
+      213: 8146560625187213954
+    second: SampleGamePlayer_3
+  - first:
+      213: 8523549454390502719
+    second: SampleGamePlayer_4
+  - first:
+      213: -4260161117214008516
+    second: SampleGamePlayer_5
+  - first:
+      213: -8781083340801809081
+    second: SampleGamePlayer_6
+  - first:
+      213: 2512257753813463887
+    second: SampleGamePlayer_7
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SampleGamePlayer_0
+      rect:
+        serializedVersion: 2
+        x: 1019
+        y: 1002
+        width: 425
+        height: 538
+      alignment: 9
+      pivot: {x: 0.5175072, y: 0.19113238}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7ec0a8446261b940800000000000000
+      internalID: 5310133618501275260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SampleGamePlayer_1
+      rect:
+        serializedVersion: 2
+        x: 1074
+        y: 1558
+        width: 407
+        height: 417
+      alignment: 9
+      pivot: {x: 0.42687508, y: 0.23830438}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 899698848305e8e80800000000000000
+      internalID: -8174508070965515880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SampleGamePlayer_2
+      rect:
+        serializedVersion: 2
+        x: 1583
+        y: 1402
+        width: 292
+        height: 354
+      alignment: 9
+      pivot: {x: 0.3301262, y: 0.668146}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f263d0111bd8d4e0800000000000000
+      internalID: -1956573171749264652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SampleGamePlayer_3
+      rect:
+        serializedVersion: 2
+        x: 1575
+        y: 1193
+        width: 310
+        height: 182
+      alignment: 9
+      pivot: {x: 0.2439835, y: 0.51362693}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 282d77de9b56e0170800000000000000
+      internalID: 8146560625187213954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SampleGamePlayer_4
+      rect:
+        serializedVersion: 2
+        x: 1665
+        y: 933
+        width: 238
+        height: 184
+      alignment: 9
+      pivot: {x: 0.2290593, y: 0.54043645}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f35ab6ea11bb94670800000000000000
+      internalID: 8523549454390502719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SampleGamePlayer_5
+      rect:
+        serializedVersion: 2
+        x: 1122
+        y: 625
+        width: 280
+        height: 370
+      alignment: 9
+      pivot: {x: 0.37599227, y: 0.71449983}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3b1782090ed0e4c0800000000000000
+      internalID: -4260161117214008516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SampleGamePlayer_6
+      rect:
+        serializedVersion: 2
+        x: 1154
+        y: 286
+        width: 225
+        height: 312
+      alignment: 9
+      pivot: {x: 0.5992068, y: 0.7623238}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7456868c933532680800000000000000
+      internalID: -8781083340801809081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SampleGamePlayer_7
+      rect:
+        serializedVersion: 2
+        x: 1122
+        y: 97
+        width: 312
+        height: 189
+      alignment: 9
+      pivot: {x: 0.39666006, y: 0.64434767}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f43b548dd155dd220800000000000000
+      internalID: 2512257753813463887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      SampleGamePlayer_1: -8174508070965515880
+      SampleGamePlayer_3: 8146560625187213954
+      SampleGamePlayer_0: 5310133618501275260
+      SampleGamePlayer_7: 2512257753813463887
+      SampleGamePlayer_6: -8781083340801809081
+      SampleGamePlayer_2: -1956573171749264652
+      SampleGamePlayer_4: 8523549454390502719
+      SampleGamePlayer_5: -4260161117214008516
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

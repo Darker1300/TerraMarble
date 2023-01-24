@@ -24,6 +24,7 @@ namespace z
         [SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private static void Init()
         {
+
         }
 
         public override Vector2 ReadValue(ref InputBindingCompositeContext context)

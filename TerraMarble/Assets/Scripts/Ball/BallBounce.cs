@@ -6,7 +6,7 @@ public class BallBounce : MonoBehaviour
 {
     private UpdateGravity updateGravity;
     private Rigidbody2D rb;
-
+    private Wheel wheel;
     [Header("Bounce")] [SerializeField] private bool canBounce = true;
 
     [SerializeField] private float minBounceForce = 32f;
@@ -29,6 +29,8 @@ public class BallBounce : MonoBehaviour
     private void Start()
     {
         rb ??= GetComponent<Rigidbody2D>();
+        wheel = FindObjectOfType<Wheel>();
+        
         updateGravity ??= GetComponent<UpdateGravity>();
     }
 
@@ -40,18 +42,23 @@ public class BallBounce : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isHit) return;
+        Slide(collision.contacts[0].normal);
         //CheckDotProduct(collision.contacts[0].normal, rb.velocity.normalized, bounceRange)
         //Debug.Log("slideDot" + (Vector2.Dot(collision.contacts[0].normal, rb.velocity.normalized)));
-        //                  check upwards
-        if (canBounce && CheckDotProduct(updateGravity.wheelDir, rb.velocity.normalized,0.0f) && MovingWithWind()  )
-            Bounce(collision.contacts[0].normal);
-        
-        else
-            Slide(collision.contacts[0].normal);
-
+        //                  Downwards against wind 
+        //if ((canBounce && CheckDirectionProduct(updateGravity.wheelDir, rb.velocity.normalized, 0.0f) && !MovingWithWind(transform.position, rb.velocity)) ||
+        //   (canBounce && !CheckDirectionProduct(updateGravity.wheelDir, rb.velocity.normalized, 0.0f) && !MovingWithWind(transform.position, rb.velocity)))
+        //{ 
+        //    Bounce(collision.contacts[0].normal);
+        //}
+        //else if ((canBounce && !CheckDirectionProduct(updateGravity.wheelDir, rb.velocity.normalized, 0.0f) && MovingWithWind(transform.position, rb.velocity)) ||
+        //   (canBounce && CheckDirectionProduct(updateGravity.wheelDir, rb.velocity.normalized, 0.0f) && MovingWithWind(transform.position, rb.velocity)))
+        //{
+        //    Slide(collision.contacts[0].normal);
+        //}
         isHit = true;
     }
-    public bool CheckDotProduct(Vector2 lft,Vector2 rght,float range)
+    public bool CheckDirectionProduct(Vector2 lft,Vector2 rght,float range)
     {
         //if 
         if (Vector2.Dot(lft, rght) > range )
@@ -64,9 +71,9 @@ public class BallBounce : MonoBehaviour
 
     }
 
-    private bool MovingWithWind()
+    private bool MovingWithWind(Vector3 pos,Vector2 vel)
     {
-        throw new NotImplementedException();
+        return wheel.IsMovingWithWheel(pos, vel);
     }
 
     public void Bounce(Vector2 surfaceNormal)
@@ -95,17 +102,23 @@ public class BallBounce : MonoBehaviour
     public void Slide(Vector2 surfaceNormal)
     {
         Vector2 surfaceDirection = Vector3.Cross(surfaceNormal, Vector3.forward);
-        float dot = Vector2.Dot(rb.velocity, surfaceDirection);
-
+        float dotA = Vector2.Dot(rb.velocity, surfaceDirection);
+        float dotB = Vector2.Dot(rb.velocity, -surfaceDirection);
+        surfaceDirection = dotA > dotB ? surfaceDirection : -surfaceDirection;
+        //simply which direction is closest to wind
+        //dot product of vel and (-/surface direction )
+        //whichever is closer apply for that way
+        //slide in that direction
+        //
         //Debug.Log("dot" + dot);
 
         //if above zero facing relativly same direction
         float magnitude = Mathf.Clamp(rb.velocity.magnitude * slideFactor, slideMin, slideMax);
         Vector2 velocity = surfaceDirection * magnitude;
-        if (dot > 0)
-            rb.velocity = velocity;
-        else if (dot < 0)
-            rb.velocity = -velocity;
-        else Bounce(surfaceNormal);
+        if (dotA > 0)
+            rb.AddForce(velocity);
+        else if (dotA < 0)
+            rb.AddForce( -velocity);
+        //else Bounce(surfaceNormal);
     }
 }

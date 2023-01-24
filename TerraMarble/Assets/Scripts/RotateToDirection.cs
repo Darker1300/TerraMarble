@@ -6,7 +6,7 @@ public class RotateToDirection : MonoBehaviour
 {
     public float rotationSpeed = 25;
     public float moveSpeed = 25;
-    private Vector2 direction;
+    public Vector2 direction;
     Rigidbody2D rb;
     // Start is called before the first frame update
     void Start()

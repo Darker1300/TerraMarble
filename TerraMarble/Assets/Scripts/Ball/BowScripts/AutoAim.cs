@@ -30,7 +30,7 @@ public class AutoAim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
     //real one
     public GameObject FindClosestTarget()
