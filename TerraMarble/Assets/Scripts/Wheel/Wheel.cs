@@ -53,7 +53,7 @@ public class Wheel : MonoBehaviour
         InputManager.LeftDragEvent += OnLeftDrag;
         InputManager.LeftDragVectorEvent += OnLeftDragUpdate;
         InputManager.TapLeftEvent += OnTapLeft;
-
+        
         velocity = idleSpeed;
     }
 

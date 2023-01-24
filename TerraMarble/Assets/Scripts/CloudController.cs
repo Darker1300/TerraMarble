@@ -11,7 +11,7 @@ using static UnityEngine.ParticleSystem;
 
 public class CloudController : MonoBehaviour
 {
-    private ParticleSystem particleSystem = null;
+    private new ParticleSystem particleSystem = null;
     private Wheel wheel = null;
     [SerializeField] private GameObject cloudPrefab = null;
     [SerializeField] private Transform cloudsParent = null;
