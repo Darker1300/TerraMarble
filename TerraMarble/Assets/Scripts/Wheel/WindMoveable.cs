@@ -20,8 +20,10 @@ public class WindMoveable : MonoBehaviour
             Vector2 pivotPoint = wind.transform.position;
 
             Vector2 deltaV = rb2D.position.RotatedAround(pivotPoint, rotation) - rb2D.position;
+
+            rb2D.MoveRotation(Mathf.Repeat(rb2D.rotation + rotation, 360f));
+
             rb2D.velocity += deltaV * wind.ForceFactor;
-            rb2D.AddRotateAroundForce(pivotPoint, rotation);
         }
         else
             transform.RotateAround(wind.transform.position, Vector3.forward,
