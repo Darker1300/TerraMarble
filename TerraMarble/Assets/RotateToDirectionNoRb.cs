@@ -12,7 +12,7 @@ public class RotateToDirectionNoRb : MonoBehaviour
 
     private Transform targetTransform;
 
-    private TreeBend treeBend;
+    private DragTreePosition treeActive;
     //public float PaddleBackSpeed;
 
     //Coroutine stuff
@@ -24,7 +24,7 @@ public class RotateToDirectionNoRb : MonoBehaviour
         targetTransform = transform.parent;
         starting = targetTransform.localRotation;
         InputManager.LeftDragEvent += RotateBack;
-        treeBend = FindObjectOfType<TreeBend>();
+        treeActive = FindObjectOfType<DragTreePosition>();
     }
 
     // Update is called once per frame
@@ -62,7 +62,7 @@ public class RotateToDirectionNoRb : MonoBehaviour
 
     public void RotateBack(bool keyDown)
     {
-        if (!keyDown) treeBend.StartCoroutine(ReturnToDefaultAngle());
+        if (!keyDown) treeActive.StartCoroutine(ReturnToDefaultAngle());
     }
 
     private IEnumerator ReturnToDefaultAngle()

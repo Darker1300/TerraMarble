@@ -123,5 +123,33 @@ namespace MathUtility
         {
             return target - self;
         }
+
+
+        public static Vector2 RotatedAround(this Vector2 self, Vector2 pivotPoint, float degree)
+        {
+            return (Vector2)(Quaternion.AngleAxis(degree, Vector3.forward) * (self - pivotPoint))
+                   + pivotPoint;
+        }
+
+        public static void RotateAround(this Transform self, Vector3 pivotPoint, Quaternion rot)
+        {
+            self.position = rot * (self.position - pivotPoint) + pivotPoint;
+            self.rotation = rot * self.rotation;
+        }
+
+        public static void MoveRotateAround(this Rigidbody2D self, Vector2 pivotPoint, float rotation)
+        {
+            Quaternion rot = Quaternion.AngleAxis(rotation, Vector3.forward);
+            Vector2 delta = (Vector2)(rot * (self.position - pivotPoint)) + pivotPoint;
+            self.MovePosition(delta);
+            self.MoveRotation(Mathf.Repeat(self.rotation + rotation, 360f));
+        }
+
+        public static void AddRotateAroundForce(this Rigidbody2D self, Vector2 pivotPoint, float rotation)
+        {
+            self.MoveRotation(Mathf.Repeat(self.rotation + rotation, 360f));
+            Vector2 deltaV = self.position.RotatedAround(pivotPoint, rotation) - self.position;
+            self.velocity += deltaV;
+        }
     }
 }
