@@ -1,58 +1,54 @@
-using System;
-using System.Collections;
+using MathUtility;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using Shapes;
+using UnityEngine.Serialization;
 
 public class TreeBend : MonoBehaviour
 {
-    [SerializeField] private string TargetTag;
-    [SerializeField] private Vector2 direction;
+    public List<RotateToDirectionNoRb> nearbyTrees = new();
 
-    public List<GameObject> nearbyTargets = new();
-    [SerializeField] private Vector2 WheelPosition;
-    [SerializeField] private Transform wheel;
-    private float min = 13;
+    // Positioning
+    [SerializeField] private float min = 10;
+    [SerializeField] private float max = 10f;
+    private float colliderRadius;
 
-    private float max = 19f;
+    public float rotationSpeed = 60f;
 
-    // Start is called before the first frame update
-    private float coliderRadius;
-    [SerializeField] private AnimationCurve treeBend;
+    [FormerlySerializedAs("treeBend")]
+    [SerializeField] private AnimationCurve treeBendCurve;
     private AimTreeLockUI aimUi;
-
-    //
 
     private void Start()
     {
         aimUi = FindObjectOfType<AimTreeLockUI>(true);
-        //wheel = FindObjectOfType<Wheel>();
-        coliderRadius = GetComponent<CircleCollider2D>().radius;
+        colliderRadius = GetComponent<CircleCollider2D>().radius;
 
         InputManager.LeftDragVectorEvent += UpdatePosition;
     }
 
-    // Update is called once per frame
     private void Update()
     {
         UpdateTrees();
+    }
 
-        // GameObject[] ffgfg = Physics2D.OverlapCircle(WheelPosition, 5,,);
+    private void OnDisable()
+    {
+        foreach (var target in nearbyTrees)
+            target.RotateToThis(1f, transform.position);
     }
 
     private void UpdateTrees()
     {
-        if (nearbyTargets.Count > 0)
-            foreach (var target in nearbyTargets)
+        if (nearbyTrees.Count > 0)
+            foreach (var target in nearbyTrees)
             {
-                //coliderRadius
-
-
                 float percent =
-                    treeBend.Evaluate(Mathf.Clamp01((target.transform.position - transform.position).magnitude /
-                                                    coliderRadius));
-                target.GetComponent<RotateToDirectionNoRb>().RotateToThis(direction, percent, transform.position);
+                    treeBendCurve.Evaluate(
+                        Mathf.Clamp01(
+                            transform.Towards(target.transform)
+                                .magnitude
+                            / colliderRadius));
+                target.RotateToThis(percent, transform.position);
             }
     }
 
@@ -64,25 +60,21 @@ public class TreeBend : MonoBehaviour
 
         //invert
         transform.position = -((Vector3)dir.normalized * diference);
-        //Mathf.Clamp(dir.magnitude, min, max)
-        // aimUi.BarIncrease( Mathf.Clamp01((target.transform.position - transform.position).magnitude / coliderRadius));
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("dddsjd");
         var rotToDir = collision.gameObject.GetComponentInParent<RotateToDirectionNoRb>();
-        if (rotToDir) nearbyTargets.Add(rotToDir.gameObject);
+        if (rotToDir && !nearbyTrees.Contains(rotToDir)) nearbyTrees.Add(rotToDir);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag(TargetTag))
-        {
-            var rotToDir = collision.gameObject.GetComponentInParent<RotateToDirectionNoRb>();
-            nearbyTargets.Remove(rotToDir.gameObject);
-            rotToDir?.StartCoroutine("ReturnToDefaultAngle");
-        }
+        var rotToDir = collision.gameObject.GetComponentInParent<RotateToDirectionNoRb>();
+        if (!rotToDir) return;
+
+        nearbyTrees.Remove(rotToDir);
+        rotToDir.RotateToThis(1f, transform.position);
     }
 }

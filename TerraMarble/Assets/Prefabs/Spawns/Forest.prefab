@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 329861440089529274}
   - component: {fileID: 3843311432104254641}
   - component: {fileID: 7274446228475489826}
+  - component: {fileID: 7578260388782097699}
   m_Layer: 8
   m_Name: Tree, Main (0)
   m_TagString: Untagged
@@ -129,6 +130,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!50 &7578260388782097699
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397646456881526835}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &563828416788737350
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,10 +385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ecba51cf07fd5f4884b76dbc2eb2d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 15
-  moveSpeed: 25
-  direction: {x: 0, y: -1}
-  duration: 0.5
+  rotationSpeed: 25
+  maxRotation: 75
+  goalRotation: 0
 --- !u!33 &1665380755539759995
 MeshFilter:
   m_ObjectHideFlags: 0
