@@ -13,10 +13,10 @@ public class RotateToDirectionNoRb : MonoBehaviour
     private TreeBend treeBender;
 
     private float startRotation = 0f;
-
-    [SerializeField] private float maxRotation = 75f;
+    
     [SerializeField] private float goalRotation = 0f;
-    private float CurrentRotation => baseRB.rotation;
+
+    private float bendVelocity = 0.0f;
 
 
     private void Start()
@@ -30,20 +30,22 @@ public class RotateToDirectionNoRb : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Mathf.Approximately(CurrentRotation, goalRotation)) return;
+        if (Mathf.Approximately(baseRB.rotation, goalRotation)) return;
 
-        //float diff = MathU.DeltaRange(
-        //    Mathf.Repeat(CurrentRotation, 360f), 
-        //    goalRotation, 360f);
-        //float diffSign = Mathf.Sign(diff);
-        //float newRot = CurrentRotation + (spd * diffSign);
+        float newRot;
+        newRot = Mathf.SmoothDampAngle(
+            baseRB.rotation,
+            goalRotation,
+            ref bendVelocity,
+            treeBender.bendTime,
+            treeBender.maxSpeed,
+            Time.fixedDeltaTime);
 
-
-        float spd = treeBender.rotationSpeed * Time.fixedDeltaTime;
-        float newRot = Mathf.MoveTowardsAngle(
-            CurrentRotation, 
-            goalRotation, 
-            spd);
+        //float spd = treeBender.rotationSpeed * Time.fixedDeltaTime;
+        //newRot = Mathf.MoveTowardsAngle(
+        //    CurrentRotation, 
+        //    goalRotation, 
+        //    spd);
 
         baseRB.MoveRotation(newRot);
     }
@@ -57,32 +59,10 @@ public class RotateToDirectionNoRb : MonoBehaviour
             newDirection.y = -1; // Right side
         else if (relativePoint.x > 0f)
             newDirection.y = 1; // Left side
+
         float angle = MathU.Vector2ToDegree(newDirection);
         angle *= 1f - distPercent;
 
-
         goalRotation = startRotation + angle;
-
-        // Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward) * startLocalRot;
-        // baseTransform.localRotation = Quaternion.Slerp(baseTransform.localRotation, rotation, rotationSpeed * Time.deltaTime);
     }
-
-    //private IEnumerator ReturnToDefaultAngle()
-    //{
-    //    float Timer = 0;
-
-
-    //    while (Timer <= durationReset)
-    //    {
-    //        Timer = Timer + Time.deltaTime;
-    //        float percent = Mathf.Clamp01(Timer / durationReset);
-
-    //        float angle = Mathf.Atan2(0, 1) * Mathf.Rad2Deg;
-    //        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward) * startLocalRot;
-    //        baseTransform.localRotation = Quaternion.Slerp(baseTransform.localRotation, rotation, percent);
-
-
-    //        yield return null;
-    //    }
-    //}
 }

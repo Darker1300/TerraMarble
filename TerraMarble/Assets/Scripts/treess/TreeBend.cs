@@ -8,11 +8,11 @@ public class TreeBend : MonoBehaviour
     public List<RotateToDirectionNoRb> nearbyTrees = new();
 
     // Positioning
-    [SerializeField] private float min = 10;
-    [SerializeField] private float max = 10f;
+    [SerializeField] private float wheelDst = 10;
     private float colliderRadius;
 
-    public float rotationSpeed = 60f;
+    public float bendTime = 0.1f;
+    public float maxSpeed = 60f;
 
     [FormerlySerializedAs("treeBend")]
     [SerializeField] private AnimationCurve treeBendCurve;
@@ -54,12 +54,7 @@ public class TreeBend : MonoBehaviour
 
     public void UpdatePosition(Vector2 dir, Vector2 delta)
     {
-        //get the difference and reverse it
-        float diference = max - Mathf.Clamp(dir.magnitude, min, max);
-        diference = min + diference;
-
-        //invert
-        transform.position = -((Vector3)dir.normalized * diference);
+        transform.position = -((Vector3)dir.normalized * wheelDst);
     }
 
 
