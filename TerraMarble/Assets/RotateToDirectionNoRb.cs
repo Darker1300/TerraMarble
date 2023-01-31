@@ -1,86 +1,68 @@
+using System;
 using System.Collections;
+using MathUtility;
 using UnityEngine;
 
 
 public class RotateToDirectionNoRb : MonoBehaviour
 {
-    public float rotationSpeed = 25;
-    public float moveSpeed = 25;
-    public Vector2 direction;
 
-    private Quaternion starting;
-
-    private Transform targetTransform;
-
+    private Transform baseTransform;
+    private Rigidbody2D baseRB;
     private DragTreePosition treeActive;
-    //public float PaddleBackSpeed;
+    private TreeBend treeBender;
 
-    //Coroutine stuff
-    [SerializeField] private float duration;
+    private float startRotation = 0f;
+    
+    [SerializeField] private float goalRotation = 0f;
 
-    // Start is called before the first frame update
+    private float bendVelocity = 0.0f;
+
+
     private void Start()
     {
-        targetTransform = transform.parent;
-        starting = targetTransform.localRotation;
-        InputManager.LeftDragEvent += RotateBack;
         treeActive = FindObjectOfType<DragTreePosition>();
+        treeBender = FindObjectOfType<TreeBend>();
+        baseTransform = transform.parent;
+        baseRB = baseTransform.GetComponent<Rigidbody2D>();
+        startRotation = goalRotation = baseRB.rotation;
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
-        // transform.position += transform.forward * moveSpeed * Time.deltaTime;
+        if (Mathf.Approximately(baseRB.rotation, goalRotation)) return;
+
+        float newRot;
+        newRot = Mathf.SmoothDampAngle(
+            baseRB.rotation,
+            goalRotation,
+            ref bendVelocity,
+            treeBender.bendTime,
+            treeBender.maxSpeed,
+            Time.fixedDeltaTime);
+
+        //float spd = treeBender.rotationSpeed * Time.fixedDeltaTime;
+        //newRot = Mathf.MoveTowardsAngle(
+        //    CurrentRotation, 
+        //    goalRotation, 
+        //    spd);
+
+        baseRB.MoveRotation(newRot);
     }
 
-    public void RotateToThis(Vector2 newDirection, float percentage, Vector3 pos)
+    public void RotateToThis(float distPercent, Vector3 pos)
     {
-        var relativePoint = targetTransform.InverseTransformPoint(pos);
-        if (relativePoint.x <= 0.0)
-        {
-            newDirection.y = -1;
-            Debug.Log("R");
-            //Mathf.Abs (newDirection.x) ;
-        }
-        else if (relativePoint.x > 0.0)
-        {
-            Debug.Log("L");
-            newDirection.y = 1;
-        }
+        Vector2 newDirection = Vector2.down;
 
-        float angle = Mathf.Atan2(newDirection.y, newDirection.x) * Mathf.Rad2Deg;
-        //angle += offset;
-        angle *= 1 - percentage;
+        Vector3 relativePoint = baseTransform.InverseTransformPoint(pos);
+        if (relativePoint.x < 0f)
+            newDirection.y = -1; // Right side
+        else if (relativePoint.x > 0f)
+            newDirection.y = 1; // Left side
 
-        //float dot = Vector2.Dot(-transform.parent.up, Direction);
+        float angle = MathU.Vector2ToDegree(newDirection);
+        angle *= 1f - distPercent;
 
-
-        //angle = Vector2.Dot(,)
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward) * starting;
-        targetTransform.localRotation = Quaternion.Slerp(targetTransform.localRotation, rotation, rotationSpeed * Time.deltaTime);
-    }
-
-    public void RotateBack(bool keyDown)
-    {
-        if (!keyDown) treeActive.StartCoroutine(ReturnToDefaultAngle());
-    }
-
-    private IEnumerator ReturnToDefaultAngle()
-    {
-        float Timer = 0;
-
-
-        while (Timer <= duration)
-        {
-            Timer = Timer + Time.deltaTime;
-            float percent = Mathf.Clamp01(Timer / duration);
-
-            float angle = Mathf.Atan2(0, 1) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward) * starting;
-            targetTransform.localRotation = Quaternion.Slerp(targetTransform.localRotation, rotation, percent);
-
-
-            yield return null;
-        }
+        goalRotation = startRotation + angle;
     }
 }
