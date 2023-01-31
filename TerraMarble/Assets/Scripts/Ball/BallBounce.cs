@@ -71,10 +71,10 @@ public class BallBounce : MonoBehaviour
 
     }
 
-    private bool MovingWithWind(Vector3 pos,Vector2 vel)
-    {
-        return wheel.IsMovingWithWheel(pos, vel);
-    }
+    //private bool MovingWithWind(Vector3 pos,Vector2 vel)
+    //{
+    //    return wheel.IsMovingWithWheel(pos, vel);
+    //}
 
     public void Bounce(Vector2 surfaceNormal)
     {
