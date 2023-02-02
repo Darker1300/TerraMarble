@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 
@@ -12,14 +11,19 @@ public class InputManager : MonoBehaviour
     //START POS
 
     //CURRENT DRAG SCREENPOS
-    public delegate void DragLeftUpdate(Vector2 currentScreenPosition, Vector2 Delta);
+    /// <param name="dragVector">World-space vector</param>
+    /// <param name="dragDelta">World-space vector</param>
+    public delegate void DragLeftUpdate(Vector2 dragVector, Vector2 dragDelta);
 
-    public delegate void DragRightUpdate(Vector2 currentScreenPosition, Vector2 Delta);
+    /// <param name="dragVector">World-space vector</param>
+    /// <param name="dragDelta">World-space vector</param>
+    public delegate void DragRightUpdate(Vector2 dragVector, Vector2 dragDelta);
 
     public static Vector2 DragLeftStartScreenPos;
     public static Vector2 DragLeftEndScreenPos;
 
     public static Vector2 DragRightStartScreenPos;
+    public static Vector2 DragRightEndScreenPos;
 
     [SerializeField] private InputModule inputAsset;
     public float LeftStartTime;
@@ -100,7 +104,10 @@ public class InputManager : MonoBehaviour
             ctx =>
 
             {
-                Vector2 drag = ctx.ReadValue<Vector2>();
+                Vector2 dragCurrentScreenPos = ctx.ReadValue<Vector2>();
+                Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
+                Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos);
+                Vector2 dragEndWorldPos = Camera.main.ScreenToWorldPoint(DragLeftEndScreenPos);
 
                 switch (dragTypes)
                 {
@@ -108,8 +115,8 @@ public class InputManager : MonoBehaviour
 
                         //if bellow hold time and magnitude is less then threshold 
                         if (Time.time - LeftStartTime < holdTime &&
-                            (Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) -
-                             Camera.main.ScreenToWorldPoint(drag)).magnitude > minDragAmount)
+                            (dragStartWorldPos -
+                             dragCurrentWorldPos).magnitude > minDragAmount)
                         {
                             //if less than threshold
 
@@ -130,16 +137,16 @@ public class InputManager : MonoBehaviour
                         break;
                     case DragTypes.STANDARD:
                         LeftDragVectorEvent?.Invoke(
-                            Camera.main.ScreenToWorldPoint(drag) -
-                            Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos), Vector2.zero);
-                        DragLeftEndScreenPos = drag;
+                            dragCurrentWorldPos - dragStartWorldPos,
+                            dragCurrentWorldPos - dragEndWorldPos);
+                        DragLeftEndScreenPos = dragCurrentScreenPos;
 
                         break;
                     case DragTypes.ALTERNATE:
                         LeftAlternateDragVectorEvent?.Invoke(
-                            Camera.main.ScreenToWorldPoint(drag) -
-                            Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos), Vector2.zero);
-                        DragLeftEndScreenPos = drag;
+                            dragCurrentWorldPos - dragStartWorldPos,
+                            dragCurrentWorldPos - dragEndWorldPos);
+                        DragLeftEndScreenPos = dragCurrentScreenPos;
                         break;
                     default:
                         break;
@@ -149,17 +156,17 @@ public class InputManager : MonoBehaviour
 
         inputAsset.Player.DragLeft.canceled +=
             ctx =>
-
             {
                 //if below drag threshold 
 
-
                 //how long since held down? is it a tap
 
-                if (Time.time - LeftStartTime <= TapTime && (Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) -
-                                                             Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()))
-                    .magnitude < minDragAmount)
+                Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos);
+                Vector2 dragCurrentScreenPos = ctx.ReadValue<Vector2>();
+                Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
 
+                if (Time.time - LeftStartTime <= TapTime
+                    && (dragStartWorldPos - dragCurrentWorldPos).magnitude < minDragAmount)
                 {
                     if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
 
@@ -194,6 +201,8 @@ public class InputManager : MonoBehaviour
 
                 DragRightStartScreenPos = ctx.ReadValue<Vector2>();
 
+                DragRightEndScreenPos = DragRightStartScreenPos;
+
                 if (showDebug) Debug.Log("Start");
 
                 RightDragEvent?.Invoke(true);
@@ -205,11 +214,15 @@ public class InputManager : MonoBehaviour
         inputAsset.Player.DragRight.performed +=
             ctx =>
             {
-                RightDragVectorEvent?.Invoke(
-                    Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()) - Camera.main.ScreenToWorldPoint(
-                        DragRightStartScreenPos
-                    ), mouseDelta);
+                Vector2 dragCurrentScreenPos = ctx.ReadValue<Vector2>();
+                Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
+                Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragRightStartScreenPos);
+                Vector2 dragEndWorldPos = Camera.main.ScreenToWorldPoint(DragRightEndScreenPos);
 
+                RightDragVectorEvent?.Invoke(
+                    dragCurrentWorldPos - dragStartWorldPos,
+                    dragCurrentWorldPos - dragEndWorldPos);
+                DragRightEndScreenPos = dragCurrentScreenPos;
                 if (showDebug) Debug.Log("Drag");
             };
 
