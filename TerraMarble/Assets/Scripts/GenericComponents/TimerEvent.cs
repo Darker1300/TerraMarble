@@ -14,6 +14,7 @@ public class TimerEvent : MonoBehaviour
     [SerializeField]
     private bool loop;
 
+    public bool test;
 
     public UnityEvent TriggerEvent;
     // Start is called before the first frame update
@@ -27,7 +28,11 @@ public class TimerEvent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (test)
+        {
+            TimerEventStart();
+            test = false;
+        }
     }
     public void TimerEventStart()
     {

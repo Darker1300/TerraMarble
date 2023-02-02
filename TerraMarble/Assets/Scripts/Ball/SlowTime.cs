@@ -9,11 +9,18 @@ public class SlowTime : MonoBehaviour
     public float TimeScale;
     private float startTimeScale;
     private float startFixedDeltaTime;
+    [SerializeField]
+    private bool isInput;
     // Start is called before the first frame update
     void Start()
     {
         startTimeScale = Time.timeScale;
         startFixedDeltaTime = Time.fixedDeltaTime;
+        if (isInput)
+        {
+            InputManager.LeftDragEvent += StartStop;
+
+        }
     }
 
     // Update is called once per frame
@@ -21,7 +28,18 @@ public class SlowTime : MonoBehaviour
     {
 
     }
-
+    public void StartStop(bool start)
+    {
+        if (start)
+        {
+            startSlowMotion();
+        }
+        else
+        {
+            StopSlowMotion();
+        }
+    
+    }
     public void startSlowMotion()
     {
         Time.timeScale = TimeScale;

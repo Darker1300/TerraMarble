@@ -37,15 +37,16 @@ public class RightAim : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+       
+    }
+
+    private void OnEnable()
+    {
         ballState = GetComponent<BallStateTracker>();
         lineIndicator = GetComponent<LineRenderer>();
         updateGravityScript = GetComponent<UpdateGravity>();
 
         timeSlowDown = GetComponent<SlowTime>();
-    }
-
-    private void OnEnable()
-    {
 
         InputManager.LeftDragEvent += Release;
         InputManager.LeftAlternateEvent += AlternateStart;
@@ -85,6 +86,7 @@ public class RightAim : MonoBehaviour
 
     public void Release(bool buttonDown)
     {
+        
         if (!buttonDown)
         {
             lineIndicator.enabled = false;
@@ -102,7 +104,7 @@ public class RightAim : MonoBehaviour
 
         {
             timeSlowDown.startSlowMotion();
-            StartCoroutine(Countdown());
+             //StartCoroutine(Countdown());
         }
     }
     private IEnumerator Countdown()

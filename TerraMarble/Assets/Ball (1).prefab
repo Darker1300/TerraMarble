@@ -467,6 +467,7 @@ MonoBehaviour:
   slideFactor: 1
   slideMax: 50
   slideMin: 0
+  bounceRange: 0
 --- !u!58 &7898521576730675457
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -490,7 +491,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7898521576730675471}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 848fd6c8cf9f3d44a8287a470e6655c9, type: 3}
   m_Name: 
@@ -504,6 +505,7 @@ MonoBehaviour:
   STATE: 0
   DoDebug: 0
   AimSensitivity: 0.228
+  aimReAdjust: 0
 --- !u!114 &7898521576730675459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,7 +513,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7898521576730675471}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 823662051d7dd5e4ca2ec7002db7c4ac, type: 3}
   m_Name: 
