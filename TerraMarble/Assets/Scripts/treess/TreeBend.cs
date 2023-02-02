@@ -5,25 +5,28 @@ using UnityEngine.Serialization;
 
 public class TreeBend : MonoBehaviour
 {
-    public List<RotateToDirectionNoRb> nearbyTrees = new();
-
     // Positioning
     [SerializeField] private float wheelDst = 10;
+    [SerializeField] private float maxDragDst = 10;
     private float colliderRadius;
 
-    public float bendTime = 0.1f;
-    public float maxSpeed = 60f;
+    public float bendTime = 0.05f;
+    public float maxSpeed = 1000f;
+
+    private float dragPercent = 0f;
 
     [FormerlySerializedAs("treeBend")]
     [SerializeField] private AnimationCurve treeBendCurve;
     private AimTreeLockUI aimUi;
+
+    public List<RotateToDirectionNoRb> nearbyTrees = new();
 
     private void Start()
     {
         aimUi = FindObjectOfType<AimTreeLockUI>(true);
         colliderRadius = GetComponent<CircleCollider2D>().radius;
 
-        InputManager.LeftDragVectorEvent += UpdatePosition;
+        InputManager.LeftDragVectorEvent += OnDragUpdate;
     }
 
     private void Update()
@@ -34,7 +37,7 @@ public class TreeBend : MonoBehaviour
     private void OnDisable()
     {
         foreach (var target in nearbyTrees)
-            target.RotateToThis(1f, transform.position);
+            target.RotateToThis(0f, transform.position);
     }
 
     private void UpdateTrees()
@@ -42,20 +45,24 @@ public class TreeBend : MonoBehaviour
         if (nearbyTrees.Count > 0)
             foreach (var target in nearbyTrees)
             {
-                float percent =
-                    treeBendCurve.Evaluate(
+                float fallOffPercent =
+                   1f - treeBendCurve.Evaluate(
                         Mathf.Clamp01(
-                            transform.Towards(target.transform)
-                                .magnitude
-                            / colliderRadius));
-                target.RotateToThis(percent, transform.position);
+                            transform.Towards(target.transform).sqrMagnitude
+                            / (colliderRadius * colliderRadius)));
+                fallOffPercent = dragPercent * fallOffPercent;
+                Debug.Log("Drag: " + fallOffPercent);
+                target.RotateToThis(fallOffPercent, transform.position);
             }
     }
 
-    public void UpdatePosition(Vector2 dir, Vector2 delta)
+    public void OnDragUpdate(Vector2 dragVector, Vector2 dragDelta)
     {
-        transform.position = -((Vector3)dir.normalized * wheelDst);
-        
+        // Update Position
+        transform.position = -((Vector3)dragVector.normalized * wheelDst);
+
+        dragPercent = Mathf.Clamp01(dragVector.magnitude / maxDragDst);
+        Debug.Log("Drag: " + dragPercent);
     }
 
 
@@ -71,6 +78,14 @@ public class TreeBend : MonoBehaviour
         if (!rotToDir) return;
 
         nearbyTrees.Remove(rotToDir);
-        rotToDir.RotateToThis(1f, transform.position);
+        rotToDir.RotateToThis(0f, transform.position);
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(
+            Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos),
+            maxDragDst);
+    }
+
 }

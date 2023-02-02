@@ -61,7 +61,7 @@ public class RotateToDirectionNoRb : MonoBehaviour
             newDirection.y = 1; // Left side
 
         float angle = MathU.Vector2ToDegree(newDirection);
-        angle *= 1f - distPercent;
+        angle *= distPercent;
 
         goalRotation = startRotation + angle;
     }
