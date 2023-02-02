@@ -54,8 +54,8 @@ public class AimTreeLockUI : MonoBehaviour
     }
     public void BarIncrease(float percent)
     {
-        fillDisc.AngRadiansStart = Mathf.Lerp(0, endSize, percent);
-        fillDisc.AngRadiansEnd = -Mathf.Lerp(0, endSize, percent);
+        fillDisc.AngRadiansStart = Mathf.Deg2Rad * Mathf.Lerp(0, endSize, percent);
+        fillDisc.AngRadiansEnd = Mathf.Deg2Rad * -Mathf.Lerp(0, endSize, percent);
         //float percent = Mathf.Clamp01((target.transform.position - transform.position).magnitude / coliderRadius));
 
     }

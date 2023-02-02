@@ -55,6 +55,7 @@ public class TreeBend : MonoBehaviour
     public void UpdatePosition(Vector2 dir, Vector2 delta)
     {
         transform.position = -((Vector3)dir.normalized * wheelDst);
+        
     }
 
 
