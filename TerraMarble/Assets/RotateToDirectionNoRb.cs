@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using MathUtility;
 using UnityEngine;
 
@@ -13,8 +11,11 @@ public class RotateToDirectionNoRb : MonoBehaviour
     private TreeBend treeBender;
 
     private float startRotation = 0f;
-    
+
     [SerializeField] private float goalRotation = 0f;
+
+    [SerializeField] private float currentGoalPercent = 0f;
+
 
     private float bendVelocity = 0.0f;
 
@@ -50,7 +51,17 @@ public class RotateToDirectionNoRb : MonoBehaviour
         baseRB.MoveRotation(newRot);
     }
 
-    public void RotateToThis(float distPercent, Vector3 pos)
+    public void RotateToThis(float collapsePercent, Vector3 pos)
+    {
+        if (currentGoalPercent > (1f - treeBender.deadRange)
+            && collapsePercent > treeBender.deadRange) return;
+
+        currentGoalPercent = collapsePercent;
+
+        goalRotation = startRotation + CalcLocalRotation(collapsePercent, pos);
+    }
+
+    private float CalcLocalRotation(float collapsePercent, Vector3 pos)
     {
         Vector2 newDirection = Vector2.down;
 
@@ -61,8 +72,14 @@ public class RotateToDirectionNoRb : MonoBehaviour
             newDirection.y = 1; // Left side
 
         float angle = MathU.Vector2ToDegree(newDirection);
-        angle *= distPercent;
+        angle *= collapsePercent;
+        return angle;
+    }
 
-        goalRotation = startRotation + angle;
+    public void Reset()
+    {
+        currentGoalPercent = 0f;
+
+        goalRotation = startRotation;
     }
 }
