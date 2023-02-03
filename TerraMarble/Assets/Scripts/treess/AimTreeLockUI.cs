@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using MathUtility;
 using UnityEngine;
 using Shapes;
 
 public class AimTreeLockUI : MonoBehaviour
 {
+
+    private DragTreePosition treeActive;
 
     public Disc fillDisc;
     public Disc outerDisc;
@@ -20,6 +23,8 @@ public class AimTreeLockUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        treeActive = FindObjectOfType<DragTreePosition>();
+
         //fillDisc = GetComponent<Disc>();
         fillDisc.AngRadiansStart = radius;
         fillDisc.AngRadiansEnd = -radius;
@@ -28,15 +33,22 @@ public class AimTreeLockUI : MonoBehaviour
         //outerDisc = GetComponentInChildren<Disc>();
         endSize = outerDisc.AngRadiansStart;
 
-        InputManager.LeftDragVectorEvent += LookRotation;
         InputManager.LeftDragEvent += EnableDiscs;
     }
 
     // Update is called once per frame
     void Update()
     {
-       
+        if (treeActive.enabled)
+        {
+            Vector2 dir = ((Vector2)transform.Towards(treeActive.transform)).normalized;
+            float ang = MathU.Vector2ToDegree(dir);
+            transform.rotation = Quaternion.AngleAxis(ang, Vector3.forward);
+
+            BarIncrease(treeActive.treeBender.dragInput.y);
+        }
     }
+
     public void EnableDiscs(bool inputDown)
     {
         if (inputDown)
@@ -54,25 +66,25 @@ public class AimTreeLockUI : MonoBehaviour
     }
     public void BarIncrease(float percent)
     {
-        fillDisc.AngRadiansStart = Mathf.Deg2Rad * Mathf.Lerp(0, endSize, percent);
-        fillDisc.AngRadiansEnd = Mathf.Deg2Rad * -Mathf.Lerp(0, endSize, percent);
+        fillDisc.AngRadiansStart = Mathf.Lerp(0, endSize, percent);
+        fillDisc.AngRadiansEnd = -Mathf.Lerp(0, endSize, percent);
         //float percent = Mathf.Clamp01((target.transform.position - transform.position).magnitude / coliderRadius));
 
     }
 
-    public void LookRotation(Vector2 direction,Vector2 delta)
-    {
+    //public void LookRotation(Vector2 direction,Vector2 delta)
+    //{
         
-        //transform.LookAt(target,Vector3.up);
-        direction = -direction.normalized;
+    //    //transform.LookAt(target,Vector3.up);
+    //    direction = -direction.normalized;
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        //angle += offset;
+    //    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    //    //angle += offset;
         
-        //float dot = Vector2.Dot(-transform.parent.up, Direction);
+    //    //float dot = Vector2.Dot(-transform.parent.up, Direction);
 
-        //angle = Vector2.Dot(,)
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = rotation;
-    }
+    //    //angle = Vector2.Dot(,)
+    //    Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    //    transform.rotation = rotation;
+    //}
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DragTreePosition : MonoBehaviour
 {
-    private TreeBend treeBender;
+    public TreeBend treeBender;
 
     void Start()
     {
