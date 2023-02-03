@@ -41,8 +41,9 @@ public class TreeBend : MonoBehaviour
     private void Update()
     {
         Vector2 dir = ((Vector2)wheelRegions.transform.Towards(ball.transform)).normalized;
-        float xAxis = math.remap(0, 1, -1, 1, dragInput.x);
-        dir = dir.RotatedByDegree(xAxis * dragRange);// * (dir.y < 0 ? -1f : 1f )
+        //float xAxis = math.remap(0, 1, -1, 1, dragInput.x);
+        //Debug.Log("X Axis: " + dragInput.x);
+        dir = dir.RotatedByDegree(dragInput.x * dragRange);// * (dir.y < 0 ? -1f : 1f )
         transform.position = wheelRegions.transform.position
                              + (Vector3) dir * wheelDst;
 
