@@ -19,6 +19,7 @@ public class TreeBend : MonoBehaviour
 
     [SerializeField] private float dragRange = 10f;
     [SerializeField] private Vector2 dragSize = new Vector2(10, 10);
+    [Range(0f, 1f)] public float deadRange = 0.25f;
     [SerializeField] private AnimationCurve treeBendCurve;
 
     [Header("Data")]
@@ -41,10 +42,11 @@ public class TreeBend : MonoBehaviour
     private void Update()
     {
         Vector2 dir = ((Vector2)wheelRegions.transform.Towards(ball.transform)).normalized;
-        float xAxis = math.remap(0, 1, -1, 1, dragInput.x);
-        dir = dir.RotatedByDegree(xAxis * dragRange);// * (dir.y < 0 ? -1f : 1f )
+        //float xAxis = math.remap(0, 1, -1, 1, dragInput.x);
+        //Debug.Log("X Axis: " + dragInput.x);
+        dir = dir.RotatedByDegree(dragInput.x * dragRange);// * (dir.y < 0 ? -1f : 1f )
         transform.position = wheelRegions.transform.position
-                             + (Vector3) dir * wheelDst;
+                             + (Vector3)dir * wheelDst;
 
         UpdateTrees();
     }
@@ -52,7 +54,7 @@ public class TreeBend : MonoBehaviour
     private void OnDisable()
     {
         foreach (var target in nearbyTrees)
-            target.RotateToThis(0f, transform.position);
+            target.Reset();
     }
 
     private void UpdateTrees()
@@ -78,7 +80,7 @@ public class TreeBend : MonoBehaviour
         // Update Position
 
         dragInput.x = Mathf.Clamp(dragVector.x / dragSize.x, -1f, 1f);
-        dragInput.y = Mathf.Abs( Mathf.Clamp(dragVector.y / dragSize.y, -1f, 0f));
+        dragInput.y = Mathf.Abs(Mathf.Clamp(dragVector.y / dragSize.y, -1f, 0f));
     }
 
 
@@ -94,7 +96,7 @@ public class TreeBend : MonoBehaviour
         if (!rotToDir) return;
 
         nearbyTrees.Remove(rotToDir);
-        rotToDir.RotateToThis(0f, transform.position);
+        rotToDir.Reset();
     }
 
     private void OnDrawGizmosSelected()
