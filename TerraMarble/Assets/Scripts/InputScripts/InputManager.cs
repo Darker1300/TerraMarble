@@ -4,11 +4,22 @@ using UnityEngine.InputSystem.EnhancedTouch;
 
 public class InputManager : MonoBehaviour
 {
+
     public delegate void DragLeft(bool state);
     //Left Right Vectors
+    public bool Mobile;
 
+    //if mobile when input starts dictates which side its on,
+    //if dragleft 
+    public enum InputIdentifier
+    {
+        IsLeft,isRight,Undeclared
+    }
+    InputIdentifier leftMouseDragID;
+    InputIdentifier rightMouseDragID;
     //---DRAG MOUSE/TOUCH--
     //START POS
+
 
     //CURRENT DRAG SCREENPOS
     /// <param name="dragVector">World-space vector</param>
@@ -29,6 +40,7 @@ public class InputManager : MonoBehaviour
     public float LeftStartTime;
     public float minDragAmount;
     public float RightStartTime;
+
 
     public enum DragTypes
     {
@@ -77,6 +89,7 @@ public class InputManager : MonoBehaviour
 
     public void DragStateConfigure(Vector2 drag, Vector2 dragMag)
     {
+
     }
 
     public void Start()
@@ -86,8 +99,37 @@ public class InputManager : MonoBehaviour
             ctx =>
 
             {
-                LeftStartTime = Time.time;
+                if (Mobile)
+                {
+                    //if position is left side OR right side
+                    if (IsTouchRight(ctx.ReadValue<Vector2>()))
+                    {
+                        leftMouseDragID = InputIdentifier.isRight;
+                       
+                        RightStartTime = Time.time;
+                        DragRightStartScreenPos = ctx.ReadValue<Vector2>();
+                        DragRightEndScreenPos = DragRightStartScreenPos;
+                        RightDragEvent?.Invoke(true);
+                    }
+                    else //touch left
+                    {
+                        leftMouseDragID = InputIdentifier.IsLeft;
+                        LeftStartTime = Time.time;
+                        DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
+                        DragLeftEndScreenPos = DragLeftStartScreenPos;
+                        LeftDragEvent?.Invoke(true);
 
+                    }
+
+
+
+                }
+                else //PC
+                {
+
+                
+
+                LeftStartTime = Time.time;
 
                 DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
                 DragLeftEndScreenPos = DragLeftStartScreenPos;
@@ -95,6 +137,10 @@ public class InputManager : MonoBehaviour
                 if (showDebug) Debug.Log("Start");
 
                 LeftDragEvent?.Invoke(true);
+
+                }
+
+
             };
 
 
@@ -104,6 +150,18 @@ public class InputManager : MonoBehaviour
             ctx =>
 
             {
+                
+                if (Mobile)
+                {
+                    if (IsTouchRight(ctx.ReadValue<Vector2>()))
+                    {
+
+                    }
+                }
+                //Left start time and left alternative event
+                //work out which one you are working with
+
+
                 Vector2 dragCurrentScreenPos = ctx.ReadValue<Vector2>();
                 Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
                 Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos);
@@ -196,16 +254,47 @@ public class InputManager : MonoBehaviour
             ctx =>
 
             {
-                RightStartTime = Time.time;
+                if (Mobile)
+                {
+                    //if position is left side OR right side
+                    if (IsTouchRight(ctx.ReadValue<Vector2>()))
+                    {
+                        leftMouseDragID = InputIdentifier.isRight;
+
+                        RightStartTime = Time.time;
+                        DragRightStartScreenPos = ctx.ReadValue<Vector2>();
+                        DragRightEndScreenPos = DragRightStartScreenPos;
+                        RightDragEvent?.Invoke(true);
+                    }
+                    else
+                    {
+                        leftMouseDragID = InputIdentifier.IsLeft;
+                        LeftStartTime = Time.time;
+                        DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
+                        DragLeftEndScreenPos = DragLeftStartScreenPos;
+                        LeftDragEvent?.Invoke(true);
+
+                    }
 
 
-                DragRightStartScreenPos = ctx.ReadValue<Vector2>();
 
-                DragRightEndScreenPos = DragRightStartScreenPos;
+                }
+                else //PC
+                {
+                    RightStartTime = Time.time;
 
-                if (showDebug) Debug.Log("Start");
 
-                RightDragEvent?.Invoke(true);
+                    DragRightStartScreenPos = ctx.ReadValue<Vector2>();
+
+                    DragRightEndScreenPos = DragRightStartScreenPos;
+
+                    if (showDebug) Debug.Log("Start");
+
+                    RightDragEvent?.Invoke(true);
+                }
+
+
+                
             };
 
 
@@ -214,6 +303,18 @@ public class InputManager : MonoBehaviour
         inputAsset.Player.DragRight.performed +=
             ctx =>
             {
+                if (Mobile)
+                {
+                    if (IsTouchRight(ctx.ReadValue<Vector2>()))
+                    {
+
+                    }
+                }
+
+
+
+
+                //PC
                 Vector2 dragCurrentScreenPos = ctx.ReadValue<Vector2>();
                 Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
                 Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragRightStartScreenPos);
@@ -251,7 +352,7 @@ public class InputManager : MonoBehaviour
             };
     }
 
-
+    
     private void MultiTapActivated()
 
     {
