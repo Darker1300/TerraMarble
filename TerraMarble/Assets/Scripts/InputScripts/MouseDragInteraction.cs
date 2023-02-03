@@ -12,16 +12,22 @@ namespace z
     /// <summary>
     ///     Mouse drag interaction.
     /// </summary>
-#if UNITY_EDITOR
-    [InitializeOnLoad]
 
+
+#if UNITY_EDITOR
+    [UnityEditor.InitializeOnLoad]
 #endif
-    public class MouseDragInteraction : IInputInteraction
+     public class MouseDragInteraction : IInputInteraction
     {
-        static MouseDragInteraction()
-        {
-            InputSystem.RegisterInteraction<MouseDragInteraction>();
-        }
+#if UNITY_EDITOR
+        static MouseDragInteraction() => InputSystem.RegisterInteraction<MouseDragInteraction>();
+#else
+    [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void OnRuntimeMethodLoad() => InputSystem.RegisterInteraction<MouseDragInteraction>();
+#endif
+
+
+
 
         public void Reset()
         {
