@@ -6,6 +6,9 @@ public class UpdateGravity : MonoBehaviour
     public float maxGravityDist = 132.0f;
     public float maxGravity = 35.0f;
 
+    [SerializeField] private float minGravityFactor = 1f;
+
+
     private Transform wheelCenter;
 
     private Rigidbody2D rb;
@@ -33,12 +36,12 @@ public class UpdateGravity : MonoBehaviour
         else // Apply Gravity
         {
             var dist = wheelDir.magnitude;
-            if (dist <= maxGravityDist)
+            //if (dist <= maxGravityDist)
             {
                 //velocity to planet direction , how much is orbiting 
-                var dot = Vector2.Dot(rb.velocity, wheelDir);
+                //var dot = Vector2.Dot(rb.velocity, wheelDir);
 
-                rb.AddForce(wheelDir.normalized * (1.0f - dist / maxGravityDist) * maxGravity);
+                rb.AddForce(wheelDir.normalized * (1.0f - Mathf.Min(minGravityFactor, dist / maxGravityDist)) * maxGravity);
 
                 rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxGravity);
             }
