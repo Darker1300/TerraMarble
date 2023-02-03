@@ -9,8 +9,9 @@ public class BallBounce : MonoBehaviour
     private Wheel wheel;
     [Header("Bounce")] [SerializeField] private bool canBounce = true;
 
-    [SerializeField] private float minBounceForce = 32f;
-    [SerializeField] [Range(0f, 1f)] private float bounceFactor = 0.95f;
+    [SerializeField] private float minBounceForce = 0f;
+    [SerializeField] private float maxBounceForce = 20f;
+    //[SerializeField] [Range(0f, 1f)] private float bounceFactor = 0.95f;
 
     //how much influence of magnitude carries over
     [Header("Slide")]
@@ -22,9 +23,9 @@ public class BallBounce : MonoBehaviour
     [SerializeField] private float slideMin = 0f;
 
     private bool isHit = false;
-    [SerializeField]
-    [Range(-1, 1)]
-    private float bounceRange = 0.0f;
+    //[SerializeField]
+    //[Range(-1, 1)]
+    //private float bounceRange = 0.0f;
 
     private void Start()
     {
@@ -42,7 +43,11 @@ public class BallBounce : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isHit) return;
-        Slide(collision.contacts[0].normal);
+        //if (canBounce)
+            Bounce(collision.contacts[0].normal);
+        //else
+        //    Slide(collision.contacts[0].normal);
+
         //CheckDotProduct(collision.contacts[0].normal, rb.velocity.normalized, bounceRange)
         //Debug.Log("slideDot" + (Vector2.Dot(collision.contacts[0].normal, rb.velocity.normalized)));
         //                  Downwards against wind 
@@ -89,7 +94,7 @@ public class BallBounce : MonoBehaviour
         //Vector2 followThru = (surfaceReflect * bounceFactor
         //                      + wheelReflect * (1f - bounceFactor)).normalized;
 
-        Vector2 bounceClamped = surfaceReflect * Mathf.Max(minBounceForce, initialMag);
+        Vector2 bounceClamped = surfaceReflect * Mathf.Clamp(initialMag, minBounceForce, maxBounceForce);
 
         rb.velocity = bounceClamped;
 
