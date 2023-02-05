@@ -16,6 +16,10 @@ public class TreeBend : MonoBehaviour
     [Header("Config")]
     public float bendTime = 0.05f;
     public float maxSpeed = 1000f;
+    [Header("bend Y Variables")]
+    public AnimationCurve PopOutHeightCurve;
+    
+    public float bendHeight= 0.5f;
 
     [SerializeField] private float dragRange = 10f;
     [SerializeField] private Vector2 dragSize = new Vector2(10, 10);
@@ -72,6 +76,7 @@ public class TreeBend : MonoBehaviour
                 //Debug.Log("Drag: " + fallOffPercent);
 
                 target.RotateToThis(fallOffPercent, transform.position);
+                
             }
     }
 

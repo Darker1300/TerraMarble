@@ -1,6 +1,6 @@
 using MathUtility;
 using UnityEngine;
-
+using Unity.Mathematics;
 
 public class RotateToDirectionNoRb : MonoBehaviour
 {
@@ -9,12 +9,17 @@ public class RotateToDirectionNoRb : MonoBehaviour
     private Rigidbody2D baseRB;
     private DragTreePosition treeActive;
     private TreeBend treeBender;
+    private float startY;
+
 
     private float startRotation = 0f;
 
     [SerializeField] private float goalRotation = 0f;
+    [SerializeField] private float maxRotation = 0f;
 
     [SerializeField] private float currentGoalPercent = 0f;
+
+    [SerializeField] private float jumpPercent=0;
 
 
     private float bendVelocity = 0.0f;
@@ -25,13 +30,18 @@ public class RotateToDirectionNoRb : MonoBehaviour
         treeActive = FindObjectOfType<DragTreePosition>();
         treeBender = FindObjectOfType<TreeBend>();
         baseTransform = transform.parent;
+        startY = baseTransform.localPosition.y;
         baseRB = baseTransform.GetComponent<Rigidbody2D>();
         startRotation = goalRotation = baseRB.rotation;
     }
 
     private void FixedUpdate()
     {
-        if (Mathf.Approximately(baseRB.rotation, goalRotation)) return;
+        if (Mathf.Approximately(baseRB.rotation, goalRotation)) 
+        {
+            jumpPercent = 0;
+        return;
+        }
 
         float newRot;
         newRot = Mathf.SmoothDampAngle(
@@ -42,6 +52,11 @@ public class RotateToDirectionNoRb : MonoBehaviour
             treeBender.maxSpeed,
             Time.fixedDeltaTime);
 
+        float t = Mathf.InverseLerp(startRotation, maxRotation, newRot);
+        Vector3 pos = baseTransform.localPosition;
+        pos.y = (treeBender.PopOutHeightCurve.Evaluate(t)* treeBender.bendHeight * jumpPercent) + startY;
+        baseTransform.localPosition = pos;
+        //math.remap(0,1,startY,start)
         //float spd = treeBender.rotationSpeed * Time.fixedDeltaTime;
         //newRot = Mathf.MoveTowardsAngle(
         //    CurrentRotation, 
@@ -49,16 +64,23 @@ public class RotateToDirectionNoRb : MonoBehaviour
         //    spd);
 
         baseRB.MoveRotation(newRot);
+
     }
 
     public void RotateToThis(float collapsePercent, Vector3 pos)
     {
         if (currentGoalPercent > (1f - treeBender.deadRange)
             && collapsePercent > treeBender.deadRange) return;
-
+       
+        if (collapsePercent < currentGoalPercent)
+        {
+            jumpPercent = Mathf.Abs( collapsePercent - currentGoalPercent);
+        }
         currentGoalPercent = collapsePercent;
 
         goalRotation = startRotation + CalcLocalRotation(collapsePercent, pos);
+        maxRotation = startRotation + CalcLocalRotation(1, pos);
+
     }
 
     private float CalcLocalRotation(float collapsePercent, Vector3 pos)
@@ -79,7 +101,12 @@ public class RotateToDirectionNoRb : MonoBehaviour
     public void Reset()
     {
         currentGoalPercent = 0f;
-
+        jumpPercent = 1;
         goalRotation = startRotation;
+        maxRotation = startRotation + 180;
+
     }
+
+    //only thing that changes is how much time it has to get to that y height if tree half bent
+    //then its only got half the amount of time to return
 }
