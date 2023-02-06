@@ -1,6 +1,5 @@
 using MathUtility;
 using UnityEngine;
-using Unity.Mathematics;
 
 public class RotateToDirectionNoRb : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class RotateToDirectionNoRb : MonoBehaviour
     private Rigidbody2D baseRB;
     private DragTreePosition treeActive;
     private TreeBend treeBender;
-    private float startY;
+    private Vector3 startPos;
 
 
     private float startRotation = 0f;
@@ -30,7 +29,7 @@ public class RotateToDirectionNoRb : MonoBehaviour
         treeActive = FindObjectOfType<DragTreePosition>();
         treeBender = FindObjectOfType<TreeBend>();
         baseTransform = transform.parent;
-        startY = baseTransform.localPosition.y;
+        startPos = baseTransform.localPosition;
         baseRB = baseTransform.GetComponent<Rigidbody2D>();
         startRotation = goalRotation = baseRB.rotation;
     }
@@ -52,11 +51,13 @@ public class RotateToDirectionNoRb : MonoBehaviour
             treeBender.maxSpeed,
             Time.fixedDeltaTime);
 
-        float t =  MathU.InverseLerpAngle(startRotation, jumpFromRotation, newRot);
-        Vector3 pos = baseTransform.localPosition;
-        pos.y = (treeBender.PopOutHeightCurve.Evaluate(t) * treeBender.bendHeight * jumpPercent) + startY;
-        baseTransform.localPosition = pos;
-        //math.remap(0,1,startY,start)
+        float t = MathU.InverseLerpAngle(startRotation, jumpFromRotation, newRot);
+        Vector3 newPos = startPos;
+        newPos.y = (treeBender.PopOutHeightCurve.Evaluate(t) * treeBender.bendHeight * jumpPercent) + startPos.y;
+
+        // baseRB.MovePosition(baseTransform.TransformPoint(newPos));
+        baseTransform.localPosition = newPos;
+
         //float spd = treeBender.rotationSpeed * Time.fixedDeltaTime;
         //newRot = Mathf.MoveTowardsAngle(
         //    CurrentRotation, 
