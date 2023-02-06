@@ -15,11 +15,11 @@ public class RotateToDirectionNoRb : MonoBehaviour
     private float startRotation = 0f;
 
     [SerializeField] private float goalRotation = 0f;
-    [SerializeField] private float maxRotation = 0f;
+    [SerializeField] private float jumpFromRotation = 0f;
 
     [SerializeField] private float currentGoalPercent = 0f;
 
-    [SerializeField] private float jumpPercent=0;
+    [SerializeField] private float jumpPercent = 0;
 
 
     private float bendVelocity = 0.0f;
@@ -37,10 +37,10 @@ public class RotateToDirectionNoRb : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Mathf.Approximately(baseRB.rotation, goalRotation)) 
+        if (Mathf.Approximately(baseRB.rotation, goalRotation))
         {
             jumpPercent = 0;
-        return;
+            return;
         }
 
         float newRot;
@@ -52,9 +52,9 @@ public class RotateToDirectionNoRb : MonoBehaviour
             treeBender.maxSpeed,
             Time.fixedDeltaTime);
 
-        float t = Mathf.InverseLerp(startRotation, maxRotation, newRot);
+        float t =  MathU.InverseLerpAngle(startRotation, jumpFromRotation, newRot);
         Vector3 pos = baseTransform.localPosition;
-        pos.y = (treeBender.PopOutHeightCurve.Evaluate(t)* treeBender.bendHeight * jumpPercent) + startY;
+        pos.y = (treeBender.PopOutHeightCurve.Evaluate(t) * treeBender.bendHeight * jumpPercent) + startY;
         baseTransform.localPosition = pos;
         //math.remap(0,1,startY,start)
         //float spd = treeBender.rotationSpeed * Time.fixedDeltaTime;
@@ -71,15 +71,16 @@ public class RotateToDirectionNoRb : MonoBehaviour
     {
         if (currentGoalPercent > (1f - treeBender.deadRange)
             && collapsePercent > treeBender.deadRange) return;
-       
-        if (collapsePercent < currentGoalPercent)
-        {
-            jumpPercent = Mathf.Abs( collapsePercent - currentGoalPercent);
-        }
-        currentGoalPercent = collapsePercent;
 
         goalRotation = startRotation + CalcLocalRotation(collapsePercent, pos);
-        maxRotation = startRotation + CalcLocalRotation(1, pos);
+        if (collapsePercent < currentGoalPercent)
+        {
+            // Jump up
+            jumpPercent = Mathf.Abs(collapsePercent - currentGoalPercent);
+            jumpFromRotation = baseRB.rotation;
+        }
+
+        currentGoalPercent = collapsePercent;
 
     }
 
@@ -101,9 +102,14 @@ public class RotateToDirectionNoRb : MonoBehaviour
     public void Reset()
     {
         currentGoalPercent = 0f;
-        jumpPercent = 1;
+        // jump up
+        jumpFromRotation = baseRB.rotation;
+        float delta = MathU.DeltaRange(jumpFromRotation, startRotation, 360f);
+        jumpPercent = Mathf.Abs(delta / 180f);
+        //jumpPercent = MathU.InverseLerpAngle(startRotation, jumpFromRotation, baseRB.rotation);
+
         goalRotation = startRotation;
-        maxRotation = startRotation + 180;
+        //jumpFromRotation = startRotation + 180;
 
     }
 

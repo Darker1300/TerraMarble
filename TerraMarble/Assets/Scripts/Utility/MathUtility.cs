@@ -57,12 +57,20 @@ namespace MathUtility
             return a + num * t;
         }
 
+
+        public static float InverseLerpAngle(float a, float b, float t)
+        {
+            float angBetween =  DeltaRange(a, b, 360f);
+            b = a + angBetween; // remove any a->b discontinuity
+            float h = a + angBetween * 0.5f; // halfway angle
+            t = h + DeltaRange(h, t, 360f); // get offset from h, and offset by h
+            return Mathf.InverseLerp(a, b, t);
+        }
+
+
         /// <summary>
         ///   <para>Calculates the shortest difference between two given numbers in a repeating range.</para>
         /// </summary>
-        /// <param name="current"></param>
-        /// <param name="target"></param>
-        /// <param name="max"></param>
         public static float DeltaRange(float current, float target, float max)
         {
             var num = Mathf.Repeat(target - current, max);

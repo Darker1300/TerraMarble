@@ -64,7 +64,7 @@ public class TreeBend : MonoBehaviour
     private void UpdateTrees()
     {
         if (nearbyTrees.Count > 0)
-            foreach (var target in nearbyTrees)
+            foreach (RotateToDirectionNoRb target in nearbyTrees)
             {
                 float fallOffPercent =
                    1f - treeBendCurve.Evaluate(
