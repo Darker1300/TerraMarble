@@ -67,7 +67,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 0, y: 0.05, z: 0}
   end: {x: 0, y: 0, z: 0}
-  thickness: 0.005
+  thickness: 0.025
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -150,7 +150,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 3
+  m_Constraints: 0
 --- !u!1 &563828416788737350
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,6 +386,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goalRotation: 0
+  jumpFromRotation: 0
+  currentGoalPercent: 0
+  jumpPercent: 0
 --- !u!33 &1665380755539759995
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -1,8 +1,15 @@
+using MathUtility;
 using UnityEngine;
 
 public class FollowBehavior : MonoBehaviour
 {
+
     private bool CenterOfTwo;
+
+    [SerializeField] protected Transform trackingTarget;
+    [SerializeField] protected Transform trackingTarget2;
+
+    [Header("Global Follow System")]
     [SerializeField]
     float defaultCameraSize = 20f;
 
@@ -14,26 +21,24 @@ public class FollowBehavior : MonoBehaviour
     [SerializeField] protected float followSpeed;
 
     [SerializeField] protected bool isXlocked = false;
-
     [SerializeField] protected bool isYlocked = false;
 
     [SerializeField] protected bool trackTarget1_ZRotation = false;
     [SerializeField] protected bool trackTarget2_ZRotation = false;
 
-    [Header("CameraFollowTwo")]
-    [SerializeField]
-    [Range(0.0f, 1)]
+    [SerializeField] [Range(0.0f, 1)]
     private float TargetTwoInfuence;
 
-    [SerializeField] protected Transform trackingTarget;
-
-    [SerializeField] protected Transform trackingTarget2;
-
     public bool trackObject;
-
     [SerializeField] private float xOffset;
-
     [SerializeField] private float yOffset;
+
+
+    [Header("Orbit Follow System")]
+    [SerializeField] protected bool useOrbitSystem = false;
+    [SerializeField] private Vector3 followOffset = Vector3.zero + Vector3.back;
+
+
 
     // Start is called before the first frame update
     private void Start()
@@ -52,7 +57,16 @@ public class FollowBehavior : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (trackObject)
+
+        if (useOrbitSystem)
+        {
+            Quaternion tRotation = GetFollowRotation(trackingTarget, trackingTarget2);
+            transform.rotation = tRotation;
+
+            transform.position = trackingTarget2.position + (tRotation * followOffset);
+        }
+
+        else if (trackObject)
         {
             //is it two objects
             var target = CenterOfTwo ? ConvertMiddlePoint() : trackingTarget.transform.position;
@@ -60,13 +74,10 @@ public class FollowBehavior : MonoBehaviour
             var yTarget = target.y;
 
             var xNew = transform.position.x;
+            var yNew = transform.position.y;
 
             if (!isXlocked) xNew = Mathf.Lerp(transform.position.x, xTarget, followSpeed * Time.deltaTime);
-
-
-            var yNew = transform.position.y;
             if (!isYlocked) yNew = Mathf.Lerp(transform.position.y, yTarget, followSpeed * Time.deltaTime);
-
             transform.position = new Vector3(xNew, yNew, transform.position.z);
 
             if (trackTarget1_ZRotation)
@@ -102,5 +113,13 @@ public class FollowBehavior : MonoBehaviour
         Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, target, ref cameraScaleVelocity, cameraScaleSpeed);
 
 
+    }
+
+    public Quaternion GetFollowRotation(Transform _top, Transform _bottom)
+    {
+        Vector3 vector = _bottom.Towards(_top).normalized;
+        Vector2 dir = vector.normalized;
+        dir = dir.RotatedByDegree(-90f);
+        return Quaternion.AngleAxis(MathU.Vector2ToDegree(dir), Vector3.forward);
     }
 }
