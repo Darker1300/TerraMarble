@@ -22,7 +22,7 @@ public class TreeBend : MonoBehaviour
     public float bendHeight= 0.5f;
 
     [SerializeField] private float dragRange = 10f;
-    [SerializeField] private Vector2 dragSize = new Vector2(10, 10);
+    [SerializeField] private Vector2 dragSize = new Vector2(0.1f, 0.2f);
     [Range(0f, 1f)] public float deadRange = 0.25f;
     [SerializeField] private AnimationCurve treeBendCurve;
 
@@ -84,9 +84,10 @@ public class TreeBend : MonoBehaviour
     {
         // Update Position
         float camAngle = Camera.main.transform.rotation.eulerAngles.z;
-        Vector2 cameraDragVector = dragVector.RotatedByDegree(camAngle + 90f);
+        Vector2 cameraDragVector = screenDragVector;//.normalized;//.RotatedByDegree(camAngle + 90f);
+        // Debug.Log(cameraDragVector);
 
-        dragInput.x = Mathf.Clamp(cameraDragVector.x / dragSize.x, -1f, 1f);
+        dragInput.x = -Mathf.Clamp(cameraDragVector.x / dragSize.x, -1f, 1f);
         dragInput.y = Mathf.Abs(Mathf.Clamp(cameraDragVector.y / dragSize.y, -1f, 0f));
     }
 
@@ -109,14 +110,16 @@ public class TreeBend : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
+        Vector2 worldSize = InputManager.ScreenWorldSize * dragSize;
+
         float camAngle = Camera.main.transform.rotation.eulerAngles.z;
         
         bool xSmaller = (dragSize.x < dragSize.y);
         if (xSmaller)
-            GizmosExtensions.DrawWireCapsule(center, dragSize.x, dragSize.y * 2f,
+            GizmosExtensions.DrawWireCapsule(center, worldSize.x, worldSize.y * 2f,
                 Quaternion.AngleAxis(90f + 0f + camAngle, Vector3.forward));
         else
-            GizmosExtensions.DrawWireCapsule(center, dragSize.y, dragSize.x * 2f,
+            GizmosExtensions.DrawWireCapsule(center, worldSize.y, worldSize.x * 2f,
                 Quaternion.AngleAxis(90f + 90f + camAngle, Vector3.forward));
 
         //Gizmos.DrawWireMesh();

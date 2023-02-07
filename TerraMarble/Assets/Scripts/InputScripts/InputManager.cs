@@ -1,6 +1,9 @@
 using System;
+using System.Numerics;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
+using Vector2 = UnityEngine.Vector2;
 
 public class InputManager : MonoBehaviour
 {
@@ -13,7 +16,7 @@ public class InputManager : MonoBehaviour
     //if dragleft 
     public enum InputIdentifier
     {
-        IsLeft,isRight,Undeclared
+        IsLeft, isRight, Undeclared
     }
     InputIdentifier leftMouseDragID;
     InputIdentifier rightMouseDragID;
@@ -24,10 +27,12 @@ public class InputManager : MonoBehaviour
     //CURRENT DRAG SCREENPOS
     /// <param name="dragVector">World-space vector</param>
     /// <param name="dragDelta">World-space vector</param>
+    /// <param name="screenDragVector">-1..1 vector, viewport space</param>
     public delegate void DragLeftUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector);
 
     /// <param name="dragVector">World-space vector</param>
     /// <param name="dragDelta">World-space vector</param>
+    /// <param name="screenDragVector">-1..1 vector, viewport space</param>
     public delegate void DragRightUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector);
 
     public static Vector2 DragLeftStartScreenPos;
@@ -36,11 +41,18 @@ public class InputManager : MonoBehaviour
     public static Vector2 DragRightStartScreenPos;
     public static Vector2 DragRightEndScreenPos;
 
-    public Vector2 DragLeftScreenVector
-        => DragLeftEndScreenPos - DragLeftStartScreenPos;
-    public Vector2 DragRightScreenVector
-        => DragRightEndScreenPos - DragRightStartScreenPos;
+    public static Vector2 DragLeftScreenVector
+        => (DragLeftEndScreenPos - DragLeftStartScreenPos) / ScreenSize;
+    public static Vector2 DragRightScreenVector
+        => (DragRightEndScreenPos - DragRightStartScreenPos) / ScreenSize;
 
+    public static Vector2 ScreenSize
+        => new(Screen.width, Screen.height);
+
+    public static Vector2 ScreenWorldSize
+        => new(
+            (Camera.main.orthographicSize * 2.0f) * Camera.main.aspect,
+            Camera.main.orthographicSize * 2.0f);
 
     [SerializeField] private InputModule inputAsset;
     public float LeftStartTime;
@@ -54,6 +66,9 @@ public class InputManager : MonoBehaviour
         STANDARD,
         ALTERNATE
     }
+
+    [EnumFlags]
+    public DragTypes testID = DragTypes.ALTERNATE;
 
     [SerializeField] private DragTypes dragTypes = DragTypes.CONTROLLER;
     private int screenWidth;
@@ -111,7 +126,7 @@ public class InputManager : MonoBehaviour
                     if (IsTouchRight(ctx.ReadValue<Vector2>()))
                     {
                         leftMouseDragID = InputIdentifier.isRight;
-                       
+
                         RightStartTime = Time.time;
                         DragRightStartScreenPos = ctx.ReadValue<Vector2>();
                         DragRightEndScreenPos = DragRightStartScreenPos;
@@ -133,16 +148,16 @@ public class InputManager : MonoBehaviour
                 else //PC
                 {
 
-                
 
-                LeftStartTime = Time.time;
 
-                DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
-                DragLeftEndScreenPos = DragLeftStartScreenPos;
+                    LeftStartTime = Time.time;
 
-                if (showDebug) Debug.Log("Start");
+                    DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
+                    DragLeftEndScreenPos = DragLeftStartScreenPos;
 
-                LeftDragEvent?.Invoke(true);
+                    if (showDebug) Debug.Log("Start");
+
+                    LeftDragEvent?.Invoke(true);
 
                 }
 
@@ -156,7 +171,7 @@ public class InputManager : MonoBehaviour
             ctx =>
 
             {
-                
+
                 if (Mobile)
                 {
                     if (IsTouchRight(ctx.ReadValue<Vector2>()))
@@ -302,7 +317,7 @@ public class InputManager : MonoBehaviour
                 }
 
 
-                
+
             };
 
 
@@ -361,7 +376,7 @@ public class InputManager : MonoBehaviour
             };
     }
 
-    
+
     private void MultiTapActivated()
 
     {
