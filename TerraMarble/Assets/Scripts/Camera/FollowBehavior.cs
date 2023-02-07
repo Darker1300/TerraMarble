@@ -36,7 +36,7 @@ public class FollowBehavior : MonoBehaviour
 
     [Header("Orbit Follow System")]
     [SerializeField] protected bool useOrbitSystem = false;
-    [SerializeField] private Vector3 followOffset = Vector3.zero + Vector3.back;
+    [SerializeField] private Vector3 followOffset = Vector3.back;
 
 
 
@@ -64,9 +64,11 @@ public class FollowBehavior : MonoBehaviour
             transform.rotation = tRotation;
 
             transform.position = trackingTarget2.position + (tRotation * followOffset);
+            
+            return;
         }
-
-        else if (trackObject)
+        
+        if (trackObject)
         {
             //is it two objects
             var target = CenterOfTwo ? ConvertMiddlePoint() : trackingTarget.transform.position;

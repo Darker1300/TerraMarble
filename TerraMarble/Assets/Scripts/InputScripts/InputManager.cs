@@ -24,17 +24,23 @@ public class InputManager : MonoBehaviour
     //CURRENT DRAG SCREENPOS
     /// <param name="dragVector">World-space vector</param>
     /// <param name="dragDelta">World-space vector</param>
-    public delegate void DragLeftUpdate(Vector2 dragVector, Vector2 dragDelta);
+    public delegate void DragLeftUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector);
 
     /// <param name="dragVector">World-space vector</param>
     /// <param name="dragDelta">World-space vector</param>
-    public delegate void DragRightUpdate(Vector2 dragVector, Vector2 dragDelta);
+    public delegate void DragRightUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector);
 
     public static Vector2 DragLeftStartScreenPos;
     public static Vector2 DragLeftEndScreenPos;
 
     public static Vector2 DragRightStartScreenPos;
     public static Vector2 DragRightEndScreenPos;
+
+    public Vector2 DragLeftScreenVector
+        => DragLeftEndScreenPos - DragLeftStartScreenPos;
+    public Vector2 DragRightScreenVector
+        => DragRightEndScreenPos - DragRightStartScreenPos;
+
 
     [SerializeField] private InputModule inputAsset;
     public float LeftStartTime;
@@ -194,17 +200,19 @@ public class InputManager : MonoBehaviour
 
                         break;
                     case DragTypes.STANDARD:
+                        DragLeftEndScreenPos = dragCurrentScreenPos;
                         LeftDragVectorEvent?.Invoke(
                             dragCurrentWorldPos - dragStartWorldPos,
-                            dragCurrentWorldPos - dragEndWorldPos);
-                        DragLeftEndScreenPos = dragCurrentScreenPos;
+                            dragCurrentWorldPos - dragEndWorldPos,
+                            DragLeftScreenVector);
 
                         break;
                     case DragTypes.ALTERNATE:
+                        DragLeftEndScreenPos = dragCurrentScreenPos;
                         LeftAlternateDragVectorEvent?.Invoke(
                             dragCurrentWorldPos - dragStartWorldPos,
-                            dragCurrentWorldPos - dragEndWorldPos);
-                        DragLeftEndScreenPos = dragCurrentScreenPos;
+                            dragCurrentWorldPos - dragEndWorldPos,
+                            DragLeftScreenVector);
                         break;
                     default:
                         break;
@@ -320,10 +328,11 @@ public class InputManager : MonoBehaviour
                 Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragRightStartScreenPos);
                 Vector2 dragEndWorldPos = Camera.main.ScreenToWorldPoint(DragRightEndScreenPos);
 
+                DragRightEndScreenPos = dragCurrentScreenPos;
                 RightDragVectorEvent?.Invoke(
                     dragCurrentWorldPos - dragStartWorldPos,
-                    dragCurrentWorldPos - dragEndWorldPos);
-                DragRightEndScreenPos = dragCurrentScreenPos;
+                    dragCurrentWorldPos - dragEndWorldPos,
+                    DragRightScreenVector);
                 if (showDebug) Debug.Log("Drag");
             };
 

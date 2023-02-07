@@ -10,6 +10,8 @@ public class WindSpin : MonoBehaviour
     [SerializeField] private float forceFactor = 2f;
 
     [SerializeField] private float minGrabDelta = 0.1f;
+    [SerializeField] private bool enableGrabbing = true;
+
 
     [Header("Data")]
     [SerializeField] private Transform grabber;
@@ -38,6 +40,8 @@ public class WindSpin : MonoBehaviour
 
     void OnLeftDragToggle(bool state)
     {
+        if (!enableGrabbing) return;
+
         isGrabbing = state;
         if (isGrabbing)
         {
@@ -50,9 +54,11 @@ public class WindSpin : MonoBehaviour
         }
     }
 
-    void OnLeftDragUpdate(Vector2 currentDragPoint, Vector2 mouseDelta)
+    void OnLeftDragUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
     {
-        float dragCurrentAngle = GetAngleFromPoint(currentDragPoint);
+        if (!enableGrabbing) return;
+
+        float dragCurrentAngle = GetAngleFromPoint(dragVector);
 
         // Min Drag
         if (Mathf.Abs(
@@ -158,9 +164,9 @@ public class WindSpin : MonoBehaviour
     //   }
     //  
     //  
-    //   private void OnLeftDragUpdate(Vector2 currentDragOffset, Vector2 mouseDelta)
+    //   private void OnLeftDragUpdate(Vector2 currentDragOffset, Vector2 dragDelta)
     //   {
-    //       //Debug.Log("DRAG: |" + currentDragOffset.ToString() + " | " + mouseDelta.ToString());
+    //       //Debug.Log("DRAG: |" + currentDragOffset.ToString() + " | " + dragDelta.ToString());
     //       Vector2 dragStartWorldPoint = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
     //       Vector2 dragCurrentWorldPoint;
     //  

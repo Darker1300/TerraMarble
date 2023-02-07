@@ -20,10 +20,10 @@ public class PlayerSelector : MonoBehaviour
     {
 
     }
-    public void Selector(Vector2 drag, Vector2 dragDelta)
+    public void Selector(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
     {
-        Debug.DrawLine(transform.position, transform.position + Camera.main.transform.rotation * -(Vector3)drag);
-        GameObject temp = FindClosestTarget("Ball", drag);
+        Debug.DrawLine(transform.position, transform.position + Camera.main.transform.rotation * -(Vector3)dragVector);
+        GameObject temp = FindClosestTarget("Ball", dragVector);
 
         if (currentObj == null)
         {
@@ -46,9 +46,9 @@ public class PlayerSelector : MonoBehaviour
             .FirstOrDefault();
     }
 
-    //drag out angle 
+    //dragVector out angle 
 
-    //check for closest ball drag angle and select it
+    //check for closest ball dragVector angle and select it
     //this happens when the min is exceeded and 
     //if player delta exceeds lock
     // rotate offset to this

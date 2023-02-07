@@ -155,7 +155,7 @@ public class RightAim : MonoBehaviour
     //    }
 
     //}
-    //    public void TapDrag(Vector2 dragDirection,Vector2 delta)
+    //    public void TapDrag(Vector2 dragVector,Vector2 dragDelta)
     //{
 
     //    switch (STATE)
@@ -178,19 +178,19 @@ public class RightAim : MonoBehaviour
     //            break;
     //    }
     //}
-    public void AimRestrictor(Vector2 dragDirection, Vector2 delta)
+    public void AimRestrictor(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
     {
         
 
-        //Debug.DrawLine(transform.position, transform.position + (Vector3)(transform.rotation * dragDirection * 30), Color.blue);
+        //Debug.DrawLine(transform.position, transform.position + (Vector3)(transform.rotation * dragVector * 30), Color.blue);
         //
-        //dragDirection = transform.rotation * dragDirection;
-        if (dragDirection.magnitude > minDragAmount && !hasMin) // and if it is not locked already
+        //dragVector = transform.rotation * dragVector;
+        if (dragVector.magnitude > minDragAmount && !hasMin) // and if it is not locked already
         {
             //cache the vector
             //!!!!!cache the drag make sure this doesnt keep getting updated
 
-            AimStartingVector = dragDirection;
+            AimStartingVector = dragVector;
             hasMin = true;
         }
         if (!aimReAdjust)
@@ -199,16 +199,16 @@ public class RightAim : MonoBehaviour
 
             //if Forward do nothing
             //if not forward
-            if (Vector2.Dot((Vector2)updateGravityScript.wheelDir.normalized, dragDirection) <= 0)
+            if (Vector2.Dot((Vector2)updateGravityScript.wheelDir.normalized, dragVector) <= 0)
             {
-                aimDirection = -dragDirection;
+                aimDirection = -dragVector;
                 linePosition = transform.position + (Vector3)(aimDirection * 30);
 
             }
             else//NORMAL DRAG FORWARD
             {
 
-                aimDirection = dragDirection;
+                aimDirection = dragVector;
                 linePosition = transform.position + (Vector3)(aimDirection * 30);
             }
 
@@ -216,7 +216,7 @@ public class RightAim : MonoBehaviour
         else
         {
             float realAngle = 0;
-            realAngle += GetRelativeAimRotationAngle(AimStartingVector, dragDirection, 90.0f);
+            realAngle += GetRelativeAimRotationAngle(AimStartingVector, dragVector, 90.0f);
 
             if (realAngle != 0)
             {
