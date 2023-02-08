@@ -5,6 +5,7 @@ public class RotateToDirectionNoRb : MonoBehaviour
 {
 
     private Transform baseTransform;
+    private Region region;
     private Rigidbody2D baseRB;
     private DragTreePosition treeActive;
     private TreeBend treeBender;
@@ -22,10 +23,12 @@ public class RotateToDirectionNoRb : MonoBehaviour
 
 
     private float bendVelocity = 0.0f;
+    public bool doDebug = false;
 
 
     private void Start()
     {
+        region = GetComponentInParent<Region>();
         treeActive = FindObjectOfType<DragTreePosition>();
         treeBender = FindObjectOfType<TreeBend>();
         baseTransform = transform.parent;
@@ -55,8 +58,9 @@ public class RotateToDirectionNoRb : MonoBehaviour
         Vector3 newPos = startPos;
         newPos.y = (treeBender.PopOutHeightCurve.Evaluate(t) * treeBender.bendHeight * jumpPercent) + startPos.y;
 
-        // baseRB.MovePosition(baseTransform.TransformPoint(newPos));
         baseTransform.localPosition = newPos;
+
+        // baseRB.MovePosition(baseTransform.TransformPoint(newPos));
 
         //float spd = treeBender.rotationSpeed * Time.fixedDeltaTime;
         //newRot = Mathf.MoveTowardsAngle(
@@ -70,8 +74,8 @@ public class RotateToDirectionNoRb : MonoBehaviour
 
     public void RotateToThis(float collapsePercent, Vector3 pos)
     {
-        if (currentGoalPercent > (1f - treeBender.deadRange)
-            && collapsePercent > treeBender.deadRange) return;
+        //if (currentGoalPercent > (1f - treeBender.deadRange)
+        //    && collapsePercent > treeBender.deadRange) return;
 
         goalRotation = startRotation + CalcLocalRotation(collapsePercent, pos);
         if (collapsePercent < currentGoalPercent)
@@ -89,13 +93,21 @@ public class RotateToDirectionNoRb : MonoBehaviour
     {
         Vector2 newDirection = Vector2.down;
 
-        Vector3 relativePoint = baseTransform.InverseTransformPoint(pos);
-        if (relativePoint.x < 0f)
+        float distance = WheelRegionsManager.RegionDistanceDelta(
+            region.RegionIndex + 0.5f, 
+            region.WorldToRegionDistance(pos));
+        //Vector3 relativePoint = region.transform.InverseTransformPoint(pos);
+
+        if (distance > 0f)
             newDirection.y = -1; // Right side
-        else if (relativePoint.x > 0f)
+        else if (distance < 0f)
             newDirection.y = 1; // Left side
 
         float angle = MathU.Vector2ToDegree(newDirection);
+
+        if (doDebug)
+            Debug.Log("distance: " + distance);
+
         angle *= collapsePercent;
         return angle;
     }
@@ -113,6 +125,14 @@ public class RotateToDirectionNoRb : MonoBehaviour
         //jumpFromRotation = startRotation + 180;
 
     }
+
+    private void OnDrawGizmos()
+    {
+        if (!doDebug) return;
+
+    }
+
+
 
     //only thing that changes is how much time it has to get to that y height if tree half bent
     //then its only got half the amount of time to return

@@ -19,7 +19,7 @@ public class TreeBend : MonoBehaviour
 
     [SerializeField] private float dragRange = 20f;
     [SerializeField] private Vector2 dragSize = new Vector2(0.1f, 0.2f);
-    [Range(0f, 1f)] public float deadRange = 0.25f;
+    //[Range(0f, 1f)] public float deadRange = 0.1f;
     [SerializeField] private AnimationCurve treeBendCurve;
 
     [SerializeField] private float dragInitalOffset = 20f;
@@ -78,11 +78,13 @@ public class TreeBend : MonoBehaviour
         if (nearbyTrees.Count > 0)
             foreach (RotateToDirectionNoRb target in nearbyTrees)
             {
-                float fallOffPercent =
-                   1f - treeBendCurve.Evaluate(
-                        Mathf.Clamp01(
-                            transform.Towards(target.transform).sqrMagnitude
-                            / (circleCollider2D.radius * circleCollider2D.radius)));
+                Region region = target.GetComponentInParent<Region>();
+
+                Vector3 treeSurfacePoint = region.RegionPosition(0.5f, 1f);
+                Vector3 distVector = transform.position.Towards(treeSurfacePoint);
+                float distPercent = distVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
+                float curve = treeBendCurve.Evaluate(Mathf.Clamp01(distPercent));
+                float fallOffPercent = 1f - curve;
                 fallOffPercent = dragInput.y * fallOffPercent;
 
                 //Debug.Log("Drag: " + fallOffPercent);

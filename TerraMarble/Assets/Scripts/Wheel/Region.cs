@@ -379,6 +379,16 @@ public class Region : MonoBehaviour
         }
     }
 
+    public Growable FindGrow()
+    {
+        foreach (SurfaceObject surfaceObject in surfaceObjects)
+        {
+            Growable growable = surfaceObject.GetComponent<Growable>();
+            if (growable != null) return growable;
+        }
+        return null;
+    }
+
     #region Spatial Helpers
 
     /// <param name="_x">Percentage of region</param>
@@ -393,6 +403,7 @@ public class Region : MonoBehaviour
         );
     }
 
+    /// <returns>World position</returns>
     public Vector2 RegionPosition(Vector2 _regionPosition)
     {
         return RegionPosition(_regionPosition.x, _regionPosition.y);

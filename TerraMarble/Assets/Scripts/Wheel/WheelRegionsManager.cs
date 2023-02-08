@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using System.Linq;
+using MathUtility;
 using Newtonsoft.Json.Converters;
 using Shapes;
 
@@ -172,6 +173,11 @@ public class WheelRegionsManager : MonoBehaviour
         return regions[WorldToRegionIndex(_worldPos)];
     }
 
+    public static float RegionDistanceDelta(float _currentDst, float _targetDst)
+    {
+        float delta = MathU.DeltaRange(_currentDst, _targetDst, 36f);
+        return delta;
+    }
 
     public Region.RegionHitInfo ProcessWheelHit(Collision2D collision, BallStateTracker ballState)
     {
