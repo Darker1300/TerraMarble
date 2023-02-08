@@ -16,19 +16,26 @@ public class TreeBend : MonoBehaviour
     [Header("Config")]
     public float bendTime = 0.05f;
     public float maxSpeed = 1000f;
-    [Header("bend Y Variables")]
-    public AnimationCurve PopOutHeightCurve;
-    
-    public float bendHeight= 0.5f;
 
-    [SerializeField] private float dragRange = 10f;
+    [SerializeField] private float dragRange = 20f;
     [SerializeField] private Vector2 dragSize = new Vector2(0.1f, 0.2f);
     [Range(0f, 1f)] public float deadRange = 0.25f;
     [SerializeField] private AnimationCurve treeBendCurve;
 
+    [SerializeField] private float dragInitalOffset = 20f;
+    [SerializeField] private Vector2 dragDirTolerance = new Vector2(0.05f, 0.1f);
+
+
+    [Header("bend Y Variables")]
+    public AnimationCurve PopOutHeightCurve;
+    public float bendHeight = 0.5f;
+
     [Header("Data")]
     [SerializeField] private float wheelDst = 10;
     public Vector2 dragInput = new Vector2(0, 0);
+
+    [SerializeField] private bool dragOffsetPerformed = false;
+    [SerializeField] private float dragOffsetDir = 0f;
 
     public List<RotateToDirectionNoRb> nearbyTrees = new();
 
@@ -40,15 +47,19 @@ public class TreeBend : MonoBehaviour
         circleCollider2D = GetComponent<CircleCollider2D>();
         wheelDst = wheelRegions.RegionTemplate.RegionPosition(0f, 1f).x;
 
+        InputManager.LeftDragEvent += OnDragToggle;
         InputManager.LeftDragVectorEvent += OnDragUpdate;
     }
+
 
     private void Update()
     {
         Vector2 dir = ((Vector2)wheelRegions.transform.Towards(ball.transform)).normalized;
         //float xAxis = math.remap(0, 1, -1, 1, dragInput.x);
         //Debug.Log("X Axis: " + dragInput.x);
-        dir = dir.RotatedByDegree(dragInput.x * dragRange);// * (dir.y < 0 ? -1f : 1f )
+        dir = dir.RotatedByDegree(
+            (dragInput.x * dragRange)
+            + (dragInitalOffset * dragOffsetDir));
         transform.position = wheelRegions.transform.position
                              + (Vector3)dir * wheelDst;
 
@@ -80,15 +91,27 @@ public class TreeBend : MonoBehaviour
             }
     }
 
+    private void OnDragToggle(bool state)
+    {
+        dragOffsetPerformed = false;
+    }
+
     public void OnDragUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
     {
         // Update Position
-        float camAngle = Camera.main.transform.rotation.eulerAngles.z;
+        // float camAngle = Camera.main.transform.rotation.eulerAngles.z;
         Vector2 cameraDragVector = screenDragVector;//.normalized;//.RotatedByDegree(camAngle + 90f);
-        // Debug.Log(cameraDragVector);
-
         dragInput.x = -Mathf.Clamp(cameraDragVector.x / dragSize.x, -1f, 1f);
         dragInput.y = Mathf.Abs(Mathf.Clamp(cameraDragVector.y / dragSize.y, -1f, 0f));
+
+        if (!dragOffsetPerformed)
+        {
+            dragOffsetPerformed = true;
+            if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
+                dragOffsetDir = Mathf.Sign(dragInput.x);
+            else if (dragInput.y > dragDirTolerance.y)
+                dragOffsetDir = 0f;
+        }
     }
 
 
