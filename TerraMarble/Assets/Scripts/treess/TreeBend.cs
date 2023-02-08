@@ -25,6 +25,7 @@ public class TreeBend : MonoBehaviour
     [SerializeField] private float dragInitalOffset = 20f;
     [SerializeField] private Vector2 dragDirTolerance = new Vector2(0.05f, 0.1f);
 
+    [SerializeField] private bool invertXInput = false;
 
     [Header("bend Y Variables")]
     public AnimationCurve PopOutHeightCurve;
@@ -101,7 +102,7 @@ public class TreeBend : MonoBehaviour
         // Update Position
         // float camAngle = Camera.main.transform.rotation.eulerAngles.z;
         Vector2 cameraDragVector = screenDragVector;//.normalized;//.RotatedByDegree(camAngle + 90f);
-        dragInput.x = -Mathf.Clamp(cameraDragVector.x / dragSize.x, -1f, 1f);
+        dragInput.x = -Mathf.Clamp(cameraDragVector.x / dragSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
         dragInput.y = Mathf.Abs(Mathf.Clamp(cameraDragVector.y / dragSize.y, -1f, 0f));
 
         if (!dragOffsetPerformed)
