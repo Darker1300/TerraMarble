@@ -1,86 +1,142 @@
-using System.Collections;
-using System.Collections.Generic;
 using MathUtility;
-using UnityEngine;
 using Shapes;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AimTreeLockUI : MonoBehaviour
 {
-
     private DragTreePosition treeActive;
 
-    public Disc fillDisc;
-    public Disc outerDisc;
-    private float startRad;
-    private float endSize;
-    //private float DiffRad;
-   [SerializeField]
-   private float radius;
-    [SerializeField]
-    [Range(1,3)]
-    private float startBarSize;
+    [Header("Screen UI")]
+    [SerializeField] private Transform screenAimTransform;
+    [SerializeField] private Line screenAimLine;
+    [SerializeField] private Disc screenAimDot;
+    [SerializeField] private Rectangle screenEdgeRect;
 
-    // Start is called before the first frame update
+
+    [Header("Wheel UI")]
+    [SerializeField] private Transform wheelAimTransform;
+
+    [SerializeField] private Disc powerFillDisc;
+    [SerializeField] private Disc powerBackDisc;
+
+    [SerializeField] private Disc rangeBackDisc;
+
+    [SerializeField]
+    private float radius;
+
+    private float endSize;
+
     void Start()
     {
         treeActive = FindObjectOfType<DragTreePosition>();
 
-        //fillDisc = GetComponent<Disc>();
-        fillDisc.AngRadiansStart = radius;
-        fillDisc.AngRadiansEnd = -radius;
+        powerFillDisc.AngRadiansStart = radius;
+        powerFillDisc.AngRadiansEnd = -radius;
 
-        //startRad = radius;
-        //outerDisc = GetComponentInChildren<Disc>();
-        endSize = outerDisc.AngRadiansStart;
+        //endSize = powerBackDisc.AngRadiansStart;
 
         InputManager.LeftDragEvent += EnableDiscs;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (treeActive.enabled)
-        {
-            Vector2 dir = ((Vector2)transform.Towards(treeActive.transform)).normalized;
-            float ang = MathU.Vector2ToDegree(dir);
-            transform.rotation = Quaternion.AngleAxis(ang, Vector3.forward);
-
-            BarIncrease(treeActive.treeBender.dragInput.y);
-        }
+        UpdateWheelAim();
+        UpdateScreenAim();
     }
 
     public void EnableDiscs(bool inputDown)
     {
         if (inputDown)
         {
-            fillDisc.enabled = true;
-            outerDisc.enabled = true;
-
+            wheelAimTransform.gameObject.SetActive(true);
+            screenAimTransform.gameObject.SetActive(true);
+            UpdateScreenAim();
+            UpdateWheelAim();
         }
         else
         {
-            fillDisc.enabled = false;
-            outerDisc.enabled = false;
+            wheelAimTransform.gameObject.SetActive(false);
+            screenAimTransform.gameObject.SetActive(false);
         }
+    }
+
+    private void UpdateScreenAim()
+    {
+        if (!treeActive.enabled) return;
+
+        Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
+        Vector2 worldSize = InputManager.ScreenWorldSize * treeActive.treeBender.dragSize * 2f;
+
+        //
+        screenAimTransform.rotation = Camera.main.transform.rotation;
+        screenAimTransform.localScale = Vector3.forward + (Vector3)worldSize;
+
+        screenAimTransform.position = new Vector3(center.x, center.y, screenAimTransform.position.z);
+
+        // Aim Line
+        screenAimLine.transform.localPosition = new Vector3(-0.5f -
+                                                            ((screenEdgeRect.Thickness * 0.5f) -
+                                                             (screenAimLine.Thickness * 0.5f)),
+                                                    0f, 0f)
+                                                * treeActive.treeBender.dragOffsetDir;
+
+        // Aim
+        screenAimDot.transform.localPosition = new Vector3(0.5f, -0.5f, 0f)
+                                               * treeActive.treeBender.dragInput;
+    }
+
+    private void UpdateWheelAim()
+    {
+        Vector2 dir = ((Vector2)wheelAimTransform.Towards(treeActive.transform)).normalized;
+        float ang = MathU.Vector2ToDegree(dir);
+        wheelAimTransform.rotation = Quaternion.AngleAxis(ang, Vector3.forward);
+
+        UpdatePowerBar();
 
     }
-    public void BarIncrease(float percent)
-    {
-        fillDisc.AngRadiansStart = Mathf.Lerp(0, endSize, percent);
-        fillDisc.AngRadiansEnd = -Mathf.Lerp(0, endSize, percent);
-        //float percent = Mathf.Clamp01((target.transform.position - transform.position).magnitude / coliderRadius));
 
+    public void UpdatePowerBar()
+    {
+        //float size = treeActive.treeBender.dragRange
+        //             + treeActive.treeBender.dragInitalOffset * treeActive.treeBender.dragOffsetDir;
+
+        float rangeExtent = treeActive.treeBender.dragRange;
+
+        float powerPercent = treeActive.treeBender.dragInput.y;
+
+        //float rangeOffset = treeActive.treeBender.dragInitalOffset * treeActive.treeBender.dragOffsetDir;
+
+        float powerFull = rangeExtent * 2f * Mathf.Deg2Rad;
+        powerFillDisc.AngRadiansStart = Mathf.Lerp(0, powerFull, powerPercent);
+        powerFillDisc.AngRadiansEnd = -Mathf.Lerp(0, powerFull, powerPercent);
+
+        powerBackDisc.AngRadiansStart = powerFull;
+        powerBackDisc.AngRadiansEnd = -powerFull;
+
+        //float dragDir = treeActive.treeBender.dragOffsetDir;
+        //float rangeEdgeOffset = treeActive.treeBender.dragInput.x * rangeExtent;
+        //float dirMin = Mathf.Min(0f, dragDir);
+        //float dirMax = Mathf.Max(0f, dragDir);
+
+        //float rangeOffsetMin = (rangeExtent + treeActive.treeBender.dragInitalOffset) * dirMin - rangeEdgeOffset * dirMin;
+        //float rangeOffsetMax = (rangeExtent + treeActive.treeBender.dragInitalOffset) * dirMax + rangeEdgeOffset * dirMax;
+
+        //rangeBackDisc.AngRadiansStart = rangeOffsetMin * 2f * Mathf.Deg2Rad;
+        //rangeBackDisc.AngRadiansEnd = rangeOffsetMax * 2f * Mathf.Deg2Rad;
+
+        ////float rangeBackFull = (rangeExtent + rangeOffset + rangeOffsetMin) * Mathf.Deg2Rad;
     }
 
     //public void LookRotation(Vector2 direction,Vector2 delta)
     //{
-        
+
     //    //transform.LookAt(target,Vector3.up);
     //    direction = -direction.normalized;
 
     //    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
     //    //angle += offset;
-        
+
     //    //float dot = Vector2.Dot(-transform.parent.up, Direction);
 
     //    //angle = Vector2.Dot(,)

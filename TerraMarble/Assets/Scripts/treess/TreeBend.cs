@@ -17,12 +17,12 @@ public class TreeBend : MonoBehaviour
     public float bendTime = 0.05f;
     public float maxSpeed = 1000f;
 
-    [SerializeField] private float dragRange = 20f;
-    [SerializeField] private Vector2 dragSize = new Vector2(0.1f, 0.2f);
+    public float dragRange = 20f;
+    public Vector2 dragSize = new Vector2(0.1f, 0.2f);
     //[Range(0f, 1f)] public float deadRange = 0.1f;
     [SerializeField] private AnimationCurve treeBendCurve;
 
-    [SerializeField] private float dragInitalOffset = 20f;
+    public float dragInitalOffset = 20f;
     [SerializeField] private Vector2 dragDirTolerance = new Vector2(0.05f, 0.1f);
 
     [SerializeField] private bool invertXInput = false;
@@ -35,8 +35,8 @@ public class TreeBend : MonoBehaviour
     [SerializeField] private float wheelDst = 10;
     public Vector2 dragInput = new Vector2(0, 0);
 
-    [SerializeField] private bool dragOffsetPerformed = false;
-    [SerializeField] private float dragOffsetDir = 0f;
+    public bool dragOffsetPerformed = false;
+    public float dragOffsetDir = 0f;
 
     public List<RotateToDirectionNoRb> nearbyTrees = new();
 
@@ -78,6 +78,13 @@ public class TreeBend : MonoBehaviour
         if (nearbyTrees.Count > 0)
             foreach (RotateToDirectionNoRb target in nearbyTrees)
             {
+                if (target == null)
+                {
+                    // has been destroyed
+                    nearbyTrees.Remove(target);
+                    continue;
+                }
+
                 Region region = target.GetComponentInParent<Region>();
 
                 Vector3 treeSurfacePoint = region.RegionPosition(0.5f, 1f);
@@ -97,13 +104,13 @@ public class TreeBend : MonoBehaviour
     private void OnDragToggle(bool state)
     {
         dragOffsetPerformed = false;
+        dragOffsetDir = 0f;
     }
 
     public void OnDragUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
     {
         // Update Position
-        // float camAngle = Camera.main.transform.rotation.eulerAngles.z;
-        Vector2 cameraDragVector = screenDragVector;//.normalized;//.RotatedByDegree(camAngle + 90f);
+        Vector2 cameraDragVector = screenDragVector;
         dragInput.x = -Mathf.Clamp(cameraDragVector.x / dragSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
         dragInput.y = Mathf.Abs(Mathf.Clamp(cameraDragVector.y / dragSize.y, -1f, 0f));
 
@@ -135,18 +142,18 @@ public class TreeBend : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
-        Vector2 worldSize = InputManager.ScreenWorldSize * dragSize;
+        //Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
+        //Vector2 worldSize = InputManager.ScreenWorldSize * dragSize;
 
-        float camAngle = Camera.main.transform.rotation.eulerAngles.z;
+        //float camAngle = Camera.main.transform.rotation.eulerAngles.z;
         
-        bool xSmaller = (dragSize.x < dragSize.y);
-        if (xSmaller)
-            GizmosExtensions.DrawWireCapsule(center, worldSize.x, worldSize.y * 2f,
-                Quaternion.AngleAxis(90f + 0f + camAngle, Vector3.forward));
-        else
-            GizmosExtensions.DrawWireCapsule(center, worldSize.y, worldSize.x * 2f,
-                Quaternion.AngleAxis(90f + 90f + camAngle, Vector3.forward));
+        //bool xSmaller = (dragSize.x < dragSize.y);
+        //if (xSmaller)
+        //    GizmosExtensions.DrawWireCapsule(center, worldSize.x, worldSize.y * 2f,
+        //        Quaternion.AngleAxis(90f + 0f + camAngle, Vector3.forward));
+        //else
+        //    GizmosExtensions.DrawWireCapsule(center, worldSize.y, worldSize.x * 2f,
+        //        Quaternion.AngleAxis(90f + 90f + camAngle, Vector3.forward));
 
         //Gizmos.DrawWireMesh();
     }
