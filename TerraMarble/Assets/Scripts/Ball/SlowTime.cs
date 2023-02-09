@@ -10,10 +10,13 @@ public class SlowTime : MonoBehaviour
     private float startTimeScale;
     private float startFixedDeltaTime;
     [SerializeField]
+    private float defaultTimeScale;
+    [SerializeField]
     private bool isInput;
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = defaultTimeScale;
         startTimeScale = Time.timeScale;
         startFixedDeltaTime = Time.fixedDeltaTime;
         if (isInput)
@@ -48,7 +51,7 @@ public class SlowTime : MonoBehaviour
     }
     public void StopSlowMotion()
     {
-        Time.timeScale = startTimeScale;
+        Time.timeScale = defaultTimeScale;
         Time.fixedDeltaTime = startFixedDeltaTime;
 
     }
