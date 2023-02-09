@@ -70,7 +70,8 @@ public class InputManager : MonoBehaviour
     [EnumFlags]
     public DragTypes testID = DragTypes.ALTERNATE;
 
-    [SerializeField] private DragTypes dragTypes = DragTypes.CONTROLLER;
+    [SerializeField] private DragTypes leftDragState = DragTypes.CONTROLLER;
+    [SerializeField] private DragTypes rightDragState = DragTypes.CONTROLLER;
     private int screenWidth;
 
     public bool showDebug = false;
@@ -82,6 +83,7 @@ public class InputManager : MonoBehaviour
 
 
     public static event DragRightUpdate RightDragVectorEvent;
+    public static event DragRightUpdate RightAlternateDragVectorEvent;
     public static event DragLeft LeftDragEvent;
     public static event DragLeft RightDragEvent;
     public bool hasMoved;
@@ -174,102 +176,69 @@ public class InputManager : MonoBehaviour
 
                 if (Mobile)
                 {
-                    if (IsTouchRight(ctx.ReadValue<Vector2>()))
+                    //is it the left check start value if true pass info to drag left switch
+
+
+                    if (leftMouseDragID == InputIdentifier.IsLeft)
                     {
+                        InputLeftSwitch(ctx.ReadValue<Vector2>(), ref leftDragState);
+                    }
+                    else
+                    {
+                        InputRightSwitch(ctx.ReadValue<Vector2>(),ref rightDragState);
 
                     }
+                }
+                else
+                //its pc and is left 
+                {
+                    InputLeftSwitch(ctx.ReadValue<Vector2>(), ref leftDragState);
                 }
                 //Left start time and left alternative event
                 //work out which one you are working with
 
 
-                Vector2 dragCurrentScreenPos = ctx.ReadValue<Vector2>();
-                Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
-                Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos);
-                Vector2 dragEndWorldPos = Camera.main.ScreenToWorldPoint(DragLeftEndScreenPos);
-
-                switch (dragTypes)
-                {
-                    case DragTypes.CONTROLLER:
-
-                        //if bellow hold time and magnitude is less then threshold 
-                        if (Time.time - LeftStartTime < holdTime &&
-                            (dragStartWorldPos -
-                             dragCurrentWorldPos).magnitude > minDragAmount)
-                        {
-                            //if less than threshold
-
-                            dragTypes = DragTypes.STANDARD;
 
 
-                            if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
-
-
-                            break;
-                        }
-                        else if (Time.time - LeftStartTime >= holdTime)
-                        {
-                            dragTypes = DragTypes.ALTERNATE;
-                            LeftAlternateEvent?.Invoke(null, EventArgs.Empty);
-                        }
-
-                        break;
-                    case DragTypes.STANDARD:
-                        DragLeftEndScreenPos = dragCurrentScreenPos;
-                        LeftDragVectorEvent?.Invoke(
-                            dragCurrentWorldPos - dragStartWorldPos,
-                            dragCurrentWorldPos - dragEndWorldPos,
-                            DragLeftScreenVector);
-
-                        break;
-                    case DragTypes.ALTERNATE:
-                        DragLeftEndScreenPos = dragCurrentScreenPos;
-                        LeftAlternateDragVectorEvent?.Invoke(
-                            dragCurrentWorldPos - dragStartWorldPos,
-                            dragCurrentWorldPos - dragEndWorldPos,
-                            DragLeftScreenVector);
-                        break;
-                    default:
-                        break;
-                }
             };
 
-
+        
+      
         inputAsset.Player.DragLeft.canceled +=
             ctx =>
             {
+                if (Mobile)
+                {
+                    //is it the left check start value if true pass info to drag left switch
+
+
+                    if (leftMouseDragID == InputIdentifier.IsLeft)
+                    {
+                        DragLeftEnd(ctx.ReadValue<Vector2>());
+                    }
+                    else
+                    {
+                        DragRightEnd(ctx.ReadValue<Vector2>());
+
+                       
+
+                    }
+                    leftMouseDragID = InputIdentifier.Undeclared;
+                }
+                else
+                //its pc and is left 
+                {
+                    DragLeftEnd(ctx.ReadValue<Vector2>());
+                }
                 //if below drag threshold 
 
                 //how long since held down? is it a tap
 
-                Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos);
-                Vector2 dragCurrentScreenPos = ctx.ReadValue<Vector2>();
-                Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
 
-                if (Time.time - LeftStartTime <= TapTime
-                    && (dragStartWorldPos - dragCurrentWorldPos).magnitude < minDragAmount)
-                {
-                    if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
-
-                    //TapLeftEvent?.Invoke(null, EventArgs.Empty);
-                    LeftStartTime = 0;
-                }
-
-
-                {
-                    if (showDebug) Debug.Log("Drag End");
-
-                    LeftDragEvent?.Invoke(false);
-
-                    LeftStartTime = 0;
-
-                    DragLeftStartScreenPos = Vector2.zero;
-                }
-
-                dragTypes = DragTypes.CONTROLLER;
                 //LeftDragEvent.Invoke(Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()));   
             };
 
+        
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -328,27 +297,24 @@ public class InputManager : MonoBehaviour
             {
                 if (Mobile)
                 {
-                    if (IsTouchRight(ctx.ReadValue<Vector2>()))
+                    //is it the left check start value if true pass info to drag left switch
+
+
+                    if (leftMouseDragID == InputIdentifier.IsLeft)
                     {
+                        InputLeftSwitch(ctx.ReadValue<Vector2>(), ref leftDragState);
+                    }
+                    else
+                    {
+                        InputRightSwitch(ctx.ReadValue<Vector2>(), ref rightDragState);
 
                     }
                 }
-
-
-
-
-                //PC
-                Vector2 dragCurrentScreenPos = ctx.ReadValue<Vector2>();
-                Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
-                Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragRightStartScreenPos);
-                Vector2 dragEndWorldPos = Camera.main.ScreenToWorldPoint(DragRightEndScreenPos);
-
-                DragRightEndScreenPos = dragCurrentScreenPos;
-                RightDragVectorEvent?.Invoke(
-                    dragCurrentWorldPos - dragStartWorldPos,
-                    dragCurrentWorldPos - dragEndWorldPos,
-                    DragRightScreenVector);
-                if (showDebug) Debug.Log("Drag");
+                else
+                //its pc and is left 
+                {
+                    InputRightSwitch(ctx.ReadValue<Vector2>(), ref rightDragState);
+                }
             };
 
 
@@ -356,27 +322,198 @@ public class InputManager : MonoBehaviour
             ctx =>
 
             {
-                //how long since held down? is it a tap
-
-                if (Time.time - RightStartTime <= TapTime)
-
+                if (Mobile)
                 {
-                    if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
+                    //is it the left check start value if true pass info to drag left switch
 
-                    TapRightEvent?.Invoke(null, EventArgs.Empty);
-                    RightStartTime = 0;
-                    DragRightStartScreenPos = Vector2.zero;
+
+                    if (rightMouseDragID == InputIdentifier.IsLeft)
+                    {
+                        DragLeftEnd(ctx.ReadValue<Vector2>());
+                        
+                    }
+                    else
+                    {
+                        DragRightEnd(ctx.ReadValue<Vector2>());
+
+
+
+                    }
+                    rightMouseDragID = InputIdentifier.Undeclared;
                 }
-
-                RightDragEvent?.Invoke(false);
-
-                RightStartTime = 0;
-
-                DragRightStartScreenPos = Vector2.zero;
+                else
+                //its pc and is left 
+                {
+                    DragRightEnd(ctx.ReadValue<Vector2>());
+                }
             };
     }
 
+    public void InputLeftSwitch(Vector2 drag, ref DragTypes dragtype)
+    {
 
+        Vector2 dragCurrentScreenPos = drag;
+        Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
+        Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos);
+        Vector2 dragEndWorldPos = Camera.main.ScreenToWorldPoint(DragLeftEndScreenPos);
+
+        switch (dragtype)
+        {
+            case DragTypes.CONTROLLER:
+
+                //if bellow hold time and magnitude is less then threshold 
+                if (Time.time - LeftStartTime < holdTime &&
+                    (dragStartWorldPos -
+                     dragCurrentWorldPos).magnitude > minDragAmount)
+                {
+                    //if less than threshold
+
+                    dragtype = DragTypes.STANDARD;
+
+
+                    if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
+
+
+                    break;
+                }
+                else if (Time.time - LeftStartTime >= holdTime)
+                {
+                    dragtype = DragTypes.ALTERNATE;
+                    LeftAlternateEvent?.Invoke(null, EventArgs.Empty);
+                }
+
+                break;
+            case DragTypes.STANDARD:
+                DragLeftEndScreenPos = dragCurrentScreenPos;
+                LeftDragVectorEvent?.Invoke(
+                    dragCurrentWorldPos - dragStartWorldPos,
+                    dragCurrentWorldPos - dragEndWorldPos,
+                    DragLeftScreenVector);
+
+                break;
+            case DragTypes.ALTERNATE:
+                DragLeftEndScreenPos = dragCurrentScreenPos;
+                LeftAlternateDragVectorEvent?.Invoke(
+                    dragCurrentWorldPos - dragStartWorldPos,
+                    dragCurrentWorldPos - dragEndWorldPos,
+                    DragLeftScreenVector);
+                break;
+            default:
+                break;
+        }
+    }
+    public void InputRightSwitch(Vector2 drag, ref DragTypes dragtype)
+    {
+
+        Vector2 dragCurrentScreenPos = drag;
+        Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
+        Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragRightStartScreenPos);
+        Vector2 dragEndWorldPos = Camera.main.ScreenToWorldPoint(DragRightEndScreenPos);
+
+        switch (dragtype)
+        {
+            case DragTypes.CONTROLLER:
+
+                //if bellow hold time and magnitude is less then threshold 
+                if (Time.time - RightStartTime < holdTime &&
+                    (dragStartWorldPos -
+                     dragCurrentWorldPos).magnitude > minDragAmount)
+                {
+                    //if less than threshold
+
+                    dragtype = DragTypes.STANDARD;
+
+
+                    if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
+
+
+                    break;
+                }
+                else if (Time.time - RightStartTime >= holdTime)
+                {
+                    dragtype = DragTypes.ALTERNATE;
+                    LeftAlternateEvent?.Invoke(null, EventArgs.Empty);
+                }
+
+                break;
+            case DragTypes.STANDARD:
+                DragRightEndScreenPos = dragCurrentScreenPos;
+                RightDragVectorEvent?.Invoke(
+                    dragCurrentWorldPos - dragStartWorldPos,
+                    dragCurrentWorldPos - dragEndWorldPos,
+                    DragRightScreenVector);
+
+                break;
+            case DragTypes.ALTERNATE:
+                DragRightEndScreenPos = dragCurrentScreenPos;
+                RightAlternateDragVectorEvent?.Invoke(
+                    dragCurrentWorldPos - dragStartWorldPos,
+                    dragCurrentWorldPos - dragEndWorldPos,
+                    DragRightScreenVector);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void DragLeftEnd(Vector2 drag)
+    {
+
+        Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos);
+        Vector2 dragCurrentScreenPos = drag;
+        Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
+
+        if (Time.time - LeftStartTime <= TapTime
+            && (dragStartWorldPos - dragCurrentWorldPos).magnitude < minDragAmount)
+        {
+            if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
+
+            //TapLeftEvent?.Invoke(null, EventArgs.Empty);
+            LeftStartTime = 0;
+        }
+
+
+        {
+            if (showDebug) Debug.Log("Drag End");
+
+            LeftDragEvent?.Invoke(false);
+
+            LeftStartTime = 0;
+
+            DragLeftStartScreenPos = Vector2.zero;
+        }
+
+        leftDragState = DragTypes.CONTROLLER;
+    }
+    public void DragRightEnd(Vector2 drag)
+    {
+
+        Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragRightStartScreenPos);
+        Vector2 dragCurrentScreenPos = drag;
+        Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
+
+        if (Time.time - RightStartTime <= TapTime
+            && (dragStartWorldPos - dragCurrentWorldPos).magnitude < minDragAmount)
+        {
+            if (showDebug) Debug.Log("tap: " + (Time.time - RightStartTime));
+
+            //TapLeftEvent?.Invoke(null, EventArgs.Empty);
+            RightStartTime = 0;
+        }
+
+
+        {
+            if (showDebug) Debug.Log("Drag End");
+
+            RightDragEvent?.Invoke(false);
+
+            RightStartTime = 0;
+
+            DragRightStartScreenPos = Vector2.zero;
+        }
+
+        rightDragState = DragTypes.CONTROLLER;
+    }
     private void MultiTapActivated()
 
     {
@@ -453,3 +590,5 @@ public class InputManager : MonoBehaviour
 
     #endregion
 }
+
+
