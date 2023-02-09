@@ -26,6 +26,7 @@ public class TreeBend : MonoBehaviour
     [SerializeField] private Vector2 dragDirTolerance = new Vector2(0.05f, 0.1f);
 
     [SerializeField] private bool invertXInput = false;
+    [SerializeField] private bool invertDragDir = false;
 
     [Header("bend Y Variables")]
     public AnimationCurve PopOutHeightCurve;
@@ -105,13 +106,13 @@ public class TreeBend : MonoBehaviour
 
     private void OnDragLeftToggle(bool state)
     {
-        dragOffsetDir = InputManager.Instance.Mobile ? 1f : 0f;
+        dragOffsetDir = InputManager.Instance.Mobile ? (invertDragDir ? 1f : -1f) : 0f;
         UpdateDragToggle(state);
     }
 
     private void OnDragRightToggle(bool state)
     {
-        dragOffsetDir = InputManager.Instance.Mobile ? -1f : 0f;
+        dragOffsetDir = InputManager.Instance.Mobile ? (invertDragDir ? -1f : 1f) : 0f;
         UpdateDragToggle(state);
     }
 
@@ -127,6 +128,7 @@ public class TreeBend : MonoBehaviour
 
         SetDragDir(true);
     }
+
     private void OnRightDragUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
     {
         UpdateDragInput(screenDragVector);
@@ -146,19 +148,24 @@ public class TreeBend : MonoBehaviour
 
     private void SetDragDir(bool isLeft)
     {
-
         if (!dragOffsetPerformed)
         {
             if (InputManager.Instance.Mobile)
             {
-                dragOffsetDir = isLeft ? 1f : -1f;
+                if (isLeft)
+                    dragOffsetDir = invertDragDir ? 1f : -1f;
+                else
+                    dragOffsetDir = invertDragDir ? -1f : 1f;
             }
             else
             {
                 if (!dragOffsetPerformed)
                 {
                     if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
+                    {
                         dragOffsetDir = Mathf.Sign(dragInput.x);
+                        if (invertDragDir) dragOffsetDir = -dragOffsetDir;
+                    }
                     else if (dragInput.y > dragDirTolerance.y)
                         dragOffsetDir = 0f;
                 }
