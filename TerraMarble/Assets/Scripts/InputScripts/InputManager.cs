@@ -89,6 +89,7 @@ public class InputManager : MonoBehaviour
     public bool hasMoved;
 
     public static event EventHandler LeftAlternateEvent;
+    public static event EventHandler RightAlternateEvent;
 
     //TAP 
     public static event EventHandler TapLeftEvent;
@@ -251,7 +252,7 @@ public class InputManager : MonoBehaviour
                     //if position is left side OR right side
                     if (IsTouchRight(ctx.ReadValue<Vector2>()))
                     {
-                        leftMouseDragID = InputIdentifier.isRight;
+                        rightMouseDragID = InputIdentifier.isRight;
 
                         RightStartTime = Time.time;
                         DragRightStartScreenPos = ctx.ReadValue<Vector2>();
@@ -260,7 +261,7 @@ public class InputManager : MonoBehaviour
                     }
                     else
                     {
-                        leftMouseDragID = InputIdentifier.IsLeft;
+                        rightMouseDragID = InputIdentifier.IsLeft;
                         LeftStartTime = Time.time;
                         DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
                         DragLeftEndScreenPos = DragLeftStartScreenPos;
@@ -300,7 +301,7 @@ public class InputManager : MonoBehaviour
                     //is it the left check start value if true pass info to drag left switch
 
 
-                    if (leftMouseDragID == InputIdentifier.IsLeft)
+                    if (rightMouseDragID == InputIdentifier.IsLeft)
                     {
                         InputLeftSwitch(ctx.ReadValue<Vector2>(), ref leftDragState);
                     }
@@ -432,7 +433,7 @@ public class InputManager : MonoBehaviour
                 else if (Time.time - RightStartTime >= holdTime)
                 {
                     dragtype = DragTypes.ALTERNATE;
-                    LeftAlternateEvent?.Invoke(null, EventArgs.Empty);
+                    RightAlternateEvent?.Invoke(null, EventArgs.Empty);
                 }
 
                 break;
@@ -557,11 +558,11 @@ public class InputManager : MonoBehaviour
     {
         if (ScreenPos.x < screenWidth / 2)
 
-            return true;
+            return false;
 
         //The User has touched on the left side of the screen
 
-        return false;
+        return true;
     }
 
     //public delegate void LeftUp(Vector2 screenPosition, bool State);
