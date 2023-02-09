@@ -10,6 +10,7 @@ public class DragTreePosition : MonoBehaviour
     {
         treeBender = GetComponent<TreeBend>();
         InputManager.LeftDragEvent += DragActivated;
+        InputManager.RightDragEvent += DragActivated;
     }
 
     public void DragActivated(bool activated)

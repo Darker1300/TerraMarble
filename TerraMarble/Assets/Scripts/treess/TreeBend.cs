@@ -48,8 +48,10 @@ public class TreeBend : MonoBehaviour
         circleCollider2D = GetComponent<CircleCollider2D>();
         wheelDst = wheelRegions.RegionTemplate.RegionPosition(0f, 1f).x;
 
-        InputManager.LeftDragEvent += OnDragToggle;
-        InputManager.LeftDragVectorEvent += OnDragUpdate;
+        InputManager.LeftDragEvent += OnDragLeftToggle;
+        InputManager.RightDragEvent += OnDragRightToggle;
+        InputManager.LeftDragVectorEvent += OnLeftDragUpdate;
+        InputManager.RightDragVectorEvent += OnRightDragUpdate;
     }
 
 
@@ -97,31 +99,80 @@ public class TreeBend : MonoBehaviour
                 //Debug.Log("Drag: " + fallOffPercent);
 
                 target.RotateToThis(fallOffPercent, transform.position);
-                
+
             }
     }
 
-    private void OnDragToggle(bool state)
+    private void OnDragLeftToggle(bool state)
     {
-        dragOffsetPerformed = false;
-        dragOffsetDir = 0f;
+        dragOffsetDir = InputManager.Instance.Mobile ? 1f : 0f;
+        UpdateDragToggle(state);
     }
 
-    public void OnDragUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
+    private void OnDragRightToggle(bool state)
+    {
+        dragOffsetDir = InputManager.Instance.Mobile ? -1f : 0f;
+        UpdateDragToggle(state);
+    }
+
+    private void UpdateDragToggle(bool state)
+    {
+        dragOffsetPerformed = false;
+        dragInput = Vector2.zero;
+    }
+
+    private void OnLeftDragUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
+    {
+        UpdateDragInput(screenDragVector);
+
+        SetDragDir(true);
+    }
+    private void OnRightDragUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
+    {
+        UpdateDragInput(screenDragVector);
+
+        SetDragDir(false);
+
+
+        //if (!dragOffsetPerformed)
+        //{
+        //    dragOffsetPerformed = true;
+        //    if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
+        //        dragOffsetDir = Mathf.Sign(dragInput.x);
+        //    else if (dragInput.y > dragDirTolerance.y)
+        //        dragOffsetDir = 0f;
+        //}
+    }
+
+    private void SetDragDir(bool isLeft)
+    {
+
+        if (!dragOffsetPerformed)
+        {
+            if (InputManager.Instance.Mobile)
+            {
+                dragOffsetDir = isLeft ? 1f : -1f;
+            }
+            else
+            {
+                if (!dragOffsetPerformed)
+                {
+                    if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
+                        dragOffsetDir = Mathf.Sign(dragInput.x);
+                    else if (dragInput.y > dragDirTolerance.y)
+                        dragOffsetDir = 0f;
+                }
+            }
+            dragOffsetPerformed = true;
+        }
+    }
+
+    private void UpdateDragInput(Vector2 screenDragVector)
     {
         // Update Position
         Vector2 cameraDragVector = screenDragVector;
         dragInput.x = -Mathf.Clamp(cameraDragVector.x / dragSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
         dragInput.y = Mathf.Abs(Mathf.Clamp(cameraDragVector.y / dragSize.y, -1f, 0f));
-
-        if (!dragOffsetPerformed)
-        {
-            dragOffsetPerformed = true;
-            if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
-                dragOffsetDir = Mathf.Sign(dragInput.x);
-            else if (dragInput.y > dragDirTolerance.y)
-                dragOffsetDir = 0f;
-        }
     }
 
 
@@ -146,7 +197,7 @@ public class TreeBend : MonoBehaviour
         //Vector2 worldSize = InputManager.ScreenWorldSize * dragSize;
 
         //float camAngle = Camera.main.transform.rotation.eulerAngles.z;
-        
+
         //bool xSmaller = (dragSize.x < dragSize.y);
         //if (xSmaller)
         //    GizmosExtensions.DrawWireCapsule(center, worldSize.x, worldSize.y * 2f,

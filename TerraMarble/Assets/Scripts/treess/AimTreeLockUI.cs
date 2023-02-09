@@ -29,6 +29,7 @@ public class AimTreeLockUI : MonoBehaviour
         treeActive = FindObjectOfType<DragTreePosition>();
 
         InputManager.LeftDragEvent += OnDragToggle;
+        InputManager.RightDragEvent += OnDragToggle;
     }
 
     void FixedUpdate()
@@ -41,8 +42,6 @@ public class AimTreeLockUI : MonoBehaviour
     {
         if (inputDown)
         {
-            screenAimDot.transform.localPosition = Vector3.zero;
-
             wheelAimTransform.gameObject.SetActive(true);
             screenAimTransform.gameObject.SetActive(true);
             UpdateScreenAim();
@@ -53,6 +52,7 @@ public class AimTreeLockUI : MonoBehaviour
             wheelAimTransform.gameObject.SetActive(false);
             screenAimTransform.gameObject.SetActive(false);
         }
+        //screenAimDot.transform.localPosition = Vector3.zero;
     }
 
     private void UpdateScreenAim()
@@ -70,15 +70,20 @@ public class AimTreeLockUI : MonoBehaviour
         screenAimTransform.position = new Vector3(center.x, center.y, screenAimTransform.position.z);
 
         // Aim Line
-        screenAimLine.transform.localPosition = new Vector3(-0.5f -
-                                                            ((screenEdgeRect.Thickness * 0.5f) -
-                                                             (screenAimLine.Thickness * 0.5f)),
-                                                    0f, 0f)
-                                                * treeActive.treeBender.dragOffsetDir;
+        SetScreenLine(treeActive.treeBender.dragOffsetDir);
 
         // Aim
         screenAimDot.transform.localPosition = new Vector3(0.5f, -0.5f, 0f)
                                                * treeActive.treeBender.dragInput;
+    }
+
+    private void SetScreenLine(float dir)
+    {
+        screenAimLine.transform.localPosition = new Vector3(-0.5f -
+                                                            ((screenEdgeRect.Thickness * 0.5f) -
+                                                             (screenAimLine.Thickness * 0.5f)),
+                                                    0f, 0f)
+                                                * dir;
     }
 
     private void UpdateWheelAim()
