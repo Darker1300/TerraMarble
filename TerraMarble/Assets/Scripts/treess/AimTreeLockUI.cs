@@ -22,21 +22,13 @@ public class AimTreeLockUI : MonoBehaviour
 
     [SerializeField] private Disc rangeBackDisc;
 
-    [SerializeField]
-    private float radius;
-
     private float endSize;
 
     void Start()
     {
         treeActive = FindObjectOfType<DragTreePosition>();
 
-        powerFillDisc.AngRadiansStart = radius;
-        powerFillDisc.AngRadiansEnd = -radius;
-
-        //endSize = powerBackDisc.AngRadiansStart;
-
-        InputManager.LeftDragEvent += EnableDiscs;
+        InputManager.LeftDragEvent += OnDragToggle;
     }
 
     void FixedUpdate()
@@ -45,10 +37,12 @@ public class AimTreeLockUI : MonoBehaviour
         UpdateScreenAim();
     }
 
-    public void EnableDiscs(bool inputDown)
+    public void OnDragToggle(bool inputDown)
     {
         if (inputDown)
         {
+            screenAimDot.transform.localPosition = Vector3.zero;
+
             wheelAimTransform.gameObject.SetActive(true);
             screenAimTransform.gameObject.SetActive(true);
             UpdateScreenAim();
@@ -65,7 +59,8 @@ public class AimTreeLockUI : MonoBehaviour
     {
         if (!treeActive.enabled) return;
 
-        Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
+        //Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
+        Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.ScreenSize * new Vector2(.5f, 1f-.1f));
         Vector2 worldSize = InputManager.ScreenWorldSize * treeActive.treeBender.dragSize * 2f;
 
         //
@@ -108,11 +103,15 @@ public class AimTreeLockUI : MonoBehaviour
         //float rangeOffset = treeActive.treeBender.dragInitalOffset * treeActive.treeBender.dragOffsetDir;
 
         float powerFull = rangeExtent * 2f * Mathf.Deg2Rad;
-        powerFillDisc.AngRadiansStart = Mathf.Lerp(0, powerFull, powerPercent);
-        powerFillDisc.AngRadiansEnd = -Mathf.Lerp(0, powerFull, powerPercent);
+        float powerCurrent = Mathf.Lerp(0, powerFull, powerPercent);
+
+        powerFillDisc.AngRadiansStart = powerCurrent;
+        powerFillDisc.AngRadiansEnd = -powerCurrent;
 
         powerBackDisc.AngRadiansStart = powerFull;
         powerBackDisc.AngRadiansEnd = -powerFull;
+
+
 
         //float dragDir = treeActive.treeBender.dragOffsetDir;
         //float rangeEdgeOffset = treeActive.treeBender.dragInput.x * rangeExtent;
