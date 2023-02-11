@@ -15,6 +15,8 @@ public class TreeBend : MonoBehaviour
 
     [Header("Config")]
     public float bendTime = 0.05f;
+    public float jumpTime = 0.05f;
+    public float stretchTime = 0.01f;
     public float maxSpeed = 1000f;
 
     public float dragRange = 20f;
@@ -28,9 +30,11 @@ public class TreeBend : MonoBehaviour
     [SerializeField] private bool invertXInput = false;
     [SerializeField] private bool invertDragDir = false;
 
-    [Header("bend Y Variables")]
+    [Header("Bend Height Config")]
     public AnimationCurve PopOutHeightCurve;
-    public float bendHeight = 0.5f;
+    public float stretchHeight = 1f;
+    [FormerlySerializedAs("bendHeight")]
+    public float jumpHeight = 0.75f;
 
     [Header("Data")]
     [SerializeField] private float wheelDst = 10;
@@ -39,7 +43,7 @@ public class TreeBend : MonoBehaviour
     public bool dragOffsetPerformed = false;
     public float dragOffsetDir = 0f;
 
-    public List<RotateToDirectionNoRb> nearbyTrees = new();
+    public List<TreePaddleController> nearbyTrees = new();
 
     private void Start()
     {
@@ -79,7 +83,7 @@ public class TreeBend : MonoBehaviour
     private void UpdateTrees()
     {
         if (nearbyTrees.Count > 0)
-            foreach (RotateToDirectionNoRb target in nearbyTrees)
+            foreach (TreePaddleController target in nearbyTrees)
             {
                 if (target == null)
                 {
@@ -185,13 +189,13 @@ public class TreeBend : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var rotToDir = collision.gameObject.GetComponentInParent<RotateToDirectionNoRb>();
+        var rotToDir = collision.gameObject.GetComponentInParent<TreePaddleController>();
         if (rotToDir && !nearbyTrees.Contains(rotToDir)) nearbyTrees.Add(rotToDir);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        var rotToDir = collision.gameObject.GetComponentInParent<RotateToDirectionNoRb>();
+        var rotToDir = collision.gameObject.GetComponentInParent<TreePaddleController>();
         if (!rotToDir) return;
 
         nearbyTrees.Remove(rotToDir);
