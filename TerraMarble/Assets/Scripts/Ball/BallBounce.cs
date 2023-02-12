@@ -27,9 +27,9 @@ public class BallBounce : MonoBehaviour
     //[Range(-1, 1)]
     //private float bounceRange = 0.0f;
 
-    private void Start()
+    private void Awake()
     {
-        rb ??= GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         wheel = FindObjectOfType<Wheel>();
         
         updateGravity ??= GetComponent<UpdateGravity>();
@@ -42,7 +42,7 @@ public class BallBounce : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isHit) return;
+        if (isHit || !enabled) return;
         //if (canBounce)
             Bounce(collision.contacts[0].normal);
         //else
