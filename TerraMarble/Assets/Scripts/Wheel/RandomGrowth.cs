@@ -67,7 +67,7 @@ public class RandomGrowth : MonoBehaviour
             if (newid == Region.RegionID.SIZE)
                 continue;
 
-            if (doDebug) Debug.Log(string.Format("Terra: {0} | {1} ► {2}", 
+            if (doDebug) Debug.Log(string.Format("Terra: {0} | {1} ► {2}",
                 region.gameObject.name, region.regionID, newid));
 
             region.TerraformRegion(newid);
@@ -85,25 +85,48 @@ public class RandomGrowth : MonoBehaviour
             if (region.surfaceObjects.Count == 0)
                 continue;
 
-            bool isGrowable = false;
-            for (var index = 0; index < region.surfaceObjects.Count; index++)
+            if (CheckIsValidToGrow(region)) // (region.FindGrow() != null)//
             {
-                SurfaceObject surfaceObject = region.surfaceObjects[index];
-                Growable growable = surfaceObject.GetComponent<Growable>();
-                if (growable != null && growable.IsGrowable())
-                {
-                    isGrowable = true;
-                    break;
-                }
+                region.FindGrow().TryGrowState();
+                break;
+
             }
-            if (isGrowable == false) continue;
+
+            //if (doDebug) Debug.Log(string.Format("Grow : {0} | {1}",
+            //    region.gameObject.name, region.regionID));
             
-            if (doDebug) Debug.Log(string.Format("Grow : {0} | {1}",
-                region.gameObject.name, region.regionID));
 
-            region.Grow();
-
-            break;
         }
+    }
+
+    bool CheckIsValidToGrow(Region r)
+    {
+        Growable gr = r.FindGrow();
+        if (gr == null || !gr.IsGrowable()) return false;
+
+        Growable nA = r.GetAdjacentRegion(-1).FindGrow();
+        Growable nB = r.GetAdjacentRegion(1).FindGrow();
+
+        // Alone
+        if (nA != null && nA.animGoalIndex == 0 &&
+            nB != null && nB.animGoalIndex == 0)
+        {
+            Growable nAA = r.GetAdjacentRegion(-2).FindGrow();
+            Growable nBB = r.GetAdjacentRegion(2).FindGrow();
+
+            if (nAA != null && nAA.animGoalIndex <= 1 &&
+                nBB != null && nBB.animGoalIndex <= 1)
+            {
+                return true;
+            }
+        }
+
+        if ((nA != null && nA.animGoalIndex > 0) ||
+            (nB != null && nB.animGoalIndex > 0))
+        {
+            return true;
+        }
+
+        return false;
     }
 }
