@@ -15,6 +15,9 @@ public class BallClimb : MonoBehaviour
     [SerializeField] private float maxBounceForce = 15;
     [SerializeField] private float minBounceForce = 0;
 
+    [SerializeField] private bool isHit = false;
+
+
     private void Start()
     {
         InputManager.LeftAlternateEvent += RespawnBall;
@@ -25,13 +28,23 @@ public class BallClimb : MonoBehaviour
         gravityDir ??= GetComponent<seadWeirdGravity>();
     }
 
+    private void Update()
+    {
+        isHit = false;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (collision.collider.gameObject.layer != LayerMask.NameToLayer("Wheel")
-            && collision.collider.gameObject.layer != LayerMask.NameToLayer("Surface")) return;
-                //SlideTrue(collision.contacts[0].normal);
-        UphillBoulderRoll(collision.contacts[0].normal);
+        //if (collision.collider.gameObject.layer != LayerMask.NameToLayer("Wheel")
+        //    && collision.collider.gameObject.layer != LayerMask.NameToLayer("Surface")) return;
+        //SlideTrue(collision.contacts[0].normal);
+        if (!isHit)
+        {
+            BounceTwo(collision.contacts[0].normal);
+            isHit = true;
+        }
+        //UphillBoulderRoll(collision.contacts[0].normal);
         //else
         //    if (collision.collider.gameObject.CompareTag("Tree"))
         //    {
@@ -68,8 +81,8 @@ public class BallClimb : MonoBehaviour
     {
         //get velocity direction 
 
-         Vector2 rbUp = Vector3.Cross(rb.velocity, Vector3.forward);
-         var dot = Vector2.Dot(NormalDirection , rbUp);
+        Vector2 rbUp = Vector3.Cross(rb.velocity, Vector3.forward);
+        var dot = Vector2.Dot(NormalDirection, rbUp);
 
 
 
@@ -101,7 +114,7 @@ public class BallClimb : MonoBehaviour
 
         }
 
-  
+
     }
     public void Bounce(Vector2 surfaceNormal)
     {
@@ -128,19 +141,22 @@ public class BallClimb : MonoBehaviour
     public void BounceTwo(Vector2 surfaceNormal)
     {
         Vector2 initialVel = rb.velocity;
-        Vector2 initialDir = initialVel;
-        //float initialMag = initialVel.magnitude;
+        Vector2 initialDir = initialVel.normalized;
 
         Vector2 surfaceReflect = Vector2.Reflect(initialDir, surfaceNormal);
+
+        // apply min magnitude
+        float initialMag = initialVel.magnitude;
+        initialMag = MathF.Max(initialMag, minBounceForce);
+        surfaceReflect = surfaceReflect * initialMag;
 
         // // attempts to keep momentum
         //Vector2 wheelReflect = Vector2.Reflect(initialDir, -updateGravity.wheelDir.normalized);
         //Vector2 followThru = (surfaceReflect * bounceFactor
         //                      + wheelReflect * (1f - bounceFactor)).normalized;
+        
 
-        Vector2 bounceClamped = surfaceReflect;
-
-        rb.velocity = bounceClamped;
+        rb.velocity = surfaceReflect;
 
         // // Old Bounce code
         //var project = Vector2.ClampMagnitude(rb.velocity.normalized -20 * (Vector2.Dot(rb.velocity, normal) * normal),
@@ -149,11 +165,11 @@ public class BallClimb : MonoBehaviour
     }
 
 
-    public void RespawnBall(object sender,EventArgs o)
+    public void RespawnBall(object sender, EventArgs o)
     {
-        
-            transform.position = startPos;
-        
-    
+
+        transform.position = startPos;
+
+
     }
 }
