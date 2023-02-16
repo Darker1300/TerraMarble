@@ -181,9 +181,8 @@ public class TreeBend : MonoBehaviour
     private void UpdateDragInput(Vector2 screenDragVector)
     {
         // Update Position
-        Vector2 cameraDragVector = screenDragVector;
-        dragInput.x = -Mathf.Clamp(cameraDragVector.x / dragSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
-        dragInput.y = Mathf.Abs(Mathf.Clamp(cameraDragVector.y / dragSize.y, -1f, 0f));
+        dragInput.x = -Mathf.Clamp(screenDragVector.x / dragSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
+        dragInput.y = Mathf.Abs(Mathf.Clamp(screenDragVector.y / dragSize.y, -1f, 0f));
     }
 
 
