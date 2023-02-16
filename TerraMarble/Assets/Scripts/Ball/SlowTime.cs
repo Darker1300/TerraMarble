@@ -17,7 +17,7 @@ public class SlowTime : MonoBehaviour
     void Start()
     {
         Time.timeScale = defaultTimeScale;
-        startTimeScale = Time.timeScale;
+        //startTimeScale = Time.timeScale;
         startFixedDeltaTime = Time.fixedDeltaTime;
         if (isInput)
         {
