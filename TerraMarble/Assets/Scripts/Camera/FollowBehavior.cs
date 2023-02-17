@@ -1,5 +1,6 @@
 using MathUtility;
 using UnityEngine;
+using MathUtility;
 
 public class FollowBehavior : MonoBehaviour
 {
@@ -39,6 +40,8 @@ public class FollowBehavior : MonoBehaviour
     [SerializeField] private Vector3 followOffset = Vector3.back;
     [SerializeField]
     private float rotateSpeed = 1;
+    public float sp = 1;
+    private float RotationOffset = 14;
 
 
 
@@ -125,8 +128,16 @@ public class FollowBehavior : MonoBehaviour
         Vector2 dir = vector.normalized;
         dir = dir.RotatedByDegree(-90f);
         Quaternion desiredAngle = Quaternion.AngleAxis(MathU.Vector2ToDegree(dir), Vector3.forward);
-        
-        return Quaternion.RotateTowards(transform.rotation, desiredAngle, Time.deltaTime * rotateSpeed);
-        
+
+        desiredAngle = MathU.SmoothDampRotation(transform.rotation, desiredAngle,ref sp, rotateSpeed);
+        //return Quaternion.RotateTowards(transform.rotation, desiredAngle, Time.deltaTime * rotateSpeed);
+        if (Mathf.Abs(sp) > RotationOffset)
+        {
+            return desiredAngle;
+        }
+        else
+        {
+            return transform.rotation;
+        }
     }
 }
