@@ -159,5 +159,19 @@ namespace MathUtility
             Vector2 deltaV = self.position.RotatedAround(pivotPoint, rotation) - self.position;
             self.velocity += deltaV;
         }
+        
+        /// <param name="rotateSmoothTime">eg 0.1</param>
+        public static Quaternion SmoothDampRotation(Quaternion current, Quaternion target, ref float velocity, float rotateSmoothTime)
+        {
+            float delta = Quaternion.Angle(current, target);
+            if (delta > 0f)
+            {
+                float t = Mathf.SmoothDampAngle(delta, 0.0f, ref velocity, rotateSmoothTime);
+                t = 1.0f - (t / delta);
+                current = Quaternion.Slerp(current, target, t);
+            }
+
+            return current;
+        }
     }
 }
