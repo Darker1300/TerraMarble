@@ -37,6 +37,8 @@ public class FollowBehavior : MonoBehaviour
     [Header("Orbit Follow System")]
     [SerializeField] protected bool useOrbitSystem = false;
     [SerializeField] private Vector3 followOffset = Vector3.back;
+    [SerializeField]
+    private float rotateSpeed = 1;
 
 
 
@@ -122,6 +124,9 @@ public class FollowBehavior : MonoBehaviour
         Vector3 vector = _bottom.Towards(_top).normalized;
         Vector2 dir = vector.normalized;
         dir = dir.RotatedByDegree(-90f);
-        return Quaternion.AngleAxis(MathU.Vector2ToDegree(dir), Vector3.forward);
+        Quaternion desiredAngle = Quaternion.AngleAxis(MathU.Vector2ToDegree(dir), Vector3.forward);
+        
+        return Quaternion.RotateTowards(transform.rotation, desiredAngle, Time.deltaTime * rotateSpeed);
+        
     }
 }
