@@ -39,7 +39,6 @@ public class FollowBehavior : MonoBehaviour
     [SerializeField] protected bool useOrbitSystem = false;
     [SerializeField] private Vector3 followOffset = Vector3.back;
     [SerializeField] private float rotateTime = .1f;
-    [SerializeField] private float rotationOffset = 8;
     [Header("Data")]
     [SerializeField] private float rotateVelocity = 0;
 
@@ -130,14 +129,6 @@ public class FollowBehavior : MonoBehaviour
         Quaternion desiredAngle = Quaternion.AngleAxis(MathU.Vector2ToDegree(dir), Vector3.forward);
 
         desiredAngle = MathU.SmoothDampRotation(transform.rotation, desiredAngle,ref rotateVelocity, rotateTime);
-        //return Quaternion.RotateTowards(transform.rotation, desiredAngle, Time.deltaTime * rotateTime);
-        if (Mathf.Abs(rotateVelocity) > rotationOffset)
-        {
-            return desiredAngle;
-        }
-        else
-        {
-            return transform.rotation;
-        }
+        return desiredAngle;
     }
 }
