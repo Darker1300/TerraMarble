@@ -19,6 +19,7 @@ public class TreeBend : MonoBehaviour
     public float stretchTime = 0.01f;
     public float maxSpeed = 1000f;
 
+    public float dragRangeOffset = 5f;
     public float dragRange = 20f;
     public Vector2 dragSize = new Vector2(0.1f, 0.2f);
     //[Range(0f, 1f)] public float deadRange = 0.1f;
@@ -67,7 +68,8 @@ public class TreeBend : MonoBehaviour
         //Debug.Log("X Axis: " + dragInput.x);
         dir = dir.RotatedByDegree(
             (dragInput.x * dragRange)
-            + (dragInitalOffset * dragOffsetDir));
+            + (dragInitalOffset * dragOffsetDir)
+            - (dragRangeOffset * dragOffsetDir));
         transform.position = wheelRegions.transform.position
                              + (Vector3)dir * wheelDst;
 
@@ -161,18 +163,15 @@ public class TreeBend : MonoBehaviour
                 else
                     dragOffsetDir = invertDragDir ? -1f : 1f;
             }
-            else
+            else if (!dragOffsetPerformed)
             {
-                if (!dragOffsetPerformed)
+                if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
                 {
-                    if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
-                    {
-                        dragOffsetDir = Mathf.Sign(dragInput.x);
-                        if (invertDragDir) dragOffsetDir = -dragOffsetDir;
-                    }
-                    else if (dragInput.y > dragDirTolerance.y)
-                        dragOffsetDir = 0f;
+                    dragOffsetDir = Mathf.Sign(dragInput.x);
+                    if (invertDragDir) dragOffsetDir = -dragOffsetDir;
                 }
+                else if (dragInput.y > dragDirTolerance.y)
+                    dragOffsetDir = 0f;
             }
             dragOffsetPerformed = true;
         }
