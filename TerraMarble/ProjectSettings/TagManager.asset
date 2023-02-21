@@ -12,6 +12,7 @@ TagManager:
   - Forest
   - Worm
   - InnerRimCol
+  - Beast
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - Enemy
   - Inner
   - Ground
-  - 
+  - Flying
   - 
   - 
   - 

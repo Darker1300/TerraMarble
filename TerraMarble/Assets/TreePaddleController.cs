@@ -1,6 +1,5 @@
 using MathUtility;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class TreePaddleController : MonoBehaviour
 {
@@ -51,8 +50,7 @@ public class TreePaddleController : MonoBehaviour
         }
 
         // Rotation
-        float newRot;
-        newRot = Mathf.SmoothDampAngle(
+        float newRot = Mathf.SmoothDampAngle(
             baseRB.rotation,
             goalRotation,
             ref bendVelocity,
@@ -87,12 +85,12 @@ public class TreePaddleController : MonoBehaviour
 
     }
 
-    public void RotateToThis(float collapsePercent, Vector3 pos)
+    public void SetTreeState(float collapsePercent, Vector3 benderPos)
     {
         //if (currentGoalPercent > (1f - treeBender.deadRange)
         //    && collapsePercent > treeBender.deadRange) return;
 
-        goalRotation = startRotation + CalcLocalRotation(collapsePercent, pos);
+        goalRotation = startRotation + CalcLocalRotation(collapsePercent, benderPos);
         if (collapsePercent < currentGoalPercent)
         {
             // Jump up
@@ -101,17 +99,16 @@ public class TreePaddleController : MonoBehaviour
         }
 
         currentGoalPercent = collapsePercent;
-
     }
 
-    private float CalcLocalRotation(float collapsePercent, Vector3 pos)
+    private float CalcLocalRotation(float collapsePercent, Vector3 benderPos)
     {
         Vector2 newDirection = Vector2.down;
 
         float distance = WheelRegionsManager.RegionDistanceDelta(
             region.RegionIndex + 0.5f,
-            region.WorldToRegionDistance(pos));
-        //Vector3 relativePoint = region.transform.InverseTransformPoint(pos);
+            region.WorldToRegionDistance(benderPos));
+        //Vector3 relativePoint = region.transform.InverseTransformPoint(benderPos);
 
         if (distance > 0f)
             newDirection.y = -1; // Right side

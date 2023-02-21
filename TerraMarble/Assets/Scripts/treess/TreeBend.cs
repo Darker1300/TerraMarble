@@ -52,7 +52,7 @@ public class TreeBend : MonoBehaviour
         wheelRegions = FindObjectOfType<WheelRegionsManager>();
         ball = FindObjectOfType<BallStateTracker>();
         circleCollider2D = GetComponent<CircleCollider2D>();
-        wheelDst = wheelRegions.RegionTemplate.RegionPosition(0f, 1f).x;
+        wheelDst = wheelRegions.WheelRadius;
 
         InputManager.LeftDragEvent += OnDragLeftToggle;
         InputManager.RightDragEvent += OnDragRightToggle;
@@ -105,7 +105,7 @@ public class TreeBend : MonoBehaviour
 
                 //Debug.Log("Drag: " + fallOffPercent);
 
-                target.RotateToThis(fallOffPercent, transform.position);
+                target.SetTreeState(fallOffPercent, transform.position);
 
             }
     }
@@ -187,17 +187,17 @@ public class TreeBend : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        var rotToDir = collision.gameObject.GetComponentInParent<TreePaddleController>();
-        if (rotToDir && !nearbyTrees.Contains(rotToDir)) nearbyTrees.Add(rotToDir);
+        var treeTarget = collision.gameObject.GetComponentInParent<TreePaddleController>();
+        if (treeTarget && !nearbyTrees.Contains(treeTarget)) nearbyTrees.Add(treeTarget);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        var rotToDir = collision.gameObject.GetComponentInParent<TreePaddleController>();
-        if (!rotToDir) return;
+        var treeTarget = collision.gameObject.GetComponentInParent<TreePaddleController>();
+        if (!treeTarget) return;
 
-        nearbyTrees.Remove(rotToDir);
-        rotToDir.Reset();
+        nearbyTrees.Remove(treeTarget);
+        treeTarget.Reset();
     }
 
     private void OnDrawGizmosSelected()

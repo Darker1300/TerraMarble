@@ -1,5 +1,6 @@
 using MathUtility;
 using UnityEngine;
+using UnityUtility;
 
 public class EntitySeek : MonoBehaviour
 {
@@ -7,7 +8,8 @@ public class EntitySeek : MonoBehaviour
     public Transform targetTransform = null;
     public Vector2 targetPosition = Vector2.zero;
 
-    public float speed = 10f;
+    public Vector2 speed = new(400f, 400f);
+
     //public float maxSpeed = 40f;
 
     private Rigidbody2D rb;
@@ -26,27 +28,61 @@ public class EntitySeek : MonoBehaviour
     {
         if (!doSeek) return;
 
-        Vector2 transformPos;
-        if (targetTransform == null)
-            transformPos = targetPosition;
-        else
-            transformPos = targetTransform.position;
+        Vector2 targetPos = targetTransform == null
+            ? targetPosition
+            : targetTransform.position;
 
-        Vector2 forceVector = MoveTowardsAroundCircle(transform, transformPos,
-            wheel.transform.position, wheel.regions.WheelRadius,
+        Vector2 newPosition = MoveTowardsAroundCircle(transform.position, targetPos,
+            wheel.transform.position,
             speed * Time.fixedDeltaTime);
 
+        Vector2 forceVector = newPosition - (Vector2)transform.position;
         debugForceVector = forceVector;
+
         // apply force
         rb.AddForce(forceVector);
     }
 
     private static Vector2 MoveTowardsAroundCircle(
-        Transform _transform, Vector2 _target,
+        Vector2 _currentPos, Vector2 _targetPos,
+        Vector2 _circlePos, Vector2 _maxDelta)
+    {
+        // Get new Radius
+        float newRadius = MoveTowardsAroundRadius(_currentPos, _targetPos, _circlePos, _maxDelta.y);
+
+        // Find new Angle, along new Radius
+        float newAngle = MoveTowardsAroundAngle(_currentPos, _targetPos, _circlePos, newRadius, _maxDelta.x);
+
+        // convert radius and angle to position
+        Vector2 newPos = MathU.DegreeToVector2(newAngle) * newRadius;
+
+        return newPos;
+    }
+
+    private static float MoveTowardsAroundRadius(
+        Vector2 _currentPos, Vector2 _targetPos,
+        Vector2 _circlePos, float _maxDelta)
+    {
+        float currentRadius = _circlePos.Towards(_currentPos).magnitude;
+        float targetRadius = _circlePos.Towards(_targetPos).magnitude;
+        float newRadius = Mathf.MoveTowards(currentRadius, targetRadius, _maxDelta);
+        return newRadius;
+    }
+
+    private static float MoveTowardsAroundAngle(
+        Vector2 _currentPos, Vector2 _targetPos,
         Vector2 _circlePos, float _circleRadius, float _maxDelta)
     {
+        float currentAngle = MathU.Vector2ToDegree(
+            _circlePos.Towards(_currentPos).normalized);
+        float targetAngle = MathU.Vector2ToDegree(
+            _circlePos.Towards(_targetPos).normalized);
 
-        return Vector2.zero;
+        // Move along New Radius to get new angle
+        float circleLength = _circleRadius * Mathf.PI * 2.0f;
+        float maxAngleDelta = (360f / circleLength) * _maxDelta;
+        float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, maxAngleDelta);
+        return newAngle;
     }
 
     private void OnDrawGizmosSelected()
