@@ -48,6 +48,8 @@ public class EntityBody : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (!doGravitation) return;
+
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         Vector2 pos = transform.position;
         Vector2 forceV = rb.velocity * debugLineSize;

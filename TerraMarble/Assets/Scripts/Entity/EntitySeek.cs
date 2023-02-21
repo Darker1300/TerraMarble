@@ -8,41 +8,51 @@ public class EntitySeek : MonoBehaviour
     public Vector2 targetPosition = Vector2.zero;
 
     public float speed = 10f;
-    public float maxSpeed = 40f;
+    //public float maxSpeed = 40f;
 
     private Rigidbody2D rb;
+    private Wheel wheel;
     private Vector2 debugForceVector = Vector2.right;
-    [SerializeField] private Color debugLineColor = Color.red;
-    [SerializeField] private float debugLineSize = 1f;
+    [SerializeField] private Color debugLineColor = Color.white;
+    [SerializeField] private float debugLineSize = 0.01f;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        wheel = FindObjectOfType<Wheel>();
     }
 
     void FixedUpdate()
     {
         if (!doSeek) return;
 
-        Vector2 towardsVector;
+        Vector2 transformPos;
         if (targetTransform == null)
-            towardsVector = transform.position.Towards(targetPosition);
+            transformPos = targetPosition;
         else
-            towardsVector = transform.Towards(targetTransform);
-        // apply speed factor
-        towardsVector = towardsVector * speed;
-        // clamp to max speed
-        towardsVector = Vector2.ClampMagnitude(towardsVector, maxSpeed) * Time.fixedDeltaTime;
+            transformPos = targetTransform.position;
 
-        debugForceVector = towardsVector;
+        Vector2 forceVector = MoveTowardsAroundCircle(transform, transformPos,
+            wheel.transform.position, wheel.regions.WheelRadius,
+            speed * Time.fixedDeltaTime);
+
+        debugForceVector = forceVector;
         // apply force
-        rb.AddForce(towardsVector);
+        rb.AddForce(forceVector);
+    }
+
+    private static Vector2 MoveTowardsAroundCircle(
+        Transform _transform, Vector2 _target,
+        Vector2 _circlePos, float _circleRadius, float _maxDelta)
+    {
+
+        return Vector2.zero;
     }
 
     private void OnDrawGizmosSelected()
     {
         Vector2 pos = transform.position;
-        Vector2 forceV = (debugForceVector / maxSpeed) * debugLineSize;
+        Vector2 forceV = debugForceVector * debugLineSize;
         Gizmos.color = debugLineColor;
         Gizmos.DrawLine(pos, pos + forceV);
     }
