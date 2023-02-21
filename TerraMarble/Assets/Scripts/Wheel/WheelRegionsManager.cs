@@ -79,6 +79,8 @@ public class WheelRegionsManager : MonoBehaviour
 
     public int RegionCount => WheelGenerator.regionCount;
 
+    public float WheelRadius => RegionTemplate.RegionPosition(0f, 1f).x;
+
     private void Awake()
     {
         // Connect with existing Regions
