@@ -10,7 +10,7 @@ public class AimTreeLockUI : MonoBehaviour
     [SerializeField] private Line screenAimLine;
     [SerializeField] private Disc screenAimDot;
     [SerializeField] private Rectangle screenEdgeRect;
-
+    [SerializeField] private BallWindJump ballWindJumpScript;
 
     [Header("Wheel UI")] [SerializeField] private Transform wheelAimTransform;
 
@@ -18,13 +18,23 @@ public class AimTreeLockUI : MonoBehaviour
     [SerializeField] private Disc powerBackDisc;
 
     [SerializeField] private Disc rangeBackDisc;
+    [Header("Flying How much the ball UI shrinks ")]
+
+    [SerializeField]
+    [Range(0, 1)]
+    private float ShrinkSize = 0.5f;
+    private float startDiscSize;
+    public AnimationCurve DotUiScaleInfluence;
+
 
     [Header("Data")] [SerializeField] private bool isDragging = false;
 
     private void Start()
     {
-        treeActive = FindObjectOfType<DragTreePosition>();
 
+        treeActive = FindObjectOfType<DragTreePosition>();
+        ballWindJumpScript = FindObjectOfType<BallWindJump>();
+        startDiscSize = screenAimDot.Radius;
         InputManager.LeftDragEvent += OnDragToggle;
         InputManager.RightDragEvent += OnDragToggle;
     }
@@ -77,6 +87,10 @@ public class AimTreeLockUI : MonoBehaviour
         // Aim
         screenAimDot.transform.localPosition = new Vector3(0.5f, -0.5f, 0f)
                                                * treeActive.treeBender.dragInput;
+
+        screenAimDot.Radius = Mathf.Lerp(startDiscSize, ShrinkSize * startDiscSize, DotUiScaleInfluence.Evaluate( ballWindJumpScript.upDragInput));
+       
+
     }
 
     private void SetScreenLine(float dir)

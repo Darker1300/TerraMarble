@@ -27,7 +27,7 @@ public class BallWindJump : MonoBehaviour
     [Header("Data")]
     [SerializeField] private float minUpDragInput = 0.1f;
     [SerializeField] private float upDragSize = 0.1f;
-    [SerializeField] private float upDragInput = 0f;
+    [SerializeField] public float upDragInput = 0f;
     public bool IsJumping = false;
     [SerializeField] private Rigidbody2D ballRb = null;
     [SerializeField] private Wheel wheel = null;
