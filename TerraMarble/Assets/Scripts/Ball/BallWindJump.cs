@@ -44,7 +44,7 @@ public class BallWindJump : MonoBehaviour
         ballRb = gameObject.GetComponentInParent<Rigidbody2D>();
         partSystem = gameObject.GetComponentInChildren<ParticleSystem>();
         wheel = FindObjectOfType<Wheel>();
-        flyUI = GetComponentInChildren<FlyUI>();
+        flyUI = GetComponentInChildren<FlyUI>(true);
         InputManager.LeftDragEvent += ToggleDrag;
         InputManager.RightDragEvent += ToggleDrag;
 

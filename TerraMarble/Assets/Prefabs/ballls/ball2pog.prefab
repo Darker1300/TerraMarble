@@ -148,14 +148,78 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IncreaseSize: 3.85
-  DotUiScaleInfluence:
+  UiDistanceAniCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  UiWidthAniCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.31717166
+      outSlope: 0.31717166
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.06239642
+    - serializedVersion: 3
+      time: 0.41306853
+      value: 0.55730736
+      inSlope: 10.086277
+      outSlope: 10.086277
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.045426875
+      outWeight: 0.14679039
+    - serializedVersion: 3
+      time: 0.61138886
+      value: 1.7458348
+      inSlope: 3.8302011
+      outSlope: 3.8302011
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -1.4601525
+      outSlope: -1.4601525
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3575453
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxVelocity: 8
   smoothAimTime: 0.4
+  left: {fileID: 0}
+  right: {fileID: 0}
+  uiMin: 10
+  uiMax: 25
 --- !u!1 &1780830433
 GameObject:
   m_ObjectHideFlags: 0

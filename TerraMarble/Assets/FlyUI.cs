@@ -14,7 +14,8 @@ public class FlyUI : MonoBehaviour
     [Range(0, 5)]
     private float IncreaseSize = 0.5f;
     private float startDiscSize;
-    public AnimationCurve DotUiScaleInfluence;
+    public AnimationCurve UiDistanceAniCurve;
+    public AnimationCurve UiWidthAniCurve;
     
     [SerializeField]
     private float maxVelocity = 8;
@@ -25,6 +26,12 @@ public class FlyUI : MonoBehaviour
     [SerializeField]
     private float smoothAimTime = 0.2f;
 
+    public Line left;
+    public Line right;
+    [SerializeField]
+    private float uiMin = 10;
+    [SerializeField]
+    private float uiMax = 25;
 
 
 
@@ -55,8 +62,10 @@ public class FlyUI : MonoBehaviour
         //{
             //0-1 factor
 
-            uiShape.Radius = Mathf.Lerp(startDiscSize, startDiscSize+(startDiscSize * IncreaseSize),percBallWind);
-
+            uiShape.Radius = Mathf.LerpUnclamped(startDiscSize, startDiscSize+(startDiscSize * IncreaseSize), UiDistanceAniCurve.Evaluate( percBallWind));
+        float angle = Mathf.LerpUnclamped(uiMin, uiMax, UiWidthAniCurve.Evaluate( percBallWind));
+        uiShape.AngRadiansStart = -angle * Mathf.Deg2Rad;
+        uiShape.AngRadiansEnd = angle * Mathf.Deg2Rad;
         //}
         transform.right = Vector2.SmoothDamp(transform.right, rb.velocity.normalized,ref uiVelocity,smoothAimTime);
 
