@@ -1,4 +1,6 @@
+using System;
 using MathUtility;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class TreePaddleController : MonoBehaviour
@@ -16,16 +18,21 @@ public class TreePaddleController : MonoBehaviour
     private float startRotation = 0f;
 
     [SerializeField] private float goalRotation = 0f;
-    [SerializeField] private float jumpFromRotation = 0f;
+    [SerializeField] private float launchRotation = 0f;
+    [SerializeField] private float wobbleGoalRotation = 0f;
 
     [SerializeField] private float currentGoalPercent = 0f;
 
     [SerializeField] private float jumpPercent = 0;
 
 
+    private float wobbleAngleVelocity = 0.0f;
+
     private float bendVelocity = 0.0f;
     private float jumpVelocity = 0.0f;
     private float stretchVelocity = 0.0f;
+
+
     public bool doDebug = false;
 
 
@@ -43,23 +50,71 @@ public class TreePaddleController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Mathf.Approximately(baseRB.rotation, goalRotation))
-        {
-            jumpPercent = 0;
-            return;
-        }
+        //float deltaOrigGoal = Mathf.DeltaAngle(baseRB.rotation, goalRotation);
 
-        // Rotation
+        wobbleGoalRotation = goalRotation + wobbleAngleVelocity;
+
+        // delta from current towards wobbleGoal
+
+        // rotation towards wobbleGoal
         float newRot = Mathf.SmoothDampAngle(
             baseRB.rotation,
-            goalRotation,
+            wobbleGoalRotation,
             ref bendVelocity,
             treeBender.bendTime,
             treeBender.maxSpeed,
             Time.fixedDeltaTime);
 
+        float deltaWobbleGoal = Mathf.DeltaAngle(newRot, wobbleGoalRotation);
+        int deltaWobbleDir = Math.Sign(deltaWobbleGoal);
+        if ((deltaWobbleDir == 1 && newRot > goalRotation)
+            || (deltaWobbleDir == -1 && newRot < goalRotation))
+            jumpPercent = 0;
+
+
+        if (Math.Abs(newRot - wobbleGoalRotation) < 0.1f)
+        {
+            // has reached wobble end position
+            if (Mathf.Abs(wobbleAngleVelocity) < 0.01f)
+                wobbleAngleVelocity = 0f;
+            else
+            {
+                wobbleAngleVelocity = wobbleAngleVelocity * treeBender.wobbleFactor;
+                wobbleAngleVelocity = -wobbleAngleVelocity;
+            }
+
+            // mark Jump's end
+            jumpPercent = 0;
+        }
+
+
+
+        //// is tree moving towards wobbleGoal, or Goal
+
+        //if ((goalDeltaSign == 1f && newRot > goalRotation)
+        //    || (goalDeltaSign == -1f && newRot < goalRotation)
+        //    || goalDeltaSign == 0f)
+        //{
+        //    // has rotated past goal
+        //    jumpPercent = 0;
+
+        //    if (Mathf.Approximately(0f, wobbleAngleVelocity))
+        //        wobbleAngleVelocity = 0f;
+        //    else if (goalDeltaSign == 0f)
+        //    {
+        //        wobbleAngleVelocity = -wobbleAngleVelocity;
+        //        wobbleAngleVelocity =
+        //            Mathf.Lerp(wobbleAngleVelocity, 0f, 0.75f);
+        //        // Mathf.SmoothDamp(wobbleAngleVelocity, 0f, ref wobbleVelocity, treeBender.wobbleTime);
+        //    }
+
+        //}
+
+
+
+
         // Jump and Stretch
-        float t = MathU.InverseLerpAngle(startRotation, jumpFromRotation, newRot);
+        float t = MathU.InverseLerpAngle(startRotation, launchRotation, newRot);
         float yPercent = (treeBender.PopOutHeightCurve.Evaluate(t) * jumpPercent);
 
         float yMove = yPercent * treeBender.jumpHeight + startPos.y;
@@ -92,10 +147,16 @@ public class TreePaddleController : MonoBehaviour
 
         goalRotation = startRotation + CalcLocalRotation(collapsePercent, benderPos);
         if (collapsePercent < currentGoalPercent)
-        {
+        {   // Get new goal that is more up-right than previous goal
             // Jump up
             jumpPercent = Mathf.Abs(collapsePercent - currentGoalPercent);
-            jumpFromRotation = baseRB.rotation;
+            launchRotation = baseRB.rotation;
+
+            wobbleAngleVelocity = jumpPercent * treeBender.wobbleStrength;
+        }
+        else
+        {
+            wobbleAngleVelocity = 0f;
         }
 
         currentGoalPercent = collapsePercent;
@@ -128,9 +189,11 @@ public class TreePaddleController : MonoBehaviour
     {
         currentGoalPercent = 0f;
         // jump up
-        jumpFromRotation = baseRB.rotation;
-        float delta = MathU.DeltaRange(jumpFromRotation, startRotation, 360f);
+        launchRotation = baseRB.rotation;
+        float delta = MathU.DeltaRange(launchRotation, startRotation, 360f);
         jumpPercent = Mathf.Abs(delta / 180f);
+
+        wobbleAngleVelocity = jumpPercent * treeBender.wobbleStrength;
         //jumpPercent = MathU.InverseLerpAngle(startRotation, jumpFromRotation, baseRB.rotation);
 
         goalRotation = startRotation;

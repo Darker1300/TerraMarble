@@ -36,6 +36,8 @@ public class TreeBend : MonoBehaviour
     public float stretchHeight = 1f;
     [FormerlySerializedAs("bendHeight")]
     public float jumpHeight = 0.75f;
+    public float wobbleStrength = 10f;
+    public float wobbleFactor = 0.75f;
 
     [Header("Data")]
     [SerializeField] private float wheelDst = 10;
