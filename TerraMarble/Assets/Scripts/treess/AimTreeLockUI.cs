@@ -11,6 +11,8 @@ public class AimTreeLockUI : MonoBehaviour
     [SerializeField] private Disc screenAimDot;
     [SerializeField] private Rectangle screenEdgeRect;
     [SerializeField] private BallWindJump ballWindJumpScript;
+    [SerializeField] private GameObject ball;
+
 
     [Header("Wheel UI")] [SerializeField] private Transform wheelAimTransform;
 
@@ -88,9 +90,15 @@ public class AimTreeLockUI : MonoBehaviour
         screenAimDot.transform.localPosition = new Vector3(0.5f, -0.5f, 0f)
                                                * treeActive.treeBender.dragInput;
 
-        screenAimDot.Radius = Mathf.Lerp(startDiscSize, ShrinkSize * startDiscSize, DotUiScaleInfluence.Evaluate( ballWindJumpScript.upDragInput));
-       
 
+        //ChangeBallUiSizeReleventToThrust();
+
+    }
+
+    public void ChangeBallUiSizeReleventToThrust()
+    {
+
+        screenAimDot.Radius = Mathf.Lerp(startDiscSize, ShrinkSize * startDiscSize, DotUiScaleInfluence.Evaluate(ballWindJumpScript.upDragInput));
     }
 
     private void SetScreenLine(float dir)

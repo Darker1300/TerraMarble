@@ -37,13 +37,14 @@ public class BallWindJump : MonoBehaviour
     //[SerializeField] private float jumpVelocity = 0f;
     [SerializeField] private RaycastHit2D[] hits = new RaycastHit2D[5];
 
+    private FlyUI flyUI;
 
     void Start()
     {
         ballRb = gameObject.GetComponentInParent<Rigidbody2D>();
         partSystem = gameObject.GetComponentInChildren<ParticleSystem>();
         wheel = FindObjectOfType<Wheel>();
-
+        flyUI = GetComponentInChildren<FlyUI>();
         InputManager.LeftDragEvent += ToggleDrag;
         InputManager.RightDragEvent += ToggleDrag;
 
@@ -109,7 +110,7 @@ public class BallWindJump : MonoBehaviour
 
         newLocal.y += forwardForce * forwardDir;
 
-
+        flyUI.UpdateUI(upDragInput);
 
         //newLocal.y = Mathf.Max(Mathf.Abs(newLocal.y), minGlideSpeed * Time.fixedDeltaTime) * forwardDir * glideSpeed;
         // newLocal.x = Mathf.Abs(newLocal.y) * glideSpeed;
