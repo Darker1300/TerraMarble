@@ -7,8 +7,8 @@ public class EntitySeek : MonoBehaviour
     public bool doSeek = true;
     public Transform targetTransform = null;
     public Vector2 targetPosition = Vector2.zero;
-
-    public Vector2 speed = new(400f, 400f);
+    public Vector2 forceMultiplier = new(2f, 2f);
+    public Vector2 seekSpeed = new(5f, 5f);
 
     //public float maxSpeed = 40f;
 
@@ -32,12 +32,15 @@ public class EntitySeek : MonoBehaviour
             ? targetPosition
             : targetTransform.position;
 
-        Vector2 newPosition = MoveTowardsAroundCircle(transform.position, targetPos,
+        Vector2 newPosition = MoveTowardsAroundCircle(
+            transform.position, targetPos,
             wheel.transform.position,
-            speed * Time.fixedDeltaTime);
+            seekSpeed * Time.fixedDeltaTime);
 
         Vector2 forceVector = newPosition - (Vector2)transform.position;
         debugForceVector = forceVector;
+
+        forceVector *= forceMultiplier;
 
         // apply force
         rb.AddForce(forceVector);
@@ -80,7 +83,7 @@ public class EntitySeek : MonoBehaviour
 
         // Move along New Radius to get new angle
         float circleLength = _circleRadius * Mathf.PI * 2.0f;
-        float maxAngleDelta = (360f / circleLength) * _maxDelta;
+        float maxAngleDelta = (360f / circleLength) * 360f * _maxDelta;
         float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, maxAngleDelta);
         return newAngle;
     }
