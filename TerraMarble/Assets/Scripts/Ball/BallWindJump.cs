@@ -50,6 +50,8 @@ public class BallWindJump : MonoBehaviour
 
         InputManager.LeftDragVectorEvent += (vector, delta, screenDragVector) => UpdateDragInput(screenDragVector);
         InputManager.RightDragVectorEvent += (vector, delta, screenDragVector) => UpdateDragInput(screenDragVector);
+
+        flyUI.SetUI(false);
     }
 
     private void ToggleDrag(bool state)
@@ -81,6 +83,8 @@ public class BallWindJump : MonoBehaviour
         IsJumping = true;
         UpdateParticles();
         partSystem.Emit( partInitialBurst);
+
+        flyUI.SetUI(true);
     }
 
     void OnWindJumpUpdate()
@@ -182,5 +186,7 @@ public class BallWindJump : MonoBehaviour
         particleTimer = 0f;
         //jumpVelocity = 0f;
         IsJumping = false;
+
+        flyUI.SetUI(false);
     }
 }
