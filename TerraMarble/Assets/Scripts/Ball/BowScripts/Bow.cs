@@ -5,7 +5,9 @@ using UnityEngine;
 public class Bow : MonoBehaviour
 {
 
-   
+    WaitForSeconds Firedelay = new WaitForSeconds(.1f);
+    Coroutine coroutine;
+
     public GameObject Target;
     [SerializeField]
     private AutoAim aim;
@@ -19,8 +21,8 @@ public class Bow : MonoBehaviour
     void Start()
     {
         ammoController = GetComponent<AmmoController>();
-        aim = GetComponent<AutoAim>();   
-       
+        aim = GetComponent<AutoAim>();
+
 
     }
 
@@ -28,14 +30,13 @@ public class Bow : MonoBehaviour
     void Update()
     {
         //if has ammo
-        if (AmmoAmount!= 0 && Time.time > nextFire)
+        if (AmmoAmount != 0 && Time.time > nextFire)
         {
             Target = null;
-           Target =  aim.FindClosestTarget();
+            Target = aim.FindClosestTarget();
             if (Target != null)
             {
-                ammoController.GetProjectile(BallStateTracker.BallState.NoEffector,Target.transform.position);
-                ammoController.currentProjectile.SetActive(true);
+                StartCoroutine("FireRate");
                 testShoot = false;
                 nextFire = Time.time + fireRate;
             }
@@ -45,4 +46,21 @@ public class Bow : MonoBehaviour
 
         //shoot
     }
+
+
+    IEnumerator FireRate()
+    {
+        int i = 4;
+
+        while (i > 0)
+        {
+            ammoController.GetProjectile(BallStateTracker.BallState.NoEffector, Target.transform.position);
+            ammoController.currentProjectile.SetActive(true);
+
+            // Do something 4 times
+            i--;
+            yield return Firedelay;
+        }
+    }
+
 }

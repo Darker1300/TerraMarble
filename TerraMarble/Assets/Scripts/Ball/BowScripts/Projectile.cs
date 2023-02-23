@@ -41,19 +41,17 @@ public class Projectile : MonoBehaviour
 
     }
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        if (TargetDirection != null && Vector3.Distance(transform.position,planetCenter.position) < 500)
+        if (TargetDirection != null && Vector3.Distance(transform.position, planetCenter.position) < 500)
         {
-            transform.Translate(transform.rotation* TargetDirection.normalized * moveSpeed * Time.deltaTime);
-           
+            transform.Translate(transform.rotation * TargetDirection.normalized * moveSpeed * Time.fixedDeltaTime);
+
             //transform.position = Vector2.MoveTowards(transform.position, targetTrans, moveSpeed * Time.deltaTime);
         }
-        
-
-
     }
-    
+
+
     //public void ConfigureThisDirPos()
     //{
     //    transform.position - targetTrans.position;
