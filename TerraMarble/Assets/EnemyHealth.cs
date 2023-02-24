@@ -9,18 +9,19 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private LayerMask projLayerName = LayerMaskUtility.Create("Projectile");
     public float CurrentDelayTime;
-    [SerializeField] private float KnockBackDuration;
+    [SerializeField] private float KnockBackDuration = 1.25f;
     public UnityEvent<Collider2D> OnProjectileHit;
+    public UnityEvent OnStunEnd;
     private Rigidbody2D rb;
     [SerializeField]
-    private float knockBackForce =100;
+    private float knockBackForce = 100;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
         rb = GetComponent<Rigidbody2D>();
-        
+
     }
 
     // Update is called once per frame
@@ -31,21 +32,21 @@ public class EnemyHealth : MonoBehaviour
         {
             CurrentDelayTime -= Time.deltaTime;
         }
-       // else enabled = false;
+        else
+        {
+            OnStunEnd?.Invoke();
+            
+        }
     }
-    private void OnEnable()
-    {
-        CurrentDelayTime += KnockBackDuration;
-        
-    }
+   
 
     public void OnHit()
     {
-        CurrentDelayTime += KnockBackDuration;
+        CurrentDelayTime = KnockBackDuration;
     }
     private void OnDisable()
     {
-        
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -58,16 +59,16 @@ public class EnemyHealth : MonoBehaviour
     }
     public void KnockBack(Collider2D colider)
     {
-        
+
         if (rb == null)
             return;
 
         rb.velocity = Vector2.zero;
-
+        OnHit();
         rb.AddForce(colider.transform.Towards(transform).normalized * knockBackForce);
 
 
-        
+
     }
 
 
