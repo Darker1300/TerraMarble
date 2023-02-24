@@ -49,7 +49,7 @@ public class AutoAim : MonoBehaviour
                 
             
             }
-        Debug.Log("foundOne");
+        //Debug.Log("foundOne");
             
 
         }
