@@ -266,9 +266,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 591952552723369967}
-  - component: {fileID: 4739673457997084955}
   - component: {fileID: 8471930450115916490}
   - component: {fileID: 709181000780163736}
+  - component: {fileID: 4739673457997084955}
   - component: {fileID: 7420985491049078963}
   - component: {fileID: 2802689741959421297}
   - component: {fileID: 6843145485968276760}
@@ -296,26 +296,6 @@ Transform:
   m_Father: {fileID: 5042564152762731162}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4739673457997084955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2289692685312415296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ecba51cf07fd5f4884b76dbc2eb2d25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startRotation: 0
-  launchRotation: 0
-  goalRotation: 0
-  currentGoalPercent: 0
-  wobbleGoalRotation: 0
-  wobbleAngleVelocity: 0
-  launchPercent: 0
-  doDebug: 0
 --- !u!114 &8471930450115916490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,6 +373,23 @@ PolygonCollider2D:
       - {x: 0.092, y: -0.15}
       - {x: 0.1, y: 0}
   m_UseDelaunayMesh: 0
+--- !u!114 &4739673457997084955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2289692685312415296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ecba51cf07fd5f4884b76dbc2eb2d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goalRotation: 0
+  jumpFromRotation: 0
+  currentGoalPercent: 0
+  jumpPercent: 0
+  doDebug: 0
 --- !u!114 &7420985491049078963
 MonoBehaviour:
   m_ObjectHideFlags: 0

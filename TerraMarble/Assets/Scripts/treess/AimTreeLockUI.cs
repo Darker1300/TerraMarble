@@ -75,7 +75,7 @@ public class AimTreeLockUI : MonoBehaviour
 
         //Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
         Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.ScreenSize * new Vector2(.5f, 1f - .1f));
-        Vector2 worldSize = InputManager.ScreenWorldSize * treeActive.treeBender.dragScreenSize * 2f;
+        Vector2 worldSize = InputManager.ScreenWorldSize * treeActive.treeBender.dragSize * 2f;
 
         //
         screenAimTransform.rotation = Camera.main.transform.rotation;
@@ -84,7 +84,7 @@ public class AimTreeLockUI : MonoBehaviour
         screenAimTransform.position = new Vector3(center.x, center.y, screenAimTransform.position.z);
 
         // Aim Line
-        SetScreenLine(treeActive.treeBender.dragDir);
+        SetScreenLine(treeActive.treeBender.dragOffsetDir);
 
         // Aim
         screenAimDot.transform.localPosition = new Vector3(0.5f, -0.5f, 0f)
@@ -121,7 +121,7 @@ public class AimTreeLockUI : MonoBehaviour
 
     public void UpdatePowerBar()
     {
-        float rangeExtent = treeActive.treeBender.dragMoveRange;
+        float rangeExtent = treeActive.treeBender.dragRange;
         float powerPercent = treeActive.treeBender.dragInput.y;
 
         float powerFull = rangeExtent * 2f * Mathf.Deg2Rad;
