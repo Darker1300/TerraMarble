@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityUtility;
 
 public class SpawnRandomUnitCirclePos : MonoBehaviour
 {
@@ -8,8 +9,12 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
 
     [SerializeField]
     private ObjectPooler pooler;
+    [SerializeField]
+    private float minRad =15;
+    [SerializeField]
+    private float maxRad = 25;
 
-   
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +35,7 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
 
     public void Test()
     {
-        Spawn(Vector2.zero,3, 10);
+        Spawn(Vector2.zero,3, Random.Range(minRad,maxRad));
     
     }
     //Pass in 
@@ -40,7 +45,7 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
         for (int i = 0; i < SpawnQauntity; i++)
         {
             Vector3 pos = RandomCircle(center, radius);
-            Quaternion rot = Quaternion.FromToRotation(Vector3.forward, center - pos);
+            Quaternion rot = Quaternion.FromToRotation(Vector3.right, center - pos);
 
             GameObject spawnedObj = pooler.SpawnFromPool(pos, null, true);
             spawnedObj.transform.rotation = rot;
@@ -61,6 +66,14 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
         return pos;
     }
 
-
+    private void OnDrawGizmosSelected()
+    {
+        Wheel wheel = FindObjectOfType<Wheel>();
+        Gizmos.color = Color.red;
+        
+        GizmosExtensions.DrawWireCircle(wheel.transform.position, minRad, 36, Quaternion.LookRotation(Vector3.up, Vector3.forward));
+        GizmosExtensions.DrawWireCircle(wheel.transform.position, maxRad, 36, Quaternion.LookRotation(Vector3.up, Vector3.forward));
+       
+    }
 
 }
