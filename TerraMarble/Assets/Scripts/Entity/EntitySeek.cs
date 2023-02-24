@@ -4,14 +4,14 @@ using UnityUtility;
 
 public class EntitySeek : MonoBehaviour
 {
-   
 
+    private EnemyHealth enemyHealth;
     public bool doSeek = true;
     public Transform targetTransform = null;
     public Vector2 targetPosition = Vector2.zero;
     public Vector2 forceMultiplier = new(2f, 2f);
     public Vector2 seekSpeed = new(5f, 5f);
-
+    
 
     //public float maxSpeed = 40f;
 
@@ -20,9 +20,16 @@ public class EntitySeek : MonoBehaviour
     private Vector2 debugForceVector = Vector2.right;
     [SerializeField] private Color debugLineColor = Color.white;
     [SerializeField] private float debugLineSize = 0.01f;
+    private void Start()
+    {
+        enemyHealth = GetComponent<EnemyHealth>();
+        enemyHealth.OnProjectileHit.AddListener(OnHit);
+        enemyHealth.OnStunEnd.AddListener(StartSeek);
 
+    }
     void Awake()
     {
+       // enemyhealth = GetComponent<EnemyHealth>();
         rb = GetComponent<Rigidbody2D>();
         wheel = FindObjectOfType<Wheel>();
     }
@@ -102,7 +109,15 @@ public class EntitySeek : MonoBehaviour
         Gizmos.color = debugLineColor;
         Gizmos.DrawLine(pos, pos + forceV);
     }
+    public void OnHit(Collider2D col)
+    {
+        doSeek = false;
+    }
 
-    
+    public void StartSeek()
+    {
+        doSeek = true;
+    }
+
 
 }
