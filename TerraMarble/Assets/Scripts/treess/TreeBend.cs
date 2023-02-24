@@ -1,5 +1,6 @@
 using MathUtility;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,38 +14,55 @@ public class TreeBend : MonoBehaviour
     private BallStateTracker ball;
     private AimTreeLockUI aimUi;
 
-    [Header("Config")]
-    public float bendTime = 0.05f;
-    public float jumpTime = 0.05f;
-    public float stretchTime = 0.01f;
-    public float maxSpeed = 1000f;
+    [Header("Drag Input Config")]
+    [Tooltip("offset of starting position, in degrees")]
+    public float dragStartOffset = 15f;
 
-    public float dragRangeOffset = 5f;
-    public float dragRange = 20f;
-    public Vector2 dragSize = new Vector2(0.1f, 0.2f);
-    //[Range(0f, 1f)] public float deadRange = 0.1f;
-    [SerializeField] private AnimationCurve treeBendCurve;
+    [Tooltip("range extent of bend area movement, in degrees")]
+    public float dragMoveRange = 20f;
 
-    public float dragInitalOffset = 20f;
-    [SerializeField] private Vector2 dragDirTolerance = new Vector2(0.05f, 0.1f);
+    [Tooltip("percentage of screen used for touch drag input, originating from touch position")]
+    public Vector2 dragScreenSize = new Vector2(0.1f, 0.2f);
 
-    [SerializeField] private bool invertXInput = false;
+    [Tooltip("how much drag dir boosts bend area, in degrees")]
+    public float dragDirOffsetAmount = 20f;
+
+    [Tooltip("how much of the screen that the drag needs before setting drag dir")]
+    [SerializeField] private Vector2 dragDirTolerance = new Vector2(0.1f, 0.05f);
+
+    [SerializeField] private bool invertXInput = true;
     [SerializeField] private bool invertDragDir = false;
 
-    [Header("Bend Height Config")]
-    public AnimationCurve PopOutHeightCurve;
-    public float stretchHeight = 1f;
-    [FormerlySerializedAs("bendHeight")]
-    public float jumpHeight = 0.75f;
 
-    [Header("Data")]
-    [SerializeField] private float wheelDst = 10;
-    public Vector2 dragInput = new Vector2(0, 0);
+    [Header("Bend Config")]
 
-    public bool dragOffsetPerformed = false;
-    public float dragOffsetDir = 0f;
+    public float bendTime = 0.05f;
+    public float bendMaxSpeed = 1000f;
 
-    public List<TreePaddleController> nearbyTrees = new();
+    [SerializeField]
+    private AnimationCurve treeBendCurve
+        = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [FormerlySerializedAs("PopOutHeightCurve")]
+    public AnimationCurve launchCurve = new AnimationCurve(
+            new(0, 0),
+            new(0.5f, 1f),
+            new(1, 0));
+
+    public float launchTime = 0.05f;
+
+    public float jumpHeight = 0.4f;
+    public float stretchHeight = 0.75f;
+
+    public float wobbleMaxAngle = 30f;
+    public float wobbleSlowFactor = 0.75f;
+    public float wobbleMinThreshold = 5.0f;
+
+    [Foldout("Data")] [SerializeField] private float wheelRadius = 10;
+    [Foldout("Data")] public Vector2 dragInput = new Vector2(0, 0);
+    [Foldout("Data")] public bool isDragDirSet = false;
+    [Foldout("Data")] public float dragDir = 0f;
+    [Foldout("Data")] public List<TreePaddleController> nearbyTrees = new();
 
     private void Start()
     {
@@ -52,7 +70,7 @@ public class TreeBend : MonoBehaviour
         wheelRegions = FindObjectOfType<WheelRegionsManager>();
         ball = FindObjectOfType<BallStateTracker>();
         circleCollider2D = GetComponent<CircleCollider2D>();
-        wheelDst = wheelRegions.WheelRadius;
+        wheelRadius = wheelRegions.WheelRadius;
 
         InputManager.LeftDragEvent += OnDragLeftToggle;
         InputManager.RightDragEvent += OnDragRightToggle;
@@ -64,14 +82,13 @@ public class TreeBend : MonoBehaviour
     private void Update()
     {
         Vector2 dir = ((Vector2)wheelRegions.transform.Towards(ball.transform)).normalized;
-        //float xAxis = math.remap(0, 1, -1, 1, dragInput.x);
-        //Debug.Log("X Axis: " + dragInput.x);
+
         dir = dir.RotatedByDegree(
-            (dragInput.x * dragRange)
-            + (dragInitalOffset * dragOffsetDir)
-            - (dragRangeOffset * dragOffsetDir));
+            (dragInput.x * dragMoveRange)
+            + (dragDirOffsetAmount * dragDir)
+            - (dragStartOffset * dragDir));
         transform.position = wheelRegions.transform.position
-                             + (Vector3)dir * wheelDst;
+                             + (Vector3)dir * wheelRadius;
 
         UpdateTrees();
     }
@@ -79,7 +96,7 @@ public class TreeBend : MonoBehaviour
     private void OnDisable()
     {
         foreach (var target in nearbyTrees)
-            target.Reset();
+            target.Release();
     }
 
     private void UpdateTrees()
@@ -101,7 +118,7 @@ public class TreeBend : MonoBehaviour
                 float distPercent = distVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
                 float curve = treeBendCurve.Evaluate(Mathf.Clamp01(distPercent));
                 float fallOffPercent = 1f - curve;
-                fallOffPercent = dragInput.y * fallOffPercent;
+                fallOffPercent = 1f - dragInput.y * fallOffPercent;
 
                 //Debug.Log("Drag: " + fallOffPercent);
 
@@ -112,19 +129,19 @@ public class TreeBend : MonoBehaviour
 
     private void OnDragLeftToggle(bool state)
     {
-        dragOffsetDir = InputManager.Instance.Mobile ? (invertDragDir ? 1f : -1f) : 0f;
+        dragDir = InputManager.Instance.Mobile ? (invertDragDir ? 1f : -1f) : 0f;
         UpdateDragToggle(state);
     }
 
     private void OnDragRightToggle(bool state)
     {
-        dragOffsetDir = InputManager.Instance.Mobile ? (invertDragDir ? -1f : 1f) : 0f;
+        dragDir = InputManager.Instance.Mobile ? (invertDragDir ? -1f : 1f) : 0f;
         UpdateDragToggle(state);
     }
 
     private void UpdateDragToggle(bool state)
     {
-        dragOffsetPerformed = false;
+        isDragDirSet = false;
         dragInput = Vector2.zero;
     }
 
@@ -152,36 +169,36 @@ public class TreeBend : MonoBehaviour
         //}
     }
 
+    private void UpdateDragInput(Vector2 screenDragVector)
+    {
+        // Update Position
+        dragInput.x = -Mathf.Clamp(screenDragVector.x / dragScreenSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
+        dragInput.y = Mathf.Abs(Mathf.Clamp(screenDragVector.y / dragScreenSize.y, -1f, 0f));
+    }
+
     private void SetDragDir(bool isLeft)
     {
-        if (!dragOffsetPerformed)
+        if (!isDragDirSet)
         {
             if (InputManager.Instance.Mobile)
             {
                 if (isLeft)
-                    dragOffsetDir = invertDragDir ? 1f : -1f;
+                    dragDir = invertDragDir ? 1f : -1f;
                 else
-                    dragOffsetDir = invertDragDir ? -1f : 1f;
+                    dragDir = invertDragDir ? -1f : 1f;
             }
-            else if (!dragOffsetPerformed)
+            else if (!isDragDirSet)
             {
                 if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
                 {
-                    dragOffsetDir = Mathf.Sign(dragInput.x);
-                    if (invertDragDir) dragOffsetDir = -dragOffsetDir;
+                    dragDir = Mathf.Sign(dragInput.x);
+                    if (invertDragDir) dragDir = -dragDir;
                 }
                 else if (dragInput.y > dragDirTolerance.y)
-                    dragOffsetDir = 0f;
+                    dragDir = 0f;
             }
-            dragOffsetPerformed = true;
+            isDragDirSet = true;
         }
-    }
-
-    private void UpdateDragInput(Vector2 screenDragVector)
-    {
-        // Update Position
-        dragInput.x = -Mathf.Clamp(screenDragVector.x / dragSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
-        dragInput.y = Mathf.Abs(Mathf.Clamp(screenDragVector.y / dragSize.y, -1f, 0f));
     }
 
 
@@ -197,7 +214,7 @@ public class TreeBend : MonoBehaviour
         if (!treeTarget) return;
 
         nearbyTrees.Remove(treeTarget);
-        treeTarget.Reset();
+        treeTarget.Release();
     }
 
     private void OnDrawGizmosSelected()
