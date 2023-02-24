@@ -100,7 +100,8 @@ public class InputManager : MonoBehaviour
     public void OnEnable()
 
     {
-        inputAsset.Enable();
+
+        inputAsset?.Enable();
 
         screenWidth = Screen.width;
 
@@ -541,7 +542,7 @@ public class InputManager : MonoBehaviour
 
     public void OnDisable()
     {
-        inputAsset.Disable();
+        inputAsset?.Disable();
     }
 
     // Start is called before the first frame update

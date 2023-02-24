@@ -1,22 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class SlowTime : MonoBehaviour
 {
     
     [Header("TimeControllerSettings")]
-    public float TimeScale;
-    private float startTimeScale;
+    [SerializeField] private float slowModeTimeScale = 0.4f;
     private float startFixedDeltaTime;
-    [SerializeField]
-    private float defaultTimeScale;
-    [SerializeField]
-    private bool isInput;
+    [OnValueChanged("SetDefaultTimeScale")] [SerializeField] 
+    private float defaultTimeScale = 1f;
+    [SerializeField] private bool isInput;
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = defaultTimeScale;
+        SetDefaultTimeScale();
         //startTimeScale = Time.timeScale;
         startFixedDeltaTime = Time.fixedDeltaTime;
         if (isInput)
@@ -31,6 +30,12 @@ public class SlowTime : MonoBehaviour
     {
 
     }
+
+    private void SetDefaultTimeScale()
+    {
+        Time.timeScale = defaultTimeScale;
+    }
+
     public void StartStop(bool start)
     {
         if (start)
@@ -45,8 +50,8 @@ public class SlowTime : MonoBehaviour
     }
     public void startSlowMotion()
     {
-        Time.timeScale = TimeScale;
-        Time.fixedDeltaTime = startFixedDeltaTime * TimeScale;
+        Time.timeScale = slowModeTimeScale;
+        Time.fixedDeltaTime = startFixedDeltaTime * slowModeTimeScale;
 
     }
     public void StopSlowMotion()
