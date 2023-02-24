@@ -10,6 +10,7 @@ public class ObjectPooler : MonoBehaviour
     public string poolName = "Pool";
     Queue<GameObject> activeObjects;
     Queue<GameObject> deactivatedObjects;
+    
     private Transform _poolTransform = null;
     public bool UsePrefabName = true;
     [SerializeField] private bool createOnAwake = false;
@@ -83,6 +84,8 @@ public class ObjectPooler : MonoBehaviour
             temp.transform.SetParent(parent, worldPosStays);
 
         }
+        else temp.transform.SetParent(_poolTransform, worldPosStays);
+
         temp.SetActive(true);
         activeObjects.Enqueue(temp);
         return temp;
@@ -117,7 +120,7 @@ public class ObjectPooler : MonoBehaviour
     public void ReturnToPool(GameObject obj)
     {
         obj.SetActive(false);
-        obj.transform.SetParent(null, true);
+        obj.transform.SetParent(_poolTransform, true);
         deactivatedObjects.Enqueue(obj);
     }
 

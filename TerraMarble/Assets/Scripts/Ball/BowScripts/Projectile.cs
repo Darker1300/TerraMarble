@@ -57,13 +57,15 @@ public class Projectile : MonoBehaviour
     //    transform.position - targetTrans.position;
 
     //}
+  
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
            
+            pooler.ReturnToPool(this.gameObject);
+
         }
-        pooler.ReturnToPool(this.gameObject);
     }
     //private void OnCollisionEnter2D(Collision2D collision)
     //{

@@ -4,11 +4,14 @@ using UnityUtility;
 
 public class EntitySeek : MonoBehaviour
 {
+   
+
     public bool doSeek = true;
     public Transform targetTransform = null;
     public Vector2 targetPosition = Vector2.zero;
     public Vector2 forceMultiplier = new(2f, 2f);
     public Vector2 seekSpeed = new(5f, 5f);
+
 
     //public float maxSpeed = 40f;
 
@@ -22,6 +25,10 @@ public class EntitySeek : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         wheel = FindObjectOfType<Wheel>();
+    }
+    private void OnEnable()
+    {
+        targetTransform = GameObject.FindGameObjectWithTag("Ball").transform;
     }
 
     void FixedUpdate()
@@ -95,4 +102,7 @@ public class EntitySeek : MonoBehaviour
         Gizmos.color = debugLineColor;
         Gizmos.DrawLine(pos, pos + forceV);
     }
+
+    
+
 }
