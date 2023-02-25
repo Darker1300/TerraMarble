@@ -53,7 +53,7 @@ public class FlyUI : MonoBehaviour
 
     public void SetUI(bool isActive)
     {
-        uiShape.gameObject.SetActive(isActive);
+        uiShape?.gameObject.SetActive(isActive);
     }
 
     public void UpdateUI(float percBallWind)

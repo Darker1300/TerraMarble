@@ -7,7 +7,7 @@ using MathUtility;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private LayerMask projLayerName = LayerMaskUtility.Create("Projectile");
+    [SerializeField] private LayerMask projLayerName;
     public float CurrentDelayTime;
     [SerializeField] private float KnockBackDuration = 1.25f;
     public UnityEvent<Collider2D> OnProjectileHit;
@@ -15,6 +15,8 @@ public class EnemyHealth : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField]
     private float knockBackForce = 100;
+
+    public int HitAmount;
 
     // Start is called before the first frame update
     void Start()
@@ -63,9 +65,11 @@ public class EnemyHealth : MonoBehaviour
         if (rb == null)
             return;
 
+        HitAmount++;
         rb.velocity = Vector2.zero;
         OnHit();
         rb.AddForce(colider.transform.Towards(transform).normalized * knockBackForce);
+
 
 
 

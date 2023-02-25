@@ -15,7 +15,7 @@ public class EntityAvoid : MonoBehaviour
     private Rigidbody2D rb;
     private Wheel wheel;
     private Vector2 castDir = Vector2.right;
-
+    
     //[SerializeField] private bool doHeightAvoid = false;
     //[SerializeField] private Vector2 minMaxHeight = new(16f, 25.5f);
     //[SerializeField] private Color debugHeightColor = Color.white;
@@ -23,6 +23,7 @@ public class EntityAvoid : MonoBehaviour
 
     void Awake()
     {
+       
         collider2d = GetComponentInChildren<Collider2D>();
         rb = GetComponentInChildren<Rigidbody2D>();
         wheel = FindObjectOfType<Wheel>();
