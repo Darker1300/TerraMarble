@@ -21,18 +21,16 @@ public class TreePaddleController : MonoBehaviour
     [SerializeField] private float goalRotation = 0f;
     private float currentRotation { get => baseRB.rotation; set => baseRB.rotation = value; }
 
-
-    //[SerializeField] private float launchEndPercent = 1f;
-
     [SerializeField] private float wobbleGoalRotation = 0f;
     [SerializeField] private float wobbleAngleVelocity = 0f;
-
+    
     [SerializeField] private float launchPowerPercent = 0;
     [SerializeField] private float launchProgress = 1f;
 
-
     private float bendVelocity = 0.0f;
     private float launchVelocity = 0.0f;
+    private float stretchVelocity = 0.0f;
+    private float jumpVelocity = 0.0f;
 
 
     public bool doDebug = false;
@@ -49,8 +47,7 @@ public class TreePaddleController : MonoBehaviour
         topStartScale = transform.localScale;
         startRotation = launchStartRotation = goalRotation = wobbleGoalRotation
             = currentRotation;
-
-        //launchEndPercent = 1f;
+        
         launchProgress = 1f;
     }
 
@@ -63,6 +60,8 @@ public class TreePaddleController : MonoBehaviour
 
     void UpdateBend()
     {
+        // todo optimize: check if bending/wobbling/scale&jump = start, if not then return;
+
         wobbleGoalRotation = goalRotation + wobbleAngleVelocity;
 
         float newCurrentRotation = Mathf.SmoothDampAngle(
@@ -71,6 +70,7 @@ public class TreePaddleController : MonoBehaviour
             treeBender.bendMaxSpeed, Time.fixedDeltaTime);
 
         baseRB.MoveRotation(newCurrentRotation);
+        
 
         UpdateLaunch();
 
@@ -93,32 +93,27 @@ public class TreePaddleController : MonoBehaviour
 
     void UpdateLaunch()
     {
-        if (launchProgress >= 1f) return;
+        //if (launchProgress >= 1f) return;
 
-        launchProgress = Mathf.SmoothDamp(
-            launchProgress, 1f,
-            ref launchVelocity, treeBender.launchTime,
-            treeBender.bendMaxSpeed, Time.fixedDeltaTime);
+        if (!Mathf.Approximately(1f, launchProgress))
+            launchProgress = Mathf.SmoothDamp(
+                launchProgress, 1f, ref launchVelocity,
+                treeBender.launchTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
 
-        //launchProgress = MathU.InverseLerpAngle(
-        //    launchStartRotation, goalRotation, currentRotation);
+        // Jump and Stretch
+        Vector3 newPos = baseTransform.localPosition;
+        Vector3 newScale = transform.localScale;
 
         // curve = 0..1..0;
         float launchCurveT = treeBender.launchCurve.Evaluate(launchProgress);
-        Vector3 newPos = baseTransform.localPosition;
-        Vector3 newScale = topStartScale;
+        float goalPosY = startPos.y + (treeBender.jumpHeight * launchPowerPercent) * launchCurveT;
+        float goalScaleY = topStartScale.y + (treeBender.stretchHeight * launchPowerPercent) * launchCurveT;
 
-        //update Jump
-        newPos.y = Mathf.Lerp(
-            startPos.y,
-            startPos.y + treeBender.jumpHeight * launchPowerPercent,
-            launchCurveT);
+        newPos.y = Mathf.SmoothDamp(newPos.y, goalPosY, ref jumpVelocity,
+            treeBender.launchTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
 
-        //update Stretch
-        newScale.y = Mathf.Lerp(
-            topStartScale.y,
-            topStartScale.y + treeBender.stretchHeight * launchPowerPercent,
-            launchCurveT);
+        newScale.y = Mathf.SmoothDamp(newScale.y, goalScaleY, ref stretchVelocity,
+            treeBender.launchTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
 
         baseTransform.localPosition = newPos;
         transform.localScale = newScale;
@@ -134,25 +129,9 @@ public class TreePaddleController : MonoBehaviour
         // set new goal
         goalRotation = startRotation + CalcLocalRotation(upPercent, benderPos);
         SetWobble(0f);
-
-        //if (upPercent > launchEndPercent)
-        //{ // bending upwards
-
-        //    // percent from current rotation to new goal
-        //    float currentLaunchPercent
-        //        = 1f - Mathf.Abs(upPercent - launchEndPercent);
-        //    SetLaunch(currentLaunchPercent); // also prepares wobble
-        //}
-        //else
-        //{ // bending downwards
-        //    // clear wobble
-        //    SetWobble(0f);
-        //}
-
-        //launchEndPercent = upPercent;
     }
 
-    void SetLaunch()
+    void InitLaunch()
     {
         launchStartRotation = currentRotation;
 
@@ -161,7 +140,6 @@ public class TreePaddleController : MonoBehaviour
         launchPowerPercent = powerPercent;
 
         launchProgress = 0f;
-        //launchEndPercent = 1f;
 
         // prepare for wobble
         SetWobble(launchPowerPercent * treeBender.wobbleMaxAngle);
@@ -170,13 +148,10 @@ public class TreePaddleController : MonoBehaviour
     public void Release()
     {
         // launch
-
-        SetLaunch();
-
+        InitLaunch();
 
         // Goal
         goalRotation = startRotation;
-
     }
 
     private float CalcLocalRotation(float upPercent, Vector3 benderPos)
