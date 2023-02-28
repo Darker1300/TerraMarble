@@ -21,6 +21,7 @@ public class SlowTime : MonoBehaviour
         if (isInput)
         {
             InputManager.LeftDragEvent += StartStop;
+            InputManager.RightDragEvent += StartStop;
 
         }
     }
