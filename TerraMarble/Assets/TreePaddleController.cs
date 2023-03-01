@@ -1,7 +1,6 @@
-using System;
 using MathUtility;
-using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class TreePaddleController : MonoBehaviour
 {
@@ -16,14 +15,20 @@ public class TreePaddleController : MonoBehaviour
     private Vector3 topStartScale;
 
     // Data
+    [Header("Data")]
     [SerializeField] private float startRotation;
     [SerializeField] private float launchStartRotation;
     [SerializeField] private float goalRotation = 0f;
-    private float currentRotation { get => baseRB.rotation; set => baseRB.rotation = value; }
+
+    private float currentRotation
+    {
+        get => baseRB.rotation;
+        set => baseRB.rotation = value;
+    }
 
     [SerializeField] private float wobbleGoalRotation = 0f;
     [SerializeField] private float wobbleAngleVelocity = 0f;
-    
+
     [SerializeField] private float launchPowerPercent = 0;
     [SerializeField] private float launchProgress = 1f;
 
@@ -32,8 +37,14 @@ public class TreePaddleController : MonoBehaviour
     private float stretchVelocity = 0.0f;
     private float jumpVelocity = 0.0f;
 
+    //private float flipVelocity = 0.0f;
+    //[SerializeField] private float flipGoal = 0f;
+    //[SerializeField] private float flipCurrent = 0f;
+    //[SerializeField] private float flipAmount = 180f;
+    //[SerializeField] private Vector3 flipAxis;
 
     public bool doDebug = false;
+    
 
 
     private void Start()
@@ -47,7 +58,7 @@ public class TreePaddleController : MonoBehaviour
         topStartScale = transform.localScale;
         startRotation = launchStartRotation = goalRotation = wobbleGoalRotation
             = currentRotation;
-        
+
         launchProgress = 1f;
     }
 
@@ -56,42 +67,27 @@ public class TreePaddleController : MonoBehaviour
         UpdateBend();
     }
 
-    void StartBend() { }
-
-    void UpdateBend()
+    private void UpdateBend()
     {
-        // todo optimize: check if bending/wobbling/scale&jump = start, if not then return;
-
         wobbleGoalRotation = goalRotation + wobbleAngleVelocity;
 
-        float newCurrentRotation = Mathf.SmoothDampAngle(
-            currentRotation, wobbleGoalRotation,
-            ref bendVelocity, treeBender.bendTime,
-            treeBender.bendMaxSpeed, Time.fixedDeltaTime);
+        float newCurrentRotation = currentRotation;
 
-        baseRB.MoveRotation(newCurrentRotation);
-        
+        if (!Mathf.Approximately(newCurrentRotation, wobbleGoalRotation))
+        {
+            newCurrentRotation = Mathf.SmoothDampAngle(newCurrentRotation, wobbleGoalRotation,
+                ref bendVelocity, treeBender.bendTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
+
+            baseRB.MoveRotation(newCurrentRotation);
+        }
 
         UpdateLaunch();
 
-        UpdateWobble();
+        if (!Mathf.Approximately(0f, wobbleAngleVelocity))
+            UpdateWobble();
     }
 
-    void UpdateWobble()
-    {
-        // if velocity is close to 0, snap to 0.
-        if (Mathf.Abs(wobbleAngleVelocity) < treeBender.wobbleMinThreshold)
-            wobbleAngleVelocity = 0f;
-        else
-        {
-            // if reached wobble, then reduce and flip wobble
-            float deltaAngle = Mathf.DeltaAngle(currentRotation, wobbleGoalRotation);
-            if (Mathf.Abs(deltaAngle) < treeBender.wobbleMinThreshold)
-                wobbleAngleVelocity = -wobbleAngleVelocity * treeBender.wobbleSlowFactor;
-        }
-    }
-
-    void UpdateLaunch()
+    private void UpdateLaunch()
     {
         //if (launchProgress >= 1f) return;
 
@@ -106,32 +102,55 @@ public class TreePaddleController : MonoBehaviour
 
         // curve = 0..1..0;
         float launchCurveT = treeBender.launchCurve.Evaluate(launchProgress);
-        float goalPosY = startPos.y + (treeBender.jumpHeight * launchPowerPercent) * launchCurveT;
-        float goalScaleY = topStartScale.y + (treeBender.stretchHeight * launchPowerPercent) * launchCurveT;
+        float goalPosY = startPos.y + treeBender.jumpHeight * launchPowerPercent * launchCurveT;
+        float goalScaleY = topStartScale.y + treeBender.stretchHeight * launchPowerPercent * launchCurveT;
 
-        newPos.y = Mathf.SmoothDamp(newPos.y, goalPosY, ref jumpVelocity,
-            treeBender.launchTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
+        if (!Mathf.Approximately(newPos.y, goalPosY))
+            newPos.y = Mathf.SmoothDamp(newPos.y, goalPosY, ref jumpVelocity,
+                treeBender.launchTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
 
-        newScale.y = Mathf.SmoothDamp(newScale.y, goalScaleY, ref stretchVelocity,
-            treeBender.launchTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
+        if (!Mathf.Approximately(newScale.y, goalScaleY))
+            newScale.y = Mathf.SmoothDamp(newScale.y, goalScaleY, ref stretchVelocity,
+                treeBender.launchTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
 
         baseTransform.localPosition = newPos;
         transform.localScale = newScale;
     }
 
-    void SetWobble(float _wobbleVelocity)
+    private void UpdateWobble()
+    {
+        // if velocity is close to 0, snap to 0.
+        if (Mathf.Abs(wobbleAngleVelocity) < treeBender.wobbleMinThreshold)
+        {
+            wobbleAngleVelocity = 0f;
+        }
+        else
+        {
+            // if reached wobble, then reduce and flip wobble
+            float deltaAngle = Mathf.DeltaAngle(currentRotation, wobbleGoalRotation);
+            if (Mathf.Abs(deltaAngle) < treeBender.wobbleMinThreshold)
+                wobbleAngleVelocity = -wobbleAngleVelocity * treeBender.wobbleSlowFactor;
+        }
+    }
+
+    private void SetWobble(float _wobbleVelocity)
     {
         wobbleAngleVelocity = _wobbleVelocity;
     }
 
-    public void SetTreeState(float upPercent, Vector3 benderPos)
+    public void SetTreeState(float upPercent, int direction)
     {
         // set new goal
-        goalRotation = startRotation + CalcLocalRotation(upPercent, benderPos);
+        if (direction == 0) direction = 1;
+
+        float newLocalRotation = MathU.Vector2ToDegree(Vector2.up * direction) * (1f - upPercent);
+        
+        goalRotation = startRotation + newLocalRotation;
+
         SetWobble(0f);
     }
 
-    void InitLaunch()
+    private void InitLaunch()
     {
         launchStartRotation = currentRotation;
 
@@ -154,126 +173,46 @@ public class TreePaddleController : MonoBehaviour
         goalRotation = startRotation;
     }
 
-    private float CalcLocalRotation(float upPercent, Vector3 benderPos)
+    private void OnDrawGizmos()
     {
-        Vector2 newDirection = Vector2.down;
+        if (!doDebug) return;
+        Vector3 flipAxis = ((Vector2) region.Wheel.transform.position).Towards(region.Base.transform.position).normalized;
+        Gizmos.DrawRay(region.Base.transform.position, flipAxis);
+    }
 
-        float distance = WheelRegionsManager.RegionDistanceDelta(
+    public int DirectionFromPoint(Vector2 worldPos)
+    {
+        float towardsPointDelta = WheelRegionsManager.RegionDistanceDelta(
             region.RegionIndex + 0.5f,
-            region.WorldToRegionDistance(benderPos));
+            region.WorldToRegionDistance(worldPos));
 
-        if (distance > 0f)
-            newDirection.y = -1; // Right side
-        else if (distance < 0f)
-            newDirection.y = 1; // Left side
-
-        float angle = MathU.Vector2ToDegree(newDirection);
-
-        if (doDebug)
-            Debug.Log("distance: " + distance);
-
-        angle *= 1f - upPercent;
-        return angle;
+        if (towardsPointDelta > 0f)
+        { // Right side
+            return -1;
+        }
+        else //if (towardsPointDelta < 0f)
+        { // Left side
+            return 1;
+        }
     }
 
 
 
-    //  private void FixedUpdate()
-    //  {
-    //      //float deltaOrigGoal = Mathf.DeltaAngle(baseRB.rotation, goalRotation);
-    //  
-    //      wobbleGoalRotation = goalRotation + wobbleAngle;
-    //  
-    //      // delta from current towards wobbleGoal
-    //  
-    //      // rotation towards wobbleGoal
-    //      float newRot = Mathf.SmoothDampAngle(
-    //          baseRB.rotation,
-    //          wobbleGoalRotation,
-    //          ref bendVelocity,
-    //          treeBender.bendTime,
-    //          treeBender.bendMaxSpeed,
-    //          Time.fixedDeltaTime);
-    //  
-    //      float deltaWobbleGoal = Mathf.DeltaAngle(newRot, wobbleGoalRotation);
-    //      int deltaWobbleDir = Math.Sign(deltaWobbleGoal);
-    //      if ((deltaWobbleDir == 1 && newRot > goalRotation)
-    //          || (deltaWobbleDir == -1 && newRot < goalRotation))
-    //          launchPercent = 0;
-    //  
-    //  
-    //      if (Math.Abs(newRot - wobbleGoalRotation) < 0.1f)
-    //      {
-    //          // has reached wobble end position
-    //          if (Mathf.Abs(wobbleAngle) < 0.01f)
-    //              wobbleAngle = 0f;
-    //          else
-    //          {
-    //              wobbleAngle = wobbleAngle * treeBender.wobbleFactor;
-    //              wobbleAngle = -wobbleAngle;
-    //          }
-    //  
-    //          // mark Jump's end
-    //          launchPercent = 0;
-    //      }
-    //  
-    //  
-    //  
-    //      //// is tree moving towards wobbleGoal, or Goal
-    //  
-    //      //if ((goalDeltaSign == 1f && newRot > goalRotation)
-    //      //    || (goalDeltaSign == -1f && newRot < goalRotation)
-    //      //    || goalDeltaSign == 0f)
-    //      //{
-    //      //    // has rotated past goal
-    //      //    jumpPercent = 0;
-    //  
-    //      //    if (Mathf.Approximately(0f, wobbleAngleVelocity))
-    //      //        wobbleAngleVelocity = 0f;
-    //      //    else if (goalDeltaSign == 0f)
-    //      //    {
-    //      //        wobbleAngleVelocity = -wobbleAngleVelocity;
-    //      //        wobbleAngleVelocity =
-    //      //            Mathf.Lerp(wobbleAngleVelocity, 0f, 0.75f);
-    //      //        // Mathf.SmoothDamp(wobbleAngleVelocity, 0f, ref wobbleVelocity, treeBender.wobbleTime);
-    //      //    }
-    //  
-    //      //}
-    //  
-    //  
-    //  
-    //  
-    //      // Jump and Stretch
-    //      float t = MathU.InverseLerpAngle(startRotation, launchRotation, newRot);
-    //      float yPercent = (treeBender.launchCurve.Evaluate(t) * launchPercent);
-    //  
-    //      float yMove = yPercent * treeBender.jumpHeight + startPos.y;
-    //      Vector3 newPos = startPos;
-    //      newPos.y = Mathf.SmoothDamp(newPos.y, yMove, ref launchVelocity, treeBender.jumpTime);
-    //      baseTransform.localPosition = newPos;
-    //  
-    //      float yScale = yPercent * treeBender.stretchHeight + topStartScale.y;
-    //      Vector3 newScale = topStartScale;
-    //      newScale.y = Mathf.SmoothDamp(newScale.y, yScale, ref stretchVelocity, treeBender.stretchTime);
-    //      transform.localScale = newScale;
-    //  
-    //  
-    //      // baseRB.MovePosition(baseTransform.TransformPoint(newPos));
-    //  
-    //      //float spd = treeBender.rotationSpeed * Time.fixedDeltaTime;
-    //      //newRot = Mathf.MoveTowardsAngle(
-    //      //    CurrentRotation, 
-    //      //    goalRotation, 
-    //      //    spd);
-    //  
-    //      baseRB.MoveRotation(newRot);
-    //  
-    //  }
-
-
-    //private void OnDrawGizmos()
+    //private void UpdateFlip()
     //{
-    //    if (!doDebug) return;
+    //    Quaternion currentZ = Quaternion.AngleAxis(currentRotation, Vector3.forward);
 
+    //    flipCurrent = Mathf.MoveTowards(flipCurrent, flipGoal, Time.fixedDeltaTime);
+    //    flipAxis = ((Vector2)region.Wheel.transform.position).Towards(region.Base.transform.position).normalized;
+    //    Quaternion currentFlip = Quaternion.AngleAxis(flipCurrent * flipAmount, flipAxis);
+
+
+    //    Quaternion newRot = MathU.SmoothDampRotation(baseTransform.rotation, currentFlip * currentZ, ref flipVelocity,
+    //        treeBender.flipTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
+
+    //    baseTransform.rotation = newRot;
+
+    //    baseRB.MoveRotation(currentRotation);
     //}
+
 }

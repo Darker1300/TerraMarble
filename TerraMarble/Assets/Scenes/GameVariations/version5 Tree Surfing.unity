@@ -34424,8 +34424,24 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5207247042109310665, guid: b316a0f4cb5b8ef4e9a14b2b41baf5bc, type: 3}
+      propertyPath: bendTime
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 5207247042109310665, guid: b316a0f4cb5b8ef4e9a14b2b41baf5bc, type: 3}
+      propertyPath: dragMoveRange
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5207247042109310665, guid: b316a0f4cb5b8ef4e9a14b2b41baf5bc, type: 3}
       propertyPath: stretchHeight
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5207247042109310665, guid: b316a0f4cb5b8ef4e9a14b2b41baf5bc, type: 3}
+      propertyPath: dragStartOffset
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5207247042109310665, guid: b316a0f4cb5b8ef4e9a14b2b41baf5bc, type: 3}
+      propertyPath: dragDirOffsetAmount
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5207247042109310668, guid: b316a0f4cb5b8ef4e9a14b2b41baf5bc, type: 3}
       propertyPath: m_Name

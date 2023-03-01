@@ -60,7 +60,7 @@ namespace MathUtility
 
         public static float InverseLerpAngle(float a, float b, float t)
         {
-            float angBetween =  DeltaRange(a, b, 360f);
+            float angBetween = DeltaRange(a, b, 360f);
             b = a + angBetween; // remove any a->b discontinuity
             float h = a + angBetween * 0.5f; // halfway angle
             t = h + DeltaRange(h, t, 360f); // get offset from h, and offset by h
@@ -159,19 +159,28 @@ namespace MathUtility
             Vector2 deltaV = self.position.RotatedAround(pivotPoint, rotation) - self.position;
             self.velocity += deltaV;
         }
-        
+
         /// <param name="rotateSmoothTime">eg 0.1</param>
-        public static Quaternion SmoothDampRotation(Quaternion current, Quaternion target, ref float velocity, float rotateSmoothTime)
+        public static Quaternion SmoothDampRotation(Quaternion current, Quaternion target,
+            ref float velocity, float rotateSmoothTime, float maxSpeed, float deltaTime)
         {
             float delta = Quaternion.Angle(current, target);
             if (delta > 0f)
             {
-                float t = Mathf.SmoothDampAngle(delta, 0.0f, ref velocity, rotateSmoothTime);
+                float t = Mathf.SmoothDampAngle(delta, 0.0f, ref velocity, rotateSmoothTime, maxSpeed, deltaTime);
                 t = 1.0f - (t / delta);
                 current = Quaternion.Slerp(current, target, t);
             }
 
             return current;
+        }
+
+        public static Quaternion SmoothDampRotation(Quaternion current, Quaternion target,
+            ref float velocity, float rotateSmoothTime)
+        {
+            float deltaTime = Time.deltaTime;
+            float maxSpeed = float.PositiveInfinity;
+            return SmoothDampRotation(current, target, ref velocity, rotateSmoothTime, maxSpeed, deltaTime);
         }
     }
 }

@@ -38,6 +38,7 @@ public class TreeBend : MonoBehaviour
 
     public float bendTime = 0.05f;
     public float bendMaxSpeed = 1000f;
+    public float flipTime = 0.1f;
 
     [SerializeField]
     private AnimationCurve treeBendCurve
@@ -112,7 +113,6 @@ public class TreeBend : MonoBehaviour
                 }
 
                 Region region = target.GetComponentInParent<Region>();
-
                 Vector3 treeSurfacePoint = region.RegionPosition(0.5f, 1f);
                 Vector3 distVector = transform.position.Towards(treeSurfacePoint);
                 float distPercent = distVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
@@ -122,7 +122,7 @@ public class TreeBend : MonoBehaviour
 
                 //Debug.Log("Drag: " + fallOffPercent);
 
-                target.SetTreeState(fallOffPercent, transform.position);
+                target.SetTreeState(fallOffPercent, target.DirectionFromPoint(transform.position));
 
             }
     }

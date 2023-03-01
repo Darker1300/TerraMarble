@@ -57,7 +57,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("KnockBack" + collision.gameObject.name);
+        //Debug.Log("KnockBack" + collision.gameObject.name);
         if (collision.gameObject.CompareLayerMask(projLayerName))
         {
             OnProjectileHit?.Invoke(collision);

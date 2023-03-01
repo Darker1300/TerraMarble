@@ -1,5 +1,6 @@
 using MathUtility;
 using Shapes;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class AimTreeLockUI : MonoBehaviour
@@ -132,8 +133,8 @@ public class AimTreeLockUI : MonoBehaviour
         powerFillDisc.AngRadiansStart = powerCurrent;
         powerFillDisc.AngRadiansEnd = -powerCurrent;
 
-        float shift = (treeActive.treeBender.dragInput.x + 1f) * 0.5f * (rangeExtent * 2f);
         float rangeSize = rangeExtent * 2f;
+        float shift = math.remap(-1,1,0,1, treeActive.treeBender.dragInput.x) * rangeSize;
         rangeBackDisc.AngRadiansStart = (rangeSize * 2f - shift) * Mathf.Deg2Rad;
         rangeBackDisc.AngRadiansEnd = (-rangeSize - shift) * Mathf.Deg2Rad;
     }
