@@ -385,10 +385,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ecba51cf07fd5f4884b76dbc2eb2d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startRotation: 0
+  launchStartRotation: 0
   goalRotation: 0
-  jumpFromRotation: 0
-  currentGoalPercent: 0
-  jumpPercent: 0
+  wobbleGoalRotation: 0
+  wobbleAngleVelocity: 0
+  launchPowerPercent: 0
+  launchProgress: 1
   doDebug: 0
 --- !u!114 &7420985491049078963
 MonoBehaviour:

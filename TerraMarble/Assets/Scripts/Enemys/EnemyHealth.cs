@@ -18,6 +18,10 @@ public class EnemyHealth : MonoBehaviour
 
     public int HitAmount;
 
+    public SpawnRandomUnitCirclePos spawnRandomCircle;
+    
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,6 +76,17 @@ public class EnemyHealth : MonoBehaviour
 
 
 
+
+    }
+    public void EnemyDead()
+    {
+
+        //tell the spawner it has 
+       spawnRandomCircle.ParticleSpawn(transform);
+        //return to pool
+        GetComponent<PoolObject>()?.Pool.ReturnToPool(this.gameObject);
+
+        
 
     }
 

@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityUtility;
+using UnityEngine.Events;
 
 public class ScaleToAndBack : MonoBehaviour
 {
-
+    public UnityEvent FinishOverallShrink;
     [SerializeField]
     private float duration = 0.25f;
     [SerializeField]
@@ -52,7 +53,9 @@ public class ScaleToAndBack : MonoBehaviour
         if (currentShrinkIndex <= 0)
         {
             currentShrinkIndex = maxShrink;
-            GetComponent<PoolObject>()?.Pool.ReturnToPool(this.gameObject);
+            FinishOverallShrink?.Invoke();
+            
+
 
         }
         float step = 1f / maxShrink;

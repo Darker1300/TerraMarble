@@ -9,6 +9,9 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
 
     [SerializeField]
     private ObjectPooler pooler;
+
+    [SerializeField]
+    private ObjectPooler particlePooler;
     [SerializeField]
     private float minRad =15;
     [SerializeField]
@@ -22,6 +25,8 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
 
         pooler = GetComponent<ObjectPooler>();
         pooler.CreatePool(20);
+      particlePooler.CreatePool(20);
+
     }
 
 
@@ -49,10 +54,17 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
 
             GameObject spawnedObj = pooler.SpawnFromPool(pos, null, true);
             spawnedObj.transform.rotation = rot;
+            spawnedObj.GetComponent<EnemyHealth>().spawnRandomCircle = this;
 
 
-           
+
+
         }
+
+    }
+    public void ParticleSpawn(Transform transform)
+    {
+        particlePooler.SpawnFromPool(transform.position, null, true);
 
     }
     //Get Pos on unit circle 
