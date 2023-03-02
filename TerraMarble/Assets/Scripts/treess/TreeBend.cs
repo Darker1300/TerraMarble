@@ -13,7 +13,7 @@ public class TreeBend : MonoBehaviour
     private WheelRegionsManager wheelRegions;
     private BallStateTracker ball;
     private AimTreeLockUI aimUi;
-
+    
     [Header("Drag Input Config")]
     [Tooltip("offset of starting position, in degrees")]
     public float dragStartOffset = 15f;
@@ -38,7 +38,10 @@ public class TreeBend : MonoBehaviour
 
     public float bendTime = 0.05f;
     public float bendMaxSpeed = 1000f;
-    public float flipTime = 0.1f;
+
+    public float forceSlideRange = 12f;
+    public float forceSlideTolerance = 0.1f;
+    [SerializeField] private bool doDebug = false;
 
     [SerializeField]
     private AnimationCurve treeBendCurve
@@ -103,6 +106,10 @@ public class TreeBend : MonoBehaviour
     private void UpdateTrees()
     {
         if (nearbyTrees.Count > 0)
+        {
+            bool isWithinSlideRange = (dragInput.y > forceSlideTolerance) &&
+                                      (((Vector2)wheelRegions.transform.position).Towards(ball.transform.position).sqrMagnitude
+                                       < (forceSlideRange * forceSlideRange));
             foreach (TreePaddleController target in nearbyTrees)
             {
                 if (target == null)
@@ -112,19 +119,34 @@ public class TreeBend : MonoBehaviour
                     continue;
                 }
 
-                Region region = target.GetComponentInParent<Region>();
-                Vector3 treeSurfacePoint = region.RegionPosition(0.5f, 1f);
-                Vector3 distVector = transform.position.Towards(treeSurfacePoint);
-                float distPercent = distVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
-                float curve = treeBendCurve.Evaluate(Mathf.Clamp01(distPercent));
-                float fallOffPercent = 1f - curve;
-                fallOffPercent = 1f - dragInput.y * fallOffPercent;
+                float upPercent;
+                int direction;
+                
+                if (isWithinSlideRange)
+                {
+                    upPercent = 0f;
+                    direction = Mathf.RoundToInt(Mathf.Sign(-dragDir));
+                    //Rigidbody2D ballRb = ball.GetComponent<Rigidbody2D>();
+                    //ballRb.AddForce();
+                }
+                else
+                {
+                    Region region = target.GetComponentInParent<Region>();
+                    Vector3 treeSurfacePoint = region.RegionPosition(0.5f, 1f);
+                    Vector3 distVector = transform.position.Towards(treeSurfacePoint);
+                    float distPercent = distVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
+                    float curve = treeBendCurve.Evaluate(Mathf.Clamp01(distPercent));
+                    float fallOffPercent = 1f - curve;
+                    upPercent = 1f - dragInput.y * fallOffPercent;
+                    direction = target.DirectionFromPoint(transform.position);
+                }
 
                 //Debug.Log("Drag: " + fallOffPercent);
 
-                target.SetTreeState(fallOffPercent, target.DirectionFromPoint(transform.position));
+                target.SetTreeState(upPercent, direction);
 
             }
+        }
     }
 
     private void OnDragLeftToggle(bool state)
@@ -219,6 +241,14 @@ public class TreeBend : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (!doDebug) return;
+
+        Gizmos.color = Color.white;
+        if (wheelRegions == null) wheelRegions = FindObjectOfType<WheelRegionsManager>();
+        GizmosExtensions.DrawWireCircle(wheelRegions.transform.position, forceSlideRange,
+            72, Quaternion.LookRotation(Vector3.up, Vector3.forward));
+
+
         //Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
         //Vector2 worldSize = InputManager.ScreenWorldSize * dragSize;
 
