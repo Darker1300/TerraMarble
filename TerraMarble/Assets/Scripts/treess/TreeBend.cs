@@ -40,7 +40,7 @@ public class TreeBend : MonoBehaviour
     public float bendTime = 0.05f;
     public float bendMaxSpeed = 1000f;
 
-    public float forceSlideRange = 12f;
+    public float forceSlideRange = 0f;
     public float forceSlideTolerance = 0.1f;
     [SerializeField] private bool doDebug = false;
 
@@ -201,13 +201,14 @@ public class TreeBend : MonoBehaviour
         // Update Position
         dragInput.x = -Mathf.Clamp(screenDragVector.x / dragScreenSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
         dragInput.y = Mathf.Abs(Mathf.Clamp(screenDragVector.y / dragScreenSize.y, -1f, 0f));
-        dragInput.x = math.remap(-1, 1, 0, 1, dragInput.x);
-        dragInput.y = math.remap(1, 0, 0, 1, dragInput.y);
-        dragInput.x = inputCurve.Evaluate(dragInput.x);
-        dragInput.y = inputCurve.Evaluate(dragInput.y);
 
+        dragInput.x = math.remap(-1, 1, 0, 1, dragInput.x);
+        dragInput.x = inputCurve.Evaluate(dragInput.x);
         dragInput.x = math.remap( 0, 1, -1, 1, dragInput.x);
-        dragInput.y = math.remap( 0, 1, -1, 0, dragInput.y);
+
+        dragInput.y = math.remap(1, 0, 0, 1, dragInput.y);
+        dragInput.y = inputCurve.Evaluate(dragInput.y);
+        dragInput.y = math.remap( 0, 1, 1, 0, dragInput.y);
 
     }
 
