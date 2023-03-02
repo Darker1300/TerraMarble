@@ -8,6 +8,7 @@ using UnityUtility;
 
 public class TreeBend : MonoBehaviour
 {
+
     // Positioning
     private CircleCollider2D circleCollider2D;
     private WheelRegionsManager wheelRegions;
@@ -46,7 +47,9 @@ public class TreeBend : MonoBehaviour
     [SerializeField]
     private AnimationCurve treeBendCurve
         = AnimationCurve.EaseInOut(0, 0, 1, 1);
-
+    [SerializeField]
+    private AnimationCurve inputCurve
+        = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [FormerlySerializedAs("PopOutHeightCurve")]
     public AnimationCurve launchCurve = new AnimationCurve(
             new(0, 0),
@@ -193,9 +196,19 @@ public class TreeBend : MonoBehaviour
 
     private void UpdateDragInput(Vector2 screenDragVector)
     {
+
+
         // Update Position
         dragInput.x = -Mathf.Clamp(screenDragVector.x / dragScreenSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
         dragInput.y = Mathf.Abs(Mathf.Clamp(screenDragVector.y / dragScreenSize.y, -1f, 0f));
+        dragInput.x = math.remap(-1, 1, 0, 1, dragInput.x);
+        dragInput.y = math.remap(1, 0, 0, 1, dragInput.y);
+        dragInput.x = inputCurve.Evaluate(dragInput.x);
+        dragInput.y = inputCurve.Evaluate(dragInput.y);
+
+        dragInput.x = math.remap( 0, 1, -1, 1, dragInput.x);
+        dragInput.y = math.remap( 0, 1, -1, 0, dragInput.y);
+
     }
 
     private void SetDragDir(bool isLeft)
