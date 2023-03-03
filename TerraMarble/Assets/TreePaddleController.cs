@@ -182,7 +182,7 @@ public class TreePaddleController : MonoBehaviour
 
     public int DirectionFromPoint(Vector2 worldPos)
     {
-        float towardsPointDelta = WheelRegionsManager.RegionDistanceDelta(
+        float towardsPointDelta = region.RegionsMan.RegionDistanceDelta(
             region.RegionIndex + 0.5f,
             region.WorldToRegionDistance(worldPos));
 

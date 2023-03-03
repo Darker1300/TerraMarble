@@ -45,7 +45,7 @@ public class Region : MonoBehaviour
     public List<EntityObject> entitysOnRegion = new();
 
     [SerializeField] private RegionID targetID = RegionID.Water;
-    private int _regionIndex = -1; 
+    private int _regionIndex = -1;
 
     [SerializeField] private Transform _base = null;
     private Wheel _wheel = null;
@@ -71,7 +71,10 @@ public class Region : MonoBehaviour
     }
 
     public Transform Base
-        => TryCreateBase();
+    {
+        get => TryCreateBase();
+        set => _base = value;
+    }
 
     public Wheel Wheel
     {
@@ -163,12 +166,8 @@ public class Region : MonoBehaviour
 
     #region Events
 
-    private void Update()
-    {
-        animTerraform.Update();
-    }
 
-    private void Awake()
+    private void Start()
     {
         RegionDisc ??= GetComponent<Disc>();
         targetID = regionID;
@@ -179,21 +178,27 @@ public class Region : MonoBehaviour
         SetRegionCollider(regionID == RegionID.Water ? 0f : 1f);
     }
 
+    private void Update()
+    {
+        animTerraform.Update();
+    }
+
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(
-            transform.position + transform.TransformVector(
-                (Vector3)MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
-                * (RegionTemplate.RadiusBase + Mathf.LerpUnclamped(0f, RegionTemplate.Thickness, defaultBasePosition.y))
-            ),
-            transform.lossyScale.magnitude * 0.05f);
+        if (!RegionsMan.RegionTemplateIsNull)
+            Gizmos.DrawWireSphere(
+                transform.position + transform.TransformVector(
+                    (Vector3)MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
+                    * (RegionTemplate.RadiusBase + Mathf.LerpUnclamped(0f, RegionTemplate.Thickness, defaultBasePosition.y))
+                ),
+                transform.lossyScale.magnitude * 0.05f);
     }
 
     #endregion
 
     #region Base Transform Functions
 
-    private Transform InitBase()
+    private Transform ConfigureBase()
     {
         RegionDisc ??= GetComponent<Disc>();
 
@@ -204,7 +209,7 @@ public class Region : MonoBehaviour
                          + transform.TransformVector(
                              angleVector);
         _base.up = transform.TransformVector(centerVector);
-        _regionCollider = GetComponent<PolygonCollider2D>();
+        _regionCollider = Base.GetComponent<PolygonCollider2D>();
         return _base;
     }
 
@@ -213,9 +218,12 @@ public class Region : MonoBehaviour
     {
         if (_base == null)
         {
-            _base = new GameObject(defaultBaseName).transform;
-            _base.SetParent(transform, false);
-            InitBase();
+            var gen = FindObjectOfType<WheelGenerator>();
+            _base = Instantiate(gen.pregenBase, transform, false).transform;
+            _base.gameObject.name = defaultBaseName;
+            //_base = new GameObject(defaultBaseName).transform;
+            //_base.SetParent(transform, false);
+            ConfigureBase();
         }
 
         return _base;
@@ -224,7 +232,7 @@ public class Region : MonoBehaviour
     public Transform ResetBase()
     {
         if (_base == null) return TryCreateBase();
-        return InitBase();
+        return ConfigureBase();
     }
 
     public void FindBase()
@@ -331,7 +339,7 @@ public class Region : MonoBehaviour
     /// <param name="state">0..1f</param>
     public void SetRegionCollider(float state = 1f)
     {
-        if (RegionCollider != null)
+        if (RegionCollider != null && !RegionsMan.RegionTemplateIsNull)
         {
             RegionCollider.offset = Vector2.down *
                                     Mathf.Lerp(RegionTemplate.Thickness - RegionDisc.Thickness,

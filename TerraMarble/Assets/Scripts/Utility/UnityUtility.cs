@@ -128,6 +128,13 @@ namespace UnityUtility
                 yield return func.Item2.Invoke(func.Item1);
             }
         }
+
+        public static void SafeDestroy(GameObject gameObject)
+        {
+            if (Application.isEditor && !Application.isPlaying)
+                Object.DestroyImmediate(gameObject);
+            else Object.Destroy(gameObject);
+        }
     }
 
     public static class EnumerableExtensions

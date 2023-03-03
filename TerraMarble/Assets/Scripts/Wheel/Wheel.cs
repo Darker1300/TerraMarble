@@ -16,6 +16,7 @@ public class Wheel : MonoBehaviour
     [Foldout("Show Debug Fields")] public new Rigidbody2D rigidbody2D;
     [Foldout("Show Debug Fields")] public CircleCollider2D wheelCollider2D;
     [Foldout("Show Debug Fields")] public WheelRegionsManager regions;
+    [Foldout("Show Debug Fields")] public WaterWaves2D waterWaves;
 
 
     private void Start()
@@ -24,6 +25,7 @@ public class Wheel : MonoBehaviour
         wheelCollider2D ??= GetComponent<CircleCollider2D>();
         windSpin ??= FindObjectOfType<WindSpin>();
         regions ??= GetComponent<WheelRegionsManager>();
+        waterWaves ??= GetComponentInChildren<WaterWaves2D>();
 
     }
 

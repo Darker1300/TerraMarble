@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using Shapes;
 using UnityEngine;
+using UnityUtility;
 
 [ExecuteInEditMode]
 public class WheelGenerator : MonoBehaviour
@@ -10,7 +11,9 @@ public class WheelGenerator : MonoBehaviour
     //public bool doCreateRegions = false;
     public int regionCount = 36;
     public float regionRadius = 3f;
+    public float regionThickness = 0.5f;
     public GameObject pregenRegionDefault = null;
+    public GameObject pregenBase = null;
 
     private void Awake()
     {
@@ -38,10 +41,8 @@ public class WheelGenerator : MonoBehaviour
 
         var childRegions = wheel.regions.regionsParent.GetComponentsInChildren<Region>();
         foreach (var childRegion in childRegions)
-            if (Application.isEditor && !Application.isPlaying)
-                DestroyImmediate(childRegion.gameObject);
-            else Destroy(childRegion.gameObject);
-        wheel.regions = null;
+            UnityU.SafeDestroy(childRegion.gameObject);
+        wheel.regions.Regions = null;
     }
 
     public void CreateRegions()
@@ -53,6 +54,9 @@ public class WheelGenerator : MonoBehaviour
         }
 
         wheel ??= GetComponent<Wheel>();
+
+        var regionsMan = FindObjectOfType<WheelRegionsManager>();
+        regionsMan.InitRegionTemplate();
 
         var newRegions = new Region[regionCount];
 
@@ -72,14 +76,49 @@ public class WheelGenerator : MonoBehaviour
 
             newRegion.RegionDisc = newDisc;
 
+            newDisc.Thickness = regionThickness;
             newDisc.Radius = regionRadius;
             newDisc.AngRadiansStart = previousRadians;
             var newRadians = previousRadians + radianSize;
             newDisc.AngRadiansEnd = newRadians;
             // End
             previousRadians = newRadians;
+
+            ScaleColliderByThickness(newRegion.RegionCollider, regionThickness * 2f);
         }
 
         wheel.regions.Regions = newRegions;
+
+        wheel.wheelCollider2D.radius = regionRadius - regionThickness * 0.5f;
+        //wheel.waterWaves.GetComponent<CircleCollider2D>().radius = regionRadius + regionThickness * 0.5f;
+
+    }
+
+    public void ConfigTemplateRegion(Region newRegion, int index = 0)
+    {
+        var newGO = newRegion.gameObject;
+        var newDisc = newGO.GetComponentInChildren<Disc>();
+        // Config
+        var radianSize = Mathf.PI * 2f / regionCount;
+        var previousRadians = Mathf.Repeat(index - 1, regionCount) * radianSize;
+
+        newDisc.Thickness = regionThickness;
+        newDisc.Radius = regionRadius;
+        newDisc.AngRadiansStart = previousRadians;
+        var newRadians = previousRadians + radianSize;
+        newDisc.AngRadiansEnd = newRadians;
+        // End
+        previousRadians = newRadians;
+
+        ScaleColliderByThickness(newRegion.RegionCollider, regionThickness * 2f);
+    }
+
+    public void ScaleColliderByThickness(PolygonCollider2D collider2D, float thickness)
+    {
+        var points = collider2D.GetPath(0);
+        for (int i = 0; i < points.Length; i++)
+            points[i] *= new Vector2(1f, thickness);
+
+        collider2D.SetPath(0, points);
     }
 }

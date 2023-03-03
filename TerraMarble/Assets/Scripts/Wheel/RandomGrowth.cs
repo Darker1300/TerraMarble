@@ -49,7 +49,7 @@ public class RandomGrowth : MonoBehaviour
     {
         for (int i = 0; i < attempts; i++)
         {
-            int target = Random.Range(0, wheel.regions.RegionCount - 1);
+            int target = Random.Range(0, wheel.regions.RegionCount);
             Region region = wheel.regions[target];
 
             if (region.animTerraform.Animating)
@@ -79,7 +79,7 @@ public class RandomGrowth : MonoBehaviour
     {
         for (int i = 0; i < attempts; i++)
         {
-            int target = Random.Range(0, wheel.regions.RegionCount - 1);
+            int target = Random.Range(0, wheel.regions.RegionCount);
             Region region = wheel.regions[target];
 
             if (region.surfaceObjects.Count == 0)

@@ -54,11 +54,14 @@ public class WheelRegionsManager : MonoBehaviour
     {
         get
         {
-            if (regionTemplate == null) InitRegionTemplate();
+            if (regionTemplate == null) 
+                InitRegionTemplate();
             return regionTemplate;
         }
         set => regionTemplate = value;
     }
+
+    public bool RegionTemplateIsNull => regionTemplate == null;
 
     public Region this[int key]
         => regions[key];
@@ -100,24 +103,36 @@ public class WheelRegionsManager : MonoBehaviour
         if (wheelLayer.value == 0) wheelLayer = LayerMaskUtility.Create("Wheel");
     }
 
+
+
     [Button]
-    private void InitRegionTemplate()
+    public void InitRegionTemplate()
     {
-        if (regionTemplate != null)
-        {
-            if (Application.isEditor && !Application.isPlaying)
-                DestroyImmediate(regionTemplate.gameObject);
-            else Destroy(regionTemplate.gameObject);
-            regionTemplate = null;
-        }
+        var exampleRegionGO = Instantiate(WheelGenerator.pregenRegionDefault, Vector3.zero, Quaternion.identity);
+        var exampleRegion = exampleRegionGO.GetComponent<Region>();
 
         var go = new GameObject("Region Template");
-        go.transform.SetParent(transform, false);
-        var d = go.AddComponent<Disc>(regions.First().RegionDisc);
-        d.enabled = false;
-        var r = go.AddComponent<Region>(regions.First());
-        r.RegionDisc = d;
+        var r = go.AddComponent<Region>(exampleRegion);
+
+
+        if (regionTemplate != null)
+        {
+            UnityU.SafeDestroy(regionTemplate.gameObject);
+            regionTemplate = null;
+        }
         regionTemplate = r;
+
+        var d = go.AddComponent<Disc>(exampleRegion.RegionDisc);
+        go.transform.SetParent(transform, false);
+
+        r.Base = null;
+        WheelGenerator.ConfigTemplateRegion(r, 0);
+
+        d.enabled = false;
+        r.RegionDisc = d;
+
+
+        UnityU.SafeDestroy(exampleRegionGO);
     }
 
     [Button]
@@ -175,9 +190,9 @@ public class WheelRegionsManager : MonoBehaviour
         return regions[WorldToRegionIndex(_worldPos)];
     }
 
-    public static float RegionDistanceDelta(float _currentDst, float _targetDst)
+    public float RegionDistanceDelta(float _currentDst, float _targetDst)
     {
-        float delta = MathU.DeltaRange(_currentDst, _targetDst, 36f);
+        float delta = MathU.DeltaRange(_currentDst, _targetDst, RegionCount);
         return delta;
     }
 

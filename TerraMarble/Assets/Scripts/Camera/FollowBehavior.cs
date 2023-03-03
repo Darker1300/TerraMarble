@@ -7,8 +7,8 @@ public class FollowBehavior : MonoBehaviour
 
     private bool CenterOfTwo;
 
-    [SerializeField] protected Transform trackingTarget;
-    [SerializeField] protected Transform trackingTarget2;
+    [SerializeField] private Transform trackingTarget;
+    [SerializeField] private Transform trackingTarget2;
 
     [Header("Global Follow System")]
     [SerializeField]
@@ -19,15 +19,16 @@ public class FollowBehavior : MonoBehaviour
     private float cameraScaleSpeed;
     [SerializeField]
     private bool CameraZoomInOut;
-    [SerializeField] protected float followSpeed;
+    [SerializeField] private float followSpeed;
 
-    [SerializeField] protected bool isXlocked = false;
-    [SerializeField] protected bool isYlocked = false;
+    [SerializeField] private bool isXlocked = false;
+    [SerializeField] private bool isYlocked = false;
 
-    [SerializeField] protected bool trackTarget1_ZRotation = false;
-    [SerializeField] protected bool trackTarget2_ZRotation = false;
+    [SerializeField] private bool trackTarget1_ZRotation = false;
+    [SerializeField] private bool trackTarget2_ZRotation = false;
 
-    [SerializeField] [Range(0.0f, 1)]
+    [SerializeField]
+    [Range(0.0f, 1)]
     private float TargetTwoInfuence;
 
     public bool trackObject;
@@ -36,11 +37,12 @@ public class FollowBehavior : MonoBehaviour
 
 
     [Header("Orbit Follow System")]
-    [SerializeField] protected bool useOrbitSystem = false;
+    [SerializeField] private bool useOrbitSystem = false;
     [SerializeField] private Vector3 followOffset = Vector3.back;
     [SerializeField] private float rotateTime = .1f;
     [Header("Data")]
     [SerializeField] private float rotateVelocity = 0;
+    [SerializeField] private Rigidbody2D trackTarget1_RB;
 
 
 
@@ -48,6 +50,8 @@ public class FollowBehavior : MonoBehaviour
     private void Start()
     {
         ConfigureTargets();
+
+        trackTarget1_RB = trackingTarget.GetComponent<Rigidbody2D>();
     }
 
     public void ConfigureTargets()
@@ -68,10 +72,10 @@ public class FollowBehavior : MonoBehaviour
             transform.rotation = tRotation;
 
             transform.position = trackingTarget2.position + (tRotation * followOffset);
-            
+
             return;
         }
-        
+
         if (trackObject)
         {
             //is it two objects
@@ -98,7 +102,7 @@ public class FollowBehavior : MonoBehaviour
             CameraZoom();
         }
 
-        
+
         //transform.position = new Vector3(trackingTarget.position.x +xOffset, trackingTarget.position.y + yOffset, transform.position.z);
     }
 
@@ -128,7 +132,7 @@ public class FollowBehavior : MonoBehaviour
         dir = dir.RotatedByDegree(-90f);
         Quaternion desiredAngle = Quaternion.AngleAxis(MathU.Vector2ToDegree(dir), Vector3.forward);
 
-        desiredAngle = MathU.SmoothDampRotation(transform.rotation, desiredAngle,ref rotateVelocity, rotateTime);
+        desiredAngle = MathU.SmoothDampRotation(transform.rotation, desiredAngle, ref rotateVelocity, rotateTime);
         return desiredAngle;
     }
 }
