@@ -101,6 +101,27 @@ namespace MathUtility
         //      return Mathf.RoundToInt(num);
         //  }
 
+        public static Vector2 MinMagnitude(this Vector2 v, float minLength)
+        {
+            if (v.sqrMagnitude < (double)minLength * (double)minLength)
+                return v.normalized * minLength;
+            return v;
+        }
+
+        public static Vector2 MaxMagnitude(this Vector2 v, float maxLength)
+            => Vector2.ClampMagnitude(v, maxLength);
+
+        public static Vector2 ClampMagnitude(this Vector2 v, float minLength, float maxLength)
+        {
+            double sqrMagnitude = v.sqrMagnitude;
+            if (sqrMagnitude > (double)maxLength * (double)maxLength)
+                return v.normalized * maxLength;
+            if (sqrMagnitude < (double)minLength * (double)minLength)
+                return v.normalized * minLength;
+            return v;
+        }
+        
+
         /// <summary>
         ///   <para>Same as MoveTowards but makes sure the values interpolate correctly when they wrap around 360 degrees.</para>
         /// </summary>

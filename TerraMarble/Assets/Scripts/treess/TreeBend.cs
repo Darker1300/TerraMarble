@@ -13,6 +13,7 @@ public class TreeBend : MonoBehaviour
     private CircleCollider2D circleCollider2D;
     private WheelRegionsManager wheelRegions;
     private BallStateTracker ball;
+    private Rigidbody2D ballRb;
     private AimTreeLockUI aimUi;
     
     [Header("Drag Input Config")]
@@ -40,6 +41,7 @@ public class TreeBend : MonoBehaviour
     public float bendTime = 0.05f;
     public float bendMaxSpeed = 1000f;
 
+    public float minSlideForce = 10f;
     public float forceSlideRange = 0f;
     public float forceSlideTolerance = 0.1f;
     [SerializeField] private bool doDebug = false;
@@ -76,6 +78,7 @@ public class TreeBend : MonoBehaviour
         aimUi = FindObjectOfType<AimTreeLockUI>(true);
         wheelRegions = FindObjectOfType<WheelRegionsManager>();
         ball = FindObjectOfType<BallStateTracker>();
+        ballRb = ball?.GetComponent<Rigidbody2D>();
         circleCollider2D = GetComponent<CircleCollider2D>();
         wheelRadius = wheelRegions.WheelRadius;
 
@@ -113,6 +116,11 @@ public class TreeBend : MonoBehaviour
             bool isWithinSlideRange = (dragInput.y > forceSlideTolerance) &&
                                       (((Vector2)wheelRegions.transform.position).Towards(ball.transform.position).sqrMagnitude
                                        < (forceSlideRange * forceSlideRange));
+            if (isWithinSlideRange)
+            {
+                ballRb.velocity = ballRb.velocity.MinMagnitude(minSlideForce);
+            }
+
             foreach (TreePaddleController target in nearbyTrees)
             {
                 if (target == null)
@@ -124,25 +132,19 @@ public class TreeBend : MonoBehaviour
 
                 float upPercent;
                 int direction;
-                
-                if (isWithinSlideRange)
-                {
-                    upPercent = 0f;
-                    direction = Mathf.RoundToInt(Mathf.Sign(-dragDir));
-                    //Rigidbody2D ballRb = ball.GetComponent<Rigidbody2D>();
-                    //ballRb.AddForce();
-                }
-                else
-                {
-                    Region region = target.GetComponentInParent<Region>();
-                    Vector3 treeSurfacePoint = region.RegionPosition(0.5f, 1f);
-                    Vector3 distVector = transform.position.Towards(treeSurfacePoint);
-                    float distPercent = distVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
-                    float curve = treeBendCurve.Evaluate(Mathf.Clamp01(distPercent));
-                    float fallOffPercent = 1f - curve;
-                    upPercent = 1f - dragInput.y * fallOffPercent;
-                    direction = target.DirectionFromPoint(transform.position);
-                }
+
+                Region region = target.GetComponentInParent<Region>();
+                Vector3 treeSurfacePoint = region.RegionPosition(0.5f, 1f);
+                Vector3 distVector = transform.position.Towards(treeSurfacePoint);
+                float distPercent = distVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
+                float curve = treeBendCurve.Evaluate(Mathf.Clamp01(distPercent));
+                float fallOffPercent = 1f - curve;
+                upPercent = 1f - dragInput.y * fallOffPercent;
+                direction = target.DirectionFromPoint(transform.position);
+
+                // if (isWithinSlideRange)
+                //upPercent = 0f;
+                //direction = Mathf.RoundToInt(Mathf.Sign(-dragDir));
 
                 //Debug.Log("Drag: " + fallOffPercent);
 

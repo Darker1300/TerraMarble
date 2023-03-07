@@ -91,15 +91,14 @@ public class BallWindJump : MonoBehaviour
     {
         if (!IsJumping) return;
         // alter Rigidbody
-        float t = jumpTimer / jumpDuration;
-        float curve = jumpCurve.Evaluate(t);
+        //float t = jumpTimer / jumpDuration;
+        //float curve = jumpCurve.Evaluate(t);
         //float force = glideSpeed * curve;
 
-        Vector2 upV = wheel.transform.Towards(ballRb.transform).normalized;
-        Vector2 rbV = ballRb.velocity;
+        //Vector2 upV = wheel.transform.Towards(ballRb.transform).normalized;
+        //Vector2 rbV = ballRb.velocity;
 
         Vector2 rbVLocal = partSystem.transform.InverseTransformDirection(ballRb.velocity);
-        Vector2 newLocal = rbVLocal;
 
         float forwardDir = Mathf.Sign(rbVLocal.y);
         forwardDir = Mathf.Approximately(0f, forwardDir) ? 1f : forwardDir;
@@ -107,12 +106,12 @@ public class BallWindJump : MonoBehaviour
         float upForce = upwardsSpeed * upDragInput * Time.fixedDeltaTime;
         float forwardForce = Mathf.Max(glideSpeed - upForce, minGlideSpeed) * Time.fixedDeltaTime;
 
-        newLocal.x += upForce;
-        if (newLocal.x < 0f)
-            newLocal.x = Mathf.MoveTowards(
-                newLocal.x, 0f, slowDescentSpeed * Time.fixedDeltaTime);
+        rbVLocal.x += upForce;
+        if (rbVLocal.x < 0f)
+            rbVLocal.x = Mathf.MoveTowards(
+                rbVLocal.x, 0f, slowDescentSpeed * Time.fixedDeltaTime);
 
-        newLocal.y += forwardForce * forwardDir;
+        rbVLocal.y += forwardForce * forwardDir;
 
         flyUI.UpdateUI(upDragInput);
 
@@ -134,7 +133,7 @@ public class BallWindJump : MonoBehaviour
         //rbVLocal.x = rbVLocal.x * (1f - curve) + (rbVLocal.y + glideSpeed * sign) * curve;
 
         //rbVLocal.x = rbVLocal.x * (1f - curve) + (glideSpeed * curve);
-        Vector2 rbVWorld = partSystem.transform.TransformDirection(newLocal);
+        Vector2 rbVWorld = partSystem.transform.TransformDirection(rbVLocal);
 
         //float rbMag = rbV.magnitude;
         //Vector2 newRbV = Vector2.ClampMagnitude(rbV + (force * upV), Mathf.Max(rbMag, force));
