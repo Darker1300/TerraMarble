@@ -53,6 +53,8 @@ public class FollowBehavior : MonoBehaviour
     //the velocity required to dictate ball is going off the screen
     [SerializeField] private float velocityUpMin;
     float alteredVelocity;
+    [SerializeField] private float followUpSpeed = 0.3f;
+    [SerializeField] private float FixedSpeed = 0.8f;
 
     private enum CameraState
     {
@@ -136,7 +138,7 @@ public class FollowBehavior : MonoBehaviour
         transform.rotation = tRotation;
         Vector3 towards = trackingTarget2.Towards(rb.transform);
         //transform.position =  new Vector3(towards.x,towards.y,transform.position.z);
-        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(towards.x, towards.y, transform.position.z),ref veloref,  0.3f);
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(towards.x, towards.y, transform.position.z),ref veloref,  followUpSpeed);
         //convert rb up to 
 
     }
@@ -299,7 +301,7 @@ public class FollowBehavior : MonoBehaviour
         Quaternion tRotation = GetFollowRotation(trackingTarget, trackingTarget2);
         transform.rotation = tRotation;
 
-        transform.position = Vector3.Lerp(transform.position, trackingTarget2.position + (tRotation * followOffset),Time.deltaTime);
+        transform.position = Vector3.SmoothDamp(transform.position, trackingTarget2.position + (tRotation * followOffset),ref veloref, FixedSpeed );
 
 
     }
