@@ -20,9 +20,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/GameVariations/versionOne.unity
     guid: c63420863cf1b954a8b7beb7553616ca
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameVariations/version3.unity
     guid: a8805e2a851e82c4297f580534e7ad28
+  - enabled: 1
+    path: Assets/Scenes/GameVariations/version6 Big Wheel.unity
+    guid: 22595ae78b2afa140a465dfbc946a13f
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 2e79acf917cd7c04a93114c19812d2b9, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: f12587db1ac34f24489e27e4db5ca797, type: 2}

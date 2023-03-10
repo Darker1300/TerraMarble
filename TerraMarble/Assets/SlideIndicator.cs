@@ -23,7 +23,7 @@ public class SlideIndicator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log( "mag" + seedGravity.wheelDir.magnitude);
+        //Debug.Log( "mag" + seedGravity.wheelDir.magnitude);
         if (seedGravity.wheelDir.magnitude <= distanceChangeColor)
         {
             uiDisc.Color = endColor;

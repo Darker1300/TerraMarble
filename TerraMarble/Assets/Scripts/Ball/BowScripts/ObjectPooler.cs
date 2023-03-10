@@ -63,8 +63,7 @@ public class ObjectPooler : MonoBehaviour
             deactivatedObjects.Enqueue(temp);
         }
     }
-
-    public GameObject SpawnFromPool(Vector3 position, Transform parent, bool worldPosStays)
+    public GameObject SpawnFromPool()
     {
         GameObject temp;
         if (deactivatedObjects.Count != 0)
@@ -74,7 +73,29 @@ public class ObjectPooler : MonoBehaviour
         else
         {
             temp = Instantiate(objectPrefab);
-            temp.name = objectPrefab.name + " Spawn";
+            temp.name = objectPrefab.name + " " +objectAmount+1;
+            PoolObject po = temp.AddComponent<PoolObject>(); po.Pool = this;
+            objectAmount += 1;
+        }
+
+        
+        temp.SetActive(true);
+        activeObjects.Enqueue(temp);
+        return temp;
+    }
+
+        public GameObject SpawnFromPool(Vector3 position, Transform parent, bool worldPosStays)
+    {
+        GameObject temp;
+        if (deactivatedObjects.Count != 0)
+        {
+            temp = deactivatedObjects.Dequeue();
+        }
+        else
+        {
+            temp = Instantiate(objectPrefab);
+
+            temp.name = objectPrefab.name + " " +objectAmount+1;
             PoolObject po = temp.AddComponent<PoolObject>(); po.Pool = this;
             objectAmount += 1;
         }
@@ -102,7 +123,7 @@ public class ObjectPooler : MonoBehaviour
         else
         {
             temp = Instantiate(objectPrefab);
-            temp.name = objectPrefab.name + " Spawn";
+            temp.name = objectPrefab.name + " " + objectAmount + 1;
             PoolObject po = temp.AddComponent<PoolObject>(); po.Pool = this;
             objectAmount += 1;
         }
