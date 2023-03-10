@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityUtility;
 
 public class ForestController : MonoBehaviour
 {
@@ -9,6 +7,7 @@ public class ForestController : MonoBehaviour
     private Region region = null;
     private Growable growable = null;
     public Collider2D treeCollider;
+
     private FruitManager fruitManager;
     //public List<Transform>()
 
@@ -18,9 +17,9 @@ public class ForestController : MonoBehaviour
 
     #region Events
 
-    void Start()
+    private void Start()
     {
-        fruitID = (FruitBase.FruitID)Random.Range(0, (int)(FruitBase.FruitID.SIZE));
+        fruitID = (FruitBase.FruitID) Random.Range(0, (int) FruitBase.FruitID.SIZE);
 
         fruitManager = FindObjectOfType<FruitManager>();
         fruits = new FruitBase[fruitManager.fruitCount];
@@ -34,7 +33,7 @@ public class ForestController : MonoBehaviour
         region.BallHitEnter.AddListener(OnBallHitEnter);
     }
 
-    void Update()
+    private void Update()
     {
         if (!Application.isPlaying) return;
 
@@ -47,59 +46,75 @@ public class ForestController : MonoBehaviour
         }
     }
 
+    public void SpawnFruit()
+    {
+        Vector2[] fruitPoints = fruitManager.GetFruitPositions();
+        for (int i = 0; i < fruitPoints.Length; i++) SpawnFruit(i, fruitPoints[i]);
+    }
+
     public void SpawnFruit(int index, Vector3 fruitPos)
     {
-        Debug.Log(index);
-        if (fruits[index] != null)
-        {
-            return;
-        }
+        if (fruits[index] != null) return;
         ObjectPooler fruitPooler = fruitManager.GetFruitSpawner(fruitID);
 
         if (fruitPooler == null)
             return;
-        //foreach (var item in fruitManager.fruitPositions)
-        //{
-        //    Debug.Log(item);
-        //}
-       
+
         fruitPos.z = -0.1f;
+
+        GameObject prefabFruit = fruitPooler.objectPrefab;
         GameObject newFruit = fruitPooler.SpawnFromPool();
-        Vector3 localScale = newFruit.transform.localScale;
+        
+        // Set tranform
+        Vector3 localScale = prefabFruit.transform.localScale;
         newFruit.transform.SetParent(treeCollider.transform, false);
         newFruit.transform.localPosition = fruitPos;
         newFruit.transform.localRotation = Quaternion.identity;
         newFruit.transform.localScale = localScale;
-        fruits[index] = newFruit.GetComponent<FruitBase>();
 
-    }
-    public void SpawnFruit()
-    {
-        Vector2[] fruitPoints = fruitManager.GetFruitPositions();
-        for (int i = 0; i < fruitPoints.Length; i++)
-        {
-            SpawnFruit(i, fruitPoints[i]);
-        }
-    }
-   // [NaughtyAttributes.Button]
+        // Fruit info
+        FruitBase fruitBase = newFruit.GetComponent<FruitBase>();
+        fruitBase.treeIndex = index;
+        fruitBase.forestController = this;
 
-    //public void TestSpawnFruit()
-    //{
-    //    Vector2[] fruitPoints = fruitManager.GetFruitPositions();
-    //    SpawnFruit(Random.Range(0, fruits.Length - 1), fruitPoints[Random.Range(0, fruitPoints.Length - 1)]);
-    //}
-    void OnBallHitEnter(Region.RegionHitInfo info)
+        fruits[index] = fruitBase;
+    }
+
+    public void PopFruit(int index)
     {
-        if (info.ballState is not null && info.ballState.Stomp)
+        if (index >= fruits.Length || index < 0) return;
+        FruitBase fruit = fruits[index];
+        if (fruit == null) return;
+
+        fruit.GetComponent<PoolObject>()?.Pool?.ReturnToPool(fruit.gameObject);
+    }
+
+
+    private void OnBallHitEnter(Region.RegionHitInfo info)
+    {
+        if (info.ballState is null) return;
+
+        if (info.ballState.Stomp)
             OnBallStompEnter(info);
+
+        //if (fruits.Any(fruit => fruit != null))
+        //{ // There is Fruits
+        //    for (int i = 0; i < fruits.Length; i++)
+        //    {
+        //        FruitBase fruit = fruits[i];
+        //        if (fruit == null) continue;
+                
+        //        // Collect Fruit
+        //        fruit.GetComponent<PoolObject>().Pool.ReturnToPool(fruit.gameObject);
+        //    }
+        //}
     }
 
-    void OnBallStompEnter(Region.RegionHitInfo info)
+    private void OnBallStompEnter(Region.RegionHitInfo info)
     {
         if (info.surfaceObj != null)
-        {   // hit tree
+            // hit tree
             ShrinkDestroy();
-        }
     }
 
     #endregion
@@ -129,7 +144,7 @@ public class ForestController : MonoBehaviour
             surfaceObject.DoDestroy();
     }
 
-    void OnDestroyStart()
+    private void OnDestroyStart()
     {
         growable.ResetState();
     }

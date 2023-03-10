@@ -1,20 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ObjectPooler : MonoBehaviour
 {
-    [Header("Object type")]
-    [SerializeField] GameObject objectPrefab = null;
-    [SerializeField] int objectAmount = 0;
+    [Header("Object type")] public GameObject objectPrefab = null;
+    [SerializeField] private int objectAmount = 0;
     public string poolName = "Pool";
-    Queue<GameObject> activeObjects;
-    Queue<GameObject> deactivatedObjects;
-    
+    private Queue<GameObject> activeObjects;
+    private Queue<GameObject> deactivatedObjects;
+
     private Transform _poolTransform = null;
     public bool UsePrefabName = true;
     [SerializeField] private bool createOnAwake = false;
+
     public Transform PoolTransform
     {
         get
@@ -22,8 +20,8 @@ public class ObjectPooler : MonoBehaviour
             if (_poolTransform is null)
                 _poolTransform
                     = new GameObject(
-                            poolName + (UsePrefabName ? (": " + objectPrefab.name) : ""))
-                    .transform;
+                            poolName + (UsePrefabName ? ": " + objectPrefab.name : ""))
+                        .transform;
             return _poolTransform;
         }
         set => _poolTransform = value;
@@ -31,11 +29,7 @@ public class ObjectPooler : MonoBehaviour
 
     private void Awake()
     {
-        if (createOnAwake)
-        {
-        CreatePool(10,null);
-
-        }
+        if (createOnAwake) CreatePool(10, null);
         //activeObjects = new Queue<GameObject>();
         //deactivatedObjects = new Queue<GameObject>();
 
@@ -58,11 +52,13 @@ public class ObjectPooler : MonoBehaviour
         {
             GameObject temp = Instantiate(objectPrefab, PoolTransform);
             temp.name = objectPrefab.name + " " + i;
-            PoolObject po = temp.AddComponent<PoolObject>(); po.Pool = this;
+            PoolObject po = temp.AddComponent<PoolObject>();
+            po.Pool = this;
             temp.SetActive(false);
             deactivatedObjects.Enqueue(temp);
         }
     }
+
     public GameObject SpawnFromPool()
     {
         GameObject temp;
@@ -73,18 +69,19 @@ public class ObjectPooler : MonoBehaviour
         else
         {
             temp = Instantiate(objectPrefab);
-            temp.name = objectPrefab.name + " " +objectAmount+1;
-            PoolObject po = temp.AddComponent<PoolObject>(); po.Pool = this;
+            temp.name = objectPrefab.name + " " + objectAmount + 1;
+            PoolObject po = temp.AddComponent<PoolObject>();
+            po.Pool = this;
             objectAmount += 1;
         }
 
-        
+
         temp.SetActive(true);
         activeObjects.Enqueue(temp);
         return temp;
     }
 
-        public GameObject SpawnFromPool(Vector3 position, Transform parent, bool worldPosStays)
+    public GameObject SpawnFromPool(Vector3 position, Transform parent, bool worldPosStays)
     {
         GameObject temp;
         if (deactivatedObjects.Count != 0)
@@ -95,17 +92,15 @@ public class ObjectPooler : MonoBehaviour
         {
             temp = Instantiate(objectPrefab);
 
-            temp.name = objectPrefab.name + " " +objectAmount+1;
-            PoolObject po = temp.AddComponent<PoolObject>(); po.Pool = this;
+            temp.name = objectPrefab.name + " " + objectAmount + 1;
+            PoolObject po = temp.AddComponent<PoolObject>();
+            po.Pool = this;
             objectAmount += 1;
         }
 
         temp.transform.position = position;
         if (parent != null)
-        {
             temp.transform.SetParent(parent, worldPosStays);
-
-        }
         else temp.transform.SetParent(_poolTransform, worldPosStays);
 
         temp.SetActive(true);
@@ -124,28 +119,24 @@ public class ObjectPooler : MonoBehaviour
         {
             temp = Instantiate(objectPrefab);
             temp.name = objectPrefab.name + " " + objectAmount + 1;
-            PoolObject po = temp.AddComponent<PoolObject>(); po.Pool = this;
+            PoolObject po = temp.AddComponent<PoolObject>();
+            po.Pool = this;
             objectAmount += 1;
         }
 
         temp.transform.position = transform.position;
         //if (parent != null)
         //{
-            temp.transform.SetParent(transform);
+        temp.transform.SetParent(transform);
         //}
         temp.SetActive(true);
         activeObjects.Enqueue(temp);
-        
-
     }
 
     public void ReturnToPool(GameObject obj)
     {
-
         obj.SetActive(false);
         obj.transform.SetParent(_poolTransform, true);
         deactivatedObjects.Enqueue(obj);
     }
-
-
 }
