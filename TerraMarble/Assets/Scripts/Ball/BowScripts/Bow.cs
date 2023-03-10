@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+
 
 public class Bow : MonoBehaviour
 {
 
     WaitForSeconds Firedelay = new WaitForSeconds(.1f);
     Coroutine coroutine;
-
+    [SerializeField] TextMeshProUGUI AmmoText;
     public GameObject Target;
     [SerializeField]
     private AutoAim aim;
@@ -22,15 +24,15 @@ public class Bow : MonoBehaviour
     {
         ammoController = GetComponent<AmmoController>();
         aim = GetComponent<AutoAim>();
-
-
+        AmmoText = GameObject.FindObjectOfType<TextMeshProUGUI>();
+        UpdateAmmo();
     }
 
     // Update is called once per frame
     void Update()
     {
         //if has ammo
-        if (AmmoAmount != 0 && Time.time > nextFire)
+        if (AmmoAmount != 0 && Time.time > nextFire && AmmoAmount > 0)
         {
             Target = null;
             Target = aim.FindClosestTarget();
@@ -47,6 +49,10 @@ public class Bow : MonoBehaviour
         //shoot
     }
 
+    public void UpdateAmmo()
+    {
+        AmmoText.text = "Fruit: " + AmmoAmount;
+    }
 
     IEnumerator FireRate()
     {
@@ -54,8 +60,14 @@ public class Bow : MonoBehaviour
 
         while (i > 0)
         {
+            if (AmmoAmount > 0)
+            {
             ammoController.GetProjectile(BallStateTracker.BallState.NoEffector, Target.transform.position);
             ammoController.currentProjectile.SetActive(true);
+                AmmoAmount--;
+                UpdateAmmo();
+            }
+            else yield break;
 
             // Do something 4 times
             i--;
