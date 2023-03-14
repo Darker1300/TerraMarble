@@ -1,5 +1,6 @@
 using MathUtility;
 using System.Collections.Generic;
+using Gamelogic.Extensions;
 using NaughtyAttributes;
 using Unity.Mathematics;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class TreeBend : MonoBehaviour
     private BallStateTracker ball;
     private Rigidbody2D ballRb;
     private AimTreeLockUI aimUi;
-    
+
     [Header("Drag Input Config")]
     [Tooltip("offset of starting position, in degrees")]
     public float dragStartOffset = 15f;
@@ -67,6 +68,7 @@ public class TreeBend : MonoBehaviour
     public float wobbleSlowFactor = 0.75f;
     public float wobbleMinThreshold = 5.0f;
 
+    //[Foldout("Data")] [SerializeField] private Vector2 forceSlideVector;
     [Foldout("Data")] [SerializeField] private float wheelRadius = 10;
     [Foldout("Data")] public Vector2 dragInput = new Vector2(0, 0);
     [Foldout("Data")] public bool isDragDirSet = false;
@@ -118,7 +120,11 @@ public class TreeBend : MonoBehaviour
                                        < (forceSlideRange * forceSlideRange));
             if (isWithinSlideRange)
             {
-                ballRb.velocity = ballRb.velocity.MinMagnitude(minSlideForce);
+
+                var rejV = ballRb.velocity.Rej( 
+                    wheelRegions.transform.Towards(ballRb.transform).normalized);//.MinMagnitude(minSlideForce);
+                ballRb.velocity = rejV;
+                //ballRb.velocity = ballRb.velocity.MinMagnitude(minSlideForce);
             }
 
             foreach (TreePaddleController target in nearbyTrees)
@@ -206,11 +212,11 @@ public class TreeBend : MonoBehaviour
 
         dragInput.x = math.remap(-1, 1, 0, 1, dragInput.x);
         dragInput.x = inputCurve.Evaluate(dragInput.x);
-        dragInput.x = math.remap( 0, 1, -1, 1, dragInput.x);
+        dragInput.x = math.remap(0, 1, -1, 1, dragInput.x);
 
         dragInput.y = math.remap(1, 0, 0, 1, dragInput.y);
         dragInput.y = inputCurve.Evaluate(dragInput.y);
-        dragInput.y = math.remap( 0, 1, 1, 0, dragInput.y);
+        dragInput.y = math.remap(0, 1, 1, 0, dragInput.y);
 
     }
 
@@ -263,6 +269,11 @@ public class TreeBend : MonoBehaviour
         if (wheelRegions == null) wheelRegions = FindObjectOfType<WheelRegionsManager>();
         GizmosExtensions.DrawWireCircle(wheelRegions.transform.position, forceSlideRange,
             72, Quaternion.LookRotation(Vector3.up, Vector3.forward));
+
+        ball ??= FindObjectOfType<BallStateTracker>();
+        ballRb ??= ball?.GetComponent<Rigidbody2D>();
+        
+        Gizmos.DrawLine(ballRb.transform.position, ballRb.transform.position + (Vector3)ballRb.velocity);
 
 
         //Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
