@@ -1322,6 +1322,7 @@ GameObject:
   - component: {fileID: 4297447129141640615}
   - component: {fileID: 115348060}
   - component: {fileID: 296858216}
+  - component: {fileID: 6501393804689502291}
   m_Layer: 6
   m_Name: ball2pog
   m_TagString: Ball
@@ -1355,7 +1356,7 @@ Transform:
   - {fileID: 206051542647108340}
   - {fileID: 1615886785}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -96.673}
 --- !u!50 &4297447129141640614
 Rigidbody2D:
@@ -1464,7 +1465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823662051d7dd5e4ca2ec7002db7c4ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeScale: 0.4
+  slowModeTimeScale: 0.4
   defaultTimeScale: 0.8
   isInput: 0
 --- !u!120 &4297447129141640632
@@ -1721,6 +1722,20 @@ MonoBehaviour:
   partSystem: {fileID: 741370545376487465}
   jumpTimer: 0
   particleTimer: 0
+--- !u!114 &6501393804689502291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297447129141640627}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4613f538f13c42c40bb329b13aa81133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalTime: 1
+  CurrentTime: 0
 --- !u!1 &4297447129257047103
 GameObject:
   m_ObjectHideFlags: 0
@@ -3396,6 +3411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e48e97fe1715ed4b9a7601398a06601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AmmoText: {fileID: 0}
   Target: {fileID: 0}
   aim: {fileID: 4297447130578349130}
   AmmoAmount: 12

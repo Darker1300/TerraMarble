@@ -44,7 +44,7 @@ public class BallBounce : MonoBehaviour
     {
         if (isHit || !enabled) return;
         //if (canBounce)
-            Bounce(collision.contacts[0].normal);
+            Bounce(collision.contacts[0].normal,0f);
         //else
         //    Slide(collision.contacts[0].normal);
 
@@ -81,7 +81,7 @@ public class BallBounce : MonoBehaviour
     //    return wheel.IsMovingWithWheel(pos, vel);
     //}
 
-    public void Bounce(Vector2 surfaceNormal)
+    public void Bounce(Vector2 surfaceNormal,float extra)
     {
         Vector2 initialVel = rb.velocity;
         Vector2 initialDir = initialVel.normalized;
@@ -94,7 +94,7 @@ public class BallBounce : MonoBehaviour
         //Vector2 followThru = (surfaceReflect * bounceFactor
         //                      + wheelReflect * (1f - bounceFactor)).normalized;
 
-        Vector2 bounceClamped = surfaceReflect * Mathf.Clamp(initialMag, minBounceForce, maxBounceForce);
+        Vector2 bounceClamped = surfaceReflect * (Mathf.Clamp(initialMag, minBounceForce, maxBounceForce) + extra);
 
         rb.velocity = bounceClamped;
 

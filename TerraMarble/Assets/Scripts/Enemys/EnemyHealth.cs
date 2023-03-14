@@ -8,6 +8,7 @@ using MathUtility;
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private LayerMask projLayerName;
+    [SerializeField] private LayerMask BallLayerName;
     public float CurrentDelayTime;
     [SerializeField] private float KnockBackDuration = 1.25f;
     public UnityEvent<Collider2D> OnProjectileHit;
@@ -58,11 +59,37 @@ public class EnemyHealth : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Debug.Log("KnockBack" + collision.gameObject.name);
+
         if (collision.gameObject.CompareLayerMask(projLayerName))
         {
             OnProjectileHit?.Invoke(collision);
         }
+        else if (collision.gameObject.CompareLayerMask(BallLayerName))
+        {
+            collision.GetComponent<Rigidbody2D>().AddForce(collision.GetComponent<Rigidbody2D>().velocity.normalized * (collision.GetComponent<Rigidbody2D>().velocity.magnitude * 20.2f));
+            //im trying to increases velocity but its getting capped 
+            //if player hits enemy player and explodes 
+            collision.GetComponent<TimerSmoothSlowDown>().enabled = true;
+            EnemyDead();
+            //collision.GetComponent<BallBounce>().Bounce(-collision.transform.Towards(GameObject.FindObjectOfType<Wheel>().transform));
+
+
+        }
+       
     }
+
+    public void DammageTimer()
+    { 
+
+    //player is hiting through enemys the first hit does most damage and then and after that does less percentage
+    //so the player doesnt die from one mistake
+
+     //effect we are after is we want it to look like the player slowed by collision then powered by explosion
+     //two options time slow cinematic effect aprouch 
+    //when hit player banks its velocity and 
+    
+    }
+
     public void KnockBack(Collider2D colider)
     {
 

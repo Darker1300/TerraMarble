@@ -264,6 +264,7 @@ MonoBehaviour:
       m_Calls: []
   knockBackForce: 2000
   HitAmount: 0
+  CanFertilize: 0
   spawnRandomCircle: {fileID: 0}
 --- !u!114 &8667604107980898968
 MonoBehaviour:
@@ -389,7 +390,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3965623346490088873}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
