@@ -135,6 +135,14 @@ namespace UnityUtility
                 Object.DestroyImmediate(gameObject);
             else Object.Destroy(gameObject);
         }
+
+        public static void LogArray(IEnumerable<GameObject> array)
+        => LogArray(array, i => i.name);
+
+        public static void LogArray<T,P>(IEnumerable<T> array, Func<T,P> dataSelection)
+        {
+            Debug.Log($"{array.Count()}:[{string.Join(",", array.Select(dataSelection))}]");
+        }
     }
 
     public static class EnumerableExtensions
