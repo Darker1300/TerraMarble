@@ -1,6 +1,5 @@
 using MathUtility;
 using System.Collections.Generic;
-using Gamelogic.Extensions;
 using NaughtyAttributes;
 using Unity.Mathematics;
 using UnityEngine;
@@ -115,17 +114,17 @@ public class TreeBend : MonoBehaviour
     {
         if (nearbyTrees.Count > 0)
         {
-            bool isWithinSlideRange = (dragInput.y > forceSlideTolerance) &&
-                                      (((Vector2)wheelRegions.transform.position).Towards(ball.transform.position).sqrMagnitude
-                                       < (forceSlideRange * forceSlideRange));
-            if (isWithinSlideRange)
-            {
+            //bool isWithinSlideRange = (dragInput.y > forceSlideTolerance) &&
+            //                          (((Vector2)wheelRegions.transform.position).Towards(ball.transform.position).sqrMagnitude
+            //                           < (forceSlideRange * forceSlideRange));
+            //if (isWithinSlideRange)
+            //{
 
-                var rejV = ballRb.velocity.Rej( 
-                    wheelRegions.transform.Towards(ballRb.transform).normalized);//.MinMagnitude(minSlideForce);
-                ballRb.velocity = rejV;
-                //ballRb.velocity = ballRb.velocity.MinMagnitude(minSlideForce);
-            }
+            //    var rejV = ballRb.velocity.Rej( 
+            //        wheelRegions.transform.Towards(ballRb.transform).normalized);//.MinMagnitude(minSlideForce);
+            //    ballRb.velocity = rejV;
+            //    //ballRb.velocity = ballRb.velocity.MinMagnitude(minSlideForce);
+            //}
 
             foreach (TreePaddleController target in nearbyTrees)
             {
