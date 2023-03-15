@@ -62,7 +62,7 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-           
+            GameObject.FindObjectOfType<ExplosionManager>().GetExplodableObjectsNearby(transform.position, collision.gameObject.GetComponent<EnemyHealth>().explosionRadius);
             pooler.ReturnToPool(this.gameObject);
 
         }

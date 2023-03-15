@@ -20,7 +20,8 @@ public class EnemyHealth : MonoBehaviour
     public int HitAmount;
     public bool CanFertilize = false;
     public SpawnRandomUnitCirclePos spawnRandomCircle;
-    
+    public bool canExplode = false;
+    public float explosionRadius = 2f;
     
 
     // Start is called before the first frame update
