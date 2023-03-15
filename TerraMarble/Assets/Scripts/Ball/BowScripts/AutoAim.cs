@@ -59,7 +59,7 @@ public class AutoAim : MonoBehaviour
 
     private bool CheckLineOfSight(GameObject gObj)
     {
-        if (gObj == null || gObj.activeInHierarchy == false) return false;
+        if (gObj.activeInHierarchy == false) return false;
 
         hit = Physics2D.Raycast(transform.position,transform.Towards(gObj.transform).normalized,col.radius,hitlayer.value);
       

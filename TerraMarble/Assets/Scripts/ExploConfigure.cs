@@ -42,7 +42,6 @@ public class ExploConfigure : MonoBehaviour
         {
             Collider2D enemyCollider = nearbyEnemies[index];
             ExploConfigure enemyExplode = enemyCollider.GetComponent<ExploConfigure>();
-            if (enemyExplode !=null)
 
             Debug.Log(enemyExplode.name + " invoked Container of " + nearbyEnemies.Length);
             if (enemyExplode == null || collected.Contains(enemyExplode)) continue;
