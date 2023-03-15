@@ -22,7 +22,7 @@ public class EnemyHealth : MonoBehaviour
     public SpawnRandomUnitCirclePos spawnRandomCircle;
     public bool canExplode = false;
     public float explosionRadius = 2f;
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -43,10 +43,10 @@ public class EnemyHealth : MonoBehaviour
         else
         {
             OnStunEnd?.Invoke();
-            
+
         }
     }
-   
+
 
     public void OnHit()
     {
@@ -67,31 +67,35 @@ public class EnemyHealth : MonoBehaviour
         }
         else if (collision.gameObject.CompareLayerMask(BallLayerName))
         {
-            collision.GetComponent<Rigidbody2D>()
-                .AddForce(
-                    collision.GetComponent<Rigidbody2D>().velocity.normalized
-                    * (collision.GetComponent<Rigidbody2D>().velocity.magnitude * 20.2f));
+                Rigidbody2D rigidbody2D1 = collision.GetComponent<Rigidbody2D>();
+            if (rigidbody2D1 != null)
+            rigidbody2D1
+                ?.AddForce(
+                   rigidbody2D1.velocity.normalized
+                    * (rigidbody2D1.velocity.magnitude * 20.2f));
             //im trying to increases velocity but its getting capped 
             //if player hits enemy player and explodes 
-            collision.GetComponent<TimerSmoothSlowDown>().enabled = true;
+            TimerSmoothSlowDown timerSmoothSlowDown = collision.GetComponent<TimerSmoothSlowDown>();
+            if (timerSmoothSlowDown != null)
+                timerSmoothSlowDown.enabled = true;
             EnemyDead();
             //collision.GetComponent<BallBounce>().Bounce(-collision.transform.Towards(GameObject.FindObjectOfType<Wheel>().transform));
 
 
         }
-       
+
     }
 
     public void DammageTimer()
-    { 
+    {
 
-    //player is hiting through enemys the first hit does most damage and then and after that does less percentage
-    //so the player doesnt die from one mistake
+        //player is hiting through enemys the first hit does most damage and then and after that does less percentage
+        //so the player doesnt die from one mistake
 
-     //effect we are after is we want it to look like the player slowed by collision then powered by explosion
-     //two options time slow cinematic effect aprouch 
-    //when hit player banks its velocity and 
-    
+        //effect we are after is we want it to look like the player slowed by collision then powered by explosion
+        //two options time slow cinematic effect aprouch 
+        //when hit player banks its velocity and 
+
     }
 
     public void KnockBack(Collider2D colider)
@@ -114,7 +118,7 @@ public class EnemyHealth : MonoBehaviour
 
         GameObject.FindObjectOfType<FruitManager>().FertilizeNearby(transform.position);
         //tell the spawner it has 
-       spawnRandomCircle.ParticleSpawn(transform);
+        spawnRandomCircle.ParticleSpawn(transform);
         //return to pool
         GetComponent<PoolObject>()?.Pool.ReturnToPool(this.gameObject);
 
