@@ -66,7 +66,10 @@ public class EnemyHealth : MonoBehaviour
         }
         else if (collision.gameObject.CompareLayerMask(BallLayerName))
         {
-            collision.GetComponent<Rigidbody2D>().AddForce(collision.GetComponent<Rigidbody2D>().velocity.normalized * (collision.GetComponent<Rigidbody2D>().velocity.magnitude * 20.2f));
+            collision.GetComponent<Rigidbody2D>()
+                .AddForce(
+                    collision.GetComponent<Rigidbody2D>().velocity.normalized
+                    * (collision.GetComponent<Rigidbody2D>().velocity.magnitude * 20.2f));
             //im trying to increases velocity but its getting capped 
             //if player hits enemy player and explodes 
             collision.GetComponent<TimerSmoothSlowDown>().enabled = true;
