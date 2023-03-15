@@ -64,7 +64,7 @@ public class Projectile : MonoBehaviour
 
             foreach (ExploConfigure targetEnemy in enemyChain)
             {
-                targetEnemy?.ExplosionEvent.Invoke();
+                targetEnemy?.Exploded.Invoke();
                 // todo damage enemyHealth
                 // targetEnemy.enemyHealth;
                 

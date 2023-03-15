@@ -107,9 +107,9 @@ public class InputManager : MonoBehaviour
 
         //inputAsset = new InputAsset();
 
-        inputAsset.Player.Enable();
+        inputAsset?.Player.Enable();
 
-        inputAsset.UI.Disable();
+        inputAsset?.UI.Disable();
     }
 
     public void DragStateConfigure(Vector2 drag, Vector2 dragMag)
