@@ -5,22 +5,24 @@ using MathUtility;
 
 public class Projectile : MonoBehaviour
 {
-
-    BallStateTracker.BallState effector;
+    private BallStateTracker.BallState effector;
     public ObjectPooler pooler;
     public Vector2 TargetDirection;
-    [SerializeField]
-    private float moveSpeed;
+    [SerializeField] private float moveSpeed;
     private Transform planetCenter;
 
+    private const string enemyLayerName = "Enemy";
+    private const string enemyTagName = "Enemy";
+    private const string wheelTagName = "Enemy";
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        moveSpeed =50;
-        planetCenter = GameObject.FindGameObjectWithTag("Wheel").transform;
+        moveSpeed = 50;
+        planetCenter = GameObject.FindGameObjectWithTag(wheelTagName).transform;
     }
+
     public void StateConfigure(BallStateTracker.BallState state)
     {
         effector = state;
@@ -38,41 +40,52 @@ public class Projectile : MonoBehaviour
             default:
                 break;
         }
-
     }
+
     // Update is called once per frame
     private void FixedUpdate()
     {
         if (TargetDirection != null && Vector3.Distance(transform.position, planetCenter.position) < 500)
-        {
             transform.Translate(transform.rotation * TargetDirection.normalized * moveSpeed * Time.fixedDeltaTime);
 
-            //transform.position = Vector2.MoveTowards(transform.position, targetTrans, moveSpeed * Time.deltaTime);
-        }
+        //transform.position = Vector2.MoveTowards(transform.position, targetTrans, moveSpeed * Time.deltaTime);
     }
 
-
-    //public void ConfigureThisDirPos()
-    //{
-    //    transform.position - targetTrans.position;
-
-    //}
-  
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag(enemyTagName))
         {
-            GameObject.FindObjectOfType<ExplosionManager>().GetExplodableObjectsNearby(transform.position, collision.gameObject.GetComponent<EnemyHealth>().explosionRadius);
-            pooler.ReturnToPool(this.gameObject);
+            //  // example of collecting chain of enemies to explode
+            //  HashSet<EnemyHealth> enemyChain = new HashSet<EnemyHealth>();
+            //  float explodeRadius = 5f;
+            //  GetEnemyChain(collision.gameObject.GetComponent<EnemyHealth>(), explodeRadius, enemyChain);
+            //  foreach (EnemyHealth targetEnemy in enemyChain)
+            //  {
+            //      // explode enemyHealth
+            //  }
 
+            pooler.ReturnToPool(gameObject);
         }
     }
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (!collision.gameObject.CompareTag("Ball"))
-    //    {
-    //        pooler.ReturnToPool(this.gameObject);
-    //    }
-    //}
-   
+    
+    /// <returns>Collection of recursively nearby Enemy layer colliders, includes target.</returns>
+    public static void GetEnemyChain(EnemyHealth target, float radius, HashSet<EnemyHealth> collected)
+    {
+        if (target == null) return;
+
+        collected.Add(target);
+
+        Collider2D[] nearbyEnemies = new Collider2D[0];
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.NameToLayer(enemyLayerName));
+        Physics2D.OverlapCircle(target.transform.position, radius, filter, nearbyEnemies);
+
+        for (var index = 0; index < nearbyEnemies.Length; index++)
+        {
+            Collider2D enemyCollider = nearbyEnemies[index];
+            EnemyHealth enemyHealth = enemyCollider.GetComponent<EnemyHealth>();
+            if (enemyHealth == null || collected.Contains(target)) continue;
+            GetEnemyChain(enemyHealth, radius, collected);
+        }
+    }
 }
