@@ -55,7 +55,8 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(enemyTagName))
         {
-            //  // example of collecting chain of enemies to explode
+            //  // example of collecting chain of enemies to explode; todo
+
             //  HashSet<EnemyHealth> enemyChain = new HashSet<EnemyHealth>();
             //  float explodeRadius = 5f;
             //  GetEnemyChain(collision.gameObject.GetComponent<EnemyHealth>(), explodeRadius, enemyChain);
@@ -69,7 +70,7 @@ public class Projectile : MonoBehaviour
     }
     
     /// <returns>Collection of recursively nearby Enemy layer colliders, includes target.</returns>
-    public static void GetEnemyChain(EnemyHealth target, float radius, HashSet<EnemyHealth> collected)
+    public static void GetEnemyChain<T>(T target, float radius, HashSet<T> collected) where T : Component 
     {
         if (target == null) return;
 
@@ -83,7 +84,7 @@ public class Projectile : MonoBehaviour
         for (var index = 0; index < nearbyEnemies.Length; index++)
         {
             Collider2D enemyCollider = nearbyEnemies[index];
-            EnemyHealth enemyHealth = enemyCollider.GetComponent<EnemyHealth>();
+            T enemyHealth = enemyCollider.GetComponent<T>();
             if (enemyHealth == null || collected.Contains(target)) continue;
             GetEnemyChain(enemyHealth, radius, collected);
         }
