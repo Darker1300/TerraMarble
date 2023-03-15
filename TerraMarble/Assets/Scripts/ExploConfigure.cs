@@ -35,8 +35,7 @@ public class ExploConfigure : MonoBehaviour
         if (target == null) return;
 
         collected.Add(target);
-
-        const string layerName = "Flying";
+        
         List<Collider2D> nearbyEnemies = new List<Collider2D>();
         Physics2D.OverlapCircle(target.transform.position, target.explodeRadius, filter, nearbyEnemies);
 
