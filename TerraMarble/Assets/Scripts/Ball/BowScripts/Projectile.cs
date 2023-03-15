@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MathUtility;
+using Unity.VisualScripting;
 
 public class Projectile : MonoBehaviour
 {
@@ -57,36 +58,58 @@ public class Projectile : MonoBehaviour
         {
             //  // example of collecting chain of enemies to explode; todo
 
-            //  HashSet<EnemyHealth> enemyChain = new HashSet<EnemyHealth>();
-            //  float explodeRadius = 5f;
-            //  GetEnemyChain(collision.gameObject.GetComponent<EnemyHealth>(), explodeRadius, enemyChain);
-            //  foreach (EnemyHealth targetEnemy in enemyChain)
+            //  var enemyChain = new HashSet<ExplodeConfigure>();
+            //  ExplodeConfigure targetExplode = collision.gameObject.GetComponent<ExplodeConfigure>();
+            //  ExplodeConfigure.GetEnemyChain(targetExplode, enemyChain);
+
+            //  foreach (ExplodeConfigure targetEnemy in enemyChain)
             //  {
-            //      // explode enemyHealth
+            //      // todo damage enemyHealth
+            //          // targetEnemy.enemyHealth;
             //  }
 
             pooler.ReturnToPool(gameObject);
         }
     }
     
-    /// <returns>Collection of recursively nearby Enemy layer colliders, includes target.</returns>
-    public static void GetEnemyChain<T>(T target, float radius, HashSet<T> collected) where T : Component 
-    {
-        if (target == null) return;
-
-        collected.Add(target);
-
-        Collider2D[] nearbyEnemies = new Collider2D[0];
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(LayerMask.NameToLayer(enemyLayerName));
-        Physics2D.OverlapCircle(target.transform.position, radius, filter, nearbyEnemies);
-
-        for (var index = 0; index < nearbyEnemies.Length; index++)
-        {
-            Collider2D enemyCollider = nearbyEnemies[index];
-            T enemyHealth = enemyCollider.GetComponent<T>();
-            if (enemyHealth == null || collected.Contains(target)) continue;
-            GetEnemyChain(enemyHealth, radius, collected);
-        }
-    }
 }
+
+//  public class ExplodeConfigure : MonoBehaviour
+//  {
+//      public float explodeRadius = 5;
+//      public EnemyHealth enemyHealth;
+
+//      private void Start()
+//      {
+//          enemyHealth ??= GetComponent<EnemyHealth>();
+//      }
+
+//      /// <returns>Collection of recursively nearby Enemy layer colliders, includes target.</returns>
+//      public static void GetEnemyChain(ExplodeConfigure target, HashSet<ExplodeConfigure> collected)
+//      {
+//          ContactFilter2D filter = new ContactFilter2D();
+//          const string enemyLayerName = "Enemy";
+//          filter.SetLayerMask(LayerMask.NameToLayer(enemyLayerName));
+//          GetEnemyChain(target, filter, collected);
+//      }
+
+
+//      /// <returns>Collection of recursively nearby Enemy layer colliders, includes target.</returns>
+//      public static void GetEnemyChain(ExplodeConfigure target, ContactFilter2D filter, HashSet<ExplodeConfigure> collected)
+//      {
+//          if (target == null) return;
+
+//          collected.Add(target);
+
+//          Collider2D[] nearbyEnemies = new Collider2D[0];
+//          Physics2D.OverlapCircle(target.transform.position, target.explodeRadius, filter, nearbyEnemies);
+
+//          for (var index = 0; index < nearbyEnemies.Length; index++)
+//          {
+//              Collider2D enemyCollider = nearbyEnemies[index];
+//              ExplodeConfigure enemyExplode = enemyCollider.GetComponent<ExplodeConfigure>();
+//              if (enemyExplode == null || collected.Contains(target)) continue;
+//              GetEnemyChain(enemyExplode, filter, collected);
+//          }
+//      }
+//  }
