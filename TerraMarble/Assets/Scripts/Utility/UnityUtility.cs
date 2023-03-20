@@ -108,6 +108,7 @@ namespace UnityUtility
                     return child;
                 return FindChildOfParentWithTag(child.parent, tag);
             }
+
             return null;
         }
 
@@ -116,7 +117,8 @@ namespace UnityUtility
             return mb.StartCoroutine(CoroutineGroup(new (object, Func<object, YieldInstruction>)[] { funcs }));
         }
 
-        public static Coroutine StartCoroutine(this MonoBehaviour mb, params (object, Func<object, YieldInstruction>)[] funcs)
+        public static Coroutine StartCoroutine(this MonoBehaviour mb,
+            params (object, Func<object, YieldInstruction>)[] funcs)
         {
             return mb.StartCoroutine(CoroutineGroup(funcs));
         }
@@ -137,14 +139,26 @@ namespace UnityUtility
         }
 
         public static void LogArray(IEnumerable<GameObject> array)
-        => LogArray(array, i => i.name);
+            => LogArray(array, i => i.name);
 
-        public static void LogArray<T,P>(IEnumerable<T> array, Func<T,P> dataSelection)
+        public static void LogArray<T, P>(IEnumerable<T> array, Func<T, P> dataSelection)
         {
             Debug.Log($"{array.Count()}:[{string.Join(",", array.Select(dataSelection))}]");
         }
-    }
 
+        public static float FirstKeyValue(this AnimationCurve _self)
+            => _self.keys[0].value;
+
+        public static float LastKeyValue(this AnimationCurve _self)
+            => _self.keys[^1].value;
+
+        public static float FirstKeyTime(this AnimationCurve _self)
+            => _self.keys[0].time;
+
+        public static float LastKeyTime(this AnimationCurve _self)
+            => _self.keys[^1].time;
+
+    }
     public static class EnumerableExtensions
     {
         public static IEnumerable<TSource> Exclude<TSource, TKey>(this IEnumerable<TSource> source,
