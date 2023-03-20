@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace MathUtility
 {
@@ -120,7 +121,7 @@ namespace MathUtility
                 return v.normalized * minLength;
             return v;
         }
-        
+
 
         /// <summary>
         ///   <para>Same as MoveTowards but makes sure the values interpolate correctly when they wrap around 360 degrees.</para>
@@ -202,6 +203,14 @@ namespace MathUtility
             float deltaTime = Time.deltaTime;
             float maxSpeed = float.PositiveInfinity;
             return SmoothDampRotation(current, target, ref velocity, rotateSmoothTime, maxSpeed, deltaTime);
+        }
+
+        public static Vector2 RandomPointInRing(Vector2 origin, float minRadius, float maxRadius)
+        {
+            Vector2 randomDirection = (Random.insideUnitCircle * origin).normalized;
+            float randomDistance = Random.Range(minRadius, maxRadius);
+            Vector2 point = origin + randomDirection * randomDistance;
+            return point;
         }
     }
 }
