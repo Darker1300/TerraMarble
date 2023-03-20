@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class ExplosionManager : MonoBehaviour
 {
-
+    [Range(0.0f,10.0f)]
+    public float TimeToDistance;
     //public void GetExplodableObjectsNearby(Vector3 pos, float radius)
     //{
     //    Collider2D[] allOverlappingColliders = Physics2D.OverlapCircleAll(pos, radius, 1 << LayerMask.NameToLayer("Flying") )

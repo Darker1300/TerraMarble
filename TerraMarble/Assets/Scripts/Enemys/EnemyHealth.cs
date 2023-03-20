@@ -65,21 +65,23 @@ public class EnemyHealth : MonoBehaviour
         {
             OnProjectileHit?.Invoke(collision);
         }
-        else if (collision.gameObject.CompareLayerMask(BallLayerName))
-        {
-            //collision.GetComponent<Rigidbody2D>()
-            //    .AddForce(
-            //        collision.GetComponent<Rigidbody2D>().velocity.normalized
-            //        * (collision.GetComponent<Rigidbody2D>().velocity.magnitude * 20.2f));
-            ////im trying to increases velocity but its getting capped 
-            ////if player hits enemy player and explodes 
-            //collision.GetComponent<TimerSmoothSlowDown>().enabled = true;
-            //EnemyDead();
-            //collision.GetComponent<BallBounce>().Bounce(-collision.transform.Towards(GameObject.FindObjectOfType<Wheel>().transform));
+        //else if (collision.gameObject.CompareLayerMask(BallLayerName))
+        //{
+        //    collision.GetComponent<Rigidbody2D>()
+        //        .AddForce(
+        //            collision.GetComponent<Rigidbody2D>().velocity.normalized
+        //            * (collision.GetComponent<Rigidbody2D>().velocity.magnitude * 20.2f));
+        //    //im trying to increases velocity but its getting capped 
+        //    //if player hits enemy player and explodes 
+        //    collision.GetComponent<TimerSmoothSlowDown>().enabled = true;
+        //    EnemyDead();
 
 
-        }
-       
+        //    //collision.GetComponent<BallBounce>().Bounce(-collision.transform.Towards(GameObject.FindObjectOfType<Wheel>().transform));
+
+
+        //}
+
     }
 
     public void DammageTimer()
@@ -111,6 +113,7 @@ public class EnemyHealth : MonoBehaviour
     }
     public void EnemyDead()
     {
+
 
         GameObject.FindObjectOfType<FruitManager>().FertilizeNearby(transform.position);
         //tell the spawner it has 

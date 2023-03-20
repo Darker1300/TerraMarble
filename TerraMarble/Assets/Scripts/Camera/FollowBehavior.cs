@@ -56,12 +56,12 @@ public class FollowBehavior : MonoBehaviour
     [SerializeField] private float followUpSpeed = 0.3f;
     [SerializeField] private float FixedSpeed = 0.8f;
 
-    private enum CameraState
+    public enum CameraState
     {
         Default, WaitForCenter, FollowUp, PrepareDown
     }
     [SerializeField]
-    private CameraState cameraState;
+    public CameraState cameraState;
 
 
     // Start is called before the first frame update
@@ -196,13 +196,9 @@ public class FollowBehavior : MonoBehaviour
         {
             //Keep to center until the ball to planet velocity drops below min(meaning player is about to descend)
             return true;
-
-
-
         }
         //
         return false;
-
     }
 
     public void CameraStateController()
@@ -220,8 +216,6 @@ public class FollowBehavior : MonoBehaviour
                 }
                 // else default locked position
 
-
-
                 break;
             case CameraState.WaitForCenter:
                 //we know the ball is going to go off screen but must wait for it to meet center of camera
@@ -231,7 +225,6 @@ public class FollowBehavior : MonoBehaviour
                     cameraState = CameraState.FollowUp;
                     return;
                 }
-
 
                 break;
             case CameraState.FollowUp:
@@ -263,15 +256,12 @@ public class FollowBehavior : MonoBehaviour
 
                 //transform.position 
                 //all we need to do is project along that predertermined direction 
-
-
                 //Vector2 ballOffset = GetDefaultPos() - transform.position;
                 //if (ballOffset.sqrMagnitude < 1.1f)
                 //{
                 //    cameraState = CameraState.Default;
                 //    return;
                 //}
-
 
                 break;
             default:

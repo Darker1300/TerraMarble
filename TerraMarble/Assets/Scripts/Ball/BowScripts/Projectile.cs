@@ -56,19 +56,23 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(enemyTagName))
         {
-            // example of collecting chain of enemies to explode; todo
+            //// example of collecting chain of enemies to explode; todo
 
-            var enemyChain = new HashSet<ExploConfigure>();
-            ExploConfigure targetExplode = collision.gameObject.GetComponent<ExploConfigure>();
-            ExploConfigure.GetEnemyChain(targetExplode, enemyChain);
+            //var enemyChain = new HashSet<ExploConfigure>();
+            //ExploConfigure targetExplode = collision.gameObject.GetComponent<ExploConfigure>();
+           
+            //    ExploConfigure.GetEnemyChain(targetExplode, enemyChain);
 
-            foreach (ExploConfigure targetEnemy in enemyChain)
-            {
-                targetEnemy?.Exploded.Invoke();
-                // todo damage enemyHealth
-                // targetEnemy.enemyHealth;
-                
-            }
+            //    foreach (ExploConfigure targetEnemy in enemyChain)
+            //    {
+            //        targetEnemy?.DoDistanceExplode(transform.position);
+            //        // todo damage enemyHealth
+            //        // targetEnemy.enemyHealth;
+
+            //    } 
+
+           
+            
 
             pooler.ReturnToPool(gameObject);
         }

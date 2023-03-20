@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 1311696045}
   - component: {fileID: 1311696051}
   - component: {fileID: 1053906789049160578}
+  - component: {fileID: 7638652764301539238}
   m_Layer: 13
   m_Name: EntitySeeker
   m_TagString: Enemy
@@ -238,9 +239,9 @@ MonoBehaviour:
   FinishOverallShrink:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1311696045}
-        m_TargetAssemblyTypeName: EnemyHealth, Assembly-CSharp
-        m_MethodName: EnemyDead
+      - m_Target: {fileID: 1053906789049160578}
+        m_TargetAssemblyTypeName: ExploConfigure, Assembly-CSharp
+        m_MethodName: ConfigureOtherExplosion
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -269,7 +270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explodeRadius: 5
   enemyHealth: {fileID: 0}
-  ExplosionEvent:
+  Exploded:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1311696045}
@@ -284,9 +285,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 8192
+  ExploTimer: {fileID: 0}
+  isExploding: 0
+--- !u!114 &7638652764301539238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5710913350301166568}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a88d4e5814a77e44fa4fe8ec38574eab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalTime: 0
+  CurrentTime: 0
+  TimerFinished:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1053906789049160578}
+        m_TargetAssemblyTypeName: ExploConfigure, Assembly-CSharp
+        m_MethodName: Explode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5710913351233338242
 GameObject:
   m_ObjectHideFlags: 0

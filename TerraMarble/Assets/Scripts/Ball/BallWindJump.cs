@@ -85,6 +85,7 @@ public class BallWindJump : MonoBehaviour
         partSystem.Emit( partInitialBurst);
 
         flyUI.SetUI(true);
+        Camera.main.GetComponent<FollowBehavior>().cameraState = FollowBehavior.CameraState.FollowUp; 
     }
 
     void OnWindJumpUpdate()
