@@ -73,8 +73,8 @@ public class Projectile : MonoBehaviour
 
            
             
-
-            pooler.ReturnToPool(gameObject);
+            if (gameObject.activeInHierarchy)
+                pooler.ReturnToPool(gameObject);
         }
     }
     

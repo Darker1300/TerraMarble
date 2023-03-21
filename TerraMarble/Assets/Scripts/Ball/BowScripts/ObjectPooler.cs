@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Pool;
 using UnityEngine.Serialization;
 
 public class ObjectPooler : MonoBehaviour
 {
-    [Header("Object type")] 
+    [Header("Object type")]
     public GameObject objectPrefab = null;
 
     [FormerlySerializedAs("objectAmount")]
@@ -17,7 +18,7 @@ public class ObjectPooler : MonoBehaviour
     private Transform _poolTransform = null;
     public bool UsePrefabName = true;
 
-    [SerializeField] private bool createOnAwake = false;
+    [Tooltip("DEPRECIATED")] [SerializeField] private bool createOnAwake = false;
     public ObjectPool<GameObject> objectPool;
 
     public Transform PoolTransform
@@ -40,7 +41,7 @@ public class ObjectPooler : MonoBehaviour
             OnGet,
             OnRelease,
             Destroy,
-            true, defaultCapacity
+            true, defaultCapacity, maxCapacity
         );
     }
     private GameObject OnCreate()
@@ -65,28 +66,10 @@ public class ObjectPooler : MonoBehaviour
         gObj.SetActive(false);
     }
 
-    //public void CreatePool(int objAmount, GameObject objPrefab = null)
-    //{
-    //    //objectAmount = objAmount;
-    //    //if (objPrefab != null) objectPrefab = objPrefab;
-    //    //activeObjects = new Queue<GameObject>();
-    //    //deactivatedObjects = new Queue<GameObject>();
-
-    //    //for (int i = 0; i < objectAmount; i++)
-    //    //{
-    //    //    GameObject temp = Instantiate(objectPrefab, PoolTransform);
-    //    //    temp.name = objectPrefab.name + " " + i;
-    //    //    PoolObject po = temp.AddComponent<PoolObject>();
-    //    //    po.Pool = this;
-    //    //    temp.SetActive(false);
-    //    //    deactivatedObjects.Enqueue(temp);
-    //    //}
-    //}
-
     public GameObject SpawnFromPool()
     {
         GameObject newGameObj = objectPool.Get();
-        newGameObj.transform.SetParent(null, true);
+        newGameObj.transform.SetParent(PoolTransform, true);
         return newGameObj;
     }
 
@@ -97,6 +80,9 @@ public class ObjectPooler : MonoBehaviour
         Transform prefabTransform = objectPrefab.transform;
 
         // Parent
+        if (parent == null) 
+            parent = PoolTransform;
+
         newTransform.SetParent(parent, false);
         // Position
         newTransform.position = position;

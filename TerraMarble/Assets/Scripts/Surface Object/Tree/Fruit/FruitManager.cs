@@ -147,7 +147,7 @@ public class FruitManager : MonoBehaviour
             TimerRadius = countdownTimer / durationPerUnit * radiusPerUnit;
         }
         // Timer has expired, trigger event here
-        Debug.Log("Timer expired!");
+        //Debug.Log("Timer expired!");
 
         Collider2D[] allOverlappingColliders = Physics2D.OverlapCircleAll(ConvertToSurfacePos(initialExplosionPos), currentRadius, 1 << 8)
            .Where(col => IsValidTree(col))

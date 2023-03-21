@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ParticleReturnToPool : MonoBehaviour
 {
-    public void OnParticleFinish()
+    public void OnParticleSystemStopped()
     {
         PoolObject poolObject = GetComponent<PoolObject>();
         if (poolObject == null) return;
