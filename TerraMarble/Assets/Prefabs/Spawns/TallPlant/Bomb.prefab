@@ -149,6 +149,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7731336344334921656}
+  - component: {fileID: 3005989790244517067}
   - component: {fileID: 7731336344334921657}
   - component: {fileID: 7731336344334921658}
   - component: {fileID: 7731336344334921659}
@@ -168,13 +169,40 @@ Transform:
   m_GameObject: {fileID: 7731336344334921660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7731336344233559894}
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3005989790244517067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7731336344334921660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2900284c5eb5b6147955735036bffe45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 5
+  duration: 3
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  flashSpeed: 0.25
+  showGizmos: 1
+  showDebug: 1
+  isCounting: 0
+  timer: Infinity
+  mother: {fileID: 0}
+  regions: {fileID: 0}
+  renderer: {fileID: 0}
+  startColor: {r: 1, g: 1, b: 1, a: 1}
+  explodeLayerMask:
+    serializedVersion: 2
+    m_Bits: 8320
 --- !u!114 &7731336344334921657
 MonoBehaviour:
   m_ObjectHideFlags: 0

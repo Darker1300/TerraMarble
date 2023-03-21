@@ -10,7 +10,6 @@ public class ExploConfigure : MonoBehaviour
 {
     public float explodeRadius = 5;
     public EnemyHealth enemyHealth;
-    [FormerlySerializedAs("ExplosionEvent")]
     public UnityEvent Exploded;
     public const string enemyLayerName = "Flying";
     public CountDownTimer ExploTimer;
@@ -65,7 +64,7 @@ public class ExploConfigure : MonoBehaviour
         isExploding = true;
         float time = (transform.position - pos).sqrMagnitude * GameObject.FindObjectOfType<ExplosionManager>().TimeToDistance;
 
-        Debug.Log("distance: " + (transform.position - pos).sqrMagnitude + " timeTO" + ((transform.position - pos).sqrMagnitude * GameObject.FindObjectOfType<ExplosionManager>().TimeToDistance));
+        // Debug.Log("distance: " + (transform.position - pos).sqrMagnitude + " timeTO" + ((transform.position - pos).sqrMagnitude * GameObject.FindObjectOfType<ExplosionManager>().TimeToDistance));
         //caculate the distance and activate the timer component 
         ActivateExploCountdownTimer(time);
 

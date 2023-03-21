@@ -18,7 +18,7 @@ public class AmmoController : MonoBehaviour
     ///pass in type 
     public void GetProjectile(BallStateTracker.BallState state,Vector2 pos)
     {
-       currentProjectile =  pooler.SpawnFromPool(transform.position, null, true);
+       currentProjectile =  pooler.SpawnFromPool(transform.position, null);
         //MAKE SURE PROJECTILE FROM POOL IS CONFIGURED
         currentProjectile.GetComponent<Projectile>().StateConfigure(state);
         currentProjectile.GetComponent<Projectile>().TargetDirection = pos - (Vector2)transform.position;
@@ -40,8 +40,8 @@ public class AmmoController : MonoBehaviour
     void Start()
     {
 
-        pooler = GetComponent<ObjectPooler>();
-        pooler.CreatePool(20);   
+        //pooler = GetComponent<ObjectPooler>();
+        //pooler.CreatePool(20);   
     }
 
 

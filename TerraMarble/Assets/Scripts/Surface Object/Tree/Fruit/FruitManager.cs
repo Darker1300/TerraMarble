@@ -29,7 +29,7 @@ public class FruitManager : MonoBehaviour
     
     private void Start()
     {
-        ConfigureFruitPools();
+        //ConfigureFruitPools();
 
         //fruitPositions = new Vector2[6];
         collider = GetComponent<CircleCollider2D>();
@@ -88,12 +88,12 @@ public class FruitManager : MonoBehaviour
         return fruitPoints;
     }
 
-    public void ConfigureFruitPools()
-    {
-        blueFruit.CreatePool(20);
-        RedFruit.CreatePool(20);
-        YellowFruit.CreatePool(20);
-    }
+    //public void ConfigureFruitPools()
+    //{
+    //    //blueFruit.CreatePool(20);
+    //    //RedFruit.CreatePool(20);
+    //    //YellowFruit.CreatePool(20);
+    //}
 
     public GameObject FindFruitPrefab(FruitBase.FruitID id)
     {

@@ -8,29 +8,17 @@ public class CountDownTimer : MonoBehaviour
     public float TotalTime;
     public float CurrentTime;
     public UnityEvent TimerFinished;
-    private void OnEnable()
-    {
-        
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     public void SetTimer(float time)
     {
         TotalTime = time;
     }
-    // Update is called once per frame
    
     void Update()
     {
         if (CurrentTime < TotalTime)
         {
             CurrentTime += Time.deltaTime;
-            //Time.timeScale = Mathf.Lerp(startTime, 0.8f, CurrentTime / TotalTime);
         }
         else
         {

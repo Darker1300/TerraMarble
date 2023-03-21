@@ -145,7 +145,7 @@ Material:
     - Space_0: 0
     - Space_1: 0
     - _AlphaClip: 0
-    - _BaseVerticalOffset: 0.48
+    - _BaseVerticalOffset: 0.68
     - _Billboard: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -183,7 +183,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EdgeHighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _OffsetSpeed: {r: 0.4, g: 0.01, b: 0, a: 0}
+    - _OffsetSpeed: {r: 0.6, g: 0.01, b: 0, a: 0}
     - _RandomOffset: {r: 0, g: 0, b: 0, a: 0}
     - _ShadowCenter: {r: 1, g: 0.15, b: 0, a: 0}
     - _ShadowColor: {r: 0.3999644, g: 0.573121, b: 0.7924528, a: 1}

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ParticleReturnToPool : MonoBehaviour
 {
-    private void OnDisable()
+    public void OnParticleFinish()
     {
-        GetComponent<PoolObject>()?.Pool.ReturnToPool(this.gameObject);
+        PoolObject poolObject = GetComponent<PoolObject>();
+        if (poolObject == null) return;
+        poolObject.Pool.ReturnToPool(this.gameObject);
     }
 }
