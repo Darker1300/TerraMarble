@@ -47,9 +47,8 @@ public class FruitManager : MonoBehaviour
     private void Start()
     {
        worldSurfaceRadius = GameObject.FindObjectOfType<WheelRegionsManager>().WheelRadius;
-        ConfigureFruitPools();
 
-        //fruitPositions = new Vector2[6];
+       //fruitPositions = new Vector2[6];
         collider = GetComponent<CircleCollider2D>();
     }
 
@@ -111,13 +110,6 @@ public class FruitManager : MonoBehaviour
     {
         if (fruitPoints.Length == 0) GenerateFruitPoints();
         return fruitPoints;
-    }
-
-    public void ConfigureFruitPools()
-    {
-        blueFruit.CreatePool(20);
-        RedFruit.CreatePool(20);
-        YellowFruit.CreatePool(20);
     }
 
     public GameObject FindFruitPrefab(FruitBase.FruitID id)
