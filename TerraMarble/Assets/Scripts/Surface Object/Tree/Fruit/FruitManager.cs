@@ -22,14 +22,32 @@ public class FruitManager : MonoBehaviour
     [SerializeField] private ObjectPooler RedFruit;
     [SerializeField] private ObjectPooler YellowFruit;
     public int fruitCount = 6;
+    public float worldSurfaceRadius;
+
 
     [SerializeField] private Vector2[] fruitPoints;
     //divide our cover distance 
 
-    
+
+    [Header("explosion to fertize delay and radius size")]
+
+    public float initialDistance;
+    public float durationPerUnit;
+    public float radiusPerUnit;
+    [SerializeField] private float MaxDistance = 350;
+
+    private float countdownTimer;
+    private float currentRadius;
+    private Vector3 GizmoSurfacePosition= Vector2.zero;
+
+    [SerializeField] private AnimationCurve radiusCurve;
+    [SerializeField] private AnimationCurve TimerCurve;
+    private float TimerRadius;
+
     private void Start()
     {
-        //ConfigureFruitPools();
+       worldSurfaceRadius = GameObject.FindObjectOfType<WheelRegionsManager>().WheelRadius;
+        ConfigureFruitPools();
 
         //fruitPositions = new Vector2[6];
         collider = GetComponent<CircleCollider2D>();
@@ -50,6 +68,13 @@ public class FruitManager : MonoBehaviour
             GizmosExtensions.DrawWireCircle(pos, gizmoFruitRadius, 36,
                 Quaternion.LookRotation(Vector3.up, Vector3.forward));
         }
+
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(GizmoSurfacePosition, currentRadius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(GizmoSurfacePosition, TimerRadius);
+        
     }
 
 
@@ -88,12 +113,12 @@ public class FruitManager : MonoBehaviour
         return fruitPoints;
     }
 
-    //public void ConfigureFruitPools()
-    //{
-    //    //blueFruit.CreatePool(20);
-    //    //RedFruit.CreatePool(20);
-    //    //YellowFruit.CreatePool(20);
-    //}
+    public void ConfigureFruitPools()
+    {
+        blueFruit.CreatePool(20);
+        RedFruit.CreatePool(20);
+        YellowFruit.CreatePool(20);
+    }
 
     public GameObject FindFruitPrefab(FruitBase.FruitID id)
     {
@@ -103,15 +128,44 @@ public class FruitManager : MonoBehaviour
 
     public void FertilizeNearby(Vector3 pos)
     {
-        Collider2D[] allOverlappingColliders = Physics2D.OverlapCircleAll(pos, radius, 1 << 8)
-            .Where(col => IsValidTree(col))
-            .ToArray();
+        StartCoroutine(FertilizerFallToWetTreesCountDown(pos));
+    }
+    public Vector3 ConvertToSurfacePos(Vector3 pos)
+    {
+         return  pos.normalized * worldSurfaceRadius;
+
+    }
+
+    IEnumerator FertilizerFallToWetTreesCountDown(Vector3 initialExplosionPos)
+    {
+        GizmoSurfacePosition = ConvertToSurfacePos(initialExplosionPos);
+        //get distance to surface of planet
+        initialDistance = (initialExplosionPos - ConvertToSurfacePos(initialExplosionPos)).sqrMagnitude;
+        //configure  timer and radius
+        //countdownTimer =  TimerCurve.Evaluate( Mathf.Clamp((initialDistance * durationPerUnit),0,MaxDistance) / MaxDistance);
+        //currentRadius = radiusCurve.Evaluate(Mathf.Clamp((initialDistance * radiusPerUnit), 0, MaxDistance) / MaxDistance);
+        countdownTimer = initialDistance * durationPerUnit;
+        currentRadius = initialDistance * radiusPerUnit;
+
+
+        while (countdownTimer > 0)
+        {
+            yield return null;
+            countdownTimer -= Time.deltaTime;
+            TimerRadius = countdownTimer / durationPerUnit * radiusPerUnit;
+        }
+        // Timer has expired, trigger event here
+        Debug.Log("Timer expired!");
+
+        Collider2D[] allOverlappingColliders = Physics2D.OverlapCircleAll(ConvertToSurfacePos(initialExplosionPos), currentRadius, 1 << 8)
+           .Where(col => IsValidTree(col))
+           .ToArray();
 
         foreach (var collider in allOverlappingColliders)
             //find out what id it has and spawn fruit
             collider.GetComponentInParent<ForestController>().SpawnFruit();
+        // You can add more code here to execute the event
     }
-
     public bool IsValidTree(Collider2D col)
     {
         if (col.gameObject.CompareTag("Tree") && col.GetComponentInParent<Growable>().animGoalIndex > 5)
@@ -139,4 +193,6 @@ public class FruitManager : MonoBehaviour
 
         return null;
     }
+
+   
 }
