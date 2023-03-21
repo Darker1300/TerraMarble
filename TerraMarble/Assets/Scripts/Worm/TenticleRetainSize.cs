@@ -44,6 +44,8 @@ public class TenticleRetainSize : MonoBehaviour
             segmentPoses[i] = Vector3.SmoothDamp(segmentPoses[i], targetPos, ref segmentV[i], GrowSize);
         }
         lineRend.SetPositions(segmentPoses);
+        if (followObject != null)
+        
         followObject.position = segmentPoses[segmentPoses.Length - 1];
         //endPos = segmentPoses[segmentPoses.Length - 1];
 
