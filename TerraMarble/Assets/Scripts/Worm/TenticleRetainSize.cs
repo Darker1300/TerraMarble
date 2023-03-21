@@ -20,7 +20,9 @@ public class TenticleRetainSize : MonoBehaviour
     public float wiggleSpeed;
     public float wiggleMagnitude;
     public Transform wiggleDir;
+    public Vector3 endPos;
 
+    public Transform followObject;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +44,8 @@ public class TenticleRetainSize : MonoBehaviour
             segmentPoses[i] = Vector3.SmoothDamp(segmentPoses[i], targetPos, ref segmentV[i], GrowSize);
         }
         lineRend.SetPositions(segmentPoses);
+        followObject.position = segmentPoses[segmentPoses.Length - 1];
+        //endPos = segmentPoses[segmentPoses.Length - 1];
 
     }
 }
