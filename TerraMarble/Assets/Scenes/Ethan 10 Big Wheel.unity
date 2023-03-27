@@ -13139,22 +13139,6 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 2454677640297700495}
     m_Modifications:
-    - target: {fileID: 3005989790244517067, guid: e8df39728e682dd41a7a03afb00db766, type: 3}
-      propertyPath: radius
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3005989790244517067, guid: e8df39728e682dd41a7a03afb00db766, type: 3}
-      propertyPath: showDebug
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6653495111637455825, guid: e8df39728e682dd41a7a03afb00db766, type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 7731336344233559895, guid: e8df39728e682dd41a7a03afb00db766, type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
     - target: {fileID: 7731336344334921656, guid: e8df39728e682dd41a7a03afb00db766, type: 3}
       propertyPath: m_RootOrder
       value: -1
