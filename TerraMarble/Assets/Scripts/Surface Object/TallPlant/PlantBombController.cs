@@ -9,26 +9,47 @@ public class PlantBombController : MonoBehaviour
 {
     [Header("Config")]
     [SerializeField] private float radius = 5f;
-    public float duration = 3f;
-    public Color flashColor = Color.red;
+    [SerializeField] private float duration = 3f;
+    [SerializeField] private Color flashColor = Color.red;
     [SerializeField] private float flashSpeed = 0.25f;
-    public bool showGizmos = true;
-    public bool showDebug = false;
+
+    [SerializeField] private bool showGizmos = true;
+    [SerializeField] private bool showDebug = false;
+
+    [SerializeField] private Disc grabUI = null;
+    [SerializeField] private Disc renderer = null;
+    [SerializeField] private BallGrabbable grabbable = null;
 
     [Header("Data")]
-    public bool isCounting = false;
-    public float timer = float.PositiveInfinity;
-    public TallPlantController mother = null;
-    public WheelRegionsManager regions = null;
-    public Disc renderer = null;
-    public Color startColor = Color.white;
+    [SerializeField] private bool isCounting = false;
+    [SerializeField] private float timer = float.PositiveInfinity;
+    
+    [SerializeField] private bool isGrabbed = true;
 
-    public LayerMask explodeLayerMask;
+    [SerializeField] private TallPlantController mother = null;
+    [SerializeField] private WheelRegionsManager regions = null;
+
+    [SerializeField] private Color startColor = Color.white;
+
+    [SerializeField] private LayerMask explodeLayerMask;
 
     private void Awake()
     {
-        renderer = renderer == null ? GetComponent<Disc>() : renderer;
         startColor = renderer.Color;
+
+        mother = mother == null
+            ? GetComponentInParent<TallPlantController>()
+            : mother;
+
+        regions = regions == null
+            ? FindObjectOfType<WheelRegionsManager>()
+            : regions;
+
+        grabbable = grabbable == null
+            ? GetComponentInChildren<BallGrabbable>()
+            : grabbable;
+
+        grabbable.GrabEnd.AddListener(StartCountdown);
     }
 
     public void Initialise(TallPlantController _mother, WheelRegionsManager _regions)
@@ -37,11 +58,25 @@ public class PlantBombController : MonoBehaviour
         regions = _regions;
         isCounting = false;
         timer = duration;
-        renderer = renderer == null ? GetComponent<Disc>() : renderer;
+        isGrabbed = false;
     }
 
     void Update()
-        => UpdateCountdown();
+    {
+        UpdateCountdown();
+    }
+
+    public void StartGrab()
+    {
+        if (isCounting) return;
+
+
+    }
+
+    public void EndGrab()
+    {
+        isCounting = true;
+    }
 
     [Button]
     public void TestPrefire()
@@ -117,8 +152,6 @@ public class PlantBombController : MonoBehaviour
                 continue;
             }
         }
-        //int closestRegionIndex = regions.RegionTemplate.WorldToRegionIndex(transform.position);
-        //var closestRegion =  regions[closestRegionIndex];
 
         renderer.Color = startColor;
 

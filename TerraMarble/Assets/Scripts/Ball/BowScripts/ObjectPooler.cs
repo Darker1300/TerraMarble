@@ -18,7 +18,6 @@ public class ObjectPooler : MonoBehaviour
     private Transform _poolTransform = null;
     public bool UsePrefabName = true;
 
-    [Tooltip("DEPRECIATED")] [SerializeField] private bool createOnAwake = false;
     public ObjectPool<GameObject> objectPool;
 
     public Transform PoolTransform
