@@ -75,9 +75,9 @@ public class volcanoeUI : MonoBehaviour
     void Start()
     {
        // fireBallPool = GetComponent<ObjectPooler>();
-        fireBallPool.CreatePool(18);
-        explosion.CreatePool(10);
-        explosionSmoke.CreatePool(10);
+        //fireBallPool.CreatePool(18);
+        //explosion.CreatePool(10);
+        //explosionSmoke.CreatePool(10);
 
         startPosition = new Vector3(0, -4, 0);
         Circle = GetComponent<Disc>();
@@ -177,7 +177,7 @@ public class volcanoeUI : MonoBehaviour
             for (int i = 0; i < FireballsPerEruption; i++)
             {
                 Explosion(Vector3.up * RockSpawnOffset[VolcanoStage - 1]);
-                GameObject fireball = fireBallPool.SpawnFromPool(transform.position + transform.up * RockSpawnOffset[VolcanoStage - 1], null, false);
+                GameObject fireball = fireBallPool.SpawnFromPool(transform.position + transform.up * RockSpawnOffset[VolcanoStage - 1], null);
 
                 yield return new WaitForSeconds(FireBallDelay);
             }
@@ -217,8 +217,8 @@ public class volcanoeUI : MonoBehaviour
     public void Explosion(Vector3 height)
     {
 
-        GameObject gg = explosion.SpawnFromPool(transform.position + transform.up * RockSpawnOffset[VolcanoStage - 1], null, false);
-        GameObject smoke = explosionSmoke.SpawnFromPool(transform.position + transform.up * RockSpawnOffset[VolcanoStage - 1], null, false);
+        GameObject gg = explosion.SpawnFromPool(transform.position + transform.up * RockSpawnOffset[VolcanoStage - 1], null);
+        GameObject smoke = explosionSmoke.SpawnFromPool(transform.position + transform.up * RockSpawnOffset[VolcanoStage - 1], null);
 
         gg.transform.localScale = new Vector3(2, 2, 2);
         smoke.transform.localScale = new Vector3(2,2,2);

@@ -51,7 +51,8 @@ public class Bow : MonoBehaviour
 
     public void UpdateAmmo()
     {
-        AmmoText.text = "Fruit: " + AmmoAmount;
+        if (AmmoText)
+            AmmoText.text = "Fruit: " + AmmoAmount;
     }
 
     IEnumerator FireRate()
@@ -62,8 +63,8 @@ public class Bow : MonoBehaviour
         {
             if (AmmoAmount > 0)
             {
-            ammoController.GetProjectile(BallStateTracker.BallState.NoEffector, Target.transform.position);
-            ammoController.currentProjectile.SetActive(true);
+                ammoController.GetProjectile(BallStateTracker.BallState.NoEffector, Target.transform.position);
+                ammoController.currentProjectile.SetActive(true);
                 AmmoAmount--;
                 UpdateAmmo();
             }

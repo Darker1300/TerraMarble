@@ -20,7 +20,7 @@ public class VolcanoeMain : MonoBehaviour
     {
         //INITIALIZE OBJECTS
         pooler = GetComponent<ObjectPooler>();
-        pooler.CreatePool(20);
+        //pooler.CreatePool(20);
         volcanoeUI = GetComponentInChildren<volcanoeUI>();
         volcanoeUI.exploStartEndEvent += ShootVolcanicRock;
     }
@@ -35,7 +35,7 @@ public class VolcanoeMain : MonoBehaviour
     {
         if (start)
         {
-            GameObject Rock = pooler.SpawnFromPool(transform.position + transform.up * explosionYheightStart , null, false);
+            GameObject Rock = pooler.SpawnFromPool(transform.position + transform.up * explosionYheightStart , null);
             Rock.transform.up = transform.up;
             
             //Rock.transform.position = new Vector3(Rock.transform.position.x,Rock.transform.position.y + explosionYheightStart+10,Rock.transform.position.z);

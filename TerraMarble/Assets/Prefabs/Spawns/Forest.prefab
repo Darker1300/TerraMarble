@@ -221,6 +221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b0f0e2a6a95ff40a8ef6d6fbc3402e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  treeCollider: {fileID: 0}
+  fruitID: 0
 --- !u!95 &8678023789653398491
 Animator:
   serializedVersion: 4
@@ -385,10 +387,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ecba51cf07fd5f4884b76dbc2eb2d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startRotation: 0
+  launchStartRotation: 0
   goalRotation: 0
-  jumpFromRotation: 0
-  currentGoalPercent: 0
-  jumpPercent: 0
+  wobbleGoalRotation: 0
+  wobbleAngleVelocity: 0
+  launchPowerPercent: 0
+  launchProgress: 1
   doDebug: 0
 --- !u!33 &1665380755539759995
 MeshFilter:

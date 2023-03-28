@@ -24,8 +24,8 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
     {
 
         pooler = GetComponent<ObjectPooler>();
-        pooler.CreatePool(20);
-      particlePooler.CreatePool(20);
+        //  pooler.CreatePool(20);
+        //particlePooler.CreatePool(20);
 
     }
 
@@ -52,7 +52,7 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
             Vector3 pos = RandomCircle(center, radius);
             Quaternion rot = Quaternion.FromToRotation(Vector3.right, center - pos);
 
-            GameObject spawnedObj = pooler.SpawnFromPool(pos, null, true);
+            GameObject spawnedObj = pooler.SpawnFromPool(pos, null);
             spawnedObj.transform.rotation = rot;
             spawnedObj.GetComponent<EnemyHealth>().spawnRandomCircle = this;
 
@@ -64,7 +64,7 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
     }
     public void ParticleSpawn(Transform transform)
     {
-        particlePooler.SpawnFromPool(transform.position, null, true);
+        particlePooler.SpawnFromPool(transform.position, null);
 
     }
     //Get Pos on unit circle 

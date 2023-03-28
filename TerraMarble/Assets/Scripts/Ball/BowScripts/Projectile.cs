@@ -43,10 +43,19 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    private void Update()
+    {
+        if (((Vector2) planetCenter.position).Towards(transform.position)
+            .sqrMagnitude > (float) (500 * 500)
+            && gameObject.activeInHierarchy)
+        {
+            pooler.ReturnToPool(gameObject);
+        }
+    }
+
     private void FixedUpdate()
     {
-        if (TargetDirection != null && Vector3.Distance(transform.position, planetCenter.position) < 500)
+        if (TargetDirection.sqrMagnitude > 0f)
             transform.Translate(transform.rotation * TargetDirection.normalized * moveSpeed * Time.fixedDeltaTime);
 
         //transform.position = Vector2.MoveTowards(transform.position, targetTrans, moveSpeed * Time.deltaTime);
@@ -73,8 +82,8 @@ public class Projectile : MonoBehaviour
 
            
             
-
-            pooler.ReturnToPool(gameObject);
+            if (gameObject.activeInHierarchy)
+                pooler.ReturnToPool(gameObject);
         }
     }
     

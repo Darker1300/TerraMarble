@@ -1,38 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TenticleRetainSize : MonoBehaviour
 {
-    public int length;
-
+    [Header("References")]
     public LineRenderer lineRend;
+    public Transform targetDir;
+    public Transform wiggleDir;
+
+    [Header("Config")]
+    public int length = 20;
+    public float targetDist = 0.02f;
+    [Range(0.02f, 0.18f)] public float GrowSize = 0.02f;
+    public float wiggleSpeed = 350f;
+    public float wiggleMagnitude = 1.62f;
+    public Transform followObject = null;
+
+    [Header("Data")]
     public Vector3[] segmentPoses;
     public Vector3[] segmentV;
-    public Transform targetDir;
-    public float targetDist;
-   
-    [Range(0.02f,0.18f)]
-    public float GrowSize = 0.1f;
-    [SerializeField]
-   
 
-    public float wiggleSpeed;
-    public float wiggleMagnitude;
-    public Transform wiggleDir;
-    public Vector3 endPos;
-
-    public Transform followObject;
-
-    // Start is called before the first frame update
     void Start()
     {
+        lineRend = lineRend != null ? lineRend : GetComponentInChildren<LineRenderer>();
         lineRend.positionCount = length;
         segmentPoses = new Vector3[length];
         segmentV = new Vector3[length];
     }
 
-    // Update is called once per frame
     void Update()
     {
         wiggleDir.localRotation = Quaternion.Euler(0, 0, Mathf.Sin(Time.time * wiggleSpeed) * wiggleMagnitude);
@@ -43,11 +37,9 @@ public class TenticleRetainSize : MonoBehaviour
             Vector3 targetPos = segmentPoses[i - 1] + (segmentPoses[i] - segmentPoses[i - 1]).normalized * targetDist;
             segmentPoses[i] = Vector3.SmoothDamp(segmentPoses[i], targetPos, ref segmentV[i], GrowSize);
         }
+
         lineRend.SetPositions(segmentPoses);
         if (followObject != null)
-        
-        followObject.position = segmentPoses[segmentPoses.Length - 1];
-        //endPos = segmentPoses[segmentPoses.Length - 1];
-
+            followObject.position = segmentPoses[segmentPoses.Length - 1];
     }
 }

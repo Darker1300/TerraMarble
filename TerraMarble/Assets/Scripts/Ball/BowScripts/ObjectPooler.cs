@@ -1,25 +1,31 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Pool;
+using UnityEngine.Serialization;
 
 public class ObjectPooler : MonoBehaviour
 {
-    [Header("Object type")] public GameObject objectPrefab = null;
-    [SerializeField] private int objectAmount = 0;
-    public string poolName = "Pool";
-    private Queue<GameObject> activeObjects;
-    private Queue<GameObject> deactivatedObjects;
+    [Header("Object type")]
+    public GameObject objectPrefab = null;
 
+    [FormerlySerializedAs("objectAmount")]
+    public int defaultCapacity = 0;
+
+    public int maxCapacity = 1000;
+
+    public string poolName = "Pool";
     private Transform _poolTransform = null;
     public bool UsePrefabName = true;
-    [SerializeField] private bool createOnAwake = false;
+
+    public ObjectPool<GameObject> objectPool;
 
     public Transform PoolTransform
     {
         get
         {
-            if (_poolTransform is null)
-                _poolTransform
-                    = new GameObject(
+            if (_poolTransform == null)
+                _poolTransform = new GameObject(
                             poolName + (UsePrefabName ? ": " + objectPrefab.name : ""))
                         .transform;
             return _poolTransform;
@@ -29,114 +35,69 @@ public class ObjectPooler : MonoBehaviour
 
     private void Awake()
     {
-        if (createOnAwake) CreatePool(10, null);
-        //activeObjects = new Queue<GameObject>();
-        //deactivatedObjects = new Queue<GameObject>();
+        objectPool = new ObjectPool<GameObject>(
+            OnCreate,
+            OnGet,
+            OnRelease,
+            Destroy,
+            true, defaultCapacity, maxCapacity
+        );
+    }
+    private GameObject OnCreate()
+    {
+        GameObject newGameObj = Instantiate(objectPrefab, PoolTransform, false);
+        newGameObj.name = objectPrefab.name + " " + objectPool.CountAll;
 
-        //for (int i = 0; i < objectAmount; i++)
-        //{
-        //    GameObject temp = Instantiate(objectPrefab);
-        //    temp.SetActive(false);
-        //    deactivatedObjects.Enqueue(temp);
-        //}
+        PoolObject poolObj = newGameObj.AddComponent<PoolObject>();
+        poolObj.Pool = this;
+
+        newGameObj.SetActive(false);
+        return newGameObj;
     }
 
-    public void CreatePool(int objAmount, GameObject objPrefab = null)
+    private void OnGet(GameObject gObj)
     {
-        objectAmount = objAmount;
-        if (objPrefab != null) objectPrefab = objPrefab;
-        activeObjects = new Queue<GameObject>();
-        deactivatedObjects = new Queue<GameObject>();
+        gObj.SetActive(true);
+    }
 
-        for (int i = 0; i < objectAmount; i++)
-        {
-            GameObject temp = Instantiate(objectPrefab, PoolTransform);
-            temp.name = objectPrefab.name + " " + i;
-            PoolObject po = temp.AddComponent<PoolObject>();
-            po.Pool = this;
-            temp.SetActive(false);
-            deactivatedObjects.Enqueue(temp);
-        }
+    private void OnRelease(GameObject gObj)
+    {
+        gObj.SetActive(false);
     }
 
     public GameObject SpawnFromPool()
     {
-        GameObject temp;
-        if (deactivatedObjects.Count != 0)
-        {
-            temp = deactivatedObjects.Dequeue();
-        }
-        else
-        {
-            temp = Instantiate(objectPrefab);
-            temp.name = objectPrefab.name + " " + objectAmount + 1;
-            PoolObject po = temp.AddComponent<PoolObject>();
-            po.Pool = this;
-            objectAmount += 1;
-        }
-
-
-        temp.SetActive(true);
-        activeObjects.Enqueue(temp);
-        return temp;
+        GameObject newGameObj = objectPool.Get();
+        newGameObj.transform.SetParent(PoolTransform, true);
+        return newGameObj;
     }
 
-    public GameObject SpawnFromPool(Vector3 position, Transform parent, bool worldPosStays)
+    public GameObject SpawnFromPool(Vector3 position, Transform parent, Quaternion? rotation = null, Vector3? localScale = null)
     {
-        GameObject temp;
-        if (deactivatedObjects.Count != 0)
-        {
-            temp = deactivatedObjects.Dequeue();
-        }
-        else
-        {
-            temp = Instantiate(objectPrefab);
+        GameObject newGameObj = objectPool.Get();
+        Transform newTransform = newGameObj.transform;
+        Transform prefabTransform = objectPrefab.transform;
 
-            temp.name = objectPrefab.name + " " + objectAmount + 1;
-            PoolObject po = temp.AddComponent<PoolObject>();
-            po.Pool = this;
-            objectAmount += 1;
-        }
+        // Parent
+        if (parent == null) 
+            parent = PoolTransform;
 
-        temp.transform.position = position;
-        if (parent != null)
-            temp.transform.SetParent(parent, worldPosStays);
-        else temp.transform.SetParent(_poolTransform, worldPosStays);
+        newTransform.SetParent(parent, false);
+        // Position
+        newTransform.position = position;
+        // Rotation, defaults to local transform in prefab
+        if (rotation != null) newTransform.rotation = rotation.Value;
+        else newTransform.localRotation = prefabTransform.localRotation;
+        // Scale, defaults to local transform in prefab
+        if (localScale != null) newTransform.localScale = localScale.Value;
+        else newTransform.localScale = prefabTransform.localScale;
 
-        temp.SetActive(true);
-        activeObjects.Enqueue(temp);
-        return temp;
-    }
-
-    public void SpawnFromPoolThisPos()
-    {
-        GameObject temp;
-        if (deactivatedObjects.Count != 0)
-        {
-            temp = deactivatedObjects.Dequeue();
-        }
-        else
-        {
-            temp = Instantiate(objectPrefab);
-            temp.name = objectPrefab.name + " " + objectAmount + 1;
-            PoolObject po = temp.AddComponent<PoolObject>();
-            po.Pool = this;
-            objectAmount += 1;
-        }
-
-        temp.transform.position = transform.position;
-        //if (parent != null)
-        //{
-        temp.transform.SetParent(transform);
-        //}
-        temp.SetActive(true);
-        activeObjects.Enqueue(temp);
+        return newGameObj;
     }
 
     public void ReturnToPool(GameObject obj)
     {
-        obj.SetActive(false);
-        obj.transform.SetParent(_poolTransform, true);
-        deactivatedObjects.Enqueue(obj);
+        obj.transform.SetParent(PoolTransform, true);
+        objectPool.Release(obj);
     }
 }
