@@ -133,6 +133,20 @@ public class FruitManager : MonoBehaviour
     public Vector3 ConvertToSurfacePos(Vector3 pos)
     {
          return  pos.normalized * worldSurfaceRadius;
+        //we need to spawn
+
+        //we have a tint layer for trees and regions (regions will have to spawn theirs,)
+        ///when explosion happens it simply adds a red value to the layers which is based off distance (also probably increase transparency)
+        ///////
+        /// explosion happens tells the region , the region has an event that passes out a turn red amount ()objects that can be tinted will subscribe to this event in there on enable/disable
+        ///the tint object script just trys to fade out to 0 transparancy which can be added to if explosions go off nearby.
+        ///
+        /// 
+        ///jobs
+        ///make the region tinted 
+        ///
+        ///
+
 
     }
 
@@ -140,13 +154,13 @@ public class FruitManager : MonoBehaviour
     {
         GizmoSurfacePosition = ConvertToSurfacePos(initialExplosionPos);
         //get distance to surface of planet
-        initialDistance = (initialExplosionPos - ConvertToSurfacePos(initialExplosionPos)).sqrMagnitude;
+       float initialDistance = (initialExplosionPos - ConvertToSurfacePos(initialExplosionPos)).sqrMagnitude;
         //configure  timer and radius
         //countdownTimer =  TimerCurve.Evaluate( Mathf.Clamp((initialDistance * durationPerUnit),0,MaxDistance) / MaxDistance);
         //currentRadius = radiusCurve.Evaluate(Mathf.Clamp((initialDistance * radiusPerUnit), 0, MaxDistance) / MaxDistance);
-        countdownTimer = initialDistance * durationPerUnit;
-        currentRadius = initialDistance * radiusPerUnit;
-
+        float countdownTimer = initialDistance * durationPerUnit;
+        float currentRadius = initialDistance * radiusPerUnit;
+        Debug.Log("distance: " + initialDistance);
 
         while (countdownTimer > 0)
         {
@@ -155,20 +169,34 @@ public class FruitManager : MonoBehaviour
             TimerRadius = countdownTimer / durationPerUnit * radiusPerUnit;
         }
         // Timer has expired, trigger event here
-        Debug.Log("Timer expired!");
+        //Debug.Log("Timer expired!");
 
-        Collider2D[] allOverlappingColliders = Physics2D.OverlapCircleAll(ConvertToSurfacePos(initialExplosionPos), currentRadius, 1 << 8)
-           .Where(col => IsValidTree(col))
+        Collider2D[] allOverlappingColliders = Physics2D.OverlapCircleAll(ConvertToSurfacePos(initialExplosionPos), currentRadius, 1 << LayerMask.NameToLayer("Wheel"))
+           
            .ToArray();
-
+       // Debug.Log("count" + allOverlappingColliders.Length);
         foreach (var collider in allOverlappingColliders)
             //find out what id it has and spawn fruit
-            collider.GetComponentInParent<ForestController>().SpawnFruit();
+            if (collider.GetComponentInParent<RegionWetController>() )
+            {
+                collider.GetComponentInParent<RegionWetController>().AddWetness(initialDistance);
+            }
+            //collider.GetComponentInParent<ForestController>().SpawnFruit();
+            
         // You can add more code here to execute the event
+        //Debug.Log("Timer expired!");
     }
+
+
     public bool IsValidTree(Collider2D col)
     {
         if (col.gameObject.CompareTag("Tree") && col.GetComponentInParent<Growable>().animGoalIndex > 5)
+            return true;
+        return false;
+    }
+    public bool IsRegion(Collider2D col)
+    {
+        if (GetComponentInParent<Region>())
             return true;
         return false;
     }
