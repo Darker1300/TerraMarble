@@ -8,7 +8,8 @@ using UnityUtility;
 
 public class NearbySensor : MonoBehaviour
 {
-    [Serializable] public class CollisionSet<TC, T> : IEnumerable<TC>
+    [Serializable]
+    public class CollisionSet<TC, T> : IEnumerable<TC>
         where TC : class, ICollection<T>, new()
         where T : class
     {
@@ -45,7 +46,7 @@ public class NearbySensor : MonoBehaviour
                     2 => Exit,
                     _ => null
                 };
-            set => this[index] = value;
+            set => this[index] ??= value;
         }
 
         public int Length = 3;
@@ -57,21 +58,21 @@ public class NearbySensor : MonoBehaviour
         {
             for (int index = 0; index < Length; index++)
             {
-                var grabArray = this[index];
-                var colliderArray = target[index];
+                var currentArray = this[index];
+                var targetArray = target[index];
 
-                foreach (var collider in colliderArray)
+                foreach (var collider in targetArray)
                 {
-                    var grab = select.Invoke(collider);
-                    if (grab == null)
+                    var selectResult = select.Invoke(collider);
+                    if (selectResult == null)
                         continue;
-                    grabArray.Add(grab);
+                    currentArray.Add(selectResult);
                 }
             }
         }
     }
 
-    [Serializable] public class ColliderSet : CollisionSet<List<Collider2D>, Collider2D> { }
+    [Serializable] public class ColliderSet : CollisionSet<HashSet<Collider2D>, Collider2D> { }
 
     [Serializable] public class ColliderBuffer
     {
@@ -83,37 +84,50 @@ public class NearbySensor : MonoBehaviour
 
     [SerializeField] private bool drawGizmos = false;
 
-    public List<ColliderBuffer> buffers = new();
+    public List<ColliderBuffer> Buffers = new();
 
-    private readonly List<Collider2D> CurrentDetected = new();
+    private readonly List<Collider2D> tempDetected = new();
+    private readonly HashSet<Collider2D> currentDetected = new();
 
-    public event EventHandler Updated;
+    public event Action Updated;
 
     private void Update()
     {
         Vector2 startPos = transform.position;
 
-        for (var index = 0; index < buffers.Count; index++)
+        foreach (var objectBuffer in Buffers)
         {
-            ColliderBuffer objectBuffer = buffers[index];
+            // Fill tempDetected List
+            Physics2D.OverlapCircle(startPos, objectBuffer.Radius, objectBuffer.Filter, tempDetected);
 
-            // Fill CurrentDetected
-            Physics2D.OverlapCircle(startPos, objectBuffer.Radius, objectBuffer.Filter, CurrentDetected);
+            // Move data from List into currentDetected HashSet
+            currentDetected.Clear();
+            currentDetected.EnsureCapacity(tempDetected.Count);
+            currentDetected.UnionWith(tempDetected);
+            tempDetected.Clear();
 
-            // Exit = in Stay except in current
-            objectBuffer.ColliderSet.Exit = objectBuffer.ColliderSet.Stay.Except(CurrentDetected).ToList();
+            // Exit = in previous Stay but not in current
+            objectBuffer.ColliderSet.Exit.Clear();
+            foreach (var stayCollider in objectBuffer.ColliderSet.Stay)
+                if (!currentDetected.Contains(stayCollider))
+                    objectBuffer.ColliderSet.Exit.Add(stayCollider);
 
-            // Enter = in current but not in Stay
-            objectBuffer.ColliderSet.Enter = CurrentDetected.Except(objectBuffer.ColliderSet.Stay).ToList();
+            // Enter = in current but not in previous Stay
+            objectBuffer.ColliderSet.Enter.Clear();
+            foreach (var currentCollider in currentDetected)
+                if (!objectBuffer.ColliderSet.Stay.Contains(currentCollider))
+                    objectBuffer.ColliderSet.Enter.Add(currentCollider);
 
             // Set StayColliders
-            objectBuffer.ColliderSet.Stay = CurrentDetected.ToList();
+            objectBuffer.ColliderSet.Stay.Clear();
+            foreach (var collider in currentDetected)
+                objectBuffer.ColliderSet.Stay.Add(collider);
 
             // Empty CurrentDetected
-            CurrentDetected.Clear();
+            currentDetected.Clear();
         }
 
-        Updated?.Invoke(this, EventArgs.Empty);
+        Updated?.Invoke();
     }
 
     private void OnDrawGizmosSelected()
@@ -121,13 +135,12 @@ public class NearbySensor : MonoBehaviour
         if (!drawGizmos) return;
         Vector3 startPos = transform.position;
 
-        for (var index = 0; index < buffers.Count; index++)
+        for (var index = 0; index < Buffers.Count; index++)
         {
-            ColliderBuffer colliderBuffer = buffers[index];
+            ColliderBuffer colliderBuffer = Buffers[index];
 
             // Color
-            // float t = math.unlerp(0f, ColliderBuffers.Count - 1, index);
-            float t = (float) index / buffers.Count;
+            float t = (float)index / Buffers.Count;
             Gizmos.color = Color.HSVToRGB(t, .8f, .8f);
 
             // Range
@@ -135,11 +148,10 @@ public class NearbySensor : MonoBehaviour
                 36, Quaternion.LookRotation(Vector3.up, Vector3.forward));
 
             // Lines
-            for (var i = 0; i < colliderBuffer.ColliderSet.Stay.Count; i++)
+            foreach (var stayCollider in colliderBuffer.ColliderSet.Stay)
             {
-                Collider2D nearbyCollider = colliderBuffer.ColliderSet.Stay[i];
                 Gizmos.DrawLine(startPos,
-                    nearbyCollider
+                    stayCollider
                         .ClosestPoint(startPos)
                         .To3DXY(startPos.z));
             }

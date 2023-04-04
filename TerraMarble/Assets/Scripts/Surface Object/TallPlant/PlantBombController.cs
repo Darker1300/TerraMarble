@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using NaughtyAttributes;
 using Shapes;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityUtility;
 
@@ -13,52 +13,48 @@ public class PlantBombController : MonoBehaviour
     [SerializeField] private Color flashColor = Color.red;
     [SerializeField] private float flashSpeed = 0.25f;
 
+    [SerializeField] private ContactFilter2D explodeFilter;
+
     [SerializeField] private bool showGizmos = true;
     [SerializeField] private bool showDebug = false;
 
-    [SerializeField] private Disc grabUI = null;
-    [SerializeField] private Disc renderer = null;
+    [SerializeField] private Disc bodyRenderer = null;
     [SerializeField] private BallGrabbable grabbable = null;
 
     [Header("Data")]
-    [SerializeField] private bool isCounting = false;
-    [SerializeField] private float timer = float.PositiveInfinity;
-    
-    [SerializeField] private bool isGrabbed = true;
-
-    [SerializeField] private TallPlantController mother = null;
+    public bool isCounting = false;
+    [SerializeField] private float countdownTimer = float.PositiveInfinity;
+    [SerializeField] private Color startColor = Color.white;
     [SerializeField] private WheelRegionsManager regions = null;
 
-    [SerializeField] private Color startColor = Color.white;
 
-    [SerializeField] private LayerMask explodeLayerMask;
-
-    private void Awake()
+    private void Start()
     {
-        startColor = renderer.Color;
+        startColor = bodyRenderer.Color;
 
-        mother = mother == null
-            ? GetComponentInParent<TallPlantController>()
-            : mother;
+        regions = regions != null ? regions
+            : FindObjectOfType<WheelRegionsManager>();
 
-        regions = regions == null
-            ? FindObjectOfType<WheelRegionsManager>()
-            : regions;
+        grabbable = grabbable != null ? grabbable
+            : GetComponentInChildren<BallGrabbable>();
 
-        grabbable = grabbable == null
-            ? GetComponentInChildren<BallGrabbable>()
-            : grabbable;
-
-        grabbable.GrabEnd.AddListener(StartCountdown);
+        grabbable.GrabEnd += OnGrabEnd;
     }
 
-    public void Initialise(TallPlantController _mother, WheelRegionsManager _regions)
+    private void OnGrabEnd(BallGrabber grabber)
+        => StartCountdown();
+
+    private void OnEnable()
     {
-        mother = _mother;
-        regions = _regions;
         isCounting = false;
-        timer = duration;
-        isGrabbed = false;
+        countdownTimer = duration;
+    }
+
+    [Button]
+    public void StartCountdown()
+    {
+        countdownTimer = duration;
+        isCounting = true;
     }
 
     void Update()
@@ -66,60 +62,28 @@ public class PlantBombController : MonoBehaviour
         UpdateCountdown();
     }
 
-    public void StartGrab()
-    {
-        if (isCounting) return;
-
-
-    }
-
-    public void EndGrab()
-    {
-        isCounting = true;
-    }
-
-    [Button]
-    public void TestPrefire()
-    {
-        Initialise(
-            GetComponentInParent<TallPlantController>(),
-            FindObjectOfType<WheelRegionsManager>());
-    }
-
-    [Button]
-    public void StartCountdown()
-    {
-        timer = duration;
-        isCounting = true;
-    }
-
     private void UpdateCountdown()
     {
         if (!isCounting) return;
 
-        timer -= Time.deltaTime;
-        if (timer > 0f)
+        countdownTimer -= Time.deltaTime;
+        if (countdownTimer > 0f)
         {
-            renderer.Color = Color.Lerp(flashColor, startColor,
-                Mathf.PingPong(timer, flashSpeed) / flashSpeed);
+            bodyRenderer.Color = Color.Lerp(flashColor, startColor,
+                Mathf.PingPong(countdownTimer, flashSpeed) / flashSpeed);
         }
         else
         {
-            timer = 0f;
+            countdownTimer = 0f;
             isCounting = false;
             Explode();
         }
     }
 
-    [Button]
-    public void Explode()
+    [Button] public void Explode()
     {
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(explodeLayerMask);
-        filter.useTriggers = true;
-
         List<Collider2D> targets = new List<Collider2D>();
-        Physics2D.OverlapCircle(transform.position, radius, filter, targets);
+        Physics2D.OverlapCircle(transform.position, radius, explodeFilter, targets);
 
         for (var index = 0; index < targets.Count; index++)
         {
@@ -135,7 +99,8 @@ public class PlantBombController : MonoBehaviour
                     if (showDebug)
                         Debug.Log($"Explode: {region.gameObject.name}");
 
-                    region.TerraformToWater();
+                    if (region.regionID != Region.RegionID.Water)
+                        region.TerraformToDirt();
                     continue;
                 }
             }
@@ -153,7 +118,7 @@ public class PlantBombController : MonoBehaviour
             }
         }
 
-        renderer.Color = startColor;
+        bodyRenderer.Color = startColor;
 
         ObjectPooler explosionPartPool = GameObject.Find("EnemySpawner")
             .transform.Find("ParticleSpawner")

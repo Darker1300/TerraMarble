@@ -182,7 +182,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 854358579}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -863,8 +863,8 @@ Transform:
   m_GameObject: {fileID: 4297447128960843057}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4297447129141640636}
   m_RootOrder: -1
@@ -985,7 +985,6 @@ GameObject:
   - component: {fileID: 4297447129141640615}
   - component: {fileID: 6501393804689502291}
   - component: {fileID: 2321576262505571559}
-  - component: {fileID: 9148335121568481981}
   - component: {fileID: 4297447129141640614}
   m_Layer: 6
   m_Name: ball2pog
@@ -1003,7 +1002,7 @@ Transform:
   m_GameObject: {fileID: 4297447129141640627}
   m_LocalRotation: {x: 0, y: 0, z: -0.7470618, w: 0.6647546}
   m_LocalPosition: {x: 9.152636, y: -3.857516, z: 0.049092233}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4297447130273422565}
@@ -1032,7 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823662051d7dd5e4ca2ec7002db7c4ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowModeTimeScale: 0.6
+  slowModeTimeScale: 0.8
   defaultTimeScale: 0.8
   isInput: 1
 --- !u!114 &4297447129141640639
@@ -1075,9 +1074,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelDir: {x: -9.152636, y: 3.857516, z: -0.049092233}
   stompForceVector: {x: 0, y: 0, z: 0}
-  maxGravityDist: 132
-  maxGravity: 40.3
-  stompPower: 38
+  maxGravityDist: 300
+  maxGravity: 40
+  stompPower: 40
 --- !u!114 &4297447129141640615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1197,23 +1196,6 @@ MonoBehaviour:
   partSystem: {fileID: 0}
   jumpTimer: 0
   particleTimer: 0
---- !u!114 &9148335121568481981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4297447129141640627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a10f2d00daee6f049a40960b3f0c6338, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nearbySensor: {fileID: 1487549798048971839}
-  bufferNames:
-  - Bomb
-  NearbyGrabSet:
-    Length: 3
 --- !u!50 &4297447129141640614
 Rigidbody2D:
   serializedVersion: 4
@@ -1227,7 +1209,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.8
-  m_LinearDrag: 1
+  m_LinearDrag: 0.8
   m_AngularDrag: 21.88
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -1356,8 +1338,8 @@ Transform:
   m_GameObject: {fileID: 4297447130506636376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4297447129141640636}
   m_RootOrder: -1
@@ -1471,6 +1453,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4166348050657927602}
+  - component: {fileID: 4890461099220577746}
   m_Layer: 6
   m_Name: Grabber
   m_TagString: Untagged
@@ -1494,6 +1477,25 @@ Transform:
   m_Father: {fileID: 4297447129141640636}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4890461099220577746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901036121801512933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a10f2d00daee6f049a40960b3f0c6338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NearbySensor: {fileID: 1487549798048971839}
+  BufferNames:
+  - Bomb
+  NearbyGrabSet:
+    Length: 3
+  tether: {fileID: 854358583}
+  grabbed: {fileID: 0}
 --- !u!1 &4912910403522471970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,8 +1524,8 @@ Transform:
   m_GameObject: {fileID: 4912910403522471970}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4297447129141640636}
   m_RootOrder: -1
@@ -1639,7 +1641,7 @@ GameObject:
   - component: {fileID: 6390821894899408567}
   - component: {fileID: 1487549798048971839}
   m_Layer: 6
-  m_Name: NearbyTargets
+  m_Name: NearbySensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1673,9 +1675,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 1
-  buffers:
+  Buffers:
   - Name: Bomb
-    Radius: 10
+    Radius: 25
     Filter:
       useTriggers: 0
       useLayerMask: 1
@@ -1691,30 +1693,6 @@ MonoBehaviour:
       minNormalAngle: 0
       maxNormalAngle: 0
     ColliderSet:
-      Enter: []
-      Stay: []
-      Exit: []
-      Length: 0
-  - Name: Flying
-    Radius: 15
-    Filter:
-      useTriggers: 1
-      useLayerMask: 1
-      useDepth: 0
-      useOutsideDepth: 0
-      useNormalAngle: 0
-      useOutsideNormalAngle: 0
-      layerMask:
-        serializedVersion: 2
-        m_Bits: 8192
-      minDepth: 0
-      maxDepth: 0
-      minNormalAngle: 0
-      maxNormalAngle: 0
-    ColliderSet:
-      Enter: []
-      Stay: []
-      Exit: []
       Length: 0
 --- !u!1 &8994145039661576340
 GameObject:

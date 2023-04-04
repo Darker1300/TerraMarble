@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1464740641680182732}
-  - component: {fileID: 1224625824253578023}
   - component: {fileID: 8057141272203695575}
   - component: {fileID: 1096975128922595682}
+  - component: {fileID: 1224625824253578023}
   m_Layer: 16
-  m_Name: Disc UI Grab
+  m_Name: UI Grab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,56 +34,6 @@ Transform:
   m_Father: {fileID: 7731336344334921656}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1224625824253578023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6653495111637455825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dd51d29965c9d04599a2fdc8a833c6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blendMode: 9
-  scaleMode: 0
-  color: {r: 0, g: 0, b: 0, a: 0}
-  detailLevel: 2
-  renderQueue: -1
-  zTest: 4
-  zOffsetFactor: 0
-  zOffsetUnits: 0
-  colorMask: 15
-  stencilComp: 8
-  stencilOpPass: 0
-  stencilRefID: 0
-  stencilReadMask: 255
-  stencilWriteMask: 255
-  type: 2
-  colorMode: 1
-  colorOuterStart: {r: 1, g: 1, b: 1, a: 1}
-  colorInnerEnd: {r: 1, g: 1, b: 1, a: 1}
-  colorOuterEnd: {r: 1, g: 1, b: 1, a: 1}
-  geometry: 0
-  angUnitInput: 1
-  angRadiansStart: 0
-  angRadiansEnd: 2.3561945
-  radius: 5
-  radiusSpace: 0
-  thickness: 0.1
-  thicknessSpace: 0
-  arcEndCaps: 0
-  matchDashSpacingToSize: 1
-  dashed: 0
-  dashStyle:
-    type: 0
-    space: -2
-    snap: 1
-    size: 16
-    spacing: 0.5
-    offset: 0
-    shapeModifier: 1
 --- !u!33 &8057141272203695575
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -134,6 +84,56 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1224625824253578023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6653495111637455825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dd51d29965c9d04599a2fdc8a833c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blendMode: 9
+  scaleMode: 0
+  color: {r: 1, g: 1, b: 1, a: 0}
+  detailLevel: 2
+  renderQueue: -1
+  zTest: 4
+  zOffsetFactor: 0
+  zOffsetUnits: 0
+  colorMask: 15
+  stencilComp: 8
+  stencilOpPass: 0
+  stencilRefID: 0
+  stencilReadMask: 255
+  stencilWriteMask: 255
+  type: 2
+  colorMode: 1
+  colorOuterStart: {r: 0, g: 0, b: 0, a: 0}
+  colorInnerEnd: {r: 1, g: 1, b: 1, a: 1}
+  colorOuterEnd: {r: 1, g: 1, b: 1, a: 1}
+  geometry: 0
+  angUnitInput: 1
+  angRadiansStart: 0
+  angRadiansEnd: 2.3561945
+  radius: 15
+  radiusSpace: 0
+  thickness: 0.2
+  thicknessSpace: 0
+  arcEndCaps: 0
+  matchDashSpacingToSize: 1
+  dashed: 0
+  dashStyle:
+    type: 0
+    space: -2
+    snap: 1
+    size: 16
+    spacing: 0.5
+    offset: 0
+    shapeModifier: 1
 --- !u!1 &7731336344233559895
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +198,7 @@ MonoBehaviour:
   sides: 3
   roundness: 0
   angle: 1.5707964
-  radius: 0.3
+  radius: 0.9
   angUnitInput: 1
   geometry: 0
   radiusSpace: 0
@@ -308,8 +308,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 7731336344233559894}
   - {fileID: 1464740641680182732}
+  - {fileID: 7731336344233559894}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -325,24 +325,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2900284c5eb5b6147955735036bffe45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 15
+  radius: 7.5
   duration: 3
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashSpeed: 0.25
+  explodeFilter:
+    useTriggers: 1
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 8320
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
   showGizmos: 1
   showDebug: 0
-  grabUI: {fileID: 1224625824253578023}
-  renderer: {fileID: 7731336344334921657}
+  bodyRenderer: {fileID: 7731336344334921657}
   grabbable: {fileID: 8703572925979480112}
   isCounting: 0
-  timer: Infinity
-  isGrabbed: 1
-  mother: {fileID: 0}
-  regions: {fileID: 0}
+  countdownTimer: Infinity
   startColor: {r: 1, g: 1, b: 1, a: 1}
-  explodeLayerMask:
-    serializedVersion: 2
-    m_Bits: 8320
+  regions: {fileID: 0}
 --- !u!114 &8703572925979480112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,12 +363,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7708211da9b318b4496d9ad7f77491fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GrabStart:
-    m_PersistentCalls:
-      m_Calls: []
-  GrabEnd:
-    m_PersistentCalls:
-      m_Calls: []
+  GrabRadius: 5
+  NearbyRadius: 25
+  FadeTime: 0.5
+  MaxAlpha: 0.5
+  showUI: 1
+  showGizmos: 1
+  BallIsNearby: 0
+  IsGrabbed: 0
+  Grabber: {fileID: 0}
+  discUI: {fileID: 1224625824253578023}
 --- !u!33 &7731336344334921658
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -446,7 +458,7 @@ MonoBehaviour:
   angUnitInput: 1
   angRadiansStart: 0
   angRadiansEnd: 2.3561945
-  radius: 0.2
+  radius: 0.6
   radiusSpace: 0
   thickness: 0.5
   thicknessSpace: 0
@@ -476,4 +488,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.6

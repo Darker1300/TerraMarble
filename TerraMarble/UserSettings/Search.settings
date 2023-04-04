@@ -7,9 +7,15 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.8BEC98E7" = ""
+	"last_search.8BEC98E7" = "layer:8"
 	"OpenInspectorPreview.8BEC98E7" = "1"
 	"currentGroup.8BEC98E7" = "scene"
+	"last_search.7788661B" = "layer:13"
+	"OpenInspectorPreview.7788661B" = "0"
+	"currentGroup.7788661B" = "all"
+	"last_search.E6F67C7E" = ""
+	"OpenInspectorPreview.E6F67C7E" = "0"
+	"currentGroup.E6F67C7E" = "all"
 }
 providers = {
 	adb = {
@@ -63,10 +69,10 @@ recentSearches = [
 searchItemFavorites = [
 ]
 savedSearchesSortOrder = 0
-showSavedSearchPanel = true
+showSavedSearchPanel = false
 expandedQueries = [
 ]
 queryBuilder = false
 ignoredProperties = "id;name;classname;imagecontentshash"
-helperWidgetCurrentArea = "h:"
+helperWidgetCurrentArea = "p:"
 disabledIndexers = ""

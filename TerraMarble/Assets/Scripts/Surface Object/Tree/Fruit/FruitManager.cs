@@ -152,7 +152,7 @@ public class FruitManager : MonoBehaviour
         //currentRadius = radiusCurve.Evaluate(Mathf.Clamp((initialDistance * radiusPerUnit), 0, MaxDistance) / MaxDistance);
         float countdownTimer = initialDistance * durationPerUnit;
         float currentRadius = initialDistance * radiusPerUnit;
-        Debug.Log("distance: " + initialDistance);
+        // Debug.Log("distance: " + initialDistance);
 
         while (countdownTimer > 0)
         {
