@@ -13,6 +13,8 @@ public class ForestController : MonoBehaviour
 
     private FruitBase[] fruits;
     public FruitBase.FruitID fruitID;
+    public ChangeColorOverTime AbsorbFerilizer;
+    public WetComp treeWetComp;
     
 
     #region Events
@@ -31,6 +33,7 @@ public class ForestController : MonoBehaviour
 
         surfaceObject.DestroyStart.AddListener(OnDestroyStart);
         region.BallHitEnter.AddListener(OnBallHitEnter);
+        GetComponentInParent<RegionWetController>().SpawnFruitEvent += AbsorbAndProduceFruit;
     }
 
     private void Update()
@@ -46,6 +49,14 @@ public class ForestController : MonoBehaviour
         }
     }
 
+    public void AbsorbAndProduceFruit()
+    {
+        treeWetComp.UnsubscribeToRegionWetComp();
+        //sucking up juice
+        AbsorbFerilizer.MakeTransparent();
+
+
+    }
     public void SpawnFruit()
     {
         Vector2[] fruitPoints = fruitManager.GetFruitPositions();

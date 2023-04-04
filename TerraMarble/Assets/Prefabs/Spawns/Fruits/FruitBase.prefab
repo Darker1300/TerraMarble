@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2971695635172661997}
   - component: {fileID: 6143709949416282135}
   - component: {fileID: 4063868344270546699}
+  - component: {fileID: 6947646198797452861}
   m_Layer: 14
   m_Name: FruitBase
   m_TagString: Untagged
@@ -50,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forestController: {fileID: 0}
   renderObj: {fileID: 0}
+  bow: {fileID: 0}
   fruitID: 3
   treeIndex: -1
 --- !u!114 &8127807158947245780
@@ -168,3 +170,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
+--- !u!114 &6947646198797452861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054577945461754974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 916e1cd055d50c44a8439940ca687da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToScale: {fileID: 786228292376368752}
+  startScale: 0.5
+  targetScale: 1
+  scaleSpeed: 1
+  overshootAmount: 0.2

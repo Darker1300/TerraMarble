@@ -49,7 +49,7 @@ public class RightAim : MonoBehaviour
         timeSlowDown = GetComponent<SlowTime>();
 
         InputManager.LeftDragEvent += Release;
-        InputManager.LeftAlternateEvent += AlternateStart;
+        InputManager.LeftTap += AlternateStart;
         //InputManager.RightDragEvent += TapDrag;
         InputManager.LeftAlternateDragVectorEvent += AimRestrictor;
         // Ui.enabled = true;

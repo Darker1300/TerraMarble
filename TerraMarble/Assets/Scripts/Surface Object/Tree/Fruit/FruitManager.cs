@@ -31,7 +31,7 @@ public class FruitManager : MonoBehaviour
 
     [Header("explosion to fertize delay and radius size")]
 
-    public float initialDistance;
+    //public float initialDistance;
     public float durationPerUnit;
     public float radiusPerUnit;
     [SerializeField] private float MaxDistance = 350;
@@ -43,6 +43,8 @@ public class FruitManager : MonoBehaviour
     [SerializeField] private AnimationCurve radiusCurve;
     [SerializeField] private AnimationCurve TimerCurve;
     private float TimerRadius;
+    private float gismosInitRadius;
+
 
     private void Start()
     {
@@ -50,6 +52,7 @@ public class FruitManager : MonoBehaviour
 
        //fruitPositions = new Vector2[6];
         collider = GetComponent<CircleCollider2D>();
+        
     }
 
     private void OnDrawGizmos()
@@ -70,9 +73,10 @@ public class FruitManager : MonoBehaviour
 
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(GizmoSurfacePosition, currentRadius);
+        Gizmos.DrawWireSphere(GizmoSurfacePosition, gismosInitRadius);
+
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(GizmoSurfacePosition, TimerRadius);
+       // Gizmos.DrawWireSphere(GizmoSurfacePosition, TimerRadius);
         
     }
 
@@ -145,14 +149,17 @@ public class FruitManager : MonoBehaviour
     IEnumerator FertilizerFallToWetTreesCountDown(Vector3 initialExplosionPos)
     {
         GizmoSurfacePosition = ConvertToSurfacePos(initialExplosionPos);
+        Vector2 surfacePos = ConvertToSurfacePos(initialExplosionPos);
         //get distance to surface of planet
-       float initialDistance = (initialExplosionPos - ConvertToSurfacePos(initialExplosionPos)).sqrMagnitude;
+       float initialDistance = Vector2.Distance(initialExplosionPos, surfacePos);
         //configure  timer and radius
         //countdownTimer =  TimerCurve.Evaluate( Mathf.Clamp((initialDistance * durationPerUnit),0,MaxDistance) / MaxDistance);
         //currentRadius = radiusCurve.Evaluate(Mathf.Clamp((initialDistance * radiusPerUnit), 0, MaxDistance) / MaxDistance);
         float countdownTimer = initialDistance * durationPerUnit;
         float currentRadius = initialDistance * radiusPerUnit;
-        Debug.Log("distance: " + initialDistance);
+        gismosInitRadius = currentRadius;
+        //currentRadius = 2f;
+        //Debug.Log("distance: " + initialDistance + " | time: " + countdownTimer);
 
         while (countdownTimer > 0)
         {
@@ -166,13 +173,19 @@ public class FruitManager : MonoBehaviour
         Collider2D[] allOverlappingColliders = Physics2D.OverlapCircleAll(ConvertToSurfacePos(initialExplosionPos), currentRadius, 1 << LayerMask.NameToLayer("Wheel"))
            
            .ToArray();
-       // Debug.Log("count" + allOverlappingColliders.Length);
+        //Debug.Log("collection of regions " + allOverlappingColliders.Length);
+        //Debug.Log("")
+        // Debug.Log("count" + allOverlappingColliders.Length);
+        int wet = 0;
         foreach (var collider in allOverlappingColliders)
             //find out what id it has and spawn fruit
-            if (collider.GetComponentInParent<RegionWetController>() )
+            if (collider.GetComponentInParent<RegionWetController>())
             {
-                collider.GetComponentInParent<RegionWetController>().AddWetness(initialDistance);
+                collider.GetComponentInParent<RegionWetController>().AddWetness(surfacePos,currentRadius);
+                ++wet;
+                //collider.GetComponentInParent<RegionWetController>().AddWetness(initialDistance);
             }
+        Debug.Log("wet trees :" + wet);
             //collider.GetComponentInParent<ForestController>().SpawnFruit();
             
         // You can add more code here to execute the event

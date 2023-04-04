@@ -9,6 +9,8 @@ public class WetComp : MonoBehaviour
 	bool isRegion = false;
 	[SerializeField] private Region parentRegion;
 	[SerializeField] private ShapeRenderer shape;
+	
+
 	//private Color StartColor;
     private void Start()
     {
@@ -26,6 +28,15 @@ public class WetComp : MonoBehaviour
 
 
     }
+	public void SubscribeToRegionWetComp()
+	{
+		parentRegion.GetComponent<RegionWetController>().WetUpdate += UpdateWet;
+	}
+	public void UnsubscribeToRegionWetComp()
+	{
+		parentRegion.GetComponent<RegionWetController>().WetUpdate -= UpdateWet;
+	}
+	
 	public void MakeTransparent()
 	{
         //shape.Color = Color.blue;
@@ -40,9 +51,9 @@ public class WetComp : MonoBehaviour
 		// apply color change to renderer
 
 		shape.Color = SetAlpha(shape.Color,percent/100);
-		//Debug.Log("wetAdded" + percent / 100);
-		//shape.Color = Color.blue;
-		
+        //Debug.Log("wetAdded" + percent / 100);
+        //shape.Color = Color.blue;
+        
 	}
 
 	
