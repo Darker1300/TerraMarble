@@ -10,6 +10,7 @@ public class FruitBase : MonoBehaviour
     public ForestController forestController;
     public GameObject renderObj;
     public Bow bow;
+    private WeirdScale fruitScale;
     public enum FruitID
     {
         RED,BLUE,YELLOW,SIZE
@@ -17,10 +18,16 @@ public class FruitBase : MonoBehaviour
     private void Start()
     {
        bow = GameObject.FindObjectOfType<Bow>();
+        fruitScale = GetComponent<WeirdScale>();
     }
     public FruitID fruitID;
 
     public int treeIndex = -1;
+
+    private void OnEnable()
+    {
+        //fruitScale.StartScaleObject();
+    }
 
     private void OnTriggerEnter2D(Collider2D collider2D)
     {
@@ -29,11 +36,13 @@ public class FruitBase : MonoBehaviour
 
         if (ballState != null)
         {
-            forestController.PopFruit(treeIndex);
-            bow.AmmoAmount++;
-            bow.UpdateAmmo();
+
+                        
 
         }
+        forestController.PopFruit(treeIndex);
+        bow.AmmoAmount++;
+        bow.UpdateAmmo();
 
     }
 

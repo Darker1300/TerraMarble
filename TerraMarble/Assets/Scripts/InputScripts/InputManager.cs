@@ -55,9 +55,9 @@ public class InputManager : MonoBehaviour
             Camera.main.orthographicSize * 2.0f);
 
     [SerializeField] private InputModule inputAsset;
-    public float LeftStartTime;
+    public float startTime;
     public float minDragAmount;
-    public float RightStartTime;
+   
 
 
     public enum DragTypes
@@ -88,8 +88,8 @@ public class InputManager : MonoBehaviour
     public static event DragLeft RightDragEvent;
     public bool hasMoved;
 
-    public static event EventHandler LeftAlternateEvent;
-    public static event EventHandler RightAlternateEvent;
+    public static event EventHandler LeftTap;
+    public static event EventHandler RightTap;
 
     //TAP 
     public static event EventHandler TapLeftEvent;
@@ -131,7 +131,7 @@ public class InputManager : MonoBehaviour
                     {
                         leftMouseDragID = InputIdentifier.isRight;
 
-                        RightStartTime = Time.time;
+                        startTime = Time.time;
                         DragRightStartScreenPos = ctx.ReadValue<Vector2>();
                         DragRightEndScreenPos = DragRightStartScreenPos;
                         RightDragEvent?.Invoke(true);
@@ -139,7 +139,7 @@ public class InputManager : MonoBehaviour
                     else //touch left
                     {
                         leftMouseDragID = InputIdentifier.IsLeft;
-                        LeftStartTime = Time.time;
+                        startTime = Time.time;
                         DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
                         DragLeftEndScreenPos = DragLeftStartScreenPos;
                         LeftDragEvent?.Invoke(true);
@@ -154,7 +154,7 @@ public class InputManager : MonoBehaviour
 
 
 
-                    LeftStartTime = Time.time;
+                    startTime = Time.time;
 
                     DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
                     DragLeftEndScreenPos = DragLeftStartScreenPos;
@@ -255,7 +255,7 @@ public class InputManager : MonoBehaviour
                     {
                         rightMouseDragID = InputIdentifier.isRight;
 
-                        RightStartTime = Time.time;
+                        startTime = Time.time;
                         DragRightStartScreenPos = ctx.ReadValue<Vector2>();
                         DragRightEndScreenPos = DragRightStartScreenPos;
                         RightDragEvent?.Invoke(true);
@@ -263,7 +263,7 @@ public class InputManager : MonoBehaviour
                     else
                     {
                         rightMouseDragID = InputIdentifier.IsLeft;
-                        LeftStartTime = Time.time;
+                        startTime = Time.time;
                         DragLeftStartScreenPos = ctx.ReadValue<Vector2>();
                         DragLeftEndScreenPos = DragLeftStartScreenPos;
                         LeftDragEvent?.Invoke(true);
@@ -275,7 +275,7 @@ public class InputManager : MonoBehaviour
                 }
                 else //PC
                 {
-                    RightStartTime = Time.time;
+                    startTime = Time.time;
 
 
                     DragRightStartScreenPos = ctx.ReadValue<Vector2>();
@@ -362,9 +362,9 @@ public class InputManager : MonoBehaviour
         switch (dragtype)
         {
             case DragTypes.CONTROLLER:
-
+                
                 //if bellow hold time and magnitude is less then threshold 
-                if (Time.time - LeftStartTime < holdTime &&
+                if (Time.time - startTime < holdTime &&
                     (dragStartWorldPos -
                      dragCurrentWorldPos).magnitude > minDragAmount)
                 {
@@ -373,16 +373,13 @@ public class InputManager : MonoBehaviour
                     dragtype = DragTypes.STANDARD;
 
 
-                    if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
+                   // if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
 
 
                     break;
                 }
-                else if (Time.time - LeftStartTime >= holdTime)
-                {
-                    dragtype = DragTypes.ALTERNATE;
-                    LeftAlternateEvent?.Invoke(null, EventArgs.Empty);
-                }
+                else tap = true;
+
 
                 break;
             case DragTypes.STANDARD:
@@ -417,25 +414,20 @@ public class InputManager : MonoBehaviour
             case DragTypes.CONTROLLER:
 
                 //if bellow hold time and magnitude is less then threshold 
-                if (Time.time - RightStartTime < holdTime &&
-                    (dragStartWorldPos -
-                     dragCurrentWorldPos).magnitude > minDragAmount)
+                if ((dragStartWorldPos - dragCurrentWorldPos).magnitude > minDragAmount)
                 {
                     //if less than threshold
 
                     dragtype = DragTypes.STANDARD;
 
 
-                    if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
+                   // if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
 
 
                     break;
                 }
-                else if (Time.time - RightStartTime >= holdTime)
-                {
-                    dragtype = DragTypes.ALTERNATE;
-                    RightAlternateEvent?.Invoke(null, EventArgs.Empty);
-                }
+                else tap = true;
+                
 
                 break;
             case DragTypes.STANDARD:
@@ -464,15 +456,16 @@ public class InputManager : MonoBehaviour
         Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos);
         Vector2 dragCurrentScreenPos = drag;
         Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
-
-        if (Time.time - LeftStartTime <= TapTime
-            && (dragStartWorldPos - dragCurrentWorldPos).magnitude < minDragAmount)
+        Debug.Log("Also Working");
+        if (Time.time - startTime <= TapTime && tap)
         {
-            if (showDebug) Debug.Log("tap: " + (Time.time - LeftStartTime));
-
+            if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
+            tap = false;
             //TapLeftEvent?.Invoke(null, EventArgs.Empty);
-            LeftStartTime = 0;
-        }
+
+            LeftTap?.Invoke(null, EventArgs.Empty);
+            startTime = 0;
+        }else
 
 
         {
@@ -480,7 +473,7 @@ public class InputManager : MonoBehaviour
 
             LeftDragEvent?.Invoke(false);
 
-            LeftStartTime = 0;
+            startTime = 0;
 
             DragLeftStartScreenPos = Vector2.zero;
         }
@@ -494,22 +487,22 @@ public class InputManager : MonoBehaviour
         Vector2 dragCurrentScreenPos = drag;
         Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
 
-        if (Time.time - RightStartTime <= TapTime
-            && (dragStartWorldPos - dragCurrentWorldPos).magnitude < minDragAmount)
+        if (Time.time - startTime <= TapTime && tap)
         {
-            if (showDebug) Debug.Log("tap: " + (Time.time - RightStartTime));
-
+            if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
+            tap = false;
+            RightTap?.Invoke(null, EventArgs.Empty);
             //TapLeftEvent?.Invoke(null, EventArgs.Empty);
-            RightStartTime = 0;
+            startTime = 0;
         }
 
-
+        else
         {
             if (showDebug) Debug.Log("Drag End");
 
             RightDragEvent?.Invoke(false);
 
-            RightStartTime = 0;
+            startTime = 0;
 
             DragRightStartScreenPos = Vector2.zero;
         }
@@ -576,6 +569,7 @@ public class InputManager : MonoBehaviour
     #region Singleton
 
     private Vector2 mouseDelta;
+    private bool tap;
 
     public static InputManager Instance { get; private set; }
 

@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: fruitID
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6143709949416282135, guid: ead7e87566b328e42b86173468d419f4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7616120600799479259, guid: ead7e87566b328e42b86173468d419f4, type: 3}
       propertyPath: color.b
       value: 0.18431373

@@ -20,8 +20,8 @@ public class BallClimb : MonoBehaviour
 
     private void Start()
     {
-        InputManager.LeftAlternateEvent += RespawnBall;
-        InputManager.RightAlternateEvent += RespawnBall;
+       // InputManager.LeftAlternateEvent += RespawnBall;
+        //InputManager.RightAlternateEvent += RespawnBall;
 
         startPos = transform.position;
         rb ??= GetComponent<Rigidbody2D>();

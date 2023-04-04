@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 970465604469324333}
   - component: {fileID: 970465604469324332}
   - component: {fileID: 970465604469324335}
+  - component: {fileID: 798762849977842697}
   m_Layer: 7
   m_Name: RegionDefault v2
   m_TagString: Untagged
@@ -200,3 +201,19 @@ MeshRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &798762849977842697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970465604469324336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c41d70353b39e34894cbe1b3044a2b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  percentagePerMeter: 0.07
+  maxWetness: 100
+  wetnessDecreaseRate: 1
+  currentWetness: 0
