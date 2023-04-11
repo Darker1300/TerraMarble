@@ -43,4 +43,10 @@ public class TenticleRetainSize : MonoBehaviour
         if (followObject != null)
             followObject.position = segmentPoses[segmentPoses.Length - 1];
     }
+
+    public Vector2 GetPullDirection()
+    {
+        Vector2 direction = followObject.position - segmentPoses[segmentPoses.Length - 1].normalized;
+      return  direction = direction * Vector2.Distance(followObject.position, segmentPoses[0]);
+    }
 }
