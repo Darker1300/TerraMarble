@@ -185,7 +185,7 @@ public class FruitManager : MonoBehaviour
                 ++wet;
                 //collider.GetComponentInParent<RegionWetController>().AddWetness(initialDistance);
             }
-        Debug.Log("wet trees :" + wet);
+        //Debug.Log("wet trees :" + wet);
             //collider.GetComponentInParent<ForestController>().SpawnFruit();
             
         // You can add more code here to execute the event

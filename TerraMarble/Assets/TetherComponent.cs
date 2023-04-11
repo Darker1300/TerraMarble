@@ -6,7 +6,8 @@ public class TetherComponent : MonoBehaviour
 {
     private TenticleRetainSize tenticleScr;
     public GameObject tetheredObj;
-    
+
+    public LineRenderer tetherLine;
 
     public void AttachObjectToTether(GameObject ObjToTethered)
     {
@@ -14,14 +15,22 @@ public class TetherComponent : MonoBehaviour
         tenticleScr.followObject = ObjToTethered.transform;
         //turn on tether
         tenticleScr.enabled = true;
+        tetherLine.enabled = true;
+        tetheredObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
+        
     }
 
     public void DetachObjectToTether()
     {
+        tetheredObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        tetheredObj.GetComponent<Rigidbody2D>().AddForce(tenticleScr.GetPullDirection()*20f);
         tetheredObj = null;
         tenticleScr.followObject = null;
         //turn on tether
         tenticleScr.enabled = false;
+        tetherLine.enabled = false;
+       
+        
     }
 
 

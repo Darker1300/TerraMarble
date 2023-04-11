@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Numerics;
 using NaughtyAttributes;
 using UnityEngine;
@@ -57,7 +58,11 @@ public class InputManager : MonoBehaviour
     [SerializeField] private InputModule inputAsset;
     public float startTime;
     public float minDragAmount;
-   
+    [SerializeField] float TapMinDragAmount = 20;
+    private float lastTapTime;
+    private bool tapTimer;
+    IEnumerator DoubleTapQuery;
+    [SerializeField] private float QueryTimer;
 
 
     public enum DragTypes
@@ -75,8 +80,9 @@ public class InputManager : MonoBehaviour
     private int screenWidth;
 
     public bool showDebug = false;
-    public float TapTime;
+    public float TapTime = 0.2f;
     [SerializeField] private float holdTime;
+    [SerializeField] private float doubleTapTimeThreshold = 0.2f;
 
     public static event DragLeftUpdate LeftDragVectorEvent;
     public static event DragLeftUpdate LeftAlternateDragVectorEvent;
@@ -87,15 +93,19 @@ public class InputManager : MonoBehaviour
     public static event DragLeft LeftDragEvent;
     public static event DragLeft RightDragEvent;
     public bool hasMoved;
+    //will return false if canceled,this
+    public static Action <bool> TapLeft;
+    public static Action<bool> TapRight;
 
+    
     public static event EventHandler LeftTap;
     public static event EventHandler RightTap;
 
     //TAP 
-    public static event EventHandler TapLeftEvent;
+    //public static event EventHandler TapLeftEvent;
 
-    public static event EventHandler TapRightEvent;
-
+    //public static event EventHandler TapRightEvent;
+    
 
     public void OnEnable()
 
@@ -124,6 +134,7 @@ public class InputManager : MonoBehaviour
             ctx =>
 
             {
+                Debug.Log("dragStarttttttttted");
                 if (Mobile)
                 {
                     //if position is left side OR right side
@@ -187,7 +198,7 @@ public class InputManager : MonoBehaviour
                     }
                     else
                     {
-                        InputRightSwitch(ctx.ReadValue<Vector2>(),ref rightDragState);
+                        InputRightSwitch(ctx.ReadValue<Vector2>(), ref rightDragState);
 
                     }
                 }
@@ -204,8 +215,8 @@ public class InputManager : MonoBehaviour
 
             };
 
-        
-      
+
+
         inputAsset.Player.DragLeft.canceled +=
             ctx =>
             {
@@ -222,7 +233,7 @@ public class InputManager : MonoBehaviour
                     {
                         DragRightEnd(ctx.ReadValue<Vector2>());
 
-                       
+
 
                     }
                     leftMouseDragID = InputIdentifier.Undeclared;
@@ -240,7 +251,7 @@ public class InputManager : MonoBehaviour
                 //LeftDragEvent.Invoke(Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos) - Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()));   
             };
 
-        
+
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -282,7 +293,7 @@ public class InputManager : MonoBehaviour
 
                     DragRightEndScreenPos = DragRightStartScreenPos;
 
-                    if (showDebug) Debug.Log("Start");
+                    //if (showDebug) Debug.Log("Start");
 
                     RightDragEvent?.Invoke(true);
                 }
@@ -332,7 +343,7 @@ public class InputManager : MonoBehaviour
                     if (rightMouseDragID == InputIdentifier.IsLeft)
                     {
                         DragLeftEnd(ctx.ReadValue<Vector2>());
-                        
+
                     }
                     else
                     {
@@ -362,9 +373,9 @@ public class InputManager : MonoBehaviour
         switch (dragtype)
         {
             case DragTypes.CONTROLLER:
-                
+
                 //if bellow hold time and magnitude is less then threshold 
-                if (Time.time - startTime < holdTime &&
+                if (
                     (dragStartWorldPos -
                      dragCurrentWorldPos).magnitude > minDragAmount)
                 {
@@ -373,12 +384,12 @@ public class InputManager : MonoBehaviour
                     dragtype = DragTypes.STANDARD;
 
 
-                   // if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
+                    // if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
 
 
                     break;
                 }
-                else tap = true;
+
 
 
                 break;
@@ -421,13 +432,13 @@ public class InputManager : MonoBehaviour
                     dragtype = DragTypes.STANDARD;
 
 
-                   // if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
+                    // if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
 
 
                     break;
                 }
-                else tap = true;
-                
+
+
 
                 break;
             case DragTypes.STANDARD:
@@ -456,16 +467,26 @@ public class InputManager : MonoBehaviour
         Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragLeftStartScreenPos);
         Vector2 dragCurrentScreenPos = drag;
         Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
-        Debug.Log("Also Working");
-        if (Time.time - startTime <= TapTime && tap)
+        //Debug.Log("Also Working");
+        if (Time.time - lastTapTime < doubleTapTimeThreshold)
         {
-            if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
-            tap = false;
-            //TapLeftEvent?.Invoke(null, EventArgs.Empty);
 
-            LeftTap?.Invoke(null, EventArgs.Empty);
-            startTime = 0;
-        }else
+            TapLeft?.Invoke(false);
+            //coroutine 
+            StopCoroutine(DoubleTapQuery);
+            Debug.Log("doubleTap");
+        }
+        else if ((Time.time - startTime) <= TapTime)
+        {
+           
+
+            //
+            //TapLeftEvent?.Invoke(null, EventArgs.Empty);
+            DoubleTapQuery = DoubleTapTimer();
+            StartCoroutine(DoubleTapQuery);
+            TapLeft?.Invoke(false);
+            lastTapTime = Time.time;
+        }
 
 
         {
@@ -473,7 +494,7 @@ public class InputManager : MonoBehaviour
 
             LeftDragEvent?.Invoke(false);
 
-            startTime = 0;
+
 
             DragLeftStartScreenPos = Vector2.zero;
         }
@@ -486,31 +507,58 @@ public class InputManager : MonoBehaviour
         Vector2 dragStartWorldPos = Camera.main.ScreenToWorldPoint(DragRightStartScreenPos);
         Vector2 dragCurrentScreenPos = drag;
         Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
-
-        if (Time.time - startTime <= TapTime && tap)
+        if (Time.time - lastTapTime < doubleTapTimeThreshold)
         {
-            if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
-            tap = false;
-            RightTap?.Invoke(null, EventArgs.Empty);
+            TapRight?.Invoke(false);
+            //coroutine 
+            StopCoroutine(DoubleTapQuery);
+            Debug.Log("doubleTap");
+        }
+        else if ((Time.time - startTime) <= TapTime)
+        {
+            TapRight?.Invoke(false);
+
+            //
             //TapLeftEvent?.Invoke(null, EventArgs.Empty);
-            startTime = 0;
+            DoubleTapQuery = DoubleTapTimer();
+            StartCoroutine(DoubleTapQuery);
+
+            lastTapTime = Time.time;
         }
 
-        else
+
         {
             if (showDebug) Debug.Log("Drag End");
 
             RightDragEvent?.Invoke(false);
 
-            startTime = 0;
+
 
             DragRightStartScreenPos = Vector2.zero;
         }
 
         rightDragState = DragTypes.CONTROLLER;
     }
-    private void MultiTapActivated()
+    private IEnumerator DoubleTapTimer()
+    {
 
+        yield return new WaitForSeconds(QueryTimer);
+        //while (timer > 0f)
+        //{
+        //    if (tap)
+        //    {
+
+        //    }
+        //    yield return null;
+
+        //    timer -= Time.deltaTime;
+        //}
+        TapRight?.Invoke(true);
+        if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
+    }
+   
+
+    private void MultiTapActivated()
     {
         //if (showDebug) Debug.Log("MultiTap");
     }
@@ -545,7 +593,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-       
+
     }
 
 
@@ -565,11 +613,12 @@ public class InputManager : MonoBehaviour
 
     //public delegate void RightUp(Vector2 screenPosition, bool State);
     //public event TapLeftPos RightUpEvent;
-
+    
     #region Singleton
 
     private Vector2 mouseDelta;
     private bool tap;
+
 
     public static InputManager Instance { get; private set; }
 

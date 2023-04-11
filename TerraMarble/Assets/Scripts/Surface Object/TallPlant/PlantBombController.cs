@@ -49,7 +49,8 @@ public class PlantBombController : MonoBehaviour
             ? GetComponentInChildren<BallGrabbable>()
             : grabbable;
 
-        grabbable.GrabEnd.AddListener(StartCountdown);
+        grabbable.GrabStart.AddListener(StartCountdown);
+
     }
 
     public void Initialise(TallPlantController _mother, WheelRegionsManager _regions)

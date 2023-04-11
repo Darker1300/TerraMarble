@@ -22,6 +22,7 @@ public class EnemyHealth : MonoBehaviour
     public SpawnRandomUnitCirclePos spawnRandomCircle;
     public bool canExplode = false;
     public float explosionRadius = 2f;
+    public bool explosionBoost = false;
     
 
     // Start is called before the first frame update
@@ -65,22 +66,22 @@ public class EnemyHealth : MonoBehaviour
         {
             OnProjectileHit?.Invoke(collision);
         }
-        //else if (collision.gameObject.CompareLayerMask(BallLayerName))
-        //{
-        //    collision.GetComponent<Rigidbody2D>()
-        //        .AddForce(
-        //            collision.GetComponent<Rigidbody2D>().velocity.normalized
-        //            * (collision.GetComponent<Rigidbody2D>().velocity.magnitude * 20.2f));
-        //    //im trying to increases velocity but its getting capped 
-        //    //if player hits enemy player and explodes 
-        //    collision.GetComponent<TimerSmoothSlowDown>().enabled = true;
-        //    EnemyDead();
+        else if (explosionBoost && collision.gameObject.CompareLayerMask(BallLayerName))
+        {
+            collision.GetComponent<Rigidbody2D>()
+                .AddForce(
+                    collision.GetComponent<Rigidbody2D>().velocity.normalized
+                    * (collision.GetComponent<Rigidbody2D>().velocity.magnitude * 20.2f));
+            //im trying to increases velocity but its getting capped 
+            //if player hits enemy player and explodes 
+            collision.GetComponent<TimerSmoothSlowDown>().enabled = true;
+            EnemyDead();
+            Debug.Log("boost ");
+
+            //collision.GetComponent<BallBounce>().Bounce(-collision.transform.Towards(GameObject.FindObjectOfType<Wheel>().transform));
 
 
-        //    //collision.GetComponent<BallBounce>().Bounce(-collision.transform.Towards(GameObject.FindObjectOfType<Wheel>().transform));
-
-
-        //}
+        }
 
     }
 

@@ -21,6 +21,13 @@ public class BallGrabber : MonoBehaviour
     [SerializeField] private BallGrabbable grabbed = null;
 
 
+    void Start()
+    {
+        InputManager.TapLeft += BombPickUp;
+        InputManager.TapRight += BombPickUp;
+    }
+
+
     void Awake()
     {
         nearbySensor = nearbySensor == null
@@ -32,6 +39,7 @@ public class BallGrabber : MonoBehaviour
 
         nearbySensor.Updated += OnSensorUpdate;
     }
+    
 
     private void OnSensorUpdate(object sender, System.EventArgs e)
     {
@@ -53,12 +61,13 @@ public class BallGrabber : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void BombPickUp(bool pickUp)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (pickUp)
         {
             if (grabbed == null)
             {
+                
                 // Attach
                 grabbed = FindClosest();
                 if (grabbed != null)
@@ -72,8 +81,18 @@ public class BallGrabber : MonoBehaviour
                 // Release
                 tether.DetachObjectToTether();
                 grabbed.GrabEnd.Invoke();
+                
                 grabbed = null;
             }
+        }
+       
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+           
         }
     }
 
