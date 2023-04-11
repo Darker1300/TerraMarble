@@ -82,14 +82,14 @@ public class BallGrabber : MonoBehaviour
                 if (grabbed != null)
                 {
                     tether.AttachObjectToTether(grabbed.gameObject);
-                    grabbed.GrabStart.Invoke();
+                    grabbed.GrabStartInvoke(this);
                 }
             }
             else
             {
                 // Release
                 tether.DetachObjectToTether();
-                grabbed.GrabEnd.Invoke();
+                grabbed.GrabEndInvoke(this);
                 
                 grabbed = null;
             }
