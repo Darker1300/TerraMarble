@@ -380,10 +380,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetTag: Enemy
-  nearbyTargets: []
   hitlayer:
     serializedVersion: 2
     m_Bits: 8448
+  aimRadius: 20
+  NearbySensor: {fileID: 1487549798048971839}
+  SensorBufferNames:
+  - Flying
+  NearbyTargetSet:
+    Length: 3
 --- !u!114 &1421575006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1694,6 +1699,24 @@ MonoBehaviour:
       maxNormalAngle: 0
     ColliderSet:
       Length: 0
+  - Name: Flying
+    Radius: 20
+    Filter:
+      useTriggers: 1
+      useLayerMask: 1
+      useDepth: 0
+      useOutsideDepth: 0
+      useNormalAngle: 0
+      useOutsideNormalAngle: 0
+      layerMask:
+        serializedVersion: 2
+        m_Bits: 8192
+      minDepth: 0
+      maxDepth: 0
+      minNormalAngle: 0
+      maxNormalAngle: 0
+    ColliderSet:
+      Length: 3
 --- !u!1 &8994145039661576340
 GameObject:
   m_ObjectHideFlags: 0
