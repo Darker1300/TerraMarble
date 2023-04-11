@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
-using UnityEditor.Splines;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -16,8 +15,7 @@ public class TallPlantController : MonoBehaviour
 
     [SerializeField] private Transform spawnTransform;
     public float headHeight = 1.5f;
-    [Min(2)]
-    public int linePointCount = 10;
+    [Min(2)] public int linePointCount = 10;
 
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private GameObject bombExplosionPrefab;
@@ -25,19 +23,19 @@ public class TallPlantController : MonoBehaviour
     [SerializeField] private Vector3[] linePoints;
 
 
-    void Start()
+    private void Start()
     {
         bodySplineContainer ??= GetComponentInChildren<SplineContainer>();
         bodyLine ??= GetComponentInChildren<LineRenderer>();
     }
 
-    void OnValidate()
+    private void OnValidate()
     {
         SetHeight(headHeight);
         UpdateRenderer();
     }
 
-    void SetHeight(float newHeight)
+    private void SetHeight(float newHeight)
     {
         bodySplineContainer ??= GetComponentInChildren<SplineContainer>();
         if (bodySpline.Count < 1) return;
@@ -53,17 +51,17 @@ public class TallPlantController : MonoBehaviour
             spawnTransform.localPosition = bezierKnot0.Position;
     }
 
-    void UpdateRenderer()
+    private void UpdateRenderer()
     {
         if (bodySpline.Count < 1) return;
         bodyLine ??= GetComponentInChildren<LineRenderer>();
-        
+
         if (linePoints == null || linePoints.Length != linePointCount)
             linePoints = new Vector3[linePointCount];
 
         for (int index = 0; index < linePointCount; index++)
         {
-            float curveT = index / (float)(linePointCount - 1);
+            float curveT = index / (float) (linePointCount - 1);
             linePoints[index] = bodySplineContainer.EvaluatePosition(curveT);
         }
 
