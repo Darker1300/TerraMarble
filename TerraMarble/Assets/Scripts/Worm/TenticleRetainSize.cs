@@ -21,7 +21,8 @@ public class TenticleRetainSize : MonoBehaviour
 
     void Start()
     {
-        lineRend = lineRend != null ? lineRend : GetComponentInChildren<LineRenderer>();
+        lineRend = lineRend != null ? lineRend :
+            GetComponentInChildren<LineRenderer>(true);
         lineRend.positionCount = length;
         segmentPoses = new Vector3[length];
         segmentV = new Vector3[length];

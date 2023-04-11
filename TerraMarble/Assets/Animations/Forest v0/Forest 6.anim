@@ -72,7 +72,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Tree, Main (0)
+    path: Tree, Main/Tree, Base
   m_FloatCurves:
   - curve:
       serializedVersion: 2
@@ -128,7 +128,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: Tree, Main (0)
+    path: Tree, Main/Tree, Base
     classID: 1
     script: {fileID: 0}
   m_PPtrCurves: []
@@ -140,7 +140,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 4000228667
+      path: 3057859351
       attribute: 3
       script: {fileID: 0}
       typeID: 4
@@ -164,7 +164,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 4000228667
+      path: 3057859351
       attribute: 2086281974
       script: {fileID: 0}
       typeID: 1
@@ -386,7 +386,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: Tree, Main (0)
+    path: Tree, Main/Tree, Base
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -414,7 +414,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: Tree, Main (0)
+    path: Tree, Main/Tree, Base
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -442,7 +442,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: Tree, Main (0)
+    path: Tree, Main/Tree, Base
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -461,7 +461,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: Tree, Main (0)
+    path: Tree, Main/Tree, Base
     classID: 1
     script: {fileID: 0}
   m_EulerEditorCurves: []

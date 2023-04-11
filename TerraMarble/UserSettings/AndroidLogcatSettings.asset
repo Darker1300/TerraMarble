@@ -1,5 +1,5 @@
 {
-    "m_SelectedDeviceId": "R5CT34H1PGW",
+    "m_SelectedDeviceId": "R58N21S71LM",
     "m_SelectedPackage": {
         "deviceId": "",
         "name": "",
@@ -12,6 +12,42 @@
             "deviceId": "R5CT34H1PGW",
             "name": "com.android.settings",
             "processId": 8861,
+            "exited": false
+        },
+        {
+            "deviceId": "R58N21S71LM",
+            "name": "com.DefaultCompany.TerraMarble",
+            "processId": 26677,
+            "exited": true
+        },
+        {
+            "deviceId": "R58N21S71LM",
+            "name": "com.DefaultCompany.TerraMarble",
+            "processId": 29220,
+            "exited": true
+        },
+        {
+            "deviceId": "R58N21S71LM",
+            "name": "com.DefaultCompany.TerraMarble",
+            "processId": 23805,
+            "exited": true
+        },
+        {
+            "deviceId": "R58N21S71LM",
+            "name": "com.DefaultCompany.TerraMarble",
+            "processId": 2346,
+            "exited": true
+        },
+        {
+            "deviceId": "R58N21S71LM",
+            "name": "com.unity3d.mobileremote",
+            "processId": 31523,
+            "exited": false
+        },
+        {
+            "deviceId": "R58N21S71LM",
+            "name": "com.spotify.music",
+            "processId": 12987,
             "exited": false
         }
     ],

@@ -12,8 +12,8 @@ public class BallGrabber : MonoBehaviour
 {
     [Serializable] public class GrabbableSet : CollisionSet<HashSet<BallGrabbable>, BallGrabbable> { }
 
-    public NearbySensor nearbySensor;
-    public List<string> bufferNames = new();
+    public NearbySensor NearbySensor;
+    public List<string> BufferNames = new();
 
     public GrabbableSet NearbyGrabSet = new();
 
@@ -30,29 +30,38 @@ public class BallGrabber : MonoBehaviour
 
     void Awake()
     {
-        nearbySensor = nearbySensor == null
-            ? GetComponentInParent<NearbySensor>()
-            : nearbySensor;
+        NearbySensor = NearbySensor == null
+            ? GetComponentInChildren<NearbySensor>()
+            : NearbySensor;
         tether = tether == null
             ? GetComponentInChildren<TetherComponent>()
             : tether;
 
-        nearbySensor.Updated += OnSensorUpdate;
+        NearbySensor.Updated += OnSensorUpdate;
     }
     
 
-    private void OnSensorUpdate(object sender, System.EventArgs e)
+    private void OnSensorUpdate()
     {
-        if (nearbySensor == null) return;
+        UpdateNearbyGrabSet();
+
+        foreach (BallGrabbable grabbable in NearbyGrabSet.Enter)
+            grabbable.NearbyEnterInvoke(this);
+
+        foreach (BallGrabbable grabbable in NearbyGrabSet.Exit)
+            grabbable.NearbyExitInvoke(this);
+    }
+
+    private void UpdateNearbyGrabSet()
+    {
+        if (NearbySensor == null) return;
 
         foreach (var nearby in NearbyGrabSet)
             nearby.Clear();
 
-        for (int i = 0; i < bufferNames.Count; i++)
+        foreach (var bufferName in BufferNames)
         {
-            string bufferName = bufferNames[i];
-
-            ColliderBuffer colliderBuffer = nearbySensor.buffers.Find(b => b.Name == bufferName);
+            ColliderBuffer colliderBuffer = NearbySensor.Buffers.Find(b => b.Name == bufferName);
             if (colliderBuffer == null)
                 continue; // buffer not found;
 
@@ -92,7 +101,23 @@ public class BallGrabber : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-           
+            if (grabbed == null)
+            {
+                // Attach
+                grabbed = FindClosest();
+                if (grabbed != null)
+                {
+                    tether.AttachObjectToTether(grabbed.gameObject);
+                    grabbed.GrabStartInvoke(this);
+                }
+            }
+            else
+            {
+                // Release
+                tether.DetachObjectToTether();
+                grabbed.GrabEndInvoke(this);
+                grabbed = null;
+            }
         }
     }
 

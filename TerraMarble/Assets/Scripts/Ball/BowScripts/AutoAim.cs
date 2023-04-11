@@ -6,25 +6,53 @@ public class AutoAim : MonoBehaviour
 {
     private float aimDistance;
     [SerializeField] private string TargetTag;
-    [SerializeField] private List<GameObject> nearbyTargets = new();
 
     private RaycastHit2D hit;
     [SerializeField] private LayerMask hitlayer;
+    [SerializeField] private float aimRadius = 10f;
 
-    private CircleCollider2D col;
+    [SerializeField] private NearbySensor NearbySensor;
+    [SerializeField] private List<string> SensorBufferNames = new();
 
-    private void Start()
+
+    [SerializeField] private NearbySensor.ColliderSet NearbyTargetSet = new();
+
+
+    void Awake()
     {
-        col = GetComponent<CircleCollider2D>();
+        NearbySensor = NearbySensor == null
+            ? GetComponentInChildren<NearbySensor>()
+            : NearbySensor;
+
+        NearbySensor.Updated += OnSensorUpdate;
     }
+
+    private void OnSensorUpdate()
+    {
+        // Update Set
+        if (NearbySensor == null) return;
+
+        foreach (var nearby in NearbyTargetSet)
+            nearby.Clear();
+
+        foreach (var bufferName in SensorBufferNames)
+        {
+            NearbySensor.ColliderBuffer colliderBuffer = NearbySensor.Buffers.Find(b => b.Name == bufferName);
+            if (colliderBuffer == null)
+                continue; // buffer not found;
+            NearbyTargetSet.AddWhere(colliderBuffer.ColliderSet, targetCollider => targetCollider);
+        }
+    }
+
 
     public GameObject FindClosestTarget()
     {
         float minDst = float.MaxValue;
         GameObject minDstObj = null;
-        foreach (var gObj in nearbyTargets)
+        foreach (var gObjCollider in NearbyTargetSet.Stay)
         {
-            if (!CheckLineOfSight(gObj)) continue;
+            GameObject gObj = gObjCollider.gameObject;
+            if (!CheckLineOfSight(gObj.gameObject)) continue;
             float dst = (gObj.transform.position - transform.position).sqrMagnitude;
             if (dst < minDst)
             {
@@ -40,20 +68,10 @@ public class AutoAim : MonoBehaviour
     {
         if (gObj.activeInHierarchy == false) return false;
 
-        hit = Physics2D.Raycast(transform.position, transform.Towards(gObj.transform).normalized, col.radius,
+        hit = Physics2D.Raycast(transform.position, transform.Towards(gObj.transform).normalized, aimRadius,
             hitlayer.value);
         
         if (hit.collider && hit.collider.gameObject == gObj) return true;
         return false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag(TargetTag)) nearbyTargets.Add(collision.gameObject);
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag(TargetTag)) nearbyTargets.Remove(collision.gameObject);
     }
 }

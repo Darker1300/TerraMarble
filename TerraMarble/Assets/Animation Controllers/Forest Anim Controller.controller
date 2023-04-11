@@ -160,7 +160,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Forest 6
+  m_Name: Forest 5
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -400,13 +400,13 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: MaxProgress
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 6
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -551,7 +551,7 @@ AnimatorStateMachine:
     m_Position: {x: 50, y: 530, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3016399054516943504}
-    m_Position: {x: 50, y: 640, z: 0}
+    m_Position: {x: 50, y: 630, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 9128816688336525496}
     m_Position: {x: 50, y: 740, z: 0}
@@ -625,7 +625,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Forest 6 1
+  m_Name: Forest 6
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

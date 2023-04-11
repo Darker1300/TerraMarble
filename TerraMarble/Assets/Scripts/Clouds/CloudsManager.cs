@@ -34,6 +34,7 @@ public class CloudsManager : MonoBehaviour
     [Header("Data")] [SerializeField] private float cloudSpawnTimer = 0f;
     [SerializeField] private ObjectPool<CloudData> cloudPool = null;
     [SerializeField] private List<CloudData> activeClouds = null;
+    [SerializeField] private List<CloudData> tempDestroyClouds = null;
 
     public class ShaderParam
     {
@@ -42,6 +43,9 @@ public class CloudsManager : MonoBehaviour
 
     private void Start()
     {
+        activeClouds ??= new();
+        tempDestroyClouds ??= new();
+
         cloudsParent ??= transform;
         cloudPool = new ObjectPool<CloudData>(
             () => Instantiate(cloudPrefab, cloudsParent, false).GetComponent<CloudData>(),
@@ -69,16 +73,20 @@ public class CloudsManager : MonoBehaviour
     {
         float deltaTime = Time.deltaTime;
         Vector2 wheelPosition = wheel.transform.position.To2DXY();
-        for (var index = 0; index < activeClouds.Count; index++)
+
+        foreach (var cloud in activeClouds)
         {
-            CloudData cloud = activeClouds[index];
             cloud.timeRemaining -= deltaTime;
-            if (cloud.timeRemaining < float.Epsilon)
-                cloudPool.Release(cloud);
-            else
-                // Update cloud
+            if (cloud.timeRemaining < float.Epsilon) // mark to destroy cloud 
+                tempDestroyClouds.Add(cloud);
+            else // else Update cloud
                 UpdateCloud(cloud, wheelPosition, deltaTime);
         }
+
+        // destroy clouds
+        foreach (var cloud in tempDestroyClouds)
+            cloudPool.Release(cloud);
+        tempDestroyClouds.Clear();
 
         cloudSpawnTimer -= deltaTime;
 

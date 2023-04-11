@@ -158,6 +158,11 @@ namespace UnityUtility
         public static float LastKeyTime(this AnimationCurve _self)
             => _self.keys[^1].time;
 
+        public static Color AsAlpha(this Color _color, float _a)
+        {
+            _color.a = _a;
+            return _color;
+        }
     }
     public static class EnumerableExtensions
     {
