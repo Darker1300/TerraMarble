@@ -23,6 +23,7 @@ public class Region : MonoBehaviour
 
     public enum RegionID
     {
+        NULL = -1,
         Water,
         Rock,
         Sand,
@@ -273,7 +274,7 @@ public class Region : MonoBehaviour
         // Set Color
         updateAction += UpdateRegionColor;
 
-        WheelRegionsManager.RegionConfig goalConfig = RegionsMan.configs[targetID];
+        RegionConfig goalConfig = RegionsMan.configs[targetID];
         GameObject goalPrefab = goalConfig.SurfacePrefab;
         bool goalBlankTag = goalPrefab == null || goalPrefab.CompareTag("Untagged");
 

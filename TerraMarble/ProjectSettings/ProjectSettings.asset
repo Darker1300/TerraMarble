@@ -738,7 +738,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthStep: 0.2
   webGLMemoryGeometricGrowthCap: 96
   scriptingDefineSymbols:
-    Android: SHAPES_URP
+    Android: SHAPES_URP;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1
     Standalone: SHAPES_URP
   additionalCompilerArguments: {}
   platformArchitecture: {}

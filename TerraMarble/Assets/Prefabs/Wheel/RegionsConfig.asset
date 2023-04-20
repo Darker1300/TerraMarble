@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c13fc3b07fa45b44810cace504de14d, type: 3}
+  m_Name: RegionsConfig
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  Data:
+    keyData: 000000000100000002000000030000000400000005000000060000000700000008000000
+    valueData:
+    - RegionColor: {r: 0.18039216, g: 0.8039216, b: 0.99607843, a: 0}
+      SurfacePrefab: {fileID: 0}
+    - RegionColor: {r: 0.49019608, g: 0.49019608, b: 0.49019608, a: 1}
+      SurfacePrefab: {fileID: 0}
+    - RegionColor: {r: 0.92941177, g: 0.85882354, b: 0.7607843, a: 1}
+      SurfacePrefab: {fileID: 0}
+    - RegionColor: {r: 0.56078434, g: 0.44444445, b: 0.34509805, a: 1}
+      SurfacePrefab: {fileID: 0}
+    - RegionColor: {r: 0, g: 0.65882355, b: 0.40784314, a: 1}
+      SurfacePrefab: {fileID: 0}
+    - RegionColor: {r: 0, g: 0.5372549, b: 0.33333334, a: 1}
+      SurfacePrefab: {fileID: 417338232552944473, guid: 4c705fde20a2b74459f7ed452649a9bb, type: 3}
+    - RegionColor: {r: 0.49019608, g: 0.4862745, b: 0.49411765, a: 1}
+      SurfacePrefab: {fileID: 8846236625911648540, guid: f4564313d724aae40b1cc3139494780c, type: 3}
+    - RegionColor: {r: 0.49019608, g: 0.4862745, b: 0.49411765, a: 1}
+      SurfacePrefab: {fileID: 0}
+    - RegionColor: {r: 0.56078434, g: 0.44313726, b: 0.34509805, a: 1}
+      SurfacePrefab: {fileID: 0}

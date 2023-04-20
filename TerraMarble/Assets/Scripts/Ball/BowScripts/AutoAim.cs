@@ -9,7 +9,7 @@ public class AutoAim : MonoBehaviour
 
     private RaycastHit2D hit;
     [SerializeField] private LayerMask hitlayer;
-    [SerializeField] private float aimRadius = 10f;
+    [SerializeField] private float aimRadius = 20f;
 
     [SerializeField] private NearbySensor NearbySensor;
     [SerializeField] private List<string> SensorBufferNames = new();

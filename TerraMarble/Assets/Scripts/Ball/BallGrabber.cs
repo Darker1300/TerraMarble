@@ -99,26 +99,26 @@ public class BallGrabber : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (grabbed == null)
-            {
-                // Attach
-                grabbed = FindClosest();
-                if (grabbed != null)
-                {
-                    tether.AttachObjectToTether(grabbed.gameObject);
-                    grabbed.GrabStartInvoke(this);
-                }
-            }
-            else
-            {
-                // Release
-                tether.DetachObjectToTether();
-                grabbed.GrabEndInvoke(this);
-                grabbed = null;
-            }
-        }
+        //  if (Input.GetKeyDown(KeyCode.Space))
+        //  {
+        //      if (grabbed == null)
+        //      {
+        //          // Attach
+        //          grabbed = FindClosest();
+        //          if (grabbed != null)
+        //          {
+        //              tether.AttachObjectToTether(grabbed.gameObject);
+        //              grabbed.GrabStartInvoke(this);
+        //          }
+        //      }
+        //      else
+        //      {
+        //          // Release
+        //          tether.DetachObjectToTether();
+        //          grabbed.GrabEndInvoke(this);
+        //          grabbed = null;
+        //      }
+        //  }
     }
 
     private BallGrabbable FindClosest()

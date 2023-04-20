@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 0}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -297,7 +297,7 @@ Transform:
   - {fileID: 982194280037784214}
   - {fileID: 4809050006588870374}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8846236625911648572
 MonoBehaviour:

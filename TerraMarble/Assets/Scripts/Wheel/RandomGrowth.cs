@@ -85,7 +85,7 @@ public class RandomGrowth : MonoBehaviour
             if (region.surfaceObjects.Count == 0)
                 continue;
 
-            if (CheckIsValidToGrow(region)) // (region.FindGrow() != null)//
+            if (region.FindGrow() != null)//CheckIsValidToGrow(region)) // (region.FindGrow() != null)//
             {
                 region.FindGrow().TryGrowState();
                 break;

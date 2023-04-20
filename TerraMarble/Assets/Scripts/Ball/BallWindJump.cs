@@ -69,7 +69,14 @@ public class BallWindJump : MonoBehaviour
         UpdateParticles();
 
         if (upDragInput > minUpDragInput)
+        {
+            IsJumping = true;
             DoWindJump();
+        }
+        else
+        {
+            IsJumping = false;
+        }
         //if (Input.GetKeyDown(KeyCode.Space)) DoWindJump();
     }
 
@@ -80,12 +87,12 @@ public class BallWindJump : MonoBehaviour
 
     public void DoWindJump()
     {
-        IsJumping = true;
+        //IsJumping = true;
         UpdateParticles();
-        partSystem.Emit( partInitialBurst);
+        partSystem.Emit(partInitialBurst);
 
         flyUI.SetUI(true);
-        Camera.main.GetComponent<FollowBehavior>().cameraState = FollowBehavior.CameraState.FollowUp; 
+        Camera.main.GetComponent<FollowBehavior>().cameraState = FollowBehavior.CameraState.FollowUp;
     }
 
     void OnWindJumpUpdate()
@@ -185,7 +192,7 @@ public class BallWindJump : MonoBehaviour
         jumpTimer = 0f;
         particleTimer = 0f;
         //jumpVelocity = 0f;
-        IsJumping = false;
+        //IsJumping = false;
 
         flyUI.SetUI(false);
     }

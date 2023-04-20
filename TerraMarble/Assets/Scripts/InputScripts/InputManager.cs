@@ -134,7 +134,7 @@ public class InputManager : MonoBehaviour
             ctx =>
 
             {
-                Debug.Log("dragStarttttttttted");
+                //Debug.Log("dragStarttttttttted");
                 if (Mobile)
                 {
                     //if position is left side OR right side

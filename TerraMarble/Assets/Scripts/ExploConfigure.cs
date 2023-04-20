@@ -17,7 +17,10 @@ public class ExploConfigure : MonoBehaviour
     private void Start()
     {
         enemyHealth ??= GetComponent<EnemyHealth>();
-        ExploTimer = GetComponent<CountDownTimer>();
+
+        ExploTimer = ExploTimer != null ? ExploTimer
+            : GetComponent<CountDownTimer>();
+        ExploTimer.enabled = false;
     }
     //public void SetCanExplode()
     //{
@@ -98,6 +101,9 @@ public class ExploConfigure : MonoBehaviour
     private void OnEnable()
     {
         isExploding = false;
+        ExploTimer = ExploTimer != null ? ExploTimer
+            : GetComponent<CountDownTimer>();
+        ExploTimer.enabled = false;
     }
 
 }

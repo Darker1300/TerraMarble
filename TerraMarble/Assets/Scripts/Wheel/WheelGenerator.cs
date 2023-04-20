@@ -1,14 +1,15 @@
-using NaughtyAttributes;
 using Shapes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityUtility;
 
 [ExecuteInEditMode]
 public class WheelGenerator : MonoBehaviour
 {
-    [Header("Config")] public Wheel wheel;
+    [Header("Config")] 
+    public Wheel wheel;
+    public WheelRegionsManager regionsMan;
 
-    //public bool doCreateRegions = false;
     public int regionCount = 36;
     public float regionRadius = 3f;
     public float regionThickness = 0.5f;
@@ -22,10 +23,6 @@ public class WheelGenerator : MonoBehaviour
 
     private void Update()
     {
-        //if (doCreateRegions)
-        //{
-        //    doCreateRegions = false;
-        //}
     }
 
     [Button]
@@ -53,10 +50,13 @@ public class WheelGenerator : MonoBehaviour
             return;
         }
 
-        wheel ??= GetComponent<Wheel>();
+        wheel = wheel != null ? wheel
+            : GetComponent<Wheel>();
 
-        var regionsMan = FindObjectOfType<WheelRegionsManager>();
-        regionsMan.InitRegionTemplate();
+        regionsMan = regionsMan != null ? regionsMan
+            : FindObjectOfType<WheelRegionsManager>();
+
+        regionsMan.CreateRegionTemplate();
 
         var newRegions = new Region[regionCount];
 

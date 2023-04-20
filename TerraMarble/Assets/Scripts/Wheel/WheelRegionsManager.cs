@@ -3,48 +3,23 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using System.Linq;
 using MathUtility;
-using Newtonsoft.Json.Converters;
 using Shapes;
-
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityUtility;
+using static Region;
 
 public class WheelRegionsManager : MonoBehaviour
 {
-    [Serializable]
-    public class RegionConfig
-    {
-        public Region.RegionID ID;
-        public Color RegionColor;
-        public GameObject SurfacePrefab;
-    }
-
-    [Serializable]
-    public class RegionConfigs : Dictionary<Region.RegionID, RegionConfig>
-    {
-        public List<RegionConfig> SetupData = new((int)Region.RegionID.SIZE);
-
-        public void Initialise()
-        {
-            foreach (var config in SetupData)
-                Add(config.ID, config);
-            SetupData.Clear();
-        }
-    }
-
     [Header("Config")] public Transform regionsParent = null;
 
     public LayerMask surfaceLayer;
     public LayerMask wheelLayer;
 
-    public RegionConfigs configs;
+    public RegionConfigSet configs;
     public GameObject entityPrefabMan = null;
     public GameObject entityPrefabBeast = null;
 
-    [Header("Data")]
-    [SerializeField]
-    private Region regionTemplate = null;
+    [Header("Data")] [SerializeField] private Region regionTemplate = null;
     [SerializeField] private Region[] regions;
 
     private WheelGenerator _wheelGenerator = null;
@@ -54,8 +29,8 @@ public class WheelRegionsManager : MonoBehaviour
     {
         get
         {
-            if (regionTemplate == null) 
-                InitRegionTemplate();
+            if (regionTemplate == null)
+                CreateRegionTemplate();
             return regionTemplate;
         }
         set => regionTemplate = value;
@@ -95,18 +70,17 @@ public class WheelRegionsManager : MonoBehaviour
 
         // Initialise RegionTemplate, who's Disc properties we use to calculation positions on the Wheel.
         if (RegionTemplate == null)
-            InitRegionTemplate();
+            CreateRegionTemplate();
 
-        if (configs.SetupData.Count > 0) configs.Initialise();
+        //if (configs.SetupData.Count > 0) configs.Initialise();
 
         if (surfaceLayer.value == 0) surfaceLayer = LayerMaskUtility.Create("Surface");
         if (wheelLayer.value == 0) wheelLayer = LayerMaskUtility.Create("Wheel");
     }
 
 
-
     [Button]
-    public void InitRegionTemplate()
+    public void CreateRegionTemplate()
     {
         var exampleRegionGO = Instantiate(WheelGenerator.pregenRegionDefault, Vector3.zero, Quaternion.identity);
         var exampleRegion = exampleRegionGO.GetComponent<Region>();
@@ -120,6 +94,7 @@ public class WheelRegionsManager : MonoBehaviour
             UnityU.SafeDestroy(regionTemplate.gameObject);
             regionTemplate = null;
         }
+
         regionTemplate = r;
 
         var d = go.AddComponent<Disc>(exampleRegion.RegionDisc);
@@ -196,14 +171,14 @@ public class WheelRegionsManager : MonoBehaviour
         return delta;
     }
 
-    public Region.RegionHitInfo ProcessWheelHit(Collision2D collision, BallStateTracker ballState)
+    public RegionHitInfo ProcessWheelHit(Collision2D collision, BallStateTracker ballState)
     {
         bool hitSurfaceObj = IsHitSurfaceObj(collision);
         bool hitRegion = IsHitRegion(collision);
 
         if (hitSurfaceObj || hitRegion)
         {
-            Region.RegionHitInfo info = new();
+            RegionHitInfo info = new();
 
             // Find Region from Surface Object
             Region regionSearch = collision.collider.GetComponentInParent<Region>();
@@ -211,7 +186,7 @@ public class WheelRegionsManager : MonoBehaviour
             // Alternative Find region
             if (regionSearch == null) // if failed, find Region from contact point
             {
-                Vector2 p = collision.contactCount > 0  // use Contact.point if possible
+                Vector2 p = collision.contactCount > 0 // use Contact.point if possible
                     ? collision.GetContact(0).point // contact position
                     : transform.position; // Ball position
                 regionSearch = GetClosestRegion(p);
@@ -230,12 +205,12 @@ public class WheelRegionsManager : MonoBehaviour
         return null;
     }
 
-    private bool IsHitSurfaceObj(Collision2D collision)
+    public bool IsHitSurfaceObj(Collision2D collision)
     {
         return surfaceLayer.Contains(collision.collider.gameObject);
     }
 
-    private bool IsHitRegion(Collision2D collision)
+    public bool IsHitRegion(Collision2D collision)
     {
         return wheelLayer.Contains(collision.collider.gameObject);
     }
