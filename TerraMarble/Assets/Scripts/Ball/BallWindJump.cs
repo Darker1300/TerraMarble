@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MathUtility;
 using UnityEngine;
+using UnityUtility;
 
 public class BallWindJump : MonoBehaviour
 {
@@ -23,11 +24,13 @@ public class BallWindJump : MonoBehaviour
     [SerializeField] private float partDistance = 2.5f;
     [SerializeField] private int partInitialBurst = 10;
     [SerializeField] private float partMultiplier = 10f;
+    [SerializeField] private bool doDebug = true;
 
     [Header("Data")]
     [SerializeField] private float minUpDragInput = 0.1f;
-    [SerializeField] private float upDragSize = 0.1f;
+    [SerializeField] private float upDragUISize = 0.1f;
     [SerializeField] public float upDragInput = 0f;
+    [SerializeField] public float horDragInput = 1f;
     public bool IsJumping = false;
     [SerializeField] private Rigidbody2D ballRb = null;
     [SerializeField] private Wheel wheel = null;
@@ -36,9 +39,9 @@ public class BallWindJump : MonoBehaviour
     [SerializeField] private float particleTimer = 0f;
     //[SerializeField] private float jumpVelocity = 0f;
     [SerializeField] private RaycastHit2D[] hits = new RaycastHit2D[5];
+    private Vector3 downDir = Vector3.down;
 
     private FlyUI flyUI;
-
     void Start()
     {
         ballRb = gameObject.GetComponentInParent<Rigidbody2D>();
@@ -61,17 +64,23 @@ public class BallWindJump : MonoBehaviour
 
     private void UpdateDragInput(Vector2 screenDragVector)
     {
-        upDragInput = Mathf.Abs(Mathf.Clamp(screenDragVector.y / upDragSize, 0f, 1f)); ;
+        upDragInput = Mathf.Abs(Mathf.Clamp(screenDragVector.y / upDragUISize, 0f, 1f)); ;
+        horDragInput = Mathf.Clamp(screenDragVector.x / upDragUISize, -1f, 1f);
     }
 
     void Update()
     {
+        downDir = ballRb.transform.Towards(wheel.transform).normalized;
+        UpdateHits();
         UpdateParticles();
 
         if (upDragInput > minUpDragInput)
         {
-            IsJumping = true;
-            DoWindJump();
+            // if (!IsJumping)
+            {
+                IsJumping = true;
+                DoWindJump();
+            }
         }
         else
         {
@@ -98,57 +107,31 @@ public class BallWindJump : MonoBehaviour
     void OnWindJumpUpdate()
     {
         if (!IsJumping) return;
-        // alter Rigidbody
-        //float t = jumpTimer / jumpDuration;
-        //float curve = jumpCurve.Evaluate(t);
-        //float force = glideSpeed * curve;
 
-        //Vector2 upV = wheel.transform.Towards(ballRb.transform).normalized;
-        //Vector2 rbV = ballRb.velocity;
+        Vector2 rbVLocal = transform
+            .InverseTransformDirection(ballRb.velocity).To2DXY()
+            .Rotate270();
 
-        Vector2 rbVLocal = partSystem.transform.InverseTransformDirection(ballRb.velocity);
-
-        float forwardDir = Mathf.Sign(rbVLocal.y);
-        forwardDir = Mathf.Approximately(0f, forwardDir) ? 1f : forwardDir;
+        float forwardDir;// = Mathf.Sign(rbVLocal.y);
+        forwardDir = -horDragInput;
+        forwardDir = Mathf.Approximately(0f, forwardDir) ? -1f : forwardDir;
 
         float upForce = upwardsSpeed * upDragInput * Time.fixedDeltaTime;
         float forwardForce = Mathf.Max(glideSpeed - upForce, minGlideSpeed) * Time.fixedDeltaTime;
 
+        //Up
         rbVLocal.x += upForce;
         if (rbVLocal.x < 0f)
             rbVLocal.x = Mathf.MoveTowards(
                 rbVLocal.x, 0f, slowDescentSpeed * Time.fixedDeltaTime);
-
+        //Forward
         rbVLocal.y += forwardForce * forwardDir;
 
         flyUI.UpdateUI(upDragInput);
 
-        //newLocal.y = Mathf.Max(Mathf.Abs(newLocal.y), minGlideSpeed * Time.fixedDeltaTime) * forwardDir * glideSpeed;
-        // newLocal.x = Mathf.Abs(newLocal.y) * glideSpeed;
-
-
-
-
-        //float pushF = -Mathf.Min(rbVLocal.x, 0f);
-        //float forwardDir = Mathf.Sign(rbVLocal.y);
-        //forwardDir = Mathf.Approximately(0f, forwardDir) ? 1f : forwardDir;
-        //rbVLocal.y = rbVLocal.y * (1f - curve) + (rbVLocal.y + (glideSpeed * forwardDir)) * curve;
-
-        //if (rbVLocal.x < minDescentForce)
-        //    rbVLocal.x = Mathf.MoveTowards(rbVLocal.x, 0, slowDescentSpeed * Time.fixedDeltaTime);
-
-        //float sign = Mathf.Sign(rbVLocal.y);
-        //rbVLocal.x = rbVLocal.x * (1f - curve) + (rbVLocal.y + glideSpeed * sign) * curve;
-
-        //rbVLocal.x = rbVLocal.x * (1f - curve) + (glideSpeed * curve);
-        Vector2 rbVWorld = partSystem.transform.TransformDirection(rbVLocal);
-
-        //float rbMag = rbV.magnitude;
-        //Vector2 newRbV = Vector2.ClampMagnitude(rbV + (force * upV), Mathf.Max(rbMag, force));
-
-        //float rbMagRemainder = rbMag * (1f - curve);
-        //Vector2 newRbV = (rbMagRemainder * rbV.normalized) + (force * upV);
-
+        Vector2 rbVWorld = transform
+            .TransformDirection(rbVLocal).To2DXY()
+            .Rotate90();
         ballRb.velocity = rbVWorld;
 
         // Timer
@@ -161,18 +144,15 @@ public class BallWindJump : MonoBehaviour
     {
         if (!partSystem) return;
 
-        Vector3 dir = ballRb.transform.Towards(wheel.transform).normalized;
-
-        int hitCount = ballRb.Cast(dir, hits, partDistance);
         float hitDst = partDistance;
-        if (hitCount > 0)
+        if (hits.Length > 0)
         {
             RaycastHit2D hit = hits.First();
             hitDst = hit.distance;
         }
 
-        partSystem.transform.position = ballRb.transform.position + (dir * hitDst);
-        partSystem.transform.rotation = Quaternion.AngleAxis(MathU.Vector2ToDegree(-(Vector2)dir), Vector3.forward);
+        partSystem.transform.position = ballRb.transform.position + (downDir * hitDst);
+        partSystem.transform.rotation = Quaternion.AngleAxis(MathU.Vector2ToDegree(-(Vector2)downDir), Vector3.forward);
 
         if (!IsJumping) return;
 
@@ -196,4 +176,22 @@ public class BallWindJump : MonoBehaviour
 
         flyUI.SetUI(false);
     }
+
+    private void UpdateHits()
+    {
+        ballRb.Cast(downDir, hits, partDistance);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!doDebug || hits.Length < 1) return;
+        if (wheel == null) wheel = FindObjectOfType<Wheel>();
+        CircleCollider2D collider = GetComponentInChildren<CircleCollider2D>();
+
+        Gizmos.color = Color.gray;
+        GizmosExtensions.DrawWireCircle(hits.First().point, collider.radius,
+            72, Quaternion.LookRotation(Vector3.up, Vector3.forward));
+    }
+
+
 }
