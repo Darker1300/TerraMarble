@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Shapes;
+using UnityEngine;
 
 public class FlyUI : MonoBehaviour
 {
-
     private Rigidbody2D rb;
 
     [Header("Flying How much the ball UI shrinks ")]
@@ -16,7 +13,7 @@ public class FlyUI : MonoBehaviour
     private float startDiscSize;
     public AnimationCurve UiDistanceAniCurve;
     public AnimationCurve UiWidthAniCurve;
-    
+
     [SerializeField]
     private float maxVelocity = 8;
 
@@ -33,23 +30,14 @@ public class FlyUI : MonoBehaviour
     [SerializeField]
     private float uiMax = 25;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
-       rb = GetComponentInParent<Rigidbody2D>();
-        
+        rb = GetComponentInParent<Rigidbody2D>();
+
         uiShape = GetComponent<Disc>();
         startDiscSize = uiShape.Radius;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     public void SetUI(bool isActive)
     {
@@ -60,19 +48,14 @@ public class FlyUI : MonoBehaviour
     {
         //if (ballWindJump.upDragInput !=0)
         //{
-            //0-1 factor
+        //0-1 factor
 
-            uiShape.Radius = Mathf.LerpUnclamped(startDiscSize, startDiscSize+(startDiscSize * IncreaseSize), UiDistanceAniCurve.Evaluate( percBallWind));
-        float angle = Mathf.LerpUnclamped(uiMin, uiMax, UiWidthAniCurve.Evaluate( percBallWind));
+        uiShape.Radius = Mathf.LerpUnclamped(startDiscSize, startDiscSize + (startDiscSize * IncreaseSize), UiDistanceAniCurve.Evaluate(percBallWind));
+        float angle = Mathf.LerpUnclamped(uiMin, uiMax, UiWidthAniCurve.Evaluate(percBallWind));
         uiShape.AngRadiansStart = -angle * Mathf.Deg2Rad;
         uiShape.AngRadiansEnd = angle * Mathf.Deg2Rad;
         //}
-        transform.right = Vector2.SmoothDamp(transform.right, rb.velocity.normalized,ref uiVelocity,smoothAimTime);
+        transform.right = Vector2.SmoothDamp(transform.right, rb.velocity.normalized, ref uiVelocity, smoothAimTime);
 
-    }
-
-    private void ResetUI()
-    {
-        
     }
 }

@@ -4,31 +4,39 @@ using System.Collections.Generic;
 using System.Linq;
 using MathUtility;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityUtility;
 
 public class BallWindJump : MonoBehaviour
 {
-    [Header("Config")]
-    [SerializeField] private float glideSpeed = 10f;
+    [Header("Config Jump")]
+    [SerializeField] private float glideSpeed = 40f;
     [SerializeField] private float minGlideSpeed = 1f;
-    [SerializeField] private float upwardsSpeed = 2f;
-    [SerializeField] private float slowDescentSpeed = 1f;
+    [SerializeField] private float upwardsSpeed = 70f;
+
+    [FormerlySerializedAs("slowDescentSpeed")]
+    [SerializeField] private float slowDescentSpeed = 400f;
     [SerializeField] private float jumpDuration = 1f;
+    [SerializeField] private float minUpDragInput = 0.1f;
+    [SerializeField] private float upDragUISize = 0.15f;
     //[SerializeField] private float slowDescentSpeed = 1f;
     //[SerializeField] private float minDescentForce = 0.1f;
     //[SerializeField] private float jumpVerticalTime = 0.5f;
     [SerializeField]
-    private AnimationCurve jumpCurve
+    private AnimationCurve forceCurve
+        = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+    [SerializeField] private bool doDebug = true;
+    [Header("Config Particles")]
+    [SerializeField]
+    [FormerlySerializedAs("jumpCurve")]
+    private AnimationCurve particleRateCurve
         = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     [SerializeField] private float partDistance = 2.5f;
     [SerializeField] private int partInitialBurst = 10;
     [SerializeField] private float partMultiplier = 10f;
-    [SerializeField] private bool doDebug = true;
 
     [Header("Data")]
-    [SerializeField] private float minUpDragInput = 0.1f;
-    [SerializeField] private float upDragUISize = 0.1f;
     [SerializeField] public float upDragInput = 0f;
     [SerializeField] public float horDragInput = 1f;
     public bool IsJumping = false;
@@ -64,7 +72,7 @@ public class BallWindJump : MonoBehaviour
 
     private void UpdateDragInput(Vector2 screenDragVector)
     {
-        upDragInput = Mathf.Abs(Mathf.Clamp(screenDragVector.y / upDragUISize, 0f, 1f)); ;
+        upDragInput = Mathf.Clamp(screenDragVector.y / upDragUISize, 0f, 1f); ;
         horDragInput = Mathf.Clamp(screenDragVector.x / upDragUISize, -1f, 1f);
     }
 
@@ -87,6 +95,8 @@ public class BallWindJump : MonoBehaviour
             IsJumping = false;
         }
         //if (Input.GetKeyDown(KeyCode.Space)) DoWindJump();
+
+        flyUI.UpdateUI(upDragInput);
     }
 
     void FixedUpdate()
@@ -109,29 +119,27 @@ public class BallWindJump : MonoBehaviour
         if (!IsJumping) return;
 
         Vector2 rbVLocal = transform
-            .InverseTransformDirection(ballRb.velocity).To2DXY()
-            .Rotate270();
+            .InverseTransformDirection(ballRb.velocity).To2DXY();
 
-        float forwardDir;// = Mathf.Sign(rbVLocal.y);
-        forwardDir = -horDragInput;
-        forwardDir = Mathf.Approximately(0f, forwardDir) ? -1f : forwardDir;
+        float forwardDir = horDragInput;
+        // if not dragging yet, keep moving forward
+        if (Mathf.Approximately(0f, forwardDir))
+            forwardDir = Mathf.Sign(rbVLocal.x);
 
-        float upForce = upwardsSpeed * upDragInput * Time.fixedDeltaTime;
+        float upForce = upwardsSpeed * forceCurve.Evaluate(upDragInput) * Time.fixedDeltaTime;
         float forwardForce = Mathf.Max(glideSpeed - upForce, minGlideSpeed) * Time.fixedDeltaTime;
 
-        //Up
-        rbVLocal.x += upForce;
-        if (rbVLocal.x < 0f)
-            rbVLocal.x = Mathf.MoveTowards(
-                rbVLocal.x, 0f, slowDescentSpeed * Time.fixedDeltaTime);
-        //Forward
-        rbVLocal.y += forwardForce * forwardDir;
+        // Up
+        rbVLocal.y += upForce;
+        if (rbVLocal.y < 0f)
+            rbVLocal.y = Mathf.MoveTowards(
+                rbVLocal.y, 0f, slowDescentSpeed * Time.fixedDeltaTime);
+        // Forward
+        rbVLocal.x += forwardForce * forwardDir;
 
-        flyUI.UpdateUI(upDragInput);
 
         Vector2 rbVWorld = transform
-            .TransformDirection(rbVLocal).To2DXY()
-            .Rotate90();
+            .TransformDirection(rbVLocal).To2DXY();
         ballRb.velocity = rbVWorld;
 
         // Timer
@@ -157,7 +165,7 @@ public class BallWindJump : MonoBehaviour
         if (!IsJumping) return;
 
         float t = jumpTimer / jumpDuration;
-        float curveT = jumpCurve.Evaluate(t);
+        float curveT = particleRateCurve.Evaluate(t);
         float deltaCount = curveT * partMultiplier * Time.deltaTime;
         particleTimer += deltaCount;
 
