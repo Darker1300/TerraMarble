@@ -7,7 +7,7 @@ using UnityEngine;
 public class Bow : MonoBehaviour
 {
 
-    WaitForSeconds Firedelay = new WaitForSeconds(.1f);
+    WaitForSeconds Firedelay = new WaitForSeconds(.5f);
     Coroutine coroutine;
     [SerializeField] TextMeshProUGUI AmmoText;
     public GameObject Target;
@@ -57,7 +57,7 @@ public class Bow : MonoBehaviour
 
     IEnumerator FireRate()
     {
-        int i = 3;
+        int i = 2;
 
         while (i > 0)
         {

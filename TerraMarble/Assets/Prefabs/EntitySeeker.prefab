@@ -234,7 +234,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   knockBackForce: 2000
-  HitPoints: 30
+  HitPoints: 20
   MaxHitPoints: 30
   CanFertilize: 0
   spawnRandomCircle: {fileID: 0}
