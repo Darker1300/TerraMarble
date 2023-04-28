@@ -94,7 +94,7 @@ public class InputManager : MonoBehaviour
     public static event DragLeft RightDragEvent;
     public bool hasMoved;
     //will return false if canceled,this
-    public static Action <bool> TapLeft;
+    public static Action<bool> TapLeft;
     public static Action<bool> TapRight;
 
     
