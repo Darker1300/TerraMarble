@@ -13,15 +13,22 @@ public class BallWindJump : MonoBehaviour
     [SerializeField] private float glideSpeed = 40f;
     [SerializeField] private float minGlideSpeed = 1f;
     [SerializeField] private float upwardsSpeed = 70f;
-
-    [FormerlySerializedAs("slowDescentSpeed")]
+    //[SerializeField] private bool slowDescent = true;
     [SerializeField] private float slowDescentSpeed = 400f;
+    //[SerializeField] private float minDescentSpeed = -2f;
+
+
     [SerializeField] private float jumpDuration = 1f;
     [SerializeField] private float minUpDragInput = 0.1f;
     [SerializeField] private float upDragUISize = 0.15f;
-    //[SerializeField] private float slowDescentSpeed = 1f;
-    //[SerializeField] private float minDescentForce = 0.1f;
-    //[SerializeField] private float jumpVerticalTime = 0.5f;
+
+    [Header("Config Dash")]
+    [SerializeField] private float minVelocityForDash = 1f;
+    [SerializeField] private float minVelocityForSideDash = 1f;
+    [SerializeField] private bool canSideDash = true;
+    [SerializeField] private float dashForce = 10f;
+    [SerializeField] private int dashPartEmitCount = 5;
+
     [SerializeField]
     private AnimationCurve forceCurve
         = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
@@ -61,6 +68,9 @@ public class BallWindJump : MonoBehaviour
 
         InputManager.LeftDragVectorEvent += (vector, delta, screenDragVector) => UpdateDragInput(screenDragVector);
         InputManager.RightDragVectorEvent += (vector, delta, screenDragVector) => UpdateDragInput(screenDragVector);
+
+        InputManager.TapLeft += OnTap;
+        InputManager.TapRight += OnTap;
 
         flyUI.SetUI(false);
     }
@@ -102,6 +112,48 @@ public class BallWindJump : MonoBehaviour
     void FixedUpdate()
     {
         OnWindJumpUpdate();
+
+        //ApplySlowDescent();
+    }
+
+    //private void ApplySlowDescent()
+    //{
+    //    if (slowDescent)
+    //    {
+    //        Vector2 rbVLocal = transform.InverseTransformDirection(ballRb.velocity.To3DXY()).To2DXY();
+    //        if (rbVLocal.y < minDescentSpeed)
+    //        {
+    //            rbVLocal.y = Mathf.MoveTowards(
+    //                rbVLocal.y, minDescentSpeed, slowDescentSpeed * Time.fixedDeltaTime);
+
+    //            Vector2 rbVWorld = transform.TransformDirection(rbVLocal).To2DXY();
+    //            ballRb.velocity = rbVWorld;
+    //        }
+    //    }
+    //}
+
+    void OnTap(bool state)
+    {
+        // If not at rest
+        if (ballRb.velocity.magnitude > minVelocityForDash)
+        {
+            Vector2 dashDirection = ballRb.transform.up.To2DXY();
+
+            // Side Dash
+            if (canSideDash)
+            {
+                Vector2 localVelocity = transform.InverseTransformDirection(ballRb.velocity.To3DXY()).To2DXY();
+                if (Mathf.Abs(localVelocity.x) > minVelocityForSideDash)
+                    dashDirection = (ballRb.transform.up.To2DXY() * 2f * Mathf.Sign(localVelocity.y) +
+                                     (ballRb.transform.right.To2DXY() * Mathf.Sign(localVelocity.x))).normalized;
+            }
+
+            // Apply Force
+            ballRb.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
+
+            // particles
+            partSystem.Emit(dashPartEmitCount);
+        }
     }
 
     public void DoWindJump()
