@@ -26,7 +26,9 @@ public class ScaleToAndBack : MonoBehaviour
     {
         endScale = transform.localScale;
          startScale = transform.localScale;
+        
         currentShrinkIndex = maxShrink;
+        
     }
 
 

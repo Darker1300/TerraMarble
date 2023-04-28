@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2844129647502498056}
   - component: {fileID: 8824584344507600324}
   - component: {fileID: 9040542254843436285}
+  - component: {fileID: 1182524009745928576}
   m_Layer: 8
   m_Name: ForestPaddleFatTop 1
   m_TagString: Forest
@@ -71,6 +72,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   treeCollider: {fileID: 0}
   fruitID: 0
+  AbsorbFerilizer: {fileID: 1182524009745928576}
+  treeWetComp: {fileID: 6075496589890683115}
 --- !u!95 &8824584344507600324
 Animator:
   serializedVersion: 4
@@ -108,6 +111,72 @@ MonoBehaviour:
   Destroyed:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1182524009745928576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417338232552944473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c1a880877379744083bfa1146b97004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColor: {r: 0, g: 0, b: 0, a: 0}
+  duration: 2
+  ColorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  colorChangeEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2844129647502498056}
+        m_TargetAssemblyTypeName: ForestController, Assembly-CSharp
+        m_MethodName: SpawnFruit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6075496589890683115}
+        m_TargetAssemblyTypeName: WetComp, Assembly-CSharp
+        m_MethodName: SubscribeToRegionWetComp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  shapeRender: {fileID: 7768521752674248975}
 --- !u!1 &548604921548301868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1854,11 +1923,11 @@ MonoBehaviour:
   stencilReadMask: 255
   stencilWriteMask: 255
   points:
-  - {x: 0.085, y: 0.17}
-  - {x: 0, y: 0.31}
-  - {x: -0.085, y: 0.17}
-  - {x: -0.1, y: 0}
-  - {x: 0.1, y: 0}
+  - {x: 0.255, y: 0.51}
+  - {x: 0, y: 0.93}
+  - {x: -0.255, y: 0.51}
+  - {x: -0.3, y: 0}
+  - {x: 0.3, y: 0}
   triangulation: 1
   fill:
     type: 0

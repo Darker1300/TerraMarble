@@ -92,7 +92,7 @@ Transform:
   m_Children:
   - {fileID: 8789142842706922044}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &2872954101265364641
 Rigidbody2D:
@@ -168,7 +168,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.07
+  m_Radius: 0.49
 --- !u!114 &7539014677628336619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,15 +216,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  TriggerDying:
+    m_PersistentCalls:
+      m_Calls: []
   OnStunEnd:
     m_PersistentCalls:
       m_Calls: []
   knockBackForce: 2000
-  HitAmount: 0
+  HitPoints: 0
+  MaxHitPoints: 60
   CanFertilize: 0
   spawnRandomCircle: {fileID: 0}
   canExplode: 0
   explosionRadius: 2
+  explosionBoost: 1
 --- !u!114 &7539014677628336629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,9 +245,9 @@ MonoBehaviour:
   FinishOverallShrink:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7367835404989697732}
-        m_TargetAssemblyTypeName: ExploConfigure, Assembly-CSharp
-        m_MethodName: ConfigureOtherExplosion
+      - m_Target: {fileID: 7539014677628336619}
+        m_TargetAssemblyTypeName: EnemyHealth, Assembly-CSharp
+        m_MethodName: EnemyDead
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -264,7 +269,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2872954101265364654}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d01af432b9f4b30488f589e8494b0d33, type: 3}
   m_Name: 
@@ -273,19 +278,7 @@ MonoBehaviour:
   enemyHealth: {fileID: 0}
   Exploded:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7539014677628336619}
-        m_TargetAssemblyTypeName: EnemyHealth, Assembly-CSharp
-        m_MethodName: EnemyDead
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   ExploTimer: {fileID: 0}
   isExploding: 0
 --- !u!114 &188596826024143584
@@ -365,7 +358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 0.5330188, g: 0.6443917, b: 1, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -377,7 +370,7 @@ MonoBehaviour:
   stencilRefID: 0
   stencilReadMask: 255
   stencilWriteMask: 255
-  type: 0
+  type: 2
   colorMode: 0
   colorOuterStart: {r: 1, g: 1, b: 1, a: 1}
   colorInnerEnd: {r: 1, g: 1, b: 1, a: 1}
@@ -386,9 +379,9 @@ MonoBehaviour:
   angUnitInput: 1
   angRadiansStart: 0
   angRadiansEnd: 2.3561945
-  radius: 1
+  radius: 0.45
   radiusSpace: 0
-  thickness: 0.5
+  thickness: 0.11
   thicknessSpace: 0
   arcEndCaps: 0
   matchDashSpacingToSize: 1
@@ -429,7 +422,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 35eb9f982684e7745b8ef050ccf0604b, type: 2}
+  - {fileID: 2100000, guid: d72c5e047d4188246887ffb9389e25a7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -499,7 +492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 0.11035956, g: 0.754717, b: 0.728125, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -520,7 +513,7 @@ MonoBehaviour:
   angUnitInput: 1
   angRadiansStart: 0
   angRadiansEnd: 2.3561945
-  radius: 1
+  radius: 0.3
   radiusSpace: 0
   thickness: 0.5
   thicknessSpace: 0

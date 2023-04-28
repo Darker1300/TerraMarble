@@ -11,7 +11,7 @@ public class Projectile : MonoBehaviour
     public Vector2 TargetDirection;
     [SerializeField] private float moveSpeed;
     private Transform planetCenter;
-
+    public int projectileDammage;
    
     private const string enemyTagName = "Enemy";
     private const string wheelTagName = "Enemy";

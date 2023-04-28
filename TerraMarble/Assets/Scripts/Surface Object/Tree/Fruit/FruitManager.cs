@@ -102,7 +102,8 @@ public class FruitManager : MonoBehaviour
                 v2FruitPoints[i].x = xFruit;
     }
 
-    [NaughtyAttributes.Button]
+    [Sirenix.OdinInspector.Button]
+
     public void GenerateFruitPoints()
     {
         fruitPoints = new Vector2[fruitCount];
