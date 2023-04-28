@@ -13,8 +13,13 @@ public class CloudsManager : MonoBehaviour
     [SerializeField] private GameObject cloudPrefab = null;
     [SerializeField] private Transform cloudsParent = null;
 
-    [Header("Config")] [SerializeField] private float cloudSpawnTime = 0.5f;
+    [Header("Config")]
+
+    [SerializeField] private float cloudSpawnTime = 0.5f;
     [SerializeField] private int cloudMaxCount = 50;
+
+    [SerializeField] private bool preloadClouds = true;
+    [SerializeField] private bool updateClouds = false;
 
     [SerializeField] private Vector2 lifeTimeRange = new(5f, 15f);
 
@@ -24,7 +29,8 @@ public class CloudsManager : MonoBehaviour
 
     [SerializeField] private Vector2 speedRange = new(1.5f, .75f);
 
-    [SerializeField] private AnimationCurve opacityOverLifetimeCurve
+    [SerializeField]
+    private AnimationCurve opacityOverLifetimeCurve
         = new(new Keyframe(0f, 0f),
             new Keyframe(0.5f, 1f),
             new Keyframe(1f, 0f));
@@ -55,6 +61,17 @@ public class CloudsManager : MonoBehaviour
             true, 10,
             200
         );
+
+        if (preloadClouds)
+        {
+            //Vector2 wheelPosition = wheel.transform.position.To2DXY();
+            for (int i = 0; i < cloudMaxCount; i++)
+            {
+                var cloud = SpawnCloud();
+                cloud.timeRemaining = cloud.lifeTime * 0.5f;
+                UpdateCloudMaterial(cloud);
+            }
+        }
     }
 
     private void OnGet(CloudData cloud)
@@ -71,17 +88,24 @@ public class CloudsManager : MonoBehaviour
 
     private void Update()
     {
-        float deltaTime = Time.deltaTime;
         Vector2 wheelPosition = wheel.transform.position.To2DXY();
+        float deltaTime = Time.deltaTime;
 
         foreach (var cloud in activeClouds)
         {
-            cloud.timeRemaining -= deltaTime;
-            if (cloud.timeRemaining < float.Epsilon) // mark to destroy cloud 
-                tempDestroyClouds.Add(cloud);
-            else // else Update cloud
+            if (updateClouds)
+                cloud.timeRemaining -= deltaTime;
+            if (cloud.timeRemaining > 0f)
+            {
                 UpdateCloud(cloud, wheelPosition, deltaTime);
+                if (updateClouds)
+                    UpdateCloudMaterial(cloud);
+            }
+            else // else destroy
+                tempDestroyClouds.Add(cloud);
         }
+
+        if (!updateClouds) return;
 
         // destroy clouds
         foreach (var cloud in tempDestroyClouds)
@@ -96,13 +120,11 @@ public class CloudsManager : MonoBehaviour
         while (cloudSpawnTimer < float.Epsilon)
         {
             cloudSpawnTimer += cloudSpawnTime;
-            // Spawn Cloud
-            SpawnCloud();
         }
     }
 
     [Button]
-    private void SpawnCloud()
+    private CloudData SpawnCloud()
     {
         CloudData cloud = cloudPool.Get();
 
@@ -125,12 +147,13 @@ public class CloudsManager : MonoBehaviour
         cloud.transform.position = newPos;
         cloud.height = randomDistance;
 
-        cloud.transform.up = ((Vector2) wheel.transform.position)
+        cloud.transform.up = ((Vector2)wheel.transform.position)
             .Towards(newPos).normalized.To3DXY(0f);
 
         if (cloud.meshRenderer == null)
             cloud.meshRenderer = cloud.GetComponent<MeshRenderer>();
         UpdateCloudMaterial(cloud);
+        return cloud;
     }
 
     private void UpdateCloud(CloudData cloud, Vector2 wheelPosition, float deltaTime)
@@ -142,7 +165,10 @@ public class CloudsManager : MonoBehaviour
                 .RotateAround(cloud.speed * deltaTime, wheelPosition)
                 .To3DXY(originalPos.z);
 
-        UpdateCloudMaterial(cloud);
+        
+        cloud.transform.up = wheel.transform.position.To2DXY()
+            .Towards(cloud.transform.position)
+            .normalized.To3DXY(0f);
     }
 
     private void UpdateCloudMaterial(CloudData cloud)

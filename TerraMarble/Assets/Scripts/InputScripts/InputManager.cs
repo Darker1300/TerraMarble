@@ -473,7 +473,11 @@ public class InputManager : MonoBehaviour
 
             TapLeft?.Invoke(false);
             //coroutine 
-            StopCoroutine(DoubleTapQuery);
+            if (DoubleTapQuery != null)
+            {
+                StopCoroutine(DoubleTapQuery);
+                DoubleTapQuery = null;
+            }
             Debug.Log("doubleTap");
         }
         else if ((Time.time - startTime) <= TapTime)
@@ -511,7 +515,11 @@ public class InputManager : MonoBehaviour
         {
             TapRight?.Invoke(false);
             //coroutine 
-            StopCoroutine(DoubleTapQuery);
+            if (DoubleTapQuery != null)
+            {
+                StopCoroutine(DoubleTapQuery);
+                DoubleTapQuery = null;
+            }
             Debug.Log("doubleTap");
         }
         else if ((Time.time - startTime) <= TapTime)

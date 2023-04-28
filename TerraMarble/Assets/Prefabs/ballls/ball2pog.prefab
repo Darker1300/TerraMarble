@@ -1164,10 +1164,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   glideSpeed: 40
   minGlideSpeed: 1
-  upwardsSpeed: 100
+  upwardsSpeed: 75
   slowDescentSpeed: 400
   jumpDuration: 0.05
-  jumpCurve:
+  minUpDragInput: 0.1
+  upDragUISize: 0.15
+  forceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -0.006234414
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.33
+      value: 0
+      inSlope: 0.043877475
+      outSlope: 0.043877475
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  doDebug: 1
+  particleRateCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -1203,9 +1239,8 @@ MonoBehaviour:
   partDistance: -0.2
   partInitialBurst: 3
   partMultiplier: 0.5
-  minUpDragInput: 0.1
-  upDragSize: 0.3
   upDragInput: 0
+  horDragInput: 1
   IsJumping: 0
   ballRb: {fileID: 0}
   wheel: {fileID: 0}

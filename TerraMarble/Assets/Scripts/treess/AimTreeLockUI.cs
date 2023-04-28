@@ -21,11 +21,10 @@ public class AimTreeLockUI : MonoBehaviour
     [SerializeField] private Disc powerBackDisc;
 
     [SerializeField] private Disc rangeBackDisc;
-    [Header("Flying How much the ball UI shrinks ")]
 
-    [SerializeField]
-    [Range(0, 1)]
+    [Header("Flying How much the ball UI shrinks ")] [SerializeField] [Range(0, 1)]
     private float ShrinkSize = 0.5f;
+
     private float startDiscSize;
     public AnimationCurve DotUiScaleInfluence;
 
@@ -34,7 +33,6 @@ public class AimTreeLockUI : MonoBehaviour
 
     private void Start()
     {
-
         treeActive = FindObjectOfType<DragTreePosition>();
         ballWindJumpScript = FindObjectOfType<BallWindJump>();
         startDiscSize = screenAimDot.Radius;
@@ -92,14 +90,13 @@ public class AimTreeLockUI : MonoBehaviour
                                                * treeActive.treeBender.dragInput;
 
 
-        //ChangeBallUiSizeReleventToThrust();
-
+        UpdateScreenAimDotSize();
     }
 
-    public void ChangeBallUiSizeReleventToThrust()
+    public void UpdateScreenAimDotSize()
     {
-
-        screenAimDot.Radius = Mathf.Lerp(startDiscSize, ShrinkSize * startDiscSize, DotUiScaleInfluence.Evaluate(ballWindJumpScript.upDragInput));
+        screenAimDot.Radius = Mathf.Lerp(startDiscSize, ShrinkSize * startDiscSize,
+            DotUiScaleInfluence.Evaluate(ballWindJumpScript.upDragInput));
     }
 
     private void SetScreenLine(float dir)
@@ -134,7 +131,7 @@ public class AimTreeLockUI : MonoBehaviour
         powerFillDisc.AngRadiansEnd = -powerCurrent;
 
         float rangeSize = rangeExtent * 2f;
-        float shift = math.remap(-1,1,0,1, treeActive.treeBender.dragInput.x) * rangeSize;
+        float shift = math.remap(-1, 1, 0, 1, treeActive.treeBender.dragInput.x) * rangeSize;
         rangeBackDisc.AngRadiansStart = (rangeSize * 2f - shift) * Mathf.Deg2Rad;
         rangeBackDisc.AngRadiansEnd = (-rangeSize - shift) * Mathf.Deg2Rad;
     }
