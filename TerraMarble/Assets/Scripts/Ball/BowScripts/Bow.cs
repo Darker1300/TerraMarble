@@ -57,7 +57,7 @@ public class Bow : MonoBehaviour
 
     IEnumerator FireRate()
     {
-        int i = 4;
+        int i = 3;
 
         while (i > 0)
         {

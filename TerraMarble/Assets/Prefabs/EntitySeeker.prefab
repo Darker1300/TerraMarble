@@ -215,28 +215,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnStunEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  knockBackForce: 2000
-  HitAmount: 0
-  CanFertilize: 0
-  spawnRandomCircle: {fileID: 0}
-  canExplode: 0
-  explosionRadius: 2
---- !u!114 &1311696051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5710913350301166568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a15e771ea2bdadf4391a07c8bd901f6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FinishOverallShrink:
+  TriggerDying:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1053906789049160578}
@@ -251,10 +230,36 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnStunEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  knockBackForce: 2000
+  HitPoints: 30
+  MaxHitPoints: 30
+  CanFertilize: 0
+  spawnRandomCircle: {fileID: 0}
+  canExplode: 0
+  explosionRadius: 2
+  explosionBoost: 0
+--- !u!114 &1311696051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5710913350301166568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15e771ea2bdadf4391a07c8bd901f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FinishOverallShrink:
+    m_PersistentCalls:
+      m_Calls: []
   duration: 0.25
-  maxShrink: 6
+  maxShrink: 3
   test: 0
-  currentShrinkIndex: 6
+  currentShrinkIndex: 3
   startScale: {x: 0, y: 0, z: 0}
 --- !u!114 &1053906789049160578
 MonoBehaviour:

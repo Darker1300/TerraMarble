@@ -53,6 +53,7 @@ MonoBehaviour:
   pooler: {fileID: 0}
   TargetDirection: {x: 0, y: 0}
   moveSpeed: 26.78
+  projectileDammage: 10
 --- !u!114 &4379143913436427364
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,18 +12,23 @@ public class EnemyHealth : MonoBehaviour
     public float CurrentDelayTime;
     [SerializeField] private float KnockBackDuration = 1.25f;
     public UnityEvent<Collider2D> OnProjectileHit;
+    public UnityEvent<Collider2D> TriggerDying;
     public UnityEvent OnStunEnd;
     private Rigidbody2D rb;
     [SerializeField]
     private float knockBackForce = 100;
+    [SerializeField]
+    public int HitPoints;
+    [SerializeField]
+    public int MaxHitPoints;
 
-    public int HitAmount;
     public bool CanFertilize = false;
     public SpawnRandomUnitCirclePos spawnRandomCircle;
     public bool canExplode = false;
     public float explosionRadius = 2f;
     public bool explosionBoost = false;
-    
+    private bool isDying;
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +37,11 @@ public class EnemyHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
     }
-
+    private void OnEnable()
+    {
+        isDying = false;
+        HitPoints = MaxHitPoints;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -55,16 +64,36 @@ public class EnemyHealth : MonoBehaviour
     }
     private void OnDisable()
     {
-
+       
     }
+    public void MinusHit(int dammage,Collider2D collision)
+    {
+        if (isDying)
+        {
+            return;
+        }
 
+        if ((HitPoints - dammage) <= 0)
+        {
+            //set in process of dying
+            isDying = true;
+            OnProjectileHit?.Invoke(collision);
+            TriggerDying?.Invoke(collision);
+        }
+        else
+        {
+            HitPoints -= dammage;
+            OnProjectileHit?.Invoke(collision);
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Debug.Log("KnockBack" + collision.gameObject.name);
 
         if (collision.gameObject.CompareLayerMask(projLayerName))
         {
-            OnProjectileHit?.Invoke(collision);
+            MinusHit(collision.gameObject.GetComponent<Projectile>().projectileDammage,collision);
+
         }
         else if (explosionBoost && collision.gameObject.CompareLayerMask(BallLayerName))
         {
@@ -103,7 +132,7 @@ public class EnemyHealth : MonoBehaviour
         if (rb == null)
             return;
 
-        HitAmount++;
+        
         rb.velocity = Vector2.zero;
         OnHit();
         rb.AddForce(colider.transform.Towards(transform).normalized * knockBackForce);
