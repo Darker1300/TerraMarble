@@ -189,7 +189,6 @@ public class BallWindJump : MonoBehaviour
         // Forward
         rbVLocal.x += forwardForce * forwardDir;
 
-
         Vector2 rbVWorld = transform
             .TransformDirection(rbVLocal).To2DXY();
         ballRb.velocity = rbVWorld;

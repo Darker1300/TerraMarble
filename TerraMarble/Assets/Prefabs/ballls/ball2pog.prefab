@@ -1106,7 +1106,6 @@ GameObject:
   - component: {fileID: 4297447129141640639}
   - component: {fileID: 4297447129141640638}
   - component: {fileID: 4297447129141640608}
-  - component: {fileID: 4297447129141640615}
   - component: {fileID: 6501393804689502291}
   - component: {fileID: 2321576262505571559}
   - component: {fileID: 4297447129141640614}
@@ -1228,24 +1227,6 @@ MonoBehaviour:
   maxGravityDist: 300
   maxGravity: 40
   stompPower: 40
---- !u!114 &4297447129141640615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4297447129141640627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1c3a6e2420a01d4a9baf3db7cb8efb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slideMax: 32.19
-  slideMin: -1.89
-  dotMin: 0
-  maxBounceForce: 15
-  minBounceForce: 10
-  isHit: 0
 --- !u!114 &6501393804689502291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1300,9 +1281,7 @@ MonoBehaviour:
   glideSpeed: 40
   minGlideSpeed: 1
   upwardsSpeed: 75
-  slowDescent: 1
   slowDescentSpeed: 400
-  minDescentSpeed: -2
   jumpDuration: 0.05
   minUpDragInput: 0.1
   upDragUISize: 0.15
