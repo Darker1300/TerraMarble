@@ -98,15 +98,17 @@ public class BallWindJump : MonoBehaviour
             {
                 IsJumping = true;
                 DoWindJump();
+
+                flyUI.UpdateUI(upDragInput);
             }
         }
-        else
+        else if (IsJumping)
         {
             IsJumping = false;
+            OnWindJumpEnd();
         }
         //if (Input.GetKeyDown(KeyCode.Space)) DoWindJump();
 
-        flyUI.UpdateUI(upDragInput);
     }
 
     void FixedUpdate()
@@ -195,8 +197,8 @@ public class BallWindJump : MonoBehaviour
 
         // Timer
         jumpTimer += Time.fixedDeltaTime;
-        if (jumpTimer >= jumpDuration)
-            OnWindJumpEnd();
+        //if (jumpTimer >= jumpDuration)
+        //    OnWindJumpEnd();
     }
 
     void UpdateParticles()
