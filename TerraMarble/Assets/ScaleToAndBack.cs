@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityUtility;
 using UnityEngine.Events;
+using Sirenix.OdinInspector;
 
 public class ScaleToAndBack : MonoBehaviour
 {
+    [HideLabel]
+    [SerializeField]
+    [TextArea(1, 2)]
+    private string InfoString2 = "";
     public UnityEvent FinishOverallShrink;
     [SerializeField]
     private float duration = 0.25f;

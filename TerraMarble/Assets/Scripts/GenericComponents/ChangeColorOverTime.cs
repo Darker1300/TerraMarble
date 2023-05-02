@@ -4,13 +4,18 @@ using UnityEngine;
 using Shapes;
 using System;
 using UnityEngine.Events;
+using Sirenix.OdinInspector;
 
 public class ChangeColorOverTime : MonoBehaviour
 {
     public Color targetColor; // the color we want to lerp to
     public float duration = 2f; // how long the color will take to become fully transparent
     public AnimationCurve ColorCurve = AnimationCurve.Linear(0f, 1f, 1f, 0f); // the curve used to determine how the transparency changes over time
-   // public Renderer objectRenderer; // the object's renderer that we'll be changing the color of
+                                                                              // public Renderer objectRenderer; // the object's renderer that we'll be changing the color of
+    [HideLabel]
+    [SerializeField]
+   [TextArea(1,2)]
+    private string InfoString = "";
     public UnityEvent  colorChangeEnd;
     private Color initialColor; // the object's initial color before transparency is applied
     public ShapeRenderer shapeRender;

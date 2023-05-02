@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,10 @@ public class TimerEvent : MonoBehaviour
     private bool loop;
 
     public bool test;
-
+    [HideLabel]
+    [SerializeField]
+    [TextArea(1, 2)]
+    private string InfoString = "";
     public UnityEvent TriggerEvent;
     // Start is called before the first frame update
     void Start()
@@ -57,6 +61,12 @@ public class TimerEvent : MonoBehaviour
         }
 
     }
+    public void EndTimerEvent()
+    {
+        StopAllCoroutines();
+    
+    }
+
     public void setDuration(float duration)
     {
         TriggerDuration = duration;

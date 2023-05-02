@@ -1,6 +1,8 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SlowDownZone : MonoBehaviour
 {
@@ -13,12 +15,22 @@ public class SlowDownZone : MonoBehaviour
     public bool willgetStuck;
     public LayerMask targetLayer;
     private float velocityToGetStuck = 200f;
+    [HideLabel]
+    [SerializeField]
+    [TextArea(1, 2)]
+    private string InfoString = "";
+    public UnityEvent OnEnter;
+    [HideLabel]
+    [SerializeField]
+    [TextArea(1, 2)]
+    private string InfoString2 = "";
+    public UnityEvent OnExit;
     void OnTriggerExit2D(Collider2D other)
     {
         Rigidbody2D rb = other.GetComponentInParent<Rigidbody2D>();
         if (rb != null)
         {
-
+            OnExit?.Invoke();
 
             currentSlowdown = 0f; // Reset the current slowdown when an object enters the trigger zone
 
@@ -37,7 +49,7 @@ public class SlowDownZone : MonoBehaviour
 
         if (velocity.magnitude < velocityToGetStuck)
         {
-            willgetStuck = true;
+           
             //currentSlowdown = 500;
             return true;
         }
@@ -53,10 +65,12 @@ public class SlowDownZone : MonoBehaviour
             {
                 other.GetComponentInParent<seadWeirdGravity>().enabled = false;
                 WillGetStuck(rb.velocity);
-              
+                OnEnter?.Invoke();
 
             }
+
         }
+        willgetStuck = true;
     }
     void OnTriggerStay2D(Collider2D other)
     {
@@ -69,16 +83,16 @@ public class SlowDownZone : MonoBehaviour
 
         //}else
         currentSlowdown = Mathf.Min(currentSlowdown + slowdownFactor * Time.deltaTime, maxSlowdown);
-
+        Debug.Log("SlowDown " + currentSlowdown);
         // Check if the other object has a Rigidbody2D component
-        Rigidbody2D otherRigidbody = other.GetComponent<Rigidbody2D>();
+        Rigidbody2D otherRigidbody = other.GetComponentInParent<Rigidbody2D>();
 
         // If the other object has a Rigidbody2D component, reduce its velocity based on the current slowdown
         if (otherRigidbody != null)
         {
 
-
-            otherRigidbody.velocity *= 1f - currentSlowdown;
+           
+            otherRigidbody.velocity *= Mathf.Clamp01(1f - currentSlowdown);
 
         }
     }
