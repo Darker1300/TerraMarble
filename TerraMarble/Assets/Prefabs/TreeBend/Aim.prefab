@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5207247042109310668}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.0932784, y: 30.1, z: -0.41118324}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &5207247042109310664
 CircleCollider2D:
@@ -50,7 +50,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 8.5
+  m_Radius: 10
 --- !u!114 &5207247042109310665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,16 +63,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd53a0a735b492d4fb68aca87ec313c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragStartOffset: 15
+  dragStartOffset: 11.9
   dragMoveRange: 20
-  dragScreenSize: {x: 0.1, y: 0.2}
+  dragScreenSize: {x: 0.05, y: 0.125}
   dragDirOffsetAmount: 20
   dragDirTolerance: {x: 0.1, y: 0.05}
   invertXInput: 1
-  invertDragDir: 0
-  bendTime: 0.05
+  invertDragDir: 1
+  bendTime: 0.035
   bendMaxSpeed: 1000
+  minSlideForce: 16
+  forceSlideRange: 25
+  forceSlideTolerance: 0.8
+  doDebug: 1
   treeBendCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  inputCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -131,7 +159,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   launchTime: 0.05
   jumpHeight: 0.4
-  stretchHeight: 0.75
+  stretchHeight: 0.4
   wobbleMaxAngle: 30
   wobbleSlowFactor: 0.75
   wobbleMinThreshold: 5
@@ -152,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c13f67f9c67212469c063fdfba52f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treeBender: {fileID: 0}
+  treeBender: {fileID: 5207247042109310665}
 --- !u!50 &5207247042109310667
 Rigidbody2D:
   serializedVersion: 4
