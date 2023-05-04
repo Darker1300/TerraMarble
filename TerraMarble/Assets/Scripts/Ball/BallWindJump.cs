@@ -24,11 +24,12 @@ public class BallWindJump : MonoBehaviour
     [SerializeField] private float minScreenDragForDash = 3f;
 
     [Header("Config Dash")]
-    [SerializeField] private float minVelocityForDash = 1f;
-    [SerializeField] private float minVelocityForSideDash = 1f;
+    [SerializeField] private float minVelocityForDash = .5f;
+    [SerializeField] private float minVelocityForSideDash = .1f;
     //[SerializeField] private bool canSideDash = true;
     [SerializeField] private float dashForce = 10f;
     [SerializeField] private int dashPartEmitCount = 5;
+    public bool useMinVelocityForDash = false;
 
     [SerializeField]
     private AnimationCurve forceCurve
@@ -168,6 +169,19 @@ public class BallWindJump : MonoBehaviour
 
     public void DoDash()
     {
+        DoDash(dashForce);
+    }
+
+    
+    /// <returns>If successfully applied force.</returns>
+    public bool DoDash(float newDashForce, bool forceDash = false)
+    {
+        if (!forceDash && useMinVelocityForDash)
+        {
+            if (ballRb.velocity.sqrMagnitude < minVelocityForDash)
+                return false;
+        }
+
         Vector2 dashDirection;
 
         // if is dragging
@@ -177,7 +191,7 @@ public class BallWindJump : MonoBehaviour
             dashDirection = ballRb.transform.rotation * rawScreenDragInput.normalized;
         }
         // else if is moving
-        else if (ballRb.velocity.sqrMagnitude > minVelocityForDash)
+        else if (ballRb.velocity.sqrMagnitude > minVelocityForSideDash)
         {
             // Dash forwards
             dashDirection = ballRb.velocity.normalized;
@@ -189,10 +203,12 @@ public class BallWindJump : MonoBehaviour
         }
 
         // apply force
-        ballRb.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
+        ballRb.AddForce(dashDirection * newDashForce, ForceMode2D.Impulse);
 
         // particles
         partSystem.Emit(dashPartEmitCount);
+
+        return true;
     }
 
     public void DoWindJump()
