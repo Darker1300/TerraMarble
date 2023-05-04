@@ -70,10 +70,9 @@ public class BallGrabber : MonoBehaviour
         }
     }
 
-    public void BombPickUp(bool pickUp)
+    public void BombPickUp()
     {
-        if (pickUp)
-        {
+       
             if (grabbed == null)
             {
                 
@@ -95,7 +94,7 @@ public class BallGrabber : MonoBehaviour
             }
         }
        
-    }
+    
 
     private void Update()
     {

@@ -94,8 +94,8 @@ public class InputManager : MonoBehaviour
     public static event DragLeft RightDragEvent;
     public bool hasMoved;
     //will return false if canceled,this
-    public static Action<bool> TapLeft;
-    public static Action<bool> TapRight; 
+    public static Action TapLeft;
+    public static Action TapRight; 
     public static Action DoubleTapLeft;
     public static Action DoubleTapRight;
 
@@ -473,7 +473,7 @@ public class InputManager : MonoBehaviour
         if (Time.time - lastTapTime < doubleTapTimeThreshold)
         {
 
-            TapLeft?.Invoke(false);
+            TapLeft?.Invoke();
             //coroutine 
             if (DoubleTapQuery != null)
             {
@@ -491,7 +491,7 @@ public class InputManager : MonoBehaviour
             //TapLeftEvent?.Invoke(null, EventArgs.Empty);
             DoubleTapQuery = DoubleTapTimer();
             StartCoroutine(DoubleTapQuery);
-            TapLeft?.Invoke(false);
+            TapLeft?.Invoke();
             lastTapTime = Time.time;
         }
 
@@ -516,7 +516,7 @@ public class InputManager : MonoBehaviour
         Vector2 dragCurrentWorldPos = Camera.main.ScreenToWorldPoint(dragCurrentScreenPos);
         if (Time.time - lastTapTime < doubleTapTimeThreshold)
         {
-            TapRight?.Invoke(false);
+            TapRight?.Invoke();
             //coroutine 
             if (DoubleTapQuery != null)
             {
@@ -528,7 +528,7 @@ public class InputManager : MonoBehaviour
         }
         else if ((Time.time - startTime) <= TapTime)
         {
-            TapRight?.Invoke(false);
+            TapRight?.Invoke();
 
             //
             //TapLeftEvent?.Invoke(null, EventArgs.Empty);
@@ -565,7 +565,7 @@ public class InputManager : MonoBehaviour
 
         //    timer -= Time.deltaTime;
         //}
-        TapRight?.Invoke(true);
+        TapRight?.Invoke();
         if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
     }
    
