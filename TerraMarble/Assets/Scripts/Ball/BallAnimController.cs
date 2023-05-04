@@ -25,13 +25,13 @@ public class BallAnimController : MonoBehaviour
 
     public float YOffset = 90f;
     public bool DoBounce = false;
-    public bool IsTouchingTree = false;
-    public bool HasRecentlyTouchedTree
-        => CurrentRollTimer > 0f;
+
     public float MinRollTime = 0.25f;
     public float RollSpeedFactor = 1.5f;
     public float RollVelocityFactor = 0.2f;
     public float CurrentRollTimer = 0f;
+
+    public bool IsTouchingTree = false;
 
     void Awake()
     {
@@ -53,6 +53,9 @@ public class BallAnimController : MonoBehaviour
 
     void Update()
     {
+
+
+
         // Flying
         if (WindJump)
         {
@@ -76,21 +79,20 @@ public class BallAnimController : MonoBehaviour
         {
             CurrentRollTimer -= Time.deltaTime;
             isRolling = true;
-            float spd = Mathf.Abs(RigidBody2D.velocity.magnitude) * RollVelocityFactor;
-            spd = Mathf.Clamp(spd, 0f, RollSpeedFactor);
+            float velocitySpeed = RigidBody2D.velocity.magnitude;
+            float clampedSpeed = Mathf.Abs(velocitySpeed) * RollVelocityFactor;
+            clampedSpeed = Mathf.Clamp(clampedSpeed, 0f, RollSpeedFactor);
             Animator.SetFloat(
                 HashIDs[AnimParameter.RollSpeed],
-                spd);
+                clampedSpeed);
         }
         Animator.SetBool(
             HashIDs[AnimParameter.Rolling],
             isRolling);
 
         IsTouchingTree = false;
-    }
 
-    void FixedUpdate()
-    {
+        // Rotation / Flip
         if (RigidBody2D)
         {
             Vector2 upVector = RegionsManager.transform.position
@@ -100,23 +102,30 @@ public class BallAnimController : MonoBehaviour
             Vector2 velocityVector = RigidBody2D.velocity
                 .normalized;
 
-            Vector2 rejection = velocityVector.Proj(upVector);
-            rejection = RigidBody2D.transform.InverseTransformVector(rejection);
+            // Vector2 rejection = velocityVector.Proj(upVector);
+            // rejection = RigidBody2D.transform.InverseTransformVector(rejection);
 
             float xDir = upVector.PerpDot(velocityVector);
             float yDir = upVector.Dot(velocityVector);
 
             // Flip
+            Quaternion localYaw = Quaternion.identity;
             if (Mathf.Abs(xDir) > 0.5f)
-                Animator.transform.localRotation = Quaternion.AngleAxis(
+            {
+                localYaw = Quaternion.AngleAxis(
                     YOffset * -Mathf.Sign(xDir),
                     Vector3.up);
+            }
+            // todo: pitch rotation, then combine.
+            // flying: rotate towards local velocity vector
+            // rolling: rotate towards up-20f while touching trees. ?
 
-
-
-            //Debug.Log($"X Dir: {xDir}, Y Dir: {yDir}");
-            //Debug.Log($"X Vel: {rejection.x.ToString("F")}, Y Vel: {rejection.y.ToString("F")}");
+            Animator.transform.localRotation = localYaw;
         }
+    }
+
+    void FixedUpdate()
+    {
     }
 
     private void OnCollisionStay2D(Collision2D collision)
