@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1253895423880746874}
   - component: {fileID: 491846113}
   m_Layer: 13
-  m_Name: art
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15e771ea2bdadf4391a07c8bd901f6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InfoString2: 
   FinishOverallShrink:
     m_PersistentCalls:
       m_Calls: []
@@ -253,6 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15e771ea2bdadf4391a07c8bd901f6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InfoString2: 
   FinishOverallShrink:
     m_PersistentCalls:
       m_Calls: []
