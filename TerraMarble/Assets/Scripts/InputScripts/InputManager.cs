@@ -95,7 +95,9 @@ public class InputManager : MonoBehaviour
     public bool hasMoved;
     //will return false if canceled,this
     public static Action<bool> TapLeft;
-    public static Action<bool> TapRight;
+    public static Action<bool> TapRight; 
+    public static Action DoubleTapLeft;
+    public static Action DoubleTapRight;
 
     
     public static event EventHandler LeftTap;
@@ -479,6 +481,7 @@ public class InputManager : MonoBehaviour
                 DoubleTapQuery = null;
             }
             Debug.Log("doubleTap");
+            DoubleTapLeft?.Invoke();
         }
         else if ((Time.time - startTime) <= TapTime)
         {
@@ -520,6 +523,7 @@ public class InputManager : MonoBehaviour
                 StopCoroutine(DoubleTapQuery);
                 DoubleTapQuery = null;
             }
+            DoubleTapRight?.Invoke();
             Debug.Log("doubleTap");
         }
         else if ((Time.time - startTime) <= TapTime)
