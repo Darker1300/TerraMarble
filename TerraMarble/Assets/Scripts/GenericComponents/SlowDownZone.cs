@@ -15,6 +15,7 @@ public class SlowDownZone : MonoBehaviour
     public bool willgetStuck;
     public LayerMask targetLayer;
     private float velocityToGetStuck = 200f;
+
     [HideLabel]
     [SerializeField]
     [TextArea(1, 2)]
@@ -25,6 +26,14 @@ public class SlowDownZone : MonoBehaviour
     [TextArea(1, 2)]
     private string InfoString2 = "";
     public UnityEvent OnExit;
+
+    [HideLabel]
+    [SerializeField]
+    [TextArea(1, 2)]
+    private string InfoString3 = "";
+    public UnityEvent OnStuck;
+    private bool OnstuckHasFiredEvent = false;
+    public Transform Player;
     void OnTriggerExit2D(Collider2D other)
     {
         Rigidbody2D rb = other.GetComponentInParent<Rigidbody2D>();
@@ -43,6 +52,7 @@ public class SlowDownZone : MonoBehaviour
             other.GetComponentInParent<seadWeirdGravity>().enabled = true;
         }
         willgetStuck = false;
+        OnstuckHasFiredEvent = false;
     }
     public bool WillGetStuck(Vector2 velocity)
     {
@@ -59,7 +69,7 @@ public class SlowDownZone : MonoBehaviour
     {
         if (targetLayer == (targetLayer | (1 << other.gameObject.layer)))
         {
-
+            Player = other.gameObject.transform;
             Rigidbody2D rb = other.GetComponentInParent<Rigidbody2D>();
             if (rb != null)
             {
@@ -90,10 +100,13 @@ public class SlowDownZone : MonoBehaviour
         // If the other object has a Rigidbody2D component, reduce its velocity based on the current slowdown
         if (otherRigidbody != null)
         {
-
+            if (!OnstuckHasFiredEvent && otherRigidbody.velocity.magnitude == 0 )
+            {
+                OnStuck?.Invoke();
+                OnstuckHasFiredEvent = true;
+            }
            
             otherRigidbody.velocity *= Mathf.Clamp01(1f - currentSlowdown);
-
         }
     }
 }

@@ -143,7 +143,7 @@ public class BallWindJump : MonoBehaviour
     //    }
     //}
 
-    void OnTap(bool state)
+    void OnTap()
     {
         DoDash();
 
