@@ -68,6 +68,16 @@ namespace MathUtility
             return Mathf.InverseLerp(a, b, t);
         }
 
+        /// <summary>
+        /// Degrees.
+        /// </summary>
+        public static float ClampAngle(float angle, float min, float max)
+        {
+            float start = (min + max) * 0.5f - 180;
+            float floor = Mathf.FloorToInt((angle - start) / 360) * 360;
+            return Mathf.Clamp(angle, min + floor, max + floor);
+        }
+
 
         /// <summary>
         ///   <para>Calculates the shortest difference between two given numbers in a repeating range.</para>

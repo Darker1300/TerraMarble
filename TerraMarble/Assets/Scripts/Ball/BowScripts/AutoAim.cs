@@ -37,7 +37,7 @@ public class AutoAim : MonoBehaviour
 
         foreach (var bufferName in SensorBufferNames)
         {
-            NearbySensor.ColliderBuffer colliderBuffer = NearbySensor.Buffers.Find(b => b.Name == bufferName);
+            NearbySensor.ColliderBuffer colliderBuffer = NearbySensor.FindBuffer(bufferName);
             if (colliderBuffer == null)
                 continue; // buffer not found;
             NearbyTargetSet.AddWhere(colliderBuffer.ColliderSet, targetCollider => targetCollider);
