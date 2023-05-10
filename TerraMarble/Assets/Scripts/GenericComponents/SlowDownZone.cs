@@ -11,7 +11,7 @@ public class SlowDownZone : MonoBehaviour
     public float StuckSlowdownFactor = 0.5f; // How much to slow down the object's speed each update
     public float maxSlowdown = 50f; // The maximum amount of slowdown that can be applied
 
-    private float currentSlowdown = 0f; // The current amount of slowdown applied to objects in the zone
+    public float currentSlowdown = 0f; // The current amount of slowdown applied to objects in the zone
     public bool willgetStuck;
     public LayerMask targetLayer;
     private float velocityToGetStuck = 200f;
@@ -48,7 +48,7 @@ public class SlowDownZone : MonoBehaviour
         if (targetLayer == (targetLayer | (1 << other.gameObject.layer)))
         {
 
-           
+
             other.GetComponentInParent<seadWeirdGravity>().enabled = true;
         }
         willgetStuck = false;
@@ -59,7 +59,7 @@ public class SlowDownZone : MonoBehaviour
 
         if (velocity.magnitude < velocityToGetStuck)
         {
-           
+
             //currentSlowdown = 500;
             return true;
         }
@@ -100,13 +100,16 @@ public class SlowDownZone : MonoBehaviour
         // If the other object has a Rigidbody2D component, reduce its velocity based on the current slowdown
         if (otherRigidbody != null)
         {
-            if (!OnstuckHasFiredEvent && otherRigidbody.velocity.magnitude == 0 )
+            if (targetLayer == (targetLayer | (1 << other.gameObject.layer)))
             {
-                OnStuck?.Invoke();
-                OnstuckHasFiredEvent = true;
+                if (!OnstuckHasFiredEvent && otherRigidbody.velocity.magnitude < 5)
+                {
+                    OnStuck?.Invoke();
+                    OnstuckHasFiredEvent = true;
+                }
+
+                otherRigidbody.velocity *= Mathf.Clamp01(1f - currentSlowdown);
             }
-           
-            otherRigidbody.velocity *= Mathf.Clamp01(1f - currentSlowdown);
         }
     }
 }

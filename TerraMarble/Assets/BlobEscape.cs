@@ -9,6 +9,7 @@ public class BlobEscape : MonoBehaviour
 {
     public UnityEvent AuraReady;
     public Disc Aura;
+    public AuraManager AuraManager;
     public SlowDownZone slowDownZone;
     public Color PulseColor;
     public float drainAuraSpeed = 0.5f;
@@ -22,25 +23,46 @@ public class BlobEscape : MonoBehaviour
     private float currentTime;
     public bool test;
     public AnimationCurve pulseCurve;
-    public bool OveralToggle;
+    public bool HasFiredDash = false;
     public float maxSize = 5f;
+    public RegularPolygon OuterRing;
     //public ChangeColorOverTime colorChange;
 
     //public Color PulseColor;
     public void ToggleOn()
     {
-        OveralToggle = true;
+        
         InputManager.DoubleTapLeft += OnTap;
         InputManager.DoubleTapRight+= OnTap;
         Aura = slowDownZone.Player.transform.parent.GetComponentInChildren<AuraManager>().Aura;
+
+        HasFiredDash = false;
         //colorChange.shapeRender = slowDownZone.Player.transform.parent.GetComponentInChildren<AuraManager>().pulseRing;
+    }
+
+    public void OnStuckBlob()
+    {
+        AuraManager.FadeIn();
+        OuterRing.Thickness = 1.05f;
+        //AuraManager.DisableAuraControl();
+        //AuraManager.FadeIn();
+        //AuraManager.Aura.Radius = 5;
+    }
+    public void OnUnStuck()
+    {
+        AuraManager.ShrinkAndFade();
+        OuterRing.Thickness = 0.05f;
+
     }
 
     public void ToggleOff()
     {
-        OveralToggle = false;
+        
         InputManager.DoubleTapLeft -= OnTap;
         InputManager.DoubleTapRight -= OnTap;
+        //OnUnStuck();
+        //Aura.Radius = 0f;
+        //AuraManager.DisableAuraControl();
     }
 
     private void OnTap()
@@ -64,13 +86,14 @@ public class BlobEscape : MonoBehaviour
     void Start()
     {
         slowDownZone = GetComponent<SlowDownZone>();
+        AuraManager = GameObject.FindWithTag("Ball").transform.GetComponentInChildren<AuraManager>();
+        this.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (OveralToggle)
-        {
+        
 
 
             if (test)
@@ -80,9 +103,17 @@ public class BlobEscape : MonoBehaviour
             }
             if (Aura.Radius >= maxSize)
             {
-                Aura.Radius = maxSize;
-                OveralToggle = false;
+                //Aura.Radius = maxSize;
+                
+                slowDownZone.currentSlowdown = 0f;
+            if (!HasFiredDash)
+            {
+                //Aura.Radius = .5f;
+                currentTarget = 0;
+                slowDownZone.Player.transform.parent.GetComponent<BallWindJump>().DoDash(50,true);
+                HasFiredDash = true;
                 AuraReady?.Invoke();
+            }
 
             }
             if (Increase)
@@ -105,6 +136,6 @@ public class BlobEscape : MonoBehaviour
                 Aura.Radius -= drainAuraSpeed * Time.deltaTime;
 
             }
-        }
+        
     }
 }
