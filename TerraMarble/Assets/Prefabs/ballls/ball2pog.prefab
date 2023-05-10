@@ -1218,7 +1218,7 @@ MonoBehaviour:
   pitchOffset: 0
   pitchPosOffset: 0.5
   pitchDefaultDirection: {x: 0, y: -1}
-  pitchMaxAngleWhileRolling: 15
+  pitchMaxAngleWhileRolling: 20
   MinRollTime: 0.1
   surfaceBufferName: Surface
   RollSpeedFactor: 1.5
@@ -1964,7 +1964,7 @@ MonoBehaviour:
     ColliderSet:
       Length: 3
   - Name: Surface
-    Radius: 1.25
+    Radius: 1.5
     Filter:
       useTriggers: 1
       useLayerMask: 1
