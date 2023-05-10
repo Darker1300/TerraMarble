@@ -91,6 +91,9 @@ public class NearbySensor : MonoBehaviour
 
     public event Action Updated;
 
+    public ColliderBuffer FindBuffer(string name)
+        => Buffers.Find(b => b.Name == name);
+
     private void Update()
     {
         Vector2 startPos = transform.position;
