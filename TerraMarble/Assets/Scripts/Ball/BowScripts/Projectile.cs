@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MathUtility;
 using Unity.VisualScripting;
+using Sirenix;
 
 public class Projectile : MonoBehaviour
 {
@@ -12,9 +13,12 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float moveSpeed;
     private Transform planetCenter;
     public int projectileDammage;
+
    
-    private const string enemyTagName = "Enemy";
-    private const string wheelTagName = "Enemy";
+   [Tag]
+    public  string enemyTagName ;
+   [Tag]
+    public string wheelTagName ;
 
 
     // Start is called before the first frame update
