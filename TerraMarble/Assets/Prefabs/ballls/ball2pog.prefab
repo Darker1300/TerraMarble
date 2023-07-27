@@ -1190,8 +1190,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823662051d7dd5e4ca2ec7002db7c4ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowModeTimeScale: 0.8
-  defaultTimeScale: 0.8
+  slowModeTimeScale: 0.75
+  defaultTimeScale: 0.75
   isInput: 1
 --- !u!114 &1495955045
 MonoBehaviour:
@@ -1270,6 +1270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stomp: 1
+  IsSliding: 0
   ballState: 0
 --- !u!114 &4297447129141640608
 MonoBehaviour:

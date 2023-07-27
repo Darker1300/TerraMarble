@@ -50,7 +50,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 10
+  m_Radius: 11.5
 --- !u!114 &5207247042109310665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,18 +63,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd53a0a735b492d4fb68aca87ec313c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragStartOffset: 11.9
-  dragMoveRange: 20
+  dragStartOffset: 12.5
+  dragMoveRange: 25
   dragScreenSize: {x: 0.05, y: 0.125}
   dragDirOffsetAmount: 20
   dragDirTolerance: {x: 0.1, y: 0.05}
   invertXInput: 1
   invertDragDir: 1
-  bendTime: 0.035
+  bendTime: 0.04
   bendMaxSpeed: 1000
-  minSlideForce: 16
-  forceSlideRange: 25
-  forceSlideTolerance: 0.8
   doDebug: 1
   treeBendCurve:
     serializedVersion: 2
@@ -163,7 +160,13 @@ MonoBehaviour:
   wobbleMaxAngle: 30
   wobbleSlowFactor: 0.75
   wobbleMinThreshold: 5
-  wheelRadius: 9.75
+  minSlideVelocityNeeded: 22
+  slideDirectionThreshold: 0.98
+  slideLiftAngle: 0
+  slideAdjustmentSpeed: 160
+  slideBoostForce: 30
+  slideMinForce: 10
+  wheelRadius: 18.666
   dragInput: {x: 0, y: 0}
   isDragDirSet: 0
   dragDir: 0

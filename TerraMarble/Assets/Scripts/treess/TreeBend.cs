@@ -1,3 +1,4 @@
+using System;
 using MathUtility;
 using System.Collections.Generic;
 using NaughtyAttributes;
@@ -8,7 +9,6 @@ using UnityUtility;
 
 public class TreeBend : MonoBehaviour
 {
-
     // Positioning
     private CircleCollider2D circleCollider2D;
     private WheelRegionsManager wheelRegions;
@@ -16,47 +16,40 @@ public class TreeBend : MonoBehaviour
     private Rigidbody2D ballRb;
     private AimTreeLockUI aimUi;
 
-    [Header("Drag Input Config")]
-    [Tooltip("offset of starting position, in degrees")]
+    [Header("Drag Input Config")] [Tooltip("offset of starting position, in degrees")]
     public float dragStartOffset = 15f;
 
     [Tooltip("range extent of bend area movement, in degrees")]
     public float dragMoveRange = 20f;
 
     [Tooltip("percentage of screen used for touch drag input, originating from touch position")]
-    public Vector2 dragScreenSize = new Vector2(0.1f, 0.2f);
+    public Vector2 dragScreenSize = new(0.1f, 0.2f);
 
     [Tooltip("how much drag dir boosts bend area, in degrees")]
     public float dragDirOffsetAmount = 20f;
 
-    [Tooltip("how much of the screen that the drag needs before setting drag dir")]
-    [SerializeField] private Vector2 dragDirTolerance = new Vector2(0.1f, 0.05f);
+    [Tooltip("how much of the screen that the drag needs before setting drag dir")] [SerializeField]
+    private Vector2 dragDirTolerance = new(0.1f, 0.05f);
 
     [SerializeField] private bool invertXInput = true;
     [SerializeField] private bool invertDragDir = false;
 
 
-    [Header("Bend Config")]
-
-    public float bendTime = 0.05f;
+    [Header("Bend Config")] public float bendTime = 0.05f;
     public float bendMaxSpeed = 1000f;
-
-    public float minSlideForce = 10f;
-    public float forceSlideRange = 0f;
-    public float forceSlideTolerance = 0.1f;
     [SerializeField] private bool doDebug = false;
 
-    [SerializeField]
-    private AnimationCurve treeBendCurve
+    [SerializeField] private AnimationCurve treeBendCurve
         = AnimationCurve.EaseInOut(0, 0, 1, 1);
-    [SerializeField]
-    private AnimationCurve inputCurve
+
+    [SerializeField] private AnimationCurve inputCurve
         = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
     [FormerlySerializedAs("PopOutHeightCurve")]
-    public AnimationCurve launchCurve = new AnimationCurve(
-            new(0, 0),
-            new(0.5f, 1f),
-            new(1, 0));
+    public AnimationCurve launchCurve = new(
+        new Keyframe(0, 0),
+        new Keyframe(0.5f, 1f),
+        new Keyframe(1, 0));
 
     public float launchTime = 0.05f;
 
@@ -67,12 +60,24 @@ public class TreeBend : MonoBehaviour
     public float wobbleSlowFactor = 0.75f;
     public float wobbleMinThreshold = 5.0f;
 
-    //[Foldout("Data")] [SerializeField] private Vector2 forceSlideVector;
+
+    [Header("Slide Config")] public float minSlideVelocityNeeded = 22f;
+    public float slideDirectionThreshold = .98f;
+    public float slideLiftAngle = 0f;
+    public float slideAdjustmentSpeed = 160f;
+    public float slideBoostForce = 30f;
+    public float slideMinForce = 10f;
+
     [Foldout("Data")] [SerializeField] private float wheelRadius = 10;
-    [Foldout("Data")] public Vector2 dragInput = new Vector2(0, 0);
+    [Foldout("Data")] public Vector2 dragInput = new(0, 0);
     [Foldout("Data")] public bool isDragDirSet = false;
-    [Foldout("Data")] public float dragDir = 0f;
+    [Foldout("Data")] public int dragDir = 0;
     [Foldout("Data")] public List<TreePaddleController> nearbyTrees = new();
+
+    public bool CanBallSlide
+        => isDragDirSet && dragInput.y > 0 && dragDir == Math.Sign(dragInput.x);
+    public bool IsDragging
+        => isDragDirSet && dragInput.y > 0;
 
     private void Start()
     {
@@ -92,14 +97,14 @@ public class TreeBend : MonoBehaviour
 
     private void Update()
     {
-        Vector2 dir = ((Vector2)wheelRegions.transform.Towards(ball.transform)).normalized;
+        Vector2 dir = ((Vector2) wheelRegions.transform.Towards(ball.transform)).normalized;
 
         dir = dir.RotatedByDegree(
-            (dragInput.x * dragMoveRange)
-            + (dragDirOffsetAmount * dragDir)
-            - (dragStartOffset * dragDir));
+            dragInput.x * dragMoveRange
+            + dragDirOffsetAmount * dragDir
+            - dragStartOffset * dragDir);
         transform.position = wheelRegions.transform.position
-                             + (Vector3)dir * wheelRadius;
+                             + (Vector3) dir * wheelRadius;
 
         UpdateTrees();
     }
@@ -113,19 +118,6 @@ public class TreeBend : MonoBehaviour
     private void UpdateTrees()
     {
         if (nearbyTrees.Count > 0)
-        {
-            //bool isWithinSlideRange = (dragInput.y > forceSlideTolerance) &&
-            //                          (((Vector2)wheelRegions.transform.position).Towards(ball.transform.position).sqrMagnitude
-            //                           < (forceSlideRange * forceSlideRange));
-            //if (isWithinSlideRange)
-            //{
-
-            //    var rejV = ballRb.velocity.Rej( 
-            //        wheelRegions.transform.Towards(ballRb.transform).normalized);//.MinMagnitude(minSlideForce);
-            //    ballRb.velocity = rejV;
-            //    //ballRb.velocity = ballRb.velocity.MinMagnitude(minSlideForce);
-            //}
-
             foreach (TreePaddleController target in nearbyTrees)
             {
                 if (target == null)
@@ -147,27 +139,19 @@ public class TreeBend : MonoBehaviour
                 upPercent = 1f - dragInput.y * fallOffPercent;
                 direction = target.DirectionFromPoint(transform.position);
 
-                // if (isWithinSlideRange)
-                //upPercent = 0f;
-                //direction = Mathf.RoundToInt(Mathf.Sign(-dragDir));
-
-                //Debug.Log("Drag: " + fallOffPercent);
-
                 target.SetTreeState(upPercent, direction);
-
             }
-        }
     }
 
     private void OnDragLeftToggle(bool state)
     {
-        dragDir = InputManager.Instance.Mobile ? (invertDragDir ? 1f : -1f) : 0f;
+        dragDir = InputManager.Instance.Mobile ? invertDragDir ? 1 : -1 : 0;
         UpdateDragToggle(state);
     }
 
     private void OnDragRightToggle(bool state)
     {
-        dragDir = InputManager.Instance.Mobile ? (invertDragDir ? -1f : 1f) : 0f;
+        dragDir = InputManager.Instance.Mobile ? invertDragDir ? -1 : 1 : 0;
         UpdateDragToggle(state);
     }
 
@@ -189,22 +173,10 @@ public class TreeBend : MonoBehaviour
         UpdateDragInput(screenDragVector);
 
         SetDragDir(false);
-
-
-        //if (!dragOffsetPerformed)
-        //{
-        //    dragOffsetPerformed = true;
-        //    if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
-        //        dragOffsetDir = Mathf.Sign(dragInput.x);
-        //    else if (dragInput.y > dragDirTolerance.y)
-        //        dragOffsetDir = 0f;
-        //}
     }
 
     private void UpdateDragInput(Vector2 screenDragVector)
     {
-
-
         // Update Position
         dragInput.x = -Mathf.Clamp(screenDragVector.x / dragScreenSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
         dragInput.y = Mathf.Abs(Mathf.Clamp(screenDragVector.y / dragScreenSize.y, -1f, 0f));
@@ -216,7 +188,6 @@ public class TreeBend : MonoBehaviour
         dragInput.y = math.remap(1, 0, 0, 1, dragInput.y);
         dragInput.y = inputCurve.Evaluate(dragInput.y);
         dragInput.y = math.remap(0, 1, 1, 0, dragInput.y);
-
     }
 
     private void SetDragDir(bool isLeft)
@@ -226,20 +197,23 @@ public class TreeBend : MonoBehaviour
             if (InputManager.Instance.Mobile)
             {
                 if (isLeft)
-                    dragDir = invertDragDir ? 1f : -1f;
+                    dragDir = invertDragDir ? 1 : -1;
                 else
-                    dragDir = invertDragDir ? -1f : 1f;
+                    dragDir = invertDragDir ? -1 : 1;
             }
             else if (!isDragDirSet)
             {
                 if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
                 {
-                    dragDir = Mathf.Sign(dragInput.x);
+                    dragDir = Math.Sign(dragInput.x);
                     if (invertDragDir) dragDir = -dragDir;
                 }
                 else if (dragInput.y > dragDirTolerance.y)
-                    dragDir = 0f;
+                {
+                    dragDir = 0;
+                }
             }
+
             isDragDirSet = true;
         }
     }
@@ -265,14 +239,14 @@ public class TreeBend : MonoBehaviour
         if (!doDebug) return;
 
         Gizmos.color = Color.white;
-        if (wheelRegions == null) wheelRegions = FindObjectOfType<WheelRegionsManager>();
-        GizmosExtensions.DrawWireCircle(wheelRegions.transform.position, forceSlideRange,
-            72, Quaternion.LookRotation(Vector3.up, Vector3.forward));
+        //if (wheelRegions == null) wheelRegions = FindObjectOfType<WheelRegionsManager>();
+        //GizmosExtensions.DrawWireCircle(wheelRegions.transform.position, minSlideHeight,
+        //    72, Quaternion.LookRotation(Vector3.up, Vector3.forward));
 
         ball ??= FindObjectOfType<BallStateTracker>();
         ballRb ??= ball?.GetComponent<Rigidbody2D>();
-        
-        Gizmos.DrawLine(ballRb.transform.position, ballRb.transform.position + (Vector3)ballRb.velocity);
+
+        Gizmos.DrawLine(ballRb.transform.position, ballRb.transform.position + (Vector3) ballRb.velocity);
 
 
         //Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
@@ -290,5 +264,4 @@ public class TreeBend : MonoBehaviour
 
         //Gizmos.DrawWireMesh();
     }
-
 }

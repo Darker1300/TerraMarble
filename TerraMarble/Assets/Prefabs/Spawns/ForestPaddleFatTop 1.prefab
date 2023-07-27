@@ -125,6 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetColor: {r: 0, g: 0, b: 0, a: 0}
   duration: 2
+  fadeInDuration: 2
   ColorCurve:
     serializedVersion: 2
     m_Curve:
@@ -149,6 +150,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  InfoString: 
   colorChangeEnd:
     m_PersistentCalls:
       m_Calls:
@@ -705,7 +707,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 2289692685312415296}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: c51c4bca72215be4cb46755ebff846d0, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

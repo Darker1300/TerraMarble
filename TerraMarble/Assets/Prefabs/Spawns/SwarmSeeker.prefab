@@ -294,7 +294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5710913350301166564, guid: b077951594f616a408b2a214acbc14bc, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5710913350301166564, guid: b077951594f616a408b2a214acbc14bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -339,6 +339,14 @@ PrefabInstance:
     - target: {fileID: 5710913350301166568, guid: b077951594f616a408b2a214acbc14bc, type: 3}
       propertyPath: m_Name
       value: SwarmSeeker
+      objectReference: {fileID: 0}
+    - target: {fileID: 5710913351233338241, guid: b077951594f616a408b2a214acbc14bc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5710913351233338242, guid: b077951594f616a408b2a214acbc14bc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7638652764301539238, guid: b077951594f616a408b2a214acbc14bc, type: 3}
