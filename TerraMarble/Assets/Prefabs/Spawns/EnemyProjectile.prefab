@@ -9,14 +9,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 300923502534544002}
-  - component: {fileID: 300923502534544005}
   - component: {fileID: 4379143913436427364}
   - component: {fileID: 1102968502012808460}
   - component: {fileID: 5980034260191565142}
   - component: {fileID: 6744554913943216713}
   - component: {fileID: -3781414194635058944}
-  m_Layer: 9
-  m_Name: Arrow
+  - component: {fileID: 8699212926462879313}
+  - component: {fileID: -5588639473708640465}
+  m_Layer: 17
+  m_Name: EnemyProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,24 +39,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &300923502534544005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 300923502534544006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf1b95d95c7feb74a9579f0b7e858f59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pooler: {fileID: 0}
-  TargetDirection: {x: 0, y: 0}
-  moveSpeed: 26.78
-  projectileDammage: 10
-  enemyTagName: Enemy
-  wheelTagName: Enemy
 --- !u!114 &4379143913436427364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,6 +176,39 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8699212926462879313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300923502534544006}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 048ad825149131a4aa01fef55b83740a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destination: {x: 0, y: 0, z: 0}
+  speed: 5
+  curveHeight: 2
+--- !u!114 &-5588639473708640465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300923502534544006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf1b95d95c7feb74a9579f0b7e858f59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pooler: {fileID: 0}
+  TargetDirection: {x: 0, y: 0}
+  moveSpeed: 0
+  projectileDammage: 5
+  enemyTagName: Player
+  wheelTagName: Player
 --- !u!1 &333141709408704727
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7598096712016689109}
   - component: {fileID: 8701766122496177984}
-  m_Layer: 9
+  m_Layer: 17
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

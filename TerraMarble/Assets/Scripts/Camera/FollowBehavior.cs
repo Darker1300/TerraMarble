@@ -41,6 +41,7 @@ public class FollowBehavior : MonoBehaviour
     [Header("Orbit Follow System")]
     [SerializeField] private bool useOrbitSystem = false;
     [SerializeField] private Vector3 followOffset = Vector3.back;
+    [SerializeField] private Vector3 followOffsetPrepareDown = Vector3.back;
     [SerializeField] private float rotateTime = .1f;
     [Header("Data")]
     [SerializeField] private float rotateVelocity = 0;
@@ -147,7 +148,7 @@ public class FollowBehavior : MonoBehaviour
         Quaternion tRotation = GetFollowRotation(trackingTarget, trackingTarget2);
         transform.rotation = tRotation;
 
-        return ((trackingTarget2.position + (tRotation * followOffset)) + trackingTarget2.Towards(rb.transform)) / 2f;
+        return ((trackingTarget2.position + (tRotation * followOffsetPrepareDown)) + trackingTarget2.Towards(rb.transform)) / 2f;
         //get direction vector from point a to point b
 
     }
