@@ -1,0 +1,21 @@
+vesion 1.3.1
+- Fixed PDF Headings Problem
+
+vesion 1.3.0
+- Changed Folders Structure
+- Added Assembly Definitions
+{
+Note: If you import this update over an old version, You will get many errors.
+Solution: Move all scripts From "Assets\ScriptBoy\Fly2D\Scripts" To "Assets\ScriptBoy\Fly2D\Scripts\Runtime".
+}
+
+vesion 1.2.0
+- Added URP Demo
+- Fixed Build Errors (FlyZoneManager.flyZoneList doesn't exist)
+
+vesion 1.1.0
+- Added Limbo Style Demo
+- Added Flies Sound Effect
+
+vesion 1.0.0
+- First release
