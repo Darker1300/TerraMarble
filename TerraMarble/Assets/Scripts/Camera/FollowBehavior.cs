@@ -139,7 +139,7 @@ public class FollowBehavior : MonoBehaviour
         transform.rotation = tRotation;
         Vector3 towards = trackingTarget2.Towards(rb.transform);
         //transform.position =  new Vector3(towards.x,towards.y,transform.position.z);
-        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(towards.x, towards.y, transform.position.z),ref veloref,  followUpSpeed);
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(towards.x, towards.y, transform.position.z), ref veloref, followUpSpeed);
         //convert rb up to 
 
     }
@@ -208,7 +208,7 @@ public class FollowBehavior : MonoBehaviour
         {
             case CameraState.Default:
                 //Checks for big Velocity force going up, is the ball going to go off screen
-                
+
                 FixedPos();
                 if (BallWillGoOffScreen())
                 {
@@ -245,14 +245,14 @@ public class FollowBehavior : MonoBehaviour
             case CameraState.PrepareDown:
                 //focus on bottom
                 //keep ball in 7/10 of screen ball pos mostly at top until it reaches back to default zone
-                
+
                 //TrackTarget(true);
-                transform.position =Vector3.Lerp(transform.position, BridgeToDefaultPos(),Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, BridgeToDefaultPos(), Time.deltaTime);
                 //until the camera position is close enough to 
-                if (!BallIsAboveCenter())
+                if (!BallIsAboveCenter() || Vector3.Distance(trackingTarget.position, trackingTarget2.position) < 30f)
                 {
                     cameraState = CameraState.Default;
-                        return;
+                    return;
                 }
 
                 //transform.position 
@@ -273,16 +273,16 @@ public class FollowBehavior : MonoBehaviour
     }
     public bool BallIsAboveCenter()
     {
-        
+
         //converts ball to screen space and checks if is above
         if (Camera.main.WorldToScreenPoint(rb.transform.position).y < screenHeight / 2)
             return false;
-            //our magnitude projection 
-            //project our mag onto the up direction to find out where it is
+        //our magnitude projection 
+        //project our mag onto the up direction to find out where it is
         //    Vector2 ballOffset = transform.Towards(rb.transform);
         //Debug.Log("v2v2 " + ballOffset);
         //if (ballOffset.sqrMagnitude < min)
-           
+
         else return true;
 
 
@@ -292,7 +292,7 @@ public class FollowBehavior : MonoBehaviour
         Quaternion tRotation = GetFollowRotation(trackingTarget, trackingTarget2);
         transform.rotation = tRotation;
 
-        transform.position = Vector3.SmoothDamp(transform.position, trackingTarget2.position + (tRotation * followOffset),ref veloref, FixedSpeed );
+        transform.position = Vector3.SmoothDamp(transform.position, trackingTarget2.position + (tRotation * followOffset), ref veloref, FixedSpeed);
 
 
     }
@@ -314,10 +314,10 @@ public class FollowBehavior : MonoBehaviour
         Quaternion tRotation = GetFollowRotation(trackingTarget, trackingTarget2);
         //transform.rotation = tRotation;
 
-       
 
-        float distance = Vector3.Distance(trackingTarget2.transform.position+ (transform.rotation * followOffset), trackingTarget.position);
-        float target = Mathf.Max(distance /2, defaultCameraSize);
+
+        float distance = Vector3.Distance(trackingTarget2.transform.position + (transform.rotation * followOffset), trackingTarget.position);
+        float target = Mathf.Max(distance / 2, defaultCameraSize);
 
         Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, target, ref cameraScaleVelocity, cameraScaleSpeed);
 
