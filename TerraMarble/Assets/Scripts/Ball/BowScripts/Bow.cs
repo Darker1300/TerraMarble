@@ -19,6 +19,9 @@ public class Bow : MonoBehaviour
 
     public float fireRate = 0.5F;
     private float nextFire = 0.0F;
+    private Transform WheelTransform;
+    private float wheelRadius;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,8 @@ public class Bow : MonoBehaviour
         aim = GetComponent<AutoAim>();
         AmmoText = GameObject.FindObjectOfType<TextMeshProUGUI>();
         UpdateAmmo();
+        WheelTransform = GameObject.FindGameObjectWithTag("Wheel").transform;
+        wheelRadius = WheelTransform.GetComponent<CircleCollider2D>().radius;
     }
 
     // Update is called once per frame
@@ -36,7 +41,7 @@ public class Bow : MonoBehaviour
         {
             Target = null;
             Target = aim.FindClosestTarget();
-            if (Target != null)
+            if (Target != null && Vector2.Distance(WheelTransform.position, transform.position) > wheelRadius +8)
             {
                 StartCoroutine("FireRate");
                 testShoot = false;

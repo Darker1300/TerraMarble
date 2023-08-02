@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AutoAim : MonoBehaviour
 {
+  
     private float aimDistance;
     [SerializeField] private string TargetTag;
 
@@ -25,6 +26,7 @@ public class AutoAim : MonoBehaviour
             : NearbySensor;
 
         NearbySensor.Updated += OnSensorUpdate;
+     
     }
 
     private void OnSensorUpdate()
