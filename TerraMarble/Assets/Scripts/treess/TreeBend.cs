@@ -1,8 +1,7 @@
-using System;
 using MathUtility;
-using System.Collections.Generic;
 using NaughtyAttributes;
-using Unity.Mathematics;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityUtility;
@@ -15,6 +14,7 @@ public class TreeBend : MonoBehaviour
     private BallStateTracker ball;
     private Rigidbody2D ballRb;
     private AimTreeLockUI aimUi;
+    private PlayerInput playerInput;
 
     [Header("Drag Input Config")] [Tooltip("offset of starting position, in degrees")]
     public float dragStartOffset = 15f;
@@ -22,18 +22,8 @@ public class TreeBend : MonoBehaviour
     [Tooltip("range extent of bend area movement, in degrees")]
     public float dragMoveRange = 20f;
 
-    [Tooltip("percentage of screen used for touch drag input, originating from touch position")]
-    public Vector2 dragScreenSize = new(0.1f, 0.2f);
-
     [Tooltip("how much drag dir boosts bend area, in degrees")]
     public float dragDirOffsetAmount = 20f;
-
-    [Tooltip("how much of the screen that the drag needs before setting drag dir")] [SerializeField]
-    private Vector2 dragDirTolerance = new(0.1f, 0.05f);
-
-    [SerializeField] private bool invertXInput = true;
-    [SerializeField] private bool invertDragDir = false;
-
 
     [Header("Bend Config")] public float bendTime = 0.05f;
     public float bendMaxSpeed = 1000f;
@@ -42,7 +32,7 @@ public class TreeBend : MonoBehaviour
     [SerializeField] private AnimationCurve treeBendCurve
         = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [SerializeField] private AnimationCurve inputCurve
+    [SerializeField] private AnimationCurve inputCurve //
         = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     [FormerlySerializedAs("PopOutHeightCurve")]
@@ -69,15 +59,13 @@ public class TreeBend : MonoBehaviour
     public float slideMinForce = 10f;
 
     [Foldout("Data")] [SerializeField] private float wheelRadius = 10;
-    [Foldout("Data")] public Vector2 dragInput = new(0, 0);
-    [Foldout("Data")] public bool isDragDirSet = false;
-    [Foldout("Data")] public int dragDir = 0;
     [Foldout("Data")] public List<TreePaddleController> nearbyTrees = new();
 
-    public bool CanBallSlide
-        => isDragDirSet && dragInput.y > 0 && dragDir == Math.Sign(dragInput.x);
-    public bool IsDragging
-        => isDragDirSet && dragInput.y > 0;
+
+    //public bool CanBallSlide
+    //    => isDragDirSet && dragInput.y > 0 && dragDir == Math.Sign(dragInput.x);
+    //public bool IsDragging
+    //    => isDragDirSet && dragInput.y > 0;
 
     private void Start()
     {
@@ -88,24 +76,35 @@ public class TreeBend : MonoBehaviour
         circleCollider2D = GetComponent<CircleCollider2D>();
         wheelRadius = wheelRegions.WheelRadius;
 
-        InputManager.LeftDragEvent += OnDragLeftToggle;
-        InputManager.RightDragEvent += OnDragRightToggle;
-        InputManager.LeftDragVectorEvent += OnLeftDragUpdate;
-        InputManager.RightDragVectorEvent += OnRightDragUpdate;
+        playerInput = FindObjectOfType<PlayerInput>();
     }
 
 
     private void Update()
     {
+        // Get the normalized direction vector from the wheel center to the ball.
         Vector2 dir = ((Vector2) wheelRegions.transform.Towards(ball.transform)).normalized;
+
+        // Adjust the direction based on user input and various drag factors.
+        // dragInput.x * dragMoveRange is the basic input scaled by a range factor.
+        // dragDirOffsetAmount * inputSide accounts for dynamic offset in the drag direction.
+        // -dragStartOffset * inputSide subtracts the starting drag offset to ensure the direction vector starts from the correct point.
+
+        int inputSide = playerInput.Side;
+        Vector2 dragInput = playerInput.Drag;
+        dragInput.y = Mathf.Clamp01(-dragInput.y);
 
         dir = dir.RotatedByDegree(
             dragInput.x * dragMoveRange
-            + dragDirOffsetAmount * dragDir
-            - dragStartOffset * dragDir);
+            + dragDirOffsetAmount * inputSide
+            - dragStartOffset * inputSide);
+
+        // Update the position of the 'tree circle collider' object this script is attached to.
+        // This makes it follow along the edge of the wheel at a distance specified by wheelRadius.
         transform.position = wheelRegions.transform.position
                              + (Vector3) dir * wheelRadius;
 
+        // Update the state of the trees in the scene
         UpdateTrees();
     }
 
@@ -117,107 +116,35 @@ public class TreeBend : MonoBehaviour
 
     private void UpdateTrees()
     {
-        if (nearbyTrees.Count > 0)
-            foreach (TreePaddleController target in nearbyTrees)
-            {
-                if (target == null)
-                {
-                    // has been destroyed
-                    nearbyTrees.Remove(target);
-                    continue;
-                }
+        nearbyTrees.RemoveAllNull();
 
-                float upPercent;
-                int direction;
+        Vector2 dragInput = playerInput.Drag;
+        dragInput.y = Mathf.Clamp01(-dragInput.y);
 
-                Region region = target.GetComponentInParent<Region>();
-                Vector3 treeSurfacePoint = region.RegionPosition(0.5f, 1f);
-                Vector3 distVector = transform.position.Towards(treeSurfacePoint);
-                float distPercent = distVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
-                float curve = treeBendCurve.Evaluate(Mathf.Clamp01(distPercent));
-                float fallOffPercent = 1f - curve;
-                upPercent = 1f - dragInput.y * fallOffPercent;
-                direction = target.DirectionFromPoint(transform.position);
-
-                target.SetTreeState(upPercent, direction);
-            }
-    }
-
-    private void OnDragLeftToggle(bool state)
-    {
-        dragDir = InputManager.Instance.Mobile ? invertDragDir ? 1 : -1 : 0;
-        UpdateDragToggle(state);
-    }
-
-    private void OnDragRightToggle(bool state)
-    {
-        dragDir = InputManager.Instance.Mobile ? invertDragDir ? -1 : 1 : 0;
-        UpdateDragToggle(state);
-    }
-
-    private void UpdateDragToggle(bool state)
-    {
-        isDragDirSet = false;
-        dragInput = Vector2.zero;
-    }
-
-    private void OnLeftDragUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
-    {
-        UpdateDragInput(screenDragVector);
-
-        SetDragDir(true);
-    }
-
-    private void OnRightDragUpdate(Vector2 dragVector, Vector2 dragDelta, Vector2 screenDragVector)
-    {
-        UpdateDragInput(screenDragVector);
-
-        SetDragDir(false);
-    }
-
-    private void UpdateDragInput(Vector2 screenDragVector)
-    {
-        // Update Position
-        dragInput.x = -Mathf.Clamp(screenDragVector.x / dragScreenSize.x, -1f, 1f) * (invertXInput ? -1f : 1f);
-        dragInput.y = Mathf.Abs(Mathf.Clamp(screenDragVector.y / dragScreenSize.y, -1f, 0f));
-
-        dragInput.x = math.remap(-1, 1, 0, 1, dragInput.x);
-        dragInput.x = inputCurve.Evaluate(dragInput.x);
-        dragInput.x = math.remap(0, 1, -1, 1, dragInput.x);
-
-        dragInput.y = math.remap(1, 0, 0, 1, dragInput.y);
-        dragInput.y = inputCurve.Evaluate(dragInput.y);
-        dragInput.y = math.remap(0, 1, 1, 0, dragInput.y);
-    }
-
-    private void SetDragDir(bool isLeft)
-    {
-        if (!isDragDirSet)
+        foreach (TreePaddleController tree in nearbyTrees)
         {
-            if (InputManager.Instance.Mobile)
-            {
-                if (isLeft)
-                    dragDir = invertDragDir ? 1 : -1;
-                else
-                    dragDir = invertDragDir ? -1 : 1;
-            }
-            else if (!isDragDirSet)
-            {
-                if (Mathf.Abs(dragInput.x) > dragDirTolerance.x)
-                {
-                    dragDir = Math.Sign(dragInput.x);
-                    if (invertDragDir) dragDir = -dragDir;
-                }
-                else if (dragInput.y > dragDirTolerance.y)
-                {
-                    dragDir = 0;
-                }
-            }
+            // Get the parent region of the tree and the point on the tree surface
+            Region region = tree.GetComponentInParent<Region>();
+            Vector3 treeGroundSurfacePoint = region.RegionPosition(0.5f, 1f);
 
-            isDragDirSet = true;
+            // Calculate the direction vector from the object this script is attached to the tree surface point
+            Vector3 directionVector = transform.position.Towards(treeGroundSurfacePoint);
+
+            // Calculate the squared distance between this object and the tree, normalized by the square of the circle collider's radius
+            float distPercent = directionVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
+
+            // Apply the tree bending curve across the extent of the circle collider
+            float bendCurve = treeBendCurve.Evaluate(Mathf.Clamp01(distPercent));
+
+            float fallOffPercent = 1f - bendCurve;
+
+            float bendPercent = dragInput.y * fallOffPercent;
+            int direction = tree.DirectionFromPoint(transform.position);
+
+            // Update the tree's state
+            tree.SetTreeState(bendPercent, direction);
         }
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -239,29 +166,10 @@ public class TreeBend : MonoBehaviour
         if (!doDebug) return;
 
         Gizmos.color = Color.white;
-        //if (wheelRegions == null) wheelRegions = FindObjectOfType<WheelRegionsManager>();
-        //GizmosExtensions.DrawWireCircle(wheelRegions.transform.position, minSlideHeight,
-        //    72, Quaternion.LookRotation(Vector3.up, Vector3.forward));
 
         ball ??= FindObjectOfType<BallStateTracker>();
         ballRb ??= ball?.GetComponent<Rigidbody2D>();
 
         Gizmos.DrawLine(ballRb.transform.position, ballRb.transform.position + (Vector3) ballRb.velocity);
-
-
-        //Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
-        //Vector2 worldSize = InputManager.ScreenWorldSize * dragSize;
-
-        //float camAngle = Camera.main.transform.rotation.eulerAngles.z;
-
-        //bool xSmaller = (dragSize.x < dragSize.y);
-        //if (xSmaller)
-        //    GizmosExtensions.DrawWireCapsule(center, worldSize.x, worldSize.y * 2f,
-        //        Quaternion.AngleAxis(90f + 0f + camAngle, Vector3.forward));
-        //else
-        //    GizmosExtensions.DrawWireCapsule(center, worldSize.y, worldSize.x * 2f,
-        //        Quaternion.AngleAxis(90f + 90f + camAngle, Vector3.forward));
-
-        //Gizmos.DrawWireMesh();
     }
 }

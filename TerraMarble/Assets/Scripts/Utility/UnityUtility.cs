@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity.Mathematics;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -11,38 +12,64 @@ namespace UnityUtility
     public static class UnityU
     {
         /// <summary>
-        /// Sets self to be like target.
+        /// Copies the properties and fields of the target component to this component.
         /// </summary>
-        public static T Copy<T>(this Component _self, T target) where T : Component
+        /// <param name="_self">This component that is being copied to.</param>
+        /// <param name="target">The target component that is being copied from.</param>
+        /// <returns>This component with updated properties and fields, or null if the components are of different types.</returns>
+        public static T Copy<T>(this T _self, T target) where T : Component
         {
             var type = _self.GetType();
-            if (type != target.GetType()) return null; // type mis-match
-            var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Default |
-                        BindingFlags.DeclaredOnly;
-            var pinfos = type.GetProperties(flags)
-                .Where(property => property.CustomAttributes
-                    .All(attribute => attribute.AttributeType != typeof(ObsoleteAttribute)))
-                .ToArray();
 
-            foreach (var pinfo in pinfos)
-                if (pinfo.CanWrite)
+            // If this and target component are of different types, return null
+            if (type != target.GetType()) return null;
+
+            // Define the common flags for fields and properties
+            const BindingFlags CommonFlags = BindingFlags.Public | BindingFlags.NonPublic |
+                                             BindingFlags.Instance | BindingFlags.DeclaredOnly;
+
+            // Get the properties of the component
+            var properties = type.GetProperties(CommonFlags)
+                // Exclude properties marked with the Obsolete attribute
+                .Where(property =>
+                    property.CustomAttributes.All(attribute => attribute.AttributeType != typeof(ObsoleteAttribute)));
+
+            // Copy the values of the properties from the target to this component
+            foreach (var property in properties)
+                if (property.CanWrite)
                     try
                     {
-                        pinfo.SetValue(_self, pinfo.GetValue(target, null), null);
+                        var value = property.GetValue(target, null);
+                        property.SetValue(_self, value, null);
                     }
                     catch
                     {
-                    } // In case of NotImplementedException being thrown.
+                        // Ignore properties that can't be copied
+                    }
 
-            var finfos = type.GetFields(flags);
-            foreach (var finfo in finfos)
-                finfo.SetValue(_self, finfo.GetValue(target));
-            return _self as T;
+            // Get the fields of the component
+            var fields = type.GetFields(CommonFlags);
+
+            // Copy the values of the fields from the target to this component
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(target);
+                field.SetValue(_self, value);
+            }
+
+            return _self;
         }
 
-        public static T AddComponent<T>(this GameObject _gameObject, T target) where T : Component
+        /// <summary>
+        /// Adds a component to a game object and copies the properties and fields of a source component to the new component.
+        /// </summary>
+        /// <param name="_gameObject">The game object to which the component is being added.</param>
+        /// <param name="copySource">The source component that is being copied from.</param>
+        /// <returns>The newly added component with the properties and fields of the source component, or null if the components are of different types.</returns>
+        public static T AddComponent<T>(this GameObject _gameObject, T copySource) where T : Component
         {
-            return _gameObject.AddComponent<T>().Copy(target) as T;
+            var newComponent = _gameObject.AddComponent<T>();
+            return newComponent.Copy(copySource);
         }
 
 
@@ -114,7 +141,7 @@ namespace UnityUtility
 
         public static Coroutine StartCoroutine(this MonoBehaviour mb, (object, Func<object, YieldInstruction>) funcs)
         {
-            return mb.StartCoroutine(CoroutineGroup(new (object, Func<object, YieldInstruction>)[] { funcs }));
+            return mb.StartCoroutine(CoroutineGroup(new (object, Func<object, YieldInstruction>)[] {funcs}));
         }
 
         public static Coroutine StartCoroutine(this MonoBehaviour mb,
@@ -125,10 +152,7 @@ namespace UnityUtility
 
         private static IEnumerator CoroutineGroup((object, Func<object, YieldInstruction>)[] funcs)
         {
-            foreach (var func in funcs)
-            {
-                yield return func.Item2.Invoke(func.Item1);
-            }
+            foreach (var func in funcs) yield return func.Item2.Invoke(func.Item1);
         }
 
         public static void SafeDestroy(GameObject gameObject)
@@ -139,7 +163,9 @@ namespace UnityUtility
         }
 
         public static void LogArray(IEnumerable<GameObject> array)
-            => LogArray(array, i => i.name);
+        {
+            LogArray(array, i => i.name);
+        }
 
         public static void LogArray<T, P>(IEnumerable<T> array, Func<T, P> dataSelection)
         {
@@ -147,16 +173,42 @@ namespace UnityUtility
         }
 
         public static float FirstKeyValue(this AnimationCurve _self)
-            => _self.keys[0].value;
+        {
+            return _self.keys[0].value;
+        }
 
         public static float LastKeyValue(this AnimationCurve _self)
-            => _self.keys[^1].value;
+        {
+            return _self.keys[^1].value;
+        }
 
         public static float FirstKeyTime(this AnimationCurve _self)
-            => _self.keys[0].time;
+        {
+            return _self.keys[0].time;
+        }
 
         public static float LastKeyTime(this AnimationCurve _self)
-            => _self.keys[^1].time;
+        {
+            return _self.keys[^1].time;
+        }
+
+        public static float Evaluate(this AnimationCurve _self, float time,
+            float remapTimeMin, float remapTimeMax)
+        {
+            float normalisedTime = Mathf.Lerp(remapTimeMin, remapTimeMax, time);
+            float evaluation = _self.Evaluate(normalisedTime);
+            return Mathf.Lerp(remapTimeMin, remapTimeMax, evaluation);
+        }
+
+        public static float Evaluate(this AnimationCurve _self, float time,
+            float remapTimeInMin, float remapTimeInMax,
+            float remapTimeOutMin, float remapTimeOutMax)
+        {
+            return _self.Evaluate(
+                math.remap(remapTimeInMin, remapTimeInMax,
+                    remapTimeOutMin, remapTimeOutMax,
+                    time));
+        }
 
         public static Color AsAlpha(this Color _color, float _a)
         {
@@ -164,6 +216,7 @@ namespace UnityUtility
             return _color;
         }
     }
+
     public static class EnumerableExtensions
     {
         public static IEnumerable<TSource> Exclude<TSource, TKey>(this IEnumerable<TSource> source,
@@ -171,6 +224,23 @@ namespace UnityUtility
         {
             var excludedSet = new HashSet<TKey>(exclude.Select(keySelector));
             return source.Where(item => !excludedSet.Contains(keySelector(item)));
+        }
+
+        /// <summary>
+        /// Removes all items equal to Null.
+        /// </summary>
+        /// <returns>Count of items removed.</returns>
+        public static int RemoveAllNull<TSource>(this IList<TSource> collection)
+        {
+            int removeCount = 0;
+            for (int i = collection.Count - 1; i >= 0; i--)
+                if (collection[i] == null)
+                {
+                    collection.RemoveAt(i);
+                    removeCount++;
+                }
+
+            return removeCount;
         }
     }
 }

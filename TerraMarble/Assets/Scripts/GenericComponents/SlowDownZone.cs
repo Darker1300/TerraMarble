@@ -93,7 +93,7 @@ public class SlowDownZone : MonoBehaviour
 
         //}else
         currentSlowdown = Mathf.Min(currentSlowdown + slowdownFactor * Time.deltaTime, maxSlowdown);
-        Debug.Log("SlowDown " + currentSlowdown);
+        //Debug.Log("SlowDown " + currentSlowdown);
         // Check if the other object has a Rigidbody2D component
         Rigidbody2D otherRigidbody = other.GetComponentInParent<Rigidbody2D>();
 

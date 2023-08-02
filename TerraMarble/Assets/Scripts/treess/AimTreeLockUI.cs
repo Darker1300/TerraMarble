@@ -13,6 +13,7 @@ public class AimTreeLockUI : MonoBehaviour
     [SerializeField] private Rectangle screenEdgeRect;
     [SerializeField] private BallWindJump ballWindJumpScript;
     [SerializeField] private GameObject ball;
+    [SerializeField] private PlayerInput playerInput;
 
 
     [Header("Wheel UI")] [SerializeField] private Transform wheelAimTransform;
@@ -35,6 +36,7 @@ public class AimTreeLockUI : MonoBehaviour
     {
         treeActive = FindObjectOfType<DragTreePosition>();
         ballWindJumpScript = FindObjectOfType<BallWindJump>();
+        playerInput = FindObjectOfType<PlayerInput>();
         startDiscSize = screenAimDot.Radius;
         InputManager.LeftDragEvent += OnDragToggle;
         InputManager.RightDragEvent += OnDragToggle;
@@ -74,7 +76,7 @@ public class AimTreeLockUI : MonoBehaviour
 
         //Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.DragLeftStartScreenPos);
         Vector3 center = Camera.main.ScreenToWorldPoint(InputManager.ScreenSize * new Vector2(.5f, 1f - .1f));
-        Vector2 worldSize = InputManager.ScreenWorldSize * treeActive.treeBender.dragScreenSize * 2f;
+        Vector2 worldSize = InputManager.ScreenWorldSize * playerInput.DragScreenSize * 2f;
 
         //
         screenAimTransform.rotation = Camera.main.transform.rotation;
@@ -83,11 +85,14 @@ public class AimTreeLockUI : MonoBehaviour
         screenAimTransform.position = new Vector3(center.x, center.y, screenAimTransform.position.z);
 
         // Aim Line
-        SetScreenLine(treeActive.treeBender.dragDir);
+        SetScreenLine(playerInput.RawSide);
+        
+        Vector2 dragInput = playerInput.RawDrag;
+        dragInput.y = Mathf.Clamp01(-dragInput.y);
 
         // Aim
         screenAimDot.transform.localPosition = new Vector3(0.5f, -0.5f, 0f)
-                                               * treeActive.treeBender.dragInput;
+                                               * dragInput; // todo fix
 
 
         UpdateScreenAimDotSize();
@@ -119,8 +124,11 @@ public class AimTreeLockUI : MonoBehaviour
 
     public void UpdatePowerBar()
     {
+        Vector2 dragInput = playerInput.RawDrag;
+        dragInput.y = Mathf.Clamp01(-dragInput.y);
+
         float rangeExtent = treeActive.treeBender.dragMoveRange;
-        float powerPercent = treeActive.treeBender.dragInput.y;
+        float powerPercent = dragInput.y;
 
         float powerFull = rangeExtent * 2f * Mathf.Deg2Rad;
         powerBackDisc.AngRadiansStart = powerFull;
@@ -131,7 +139,7 @@ public class AimTreeLockUI : MonoBehaviour
         powerFillDisc.AngRadiansEnd = -powerCurrent;
 
         float rangeSize = rangeExtent * 2f;
-        float shift = math.remap(-1, 1, 0, 1, treeActive.treeBender.dragInput.x) * rangeSize;
+        float shift = math.remap(-1, 1, 0, 1, dragInput.x) * rangeSize;
         rangeBackDisc.AngRadiansStart = (rangeSize * 2f - shift) * Mathf.Deg2Rad;
         rangeBackDisc.AngRadiansEnd = (-rangeSize - shift) * Mathf.Deg2Rad;
     }

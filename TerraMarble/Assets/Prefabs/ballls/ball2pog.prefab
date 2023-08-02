@@ -1134,14 +1134,16 @@ GameObject:
   m_Component:
   - component: {fileID: 4297447129141640636}
   - component: {fileID: 4297447129141640633}
+  - component: {fileID: 6501393804689502291}
+  - component: {fileID: 5227708796409464064}
+  - component: {fileID: 5078328464560796646}
   - component: {fileID: 1495955045}
-  - component: {fileID: 4297447129141640639}
   - component: {fileID: 4297447129141640638}
   - component: {fileID: 4297447129141640608}
-  - component: {fileID: 6501393804689502291}
   - component: {fileID: 2321576262505571559}
-  - component: {fileID: 4297447129141640614}
   - component: {fileID: 1495955044}
+  - component: {fileID: 4297447129141640614}
+  - component: {fileID: 4297447129141640639}
   m_Layer: 6
   m_Name: ball2pog
   m_TagString: Ball
@@ -1193,6 +1195,103 @@ MonoBehaviour:
   slowModeTimeScale: 0.75
   defaultTimeScale: 0.75
   isInput: 1
+--- !u!114 &6501393804689502291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297447129141640627}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4613f538f13c42c40bb329b13aa81133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TotalTime: 0.15
+  CurrentTime: 0
+  startTime: 0.15
+  timeSpeedUpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &5227708796409464064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297447129141640627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c767aebcf00bb15458e6acfb73250e6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragScreenSize: {x: 0.05, y: 0.125}
+  applyInputCurve: 1
+  inputCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  invertXDrag: 0
+  invertSide: 1
+  swapXDragOutwards: 0
+  swapXDragInwards: 1
+  invertXDragPost: 0
+  invertSidePost: 0
+  isDragging: 0
+--- !u!114 &5078328464560796646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297447129141640627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a6bd3aaddc6bb4a8f4e457b7dc0470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsSliding: 0
 --- !u!114 &1495955045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1245,18 +1344,6 @@ MonoBehaviour:
     ColliderSet:
       Length: 3
   DoBounce: 0
---- !u!114 &4297447129141640639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4297447129141640627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 220c97f6f065aed42af2ecf829980ec5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4297447129141640638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1270,7 +1357,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stomp: 1
-  IsSliding: 0
   ballState: 0
 --- !u!114 &4297447129141640608
 MonoBehaviour:
@@ -1289,45 +1375,6 @@ MonoBehaviour:
   maxGravityDist: 300
   maxGravity: 40
   stompPower: 40
---- !u!114 &6501393804689502291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4297447129141640627}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4613f538f13c42c40bb329b13aa81133, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TotalTime: 0.15
-  CurrentTime: 0
-  startTime: 0.15
-  timeSpeedUpCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &2321576262505571559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1432,6 +1479,22 @@ MonoBehaviour:
   partSystem: {fileID: 741370545376487465}
   jumpTimer: 0
   particleTimer: 0
+--- !u!114 &1495955044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297447129141640627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3349193e4d3b1794293104c9d2030abb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  track: 1
+  useRigidBody: 0
+  trackedObject: {fileID: 0}
+  rotationOffset: 180
 --- !u!50 &4297447129141640614
 Rigidbody2D:
   serializedVersion: 4
@@ -1453,7 +1516,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1495955044
+--- !u!114 &4297447129141640639
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1462,13 +1525,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4297447129141640627}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3349193e4d3b1794293104c9d2030abb, type: 3}
+  m_Script: {fileID: 11500000, guid: 220c97f6f065aed42af2ecf829980ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  track: 1
-  useRigidBody: 0
-  trackedObject: {fileID: 0}
-  rotationOffset: 180
 --- !u!1 &4297447130273422564
 GameObject:
   m_ObjectHideFlags: 0

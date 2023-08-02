@@ -1,6 +1,5 @@
 using MathUtility;
 using UnityEngine;
-using UnityUtility;
 
 public class EntitySeek : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class EntitySeek : MonoBehaviour
     public Vector2 targetPosition = Vector2.zero;
     public Vector2 forceMultiplier = new(2f, 2f);
     public Vector2 seekSpeed = new(5f, 5f);
-    
+
 
     //public float maxSpeed = 40f;
 
@@ -23,13 +22,16 @@ public class EntitySeek : MonoBehaviour
     private void Start()
     {
         enemyHealth = GetComponent<EnemyHealth>();
-        enemyHealth.OnProjectileHit.AddListener(OnHit);
-        enemyHealth.OnStunEnd.AddListener(StartSeek);
+        if (enemyHealth)
+        {
+            enemyHealth.OnProjectileHit.AddListener(OnHit);
+            enemyHealth.OnStunEnd.AddListener(StartSeek);
+        }
 
     }
     void Awake()
     {
-       // enemyhealth = GetComponent<EnemyHealth>();
+        // enemyhealth = GetComponent<EnemyHealth>();
         rb = GetComponent<Rigidbody2D>();
         wheel = FindObjectOfType<Wheel>();
     }

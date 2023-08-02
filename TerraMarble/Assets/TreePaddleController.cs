@@ -138,12 +138,12 @@ public class TreePaddleController : MonoBehaviour
         wobbleAngleVelocity = _wobbleVelocity;
     }
 
-    public void SetTreeState(float upPercent, int direction)
+    public void SetTreeState(float bendPercent, int direction)
     {
         // set new goal
         if (direction == 0) direction = 1;
 
-        float newLocalRotation = MathU.Vector2ToDegree(Vector2.up * direction) * (1f - upPercent);
+        float newLocalRotation = MathU.Vector2ToDegree(Vector2.up * direction) * bendPercent;
         
         goalRotation = startRotation + newLocalRotation;
 
