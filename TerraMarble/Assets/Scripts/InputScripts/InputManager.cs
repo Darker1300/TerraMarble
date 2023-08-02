@@ -128,7 +128,13 @@ public class InputManager : MonoBehaviour
     {
 
     }
+    //public bool IsBothInput()
+    //{
+    //    if (Mobile)
+    //    {
 
+    //    }
+    //}
     public void Start()
 
     {
@@ -137,8 +143,9 @@ public class InputManager : MonoBehaviour
 
             {
                 //Debug.Log("dragStarttttttttted");
-                if (Mobile)
+                if (Mobile )
                 {
+
                     //if position is left side OR right side
                     if (IsTouchRight(ctx.ReadValue<Vector2>()))
                     {

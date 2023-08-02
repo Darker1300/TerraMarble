@@ -9,6 +9,7 @@ public class VolcanoeMain : MonoBehaviour
     public ObjectPooler pooler;
     volcanoeUI volcanoeUI;
     //color change 
+    
 
     [SerializeField]
     private Color[] colors;
@@ -41,7 +42,7 @@ public class VolcanoeMain : MonoBehaviour
             //Rock.transform.position = new Vector3(Rock.transform.position.x,Rock.transform.position.y + explosionYheightStart+10,Rock.transform.position.z);
             //Rock.gameObject.SetActive(true);
             //Rock.transform.Translate(,Space.World );
-            Rock.GetComponent<Rigidbody2D>().AddForce(transform.up * speed);
+            Rock.GetComponent<Rigidbody2D>().AddForce( Vector2.up * speed);
         }
         
     }
