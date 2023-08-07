@@ -85,7 +85,7 @@ public class AimTreeLockUI : MonoBehaviour
         screenAimTransform.position = new Vector3(center.x, center.y, screenAimTransform.position.z);
 
         // Aim Line
-        SetScreenLine(playerInput.RawSide);
+        SetScreenLine(playerInput.Side);
         
         Vector2 dragInput = playerInput.RawDrag;
         dragInput.y = Mathf.Clamp01(-dragInput.y);

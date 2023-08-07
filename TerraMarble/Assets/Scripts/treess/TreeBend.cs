@@ -90,8 +90,8 @@ public class TreeBend : MonoBehaviour
         // dragDirOffsetAmount * inputSide accounts for dynamic offset in the drag direction.
         // -dragStartOffset * inputSide subtracts the starting drag offset to ensure the direction vector starts from the correct point.
 
-        int inputSide = playerInput.Side;
-        Vector2 dragInput = playerInput.Drag;
+        int inputSide = playerInput.TreeDragSide;
+        Vector2 dragInput = playerInput.TreeDrag;
         dragInput.y = Mathf.Clamp01(-dragInput.y);
 
         dir = dir.RotatedByDegree(
@@ -118,7 +118,7 @@ public class TreeBend : MonoBehaviour
     {
         nearbyTrees.RemoveAllNull();
 
-        Vector2 dragInput = playerInput.Drag;
+        Vector2 dragInput = playerInput.TreeDrag;
         dragInput.y = Mathf.Clamp01(-dragInput.y);
 
         foreach (TreePaddleController tree in nearbyTrees)

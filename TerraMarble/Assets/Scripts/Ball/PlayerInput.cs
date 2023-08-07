@@ -1,7 +1,9 @@
-using System;
 using Sirenix.OdinInspector;
+using System;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityUtility;
+using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
 
 public class PlayerInput : MonoBehaviour
@@ -10,7 +12,7 @@ public class PlayerInput : MonoBehaviour
 
     // Private Fields
     [ShowInInspector] private Vector2 rawDrag = Vector2.zero;
-    [ShowInInspector] private int rawSide = 1;
+    [ShowInInspector] private int side = 1;
 
     // Influences
     [SerializeField]
@@ -21,22 +23,25 @@ public class PlayerInput : MonoBehaviour
     //private Vector2 dragDirTolerance = new(0.1f, 0.05f);
 
     [SerializeField] private bool applyInputCurve = true;
-    [SerializeField] private AnimationCurve inputCurve
+
+    [SerializeField]
+    private AnimationCurve inputCurve
         = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     [SerializeField] private bool invertXDrag = false;
     [SerializeField] private bool invertSide = false;
     [SerializeField] private bool swapXDragOutwards = false;
     [SerializeField] private bool swapXDragInwards = true;
-    [SerializeField] private bool invertXDragPost = false;
-    [SerializeField] private bool invertSidePost = false;
     [SerializeField] private bool isDragging = false;
 
     // Properties
-    [ShowInInspector] public Vector2 Drag => GetDrag();
-    [ShowInInspector] public int Side => GetSide();
-    [ShowInInspector] public Vector2 RawDrag => rawDrag;
-    [ShowInInspector] public int RawSide => rawSide;
+    [ShowInInspector] public Vector2 TreeDrag => GetDrag();
+    [ShowInInspector] public int TreeDragSide => GetSide();
+    [ShowInInspector] public Vector2 Drag
+        => applyInputCurve ? ApplyDragInputCurve(rawDrag, inputCurve)
+            : rawDrag;
+    public Vector2 RawDrag => rawDrag;
+    public int Side => side;
 
     [ShowInInspector] public bool IsDragging
     {
@@ -50,6 +55,31 @@ public class PlayerInput : MonoBehaviour
         private set => dragScreenSize = value;
     }
 
+    [Serializable] public class InputConfigOption
+    {
+        public string name = "Option";
+        public bool[] data = new bool[4];
+    }
+
+    [SerializeField] private int treeInputConfigSelection = 0;
+    [SerializeField] private List<InputConfigOption> treeInputConfig;
+    [SerializeField] private TextMeshProUGUI treeInputTextUI;
+
+    public void SetNextInputConfigOption()
+    {
+
+        treeInputConfigSelection++;
+        if (treeInputConfigSelection >= treeInputConfig.Count)
+            treeInputConfigSelection = 0;
+
+        invertXDrag = treeInputConfig[treeInputConfigSelection].data[0];
+        invertSide = treeInputConfig[treeInputConfigSelection].data[1];
+        swapXDragOutwards = treeInputConfig[treeInputConfigSelection].data[2];
+        swapXDragInwards = treeInputConfig[treeInputConfigSelection].data[3];
+
+        treeInputTextUI.text = treeInputConfig[treeInputConfigSelection].name;
+    }
+
     private void Start()
     {
         InputManager.LeftDragEvent
@@ -60,6 +90,12 @@ public class PlayerInput : MonoBehaviour
             += (a, b, screenDrag) => OnDragUpdate(screenDrag, -1);
         InputManager.RightDragVectorEvent
             += (a, b, screenDrag) => OnDragUpdate(screenDrag, 1);
+
+        if (treeInputTextUI != null && treeInputConfig.Count > 0)
+        {
+            treeInputTextUI.text = treeInputConfig[treeInputConfigSelection].name;
+            treeInputTextUI.GetComponentInParent<Button>()?.onClick.AddListener(SetNextInputConfigOption);
+        }
     }
 
     private void OnDragToggle(bool state, int side)
@@ -67,7 +103,7 @@ public class PlayerInput : MonoBehaviour
         IsDragging = state;
 
         if (IsDragging) // On Down
-            rawSide = side;
+            this.side = side;
         else // On Up
             rawDrag = Vector2.zero;
     }
@@ -83,20 +119,18 @@ public class PlayerInput : MonoBehaviour
         if (applyInputCurve)
             drag = ApplyDragInputCurve(drag, inputCurve);
         drag.x *= NegIf(invertXDrag);
-        drag.x *= NegIf(swapXDragOutwards && Math.Sign(rawDrag.x) == rawSide);
-        drag.x *= NegIf(swapXDragInwards && Math.Sign(rawDrag.x) != rawSide);
-        drag.x *= NegIf(invertXDragPost);
+        drag.x *= NegIf(swapXDragOutwards && Math.Sign(rawDrag.x) == side);
+        drag.x *= NegIf(swapXDragInwards && Math.Sign(rawDrag.x) != side);
 
         return drag;
     }
 
     private int GetSide()
     {
-        int side = rawSide;
+        int side = this.side;
         side *= NegIf(invertSide);
-        side *= NegIf(swapXDragOutwards && Math.Sign(rawDrag.x) == rawSide);
-        side *= NegIf(swapXDragInwards && Math.Sign(rawDrag.x) != rawSide);
-        side *= NegIf(invertSidePost);
+        side *= NegIf(swapXDragOutwards && Math.Sign(rawDrag.x) == this.side);
+        side *= NegIf(swapXDragInwards && Math.Sign(rawDrag.x) != this.side);
         return side;
     }
 
