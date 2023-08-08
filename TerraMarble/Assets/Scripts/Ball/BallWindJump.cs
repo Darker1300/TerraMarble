@@ -76,8 +76,8 @@ public class BallWindJump : MonoBehaviour
         InputManager.LeftDragVectorEvent += (vector, delta, screenDragVector) => UpdateDragInput(screenDragVector);
         InputManager.RightDragVectorEvent += (vector, delta, screenDragVector) => UpdateDragInput(screenDragVector);
 
-        InputManager.TapLeft += OnTap;
-        InputManager.TapRight += OnTap;
+        InputManager.TapLeft += () => OnTap(-1);
+        InputManager.TapRight += () => OnTap(1);
 
         flyUI.SetUI(false);
     }
@@ -144,9 +144,9 @@ public class BallWindJump : MonoBehaviour
     //    }
     //}
 
-    void OnTap()
+    void OnTap(int side)
     {
-        DoDash();
+        DoDash(dashForce, side);
 
 
         //// If not at rest
@@ -167,15 +167,9 @@ public class BallWindJump : MonoBehaviour
         //    partSystem.Emit(dashPartEmitCount);
         //}
     }
-
-    public void DoDash()
-    {
-        DoDash(dashForce);
-    }
-
     
     /// <returns>If successfully applied force.</returns>
-    public bool DoDash(float newDashForce, bool forceDash = false)
+    public bool DoDash(float newDashForce, int side,  bool forceDash = false)
     {
         if (!forceDash && useMinVelocityForDash)
         {
@@ -189,7 +183,17 @@ public class BallWindJump : MonoBehaviour
         if (rawScreenDragInput.sqrMagnitude > minScreenDragForDash)
         {
             // Dash towards screen drag direction
-            dashDirection = ballRb.transform.rotation * rawScreenDragInput.normalized;
+
+            // Convert DragLeftScreenVector to world position
+            Vector3 dragLeftWorldVectorStart = Camera.main.ScreenToWorldPoint(
+                side == -1 ? InputManager.DragLeftStartScreenPos : InputManager.DragRightStartScreenPos);
+            Vector3 dragLeftWorldVectorEnd = Camera.main.ScreenToWorldPoint(
+                side == -1 ? InputManager.DragLeftEndScreenPos : InputManager.DragRightEndScreenPos);
+            // Calculate the direction in world space
+            Vector2 worldDirection = dragLeftWorldVectorEnd - dragLeftWorldVectorStart;
+
+            // Normalize the local direction
+            dashDirection = worldDirection.normalized;
         }
         // else if is moving
         else if (ballRb.velocity.sqrMagnitude > minVelocityForSideDash)
@@ -204,7 +208,7 @@ public class BallWindJump : MonoBehaviour
         }
 
         // apply force
-        ballRb.AddForce(dashDirection * newDashForce, ForceMode2D.Impulse);
+        ballRb.velocity = dashDirection * newDashForce;
 
         // particles
         partSystem.Emit(dashPartEmitCount);

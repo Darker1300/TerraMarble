@@ -1133,6 +1133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4297447129141640636}
+  - component: {fileID: 8853362150688047182}
   - component: {fileID: 4297447129141640633}
   - component: {fileID: 6501393804689502291}
   - component: {fileID: 5227708796409464064}
@@ -1180,6 +1181,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -96.673}
+--- !u!114 &8853362150688047182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297447129141640627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73d21280f2d8c504c963be39e3355686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthIconPrefab: {fileID: 71189525541810594, guid: e67920c503ed640449e6cb4be8f5c115, type: 3}
+  heartContainerUI: {fileID: 0}
+  currentHealth: 3
+  maxHealth: 3
+  iconWidth: 70
+  OnDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4297447129141640633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1276,9 +1300,10 @@ MonoBehaviour:
   invertSide: 1
   swapXDragOutwards: 0
   swapXDragInwards: 1
-  invertXDragPost: 0
-  invertSidePost: 0
   isDragging: 0
+  treeInputConfigSelection: 0
+  treeInputConfig: []
+  treeInputTextUI: {fileID: 0}
 --- !u!114 &5078328464560796646
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -72,6 +72,14 @@ namespace UnityUtility
             return newComponent.Copy(copySource);
         }
 
+        public static Transform DestroyChildren(this Transform transform)
+        {
+            foreach (Transform child in transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+            return transform;
+        }
 
         ///   <para>Returns transform with tag or any of its children. Works recursively.</para>
         public static List<Transform> FindChildrenWithTag(this Transform parent, string tag,
