@@ -10,6 +10,7 @@ public class Bow : MonoBehaviour
     WaitForSeconds Firedelay = new WaitForSeconds(.5f);
     Coroutine coroutine;
     [SerializeField] TextMeshProUGUI AmmoText;
+
     public GameObject Target;
     [SerializeField]
     private AutoAim aim;

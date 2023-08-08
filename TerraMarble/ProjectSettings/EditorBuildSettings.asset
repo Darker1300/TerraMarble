@@ -29,9 +29,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/GameVariations/version6 Big Wheel.unity
     guid: 22595ae78b2afa140a465dfbc946a13f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tom 10 Big.unity
     guid: c77ea481827fb0d43a86f4c75594f68d
+  - enabled: 0
+    path: Assets/Scenes/Ethan 11 Swarm.unity
+    guid: 4e6331de952a10745a8098dc0f8729a5
+  - enabled: 1
+    path: Assets/Scenes/Tom11.unity
+    guid: 6002c59665af1b84c8a65a965e2d7cb6
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 2e79acf917cd7c04a93114c19812d2b9, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: f12587db1ac34f24489e27e4db5ca797, type: 2}
