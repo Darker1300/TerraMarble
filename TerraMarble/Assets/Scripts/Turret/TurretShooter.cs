@@ -5,7 +5,7 @@ using UnityEngine;
 using Shapes;
 public class TurretShooter : MonoBehaviour
 {
-    WaitForSeconds Firedelay = new WaitForSeconds(.5f);
+    WaitForSeconds Firedelay = new WaitForSeconds(.25f);
     Coroutine coroutine;
 
     public Line AmmoLineIndictor;
@@ -73,7 +73,7 @@ public class TurretShooter : MonoBehaviour
 
     IEnumerator FireRate()
     {
-        int i = 2;
+        int i = 4;
 
         while (i > 0)
         {

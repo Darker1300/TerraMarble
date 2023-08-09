@@ -92,6 +92,7 @@ public class VelocitySpinner : MonoBehaviour
             // If the new spin direction is different, reset the direction and speed
             isSpinningLeft = isLeftDirection;
             currentSpeed = initialVelocity;
+            currentSpeed += spinFactor;
         }
 
         // Cap the speed to the maximum allowed
