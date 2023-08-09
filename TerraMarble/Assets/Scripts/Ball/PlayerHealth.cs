@@ -2,7 +2,6 @@ using MathUtility;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityUtility;
@@ -59,7 +58,7 @@ public class PlayerHealth : MonoBehaviour
         for (int i = 0; i < maxHealth; i++)
         {
             // Create Icon
-            GameObject newIcon = PrefabUtility.InstantiatePrefab(healthIconPrefab, heartContainerUI) as GameObject;
+            GameObject newIcon = GameObject.Instantiate(healthIconPrefab, heartContainerUI) as GameObject;
             // Set X
             RectTransform rectTransform = newIcon.GetComponent<RectTransform>();
             int x = iconWidth * (maxHealth - 1 - i) * -1;
