@@ -1195,8 +1195,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthIconPrefab: {fileID: 71189525541810594, guid: e67920c503ed640449e6cb4be8f5c115, type: 3}
   heartContainerUI: {fileID: 0}
+  immuneDisc: {fileID: 4297447128960843069}
   currentHealth: 3
   maxHealth: 3
+  infiniteHealth: 1
+  immuneDuration: 2
+  immuneTimeRemaining: 0
+  immuneColor: {r: 1, g: 1, b: 1, a: 0.29803923}
+  IsImmune: 0
   iconWidth: 70
   OnDamaged:
     m_PersistentCalls:
