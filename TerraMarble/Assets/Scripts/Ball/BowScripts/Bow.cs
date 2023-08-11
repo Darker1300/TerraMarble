@@ -28,7 +28,9 @@ public class Bow : MonoBehaviour
     {
         ammoController = GetComponent<AmmoController>();
         aim = GetComponent<AutoAim>();
-        AmmoText = GameObject.FindObjectOfType<TextMeshProUGUI>();
+        AmmoText = AmmoText != null ? AmmoText
+            : GameObject.Find("AmmoText")?.GetComponent<TextMeshProUGUI>();
+        
         UpdateAmmo();
         WheelTransform = GameObject.FindGameObjectWithTag("Wheel").transform;
         wheelRadius = WheelTransform.GetComponent<CircleCollider2D>().radius;
@@ -58,7 +60,7 @@ public class Bow : MonoBehaviour
     public void UpdateAmmo()
     {
         if (AmmoText)
-            AmmoText.text = "Fruit: " + AmmoAmount;
+            AmmoText.text = "Ammo: " + AmmoAmount;
     }
 
     IEnumerator FireRate()
