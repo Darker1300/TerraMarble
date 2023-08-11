@@ -207,8 +207,8 @@ MonoBehaviour:
   TargetDirection: {x: 0, y: 0}
   moveSpeed: 0
   projectileDammage: 5
-  enemyTagName: Player
-  wheelTagName: Player
+  enemyTagName: Ball
+  wheelTagName: Wheel
 --- !u!1 &333141709408704727
 GameObject:
   m_ObjectHideFlags: 0
