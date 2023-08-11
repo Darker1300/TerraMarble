@@ -284,6 +284,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4012506915391108305, guid: b077951594f616a408b2a214acbc14bc, type: 3}
+      propertyPath: attackTime
+      value: 0.015
+      objectReference: {fileID: 0}
     - target: {fileID: 5710913350301166562, guid: b077951594f616a408b2a214acbc14bc, type: 3}
       propertyPath: m_Radius
       value: 2.5
@@ -294,7 +298,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5710913350301166564, guid: b077951594f616a408b2a214acbc14bc, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5710913350301166564, guid: b077951594f616a408b2a214acbc14bc, type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,4 +1,5 @@
 using MathUtility;
+using Shapes;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,27 @@ using UnityUtility;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("References")] [SerializeField]
-    private GameObject healthIconPrefab;
-
+    [Header("References")]
+    [SerializeField] private GameObject healthIconPrefab;
     [SerializeField] private Transform heartContainerUI;
 
-    [Header("Config")] [SerializeField] private int currentHealth = 3;
-    [SerializeField] private int maxHealth = 3;
+    private const string immuneDiscName = "body, shadow";
+    [SerializeField] private Disc immuneDisc;
 
-    [Header("UI Config")] [SerializeField] private int iconWidth = 70;
+    [Header("Health Config")]
+    [SerializeField] private int currentHealth = 3;
+    [SerializeField] private int maxHealth = 3;
+    [SerializeField] private bool infiniteHealth = true;
+
+    [Header("Immune Config")]
+    [SerializeField] private float immuneDuration = 2;
+    [SerializeField] private float immuneTimeRemaining = 0;
+    [SerializeField] private Color immuneColor = Color.white;
+    private Color normalDiscColor;
+    public bool IsImmune = false;
+
+    [Header("UI Config")]
+    [SerializeField] private int iconWidth = 70;
 
     // Private Fields
     private const string boolDamageName = "Damaged";
@@ -44,11 +57,52 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        heartContainerUI = heartContainerUI != null
-            ? heartContainerUI
+        // Immunity indicator
+        immuneDisc = immuneDisc != null ? immuneDisc
+            : FindObjectOfType<BallAnimController>()?
+                .transform.Find(immuneDiscName)?
+                .GetComponent<Disc>();
+
+        if (immuneDisc is not null)
+            normalDiscColor = immuneDisc.Color;
+
+        // Health UI
+        heartContainerUI = heartContainerUI != null ? heartContainerUI
             : GameObject.Find(heartContainerName)?.transform;
         boolDamageID = Animator.StringToHash(boolDamageName);
         CreateIcons();
+
+        // Damage Immunity callback
+        OnDamaged.AddListener(StartImmune);
+    }
+
+    private void Update()
+    {
+        UpdateImmunity();
+    }
+
+    private void UpdateImmunity()
+    {
+        if (immuneTimeRemaining > 0f)
+        {
+            immuneTimeRemaining -= Time.deltaTime;
+            if (immuneTimeRemaining < 0f)
+                EndImmune();
+        }
+    }
+
+    private void StartImmune()
+    {
+        IsImmune = true;
+        immuneDisc.Color = immuneColor;
+        immuneTimeRemaining = immuneDuration;
+    }
+
+    private void EndImmune()
+    {
+        IsImmune = false;
+        immuneDisc.Color = normalDiscColor;
+        immuneTimeRemaining = 0f;
     }
 
     private void CreateIcons()
@@ -70,7 +124,7 @@ public class PlayerHealth : MonoBehaviour
 
         UpdateUI();
     }
-    
+
     public void UpdateUI()
     {
         if (heartIcons.Count == 0)
@@ -83,14 +137,23 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void Damage(int amount = 1)
+    public void Damage() => Damage(1);
+
+    public void Damage(int amount)
     {
+        if (IsImmune) return;
+
         currentHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
 
         OnDamaged.Invoke();
 
         if (currentHealth == 0)
+        {
             OnDeath.Invoke();
+
+            if (infiniteHealth)
+                SetCurrentHealth(maxHealth);
+        }
 
         UpdateUI();
     }
@@ -109,26 +172,23 @@ public class PlayerHealth : MonoBehaviour
     }
 
     [Button] [ShowInInspector]
-    private void TestDamage()
-    {
-        Damage(1);
-    }
+    private void TestDamage() 
+        => Damage(1);
 
     [Button] [ShowInInspector]
-    private void TestRestoreHealth()
-    {
-        SetCurrentHealth(maxHealth);
-    }
+    private void TestRestoreHealth() 
+        => SetCurrentHealth(maxHealth);
 
     [Button] [ShowInInspector]
-    private void TestIncreaseMaxHealth()
-    {
-        SetMaxHealth(maxHealth + 1);
-    }
+    private void TestIncreaseMaxHealth() 
+        => SetMaxHealth(maxHealth + 1);
 
     [Button] [ShowInInspector]
-    private void TestDecreaseMaxHealth()
-    {
-        SetMaxHealth(maxHealth - 1);
-    }
+    private void TestDecreaseMaxHealth() 
+        => SetMaxHealth(maxHealth - 1);
+    
+    [Button] [ShowInInspector]
+    private void TestRecreateIcons() 
+        => CreateIcons();
+
 }
