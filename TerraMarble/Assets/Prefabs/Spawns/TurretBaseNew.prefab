@@ -563,7 +563,7 @@ Transform:
   - {fileID: 2827245715949662672}
   - {fileID: 2827245715198552644}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2827245716444374801
 GameObject:
@@ -679,6 +679,7 @@ GameObject:
   - component: {fileID: 2827245716553369025}
   - component: {fileID: 2827245716553369030}
   - component: {fileID: 2827245716553369026}
+  - component: {fileID: 7776667816490286105}
   m_Layer: 6
   m_Name: Gun
   m_TagString: Untagged
@@ -718,7 +719,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8448
   aimRadius: 20
-  NearbySensor: {fileID: 0}
+  NearbySensor: {fileID: 7776667816490286105}
   SensorBufferNames:
   - Flying
   NearbyTargetSet:
@@ -792,6 +793,38 @@ MonoBehaviour:
   testShoot: 0
   fireRate: 0.5
   StartWithAmmo: 1
+--- !u!114 &7776667816490286105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2827245716553369028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ac2d359327af47915e10457fe11f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawGizmos: 0
+  Buffers:
+  - Name: Flying
+    Radius: 15
+    Filter:
+      useTriggers: 1
+      useLayerMask: 1
+      useDepth: 0
+      useOutsideDepth: 0
+      useNormalAngle: 0
+      useOutsideNormalAngle: 0
+      layerMask:
+        serializedVersion: 2
+        m_Bits: 8192
+      minDepth: 0
+      maxDepth: 0
+      minNormalAngle: 0
+      maxNormalAngle: 0
+    ColliderSet:
+      Length: 3
 --- !u!1 &2827245716683803143
 GameObject:
   m_ObjectHideFlags: 0

@@ -378,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldownDuration: 2
-  attackTime: 0.015
+  attackTime: 0.001
   attackOutlineDisc: {fileID: 5824118008269747750}
   attackFillDisc: {fileID: 161903002556296968}
   cooldownTimeRemaining: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
   targetTransform: {fileID: 0}
   targetPosition: {x: -10, y: -10}
   forceMultiplier: {x: 20, y: 50}
-  seekSpeed: {x: 0.5, y: 75}
+  seekSpeed: {x: 0.9, y: 75}
   debugLineColor: {r: 1, g: 1, b: 1, a: 1}
   debugLineSize: 1
 --- !u!114 &5710913350301166565

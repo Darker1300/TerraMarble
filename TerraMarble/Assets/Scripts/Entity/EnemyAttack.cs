@@ -32,7 +32,7 @@ public class EnemyAttack : MonoBehaviour
         attackCollider = GetComponent<CircleCollider2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         UpdateCooldown();
 

@@ -517,7 +517,7 @@ MonoBehaviour:
   hitlayer:
     serializedVersion: 2
     m_Bits: 8448
-  aimRadius: 20
+  aimRadius: 15
   NearbySensor: {fileID: 1487549798048971839}
   SensorBufferNames:
   - Flying

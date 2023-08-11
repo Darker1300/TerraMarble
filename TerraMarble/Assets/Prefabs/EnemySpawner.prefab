@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPrefab: {fileID: 5373061118796645096, guid: 2e860dbf01010ba428d8b4e12f164bec, type: 3}
-  objectAmount: 20
+  defaultCapacity: 20
+  maxCapacity: 1000
   poolName: Pool
   UsePrefabName: 1
-  createOnAwake: 0
 --- !u!1 &8571888184767667114
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,8 +98,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pooler: {fileID: 8571888184767667112}
   particlePooler: {fileID: 8571888183896751457}
-  minRad: 5
-  maxRad: 15
+  minRad: 26.9
+  maxRad: 39.4
+  SpawnInBunches: 1
+  aroundPlayer: 0
+  distanceAroundPlanet: 26
+  amount: 5
+  bunchSpacing: 5
+  distanceAroundPlayer: 6.69
 --- !u!114 &8571888184767667112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,10 +119,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPrefab: {fileID: 5710913350301166568, guid: b077951594f616a408b2a214acbc14bc, type: 3}
-  objectAmount: 20
+  defaultCapacity: 20
+  maxCapacity: 1000
   poolName: Pool
   UsePrefabName: 1
-  createOnAwake: 0
 --- !u!114 &8571888184767667113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,10 +135,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222c9896e627eb34696ad6816e9a6be9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TriggerDuration: 5
+  TriggerDuration: 2
   repeatAmount: 3
   loop: 1
   test: 1
+  InfoString: 
   TriggerEvent:
     m_PersistentCalls:
       m_Calls:
