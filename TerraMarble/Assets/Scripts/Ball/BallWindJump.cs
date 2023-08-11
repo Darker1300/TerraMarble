@@ -107,7 +107,7 @@ public class BallWindJump : MonoBehaviour
             {
                 IsJumping = true;
                 DoWindJump();
-                //Camera.main.GetComponent<FollowBehavior>().cameraState = FollowBehavior.CameraState.FollowUp;
+               
 
                 flyUI.UpdateUI(upDragInput);
             }
@@ -116,6 +116,7 @@ public class BallWindJump : MonoBehaviour
         {
             IsJumping = false;
             OnWindJumpEnd();
+            Camera.main.GetComponent<FollowBehavior>().cameraState = FollowBehavior.CameraState.Default;
         }
         //if (Input.GetKeyDown(KeyCode.Space)) DoWindJump();
 

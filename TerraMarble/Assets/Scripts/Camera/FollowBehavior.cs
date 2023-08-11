@@ -8,8 +8,8 @@ public class FollowBehavior : MonoBehaviour
     private bool CenterOfTwo;
     private float screenHeight;
 
-    [SerializeField] protected Transform trackingTarget;
-    [SerializeField] protected Transform trackingTarget2;
+     public Transform trackingTarget;
+     public Transform trackingTarget2;
     private Rigidbody2D rb;
 
     [Header("Global Follow System")]
