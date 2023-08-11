@@ -780,7 +780,7 @@ Transform:
   - {fileID: 4312980075626418186}
   - {fileID: 4312980076968409490}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &897765814820119402
 MonoBehaviour:
@@ -897,8 +897,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   knockBackForce: 2000
-  HitPoints: 100
-  MaxHitPoints: 100
+  HitPoints: 400
+  MaxHitPoints: 400
   CanFertilize: 0
   spawnRandomCircle: {fileID: 0}
   canExplode: 0
