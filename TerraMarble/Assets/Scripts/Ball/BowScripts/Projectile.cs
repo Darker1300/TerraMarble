@@ -20,12 +20,15 @@ public class Projectile : MonoBehaviour
    [Tag]
     public string wheelTagName ;
 
+    private bool isEnemyProjectile = false;
+
 
     // Start is called before the first frame update
     private void Start()
     {
         moveSpeed = 50;
         planetCenter = GameObject.FindGameObjectWithTag(wheelTagName).transform;
+        if (enemyTagName == "Ball") isEnemyProjectile = true;
     }
 
     public void StateConfigure(BallStateTracker.BallState state)
@@ -84,8 +87,11 @@ public class Projectile : MonoBehaviour
 
             //    } 
 
-           
-            
+            if (isEnemyProjectile)
+            {
+                FindObjectOfType<PlayerHealth>().Damage(1);
+            }
+
             if (gameObject.activeInHierarchy)
                 pooler.ReturnToPool(gameObject);
         }
