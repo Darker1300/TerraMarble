@@ -1,76 +1,58 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityUtility;
 
 public class SlowTime : MonoBehaviour
 {
-    
-    [Header("TimeControllerSettings")]
+    [SerializeField] private int defaultTimeIndex = 2;
+    public List<string> timeOptions = new() { "0.5", "0.6", "0.75", "0.9", "1", "1.1", "1.25", "1.4", "1.5" };
+
+    [SerializeField] private CycleButton timeScaleButton;
+    private const string timeScaleButtonName = "Time Scale Button";
+
+    [Header("Slow Motion Config")]
+    [FormerlySerializedAs("isInput")]
+    [SerializeField] private bool useSlowMotion;
     [SerializeField] private float slowModeTimeScale = 0.4f;
-    private float startFixedDeltaTime;
-    [OnValueChanged("SetDefaultTimeScale")] [SerializeField] 
-    private float defaultTimeScale = 1f;
-    [SerializeField] private bool isInput;
-    // Start is called before the first frame update
+
     void Start()
     {
-        SetDefaultTimeScale();
-        //startTimeScale = Time.timeScale;
-        startFixedDeltaTime = Time.fixedDeltaTime;
-        if (isInput)
-        {
-            InputManager.LeftDragEvent += StartStop;
-            InputManager.RightDragEvent += StartStop;
+        timeScaleButton = timeScaleButton != null ? timeScaleButton
+            : UnityU.FindObjectByName<CycleButton>(timeScaleButtonName, true);
 
+        if (timeScaleButton != null)
+        {
+            timeScaleButton.SetOptions(timeOptions);
+            timeScaleButton.ValueChanged.AddListener(UpdateTime);
+            timeScaleButton.SetIndex(defaultTimeIndex);
         }
+
+        InputManager.LeftDragEvent += SetSlowMotion;
+        InputManager.RightDragEvent += SetSlowMotion;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    private void UpdateTime() => UpdateTime(timeScaleButton.Value);
 
+    private void UpdateTime(string _timeOption)
+    {
+        Time.timeScale = Convert.ToSingle(_timeOption);
     }
 
-    private void SetDefaultTimeScale()
+    public void SetSlowMotion(bool state)
     {
-        Time.timeScale = defaultTimeScale;
-    }
-
-    public void StartStop(bool start)
-    {
-        if (start)
+        if (!useSlowMotion) return;
+        if (state)
         {
-            startSlowMotion();
+            Time.timeScale = slowModeTimeScale;
         }
         else
         {
-            StopSlowMotion();
+            UpdateTime(timeScaleButton.Value);
         }
-    
     }
-    public void startSlowMotion()
-    {
-        Time.timeScale = slowModeTimeScale;
-        Time.fixedDeltaTime = startFixedDeltaTime * slowModeTimeScale;
-
-    }
-    public void StopSlowMotion()
-    {
-        Time.timeScale = defaultTimeScale;
-        Time.fixedDeltaTime = startFixedDeltaTime;
-
-    }
-
-    public void SlowDownSubscriber(bool shouldSlow)
-    {
-        if (shouldSlow)
-        {
-            startSlowMotion();
-        }
-        else StopSlowMotion();
-
-    }
-
 }
 

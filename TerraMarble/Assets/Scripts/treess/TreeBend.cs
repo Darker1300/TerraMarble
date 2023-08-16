@@ -13,10 +13,10 @@ public class TreeBend : MonoBehaviour
     private WheelRegionsManager wheelRegions;
     private BallStateTracker ball;
     private Rigidbody2D ballRb;
-    private AimTreeLockUI aimUi;
     private PlayerInput playerInput;
 
-    [Header("Drag Input Config")] [Tooltip("offset of starting position, in degrees")]
+    [Header("Drag Input Config")]
+    [Tooltip("offset of starting position, in degrees")]
     public float dragStartOffset = 15f;
 
     [Tooltip("range extent of bend area movement, in degrees")]
@@ -29,13 +29,15 @@ public class TreeBend : MonoBehaviour
     public float bendMaxSpeed = 1000f;
     [SerializeField] private bool doDebug = false;
 
-    [SerializeField] private AnimationCurve treeBendCurve
+    [SerializeField]
+    private AnimationCurve treeBendCurve
         = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [SerializeField] private AnimationCurve inputCurve //
-        = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [SerializeField] private bool allowBendIdle = false;
+    [SerializeField] private Vector2 bendIdle = new Vector2(-0.05f, 1f);
+    [SerializeField] private float bendIdleTime = 0.2f;
 
-    [FormerlySerializedAs("PopOutHeightCurve")]
+    [Header("Wobble Config")]
     public AnimationCurve launchCurve = new(
         new Keyframe(0, 0),
         new Keyframe(0.5f, 1f),
@@ -60,6 +62,8 @@ public class TreeBend : MonoBehaviour
 
     [Foldout("Data")] [SerializeField] private float wheelRadius = 10;
     [Foldout("Data")] public List<TreePaddleController> nearbyTrees = new();
+    [Foldout("Data")] [SerializeField] private Vector2 previousTreeDrag = Vector2.zero;
+    [Foldout("Data")] [SerializeField] private Vector2 bendIdleVelocity;
 
 
     //public bool CanBallSlide
@@ -69,7 +73,7 @@ public class TreeBend : MonoBehaviour
 
     private void Start()
     {
-        aimUi = FindObjectOfType<AimTreeLockUI>(true);
+        //aimUi = FindObjectOfType<AimTreeLockUI>(true);
         wheelRegions = FindObjectOfType<WheelRegionsManager>();
         ball = FindObjectOfType<BallStateTracker>();
         ballRb = ball?.GetComponent<Rigidbody2D>();
@@ -83,7 +87,7 @@ public class TreeBend : MonoBehaviour
     private void Update()
     {
         // Get the normalized direction vector from the wheel center to the ball.
-        Vector2 dir = ((Vector2) wheelRegions.transform.Towards(ball.transform)).normalized;
+        Vector2 dir = ((Vector2)wheelRegions.transform.Towards(ball.transform)).normalized;
 
         // Adjust the direction based on user input and various drag factors.
         // dragInput.x * dragMoveRange is the basic input scaled by a range factor.
@@ -102,7 +106,7 @@ public class TreeBend : MonoBehaviour
         // Update the position of the 'tree circle collider' object this script is attached to.
         // This makes it follow along the edge of the wheel at a distance specified by wheelRadius.
         transform.position = wheelRegions.transform.position
-                             + (Vector3) dir * wheelRadius;
+                             + (Vector3)dir * wheelRadius;
 
         // Update the state of the trees in the scene
         UpdateTrees();
@@ -118,8 +122,20 @@ public class TreeBend : MonoBehaviour
     {
         nearbyTrees.RemoveAllNull();
 
-        Vector2 dragInput = playerInput.TreeDrag;
-        dragInput.y = Mathf.Clamp01(-dragInput.y);
+        float clampedTreeDragY = Mathf.Clamp01(-playerInput.TreeDrag.y);
+
+        Vector2 treeDrag = playerInput.TreeDrag.WithY(clampedTreeDragY);
+
+        // Allow Bend Idle
+        if (allowBendIdle && IsBendIdle(treeDrag, previousTreeDrag))
+        {
+            int xSign = Math.Sign(treeDrag.x);
+            Vector2 dragTarget = new Vector2(
+                bendIdle.x * (xSign != 0 ? xSign : 1),
+                bendIdle.y);
+            treeDrag = dragTarget;
+            //treeDrag = Vector2.SmoothDamp(treeDrag, dragTarget, ref bendIdleVelocity, bendIdleTime);
+        } else bendIdleVelocity = Vector2.zero;
 
         foreach (TreePaddleController tree in nearbyTrees)
         {
@@ -138,12 +154,19 @@ public class TreeBend : MonoBehaviour
 
             float fallOffPercent = 1f - bendCurve;
 
-            float bendPercent = dragInput.y * fallOffPercent;
+            float bendPercent = treeDrag.y * fallOffPercent;
             int direction = tree.DirectionFromPoint(transform.position);
 
             // Update the tree's state
             tree.SetTreeState(bendPercent, direction);
         }
+
+        previousTreeDrag = playerInput.TreeDrag.WithY(clampedTreeDragY);
+    }
+
+    private bool IsBendIdle(Vector2 _currentTreeDrag, Vector2 _previousTreeDrag, float _tolerance = 0.01f)
+    {
+        return (_currentTreeDrag - _previousTreeDrag).sqrMagnitude < _tolerance;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -170,6 +193,6 @@ public class TreeBend : MonoBehaviour
         ball ??= FindObjectOfType<BallStateTracker>();
         ballRb ??= ball?.GetComponent<Rigidbody2D>();
 
-        Gizmos.DrawLine(ballRb.transform.position, ballRb.transform.position + (Vector3) ballRb.velocity);
+        Gizmos.DrawLine(ballRb.transform.position, ballRb.transform.position + (Vector3)ballRb.velocity);
     }
 }

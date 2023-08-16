@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityUtility;
 using Vector2 = UnityEngine.Vector2;
 
 public class PlayerInput : MonoBehaviour
@@ -38,10 +39,20 @@ public class PlayerInput : MonoBehaviour
     [ShowInInspector] public Vector2 TreeDrag => GetDrag();
     [ShowInInspector] public int TreeDragSide => GetSide();
     [ShowInInspector] public Vector2 Drag
-        => applyInputCurve ? ApplyDragInputCurve(rawDrag, inputCurve)
-            : rawDrag;
+        => applyInputCurve ? ApplyDragInputCurve(rawDrag, inputCurve) : rawDrag;
     public Vector2 RawDrag => rawDrag;
     public int Side => side;
+
+    [Serializable] public class InputConfigOption
+    {
+        public string name = "Option";
+        public bool[] data = new bool[4];
+    }
+
+    [SerializeField] private int treeInputConfigSelection = 0;
+    [SerializeField] private List<InputConfigOption> treeInputConfig;
+    [SerializeField] private TextMeshProUGUI treeInputTextUI;
+    private const string inputConfigButtonName = "Input Config Text";
 
     [ShowInInspector] public bool IsDragging
     {
@@ -55,15 +66,26 @@ public class PlayerInput : MonoBehaviour
         private set => dragScreenSize = value;
     }
 
-    [Serializable] public class InputConfigOption
+    private void Start()
     {
-        public string name = "Option";
-        public bool[] data = new bool[4];
-    }
+        InputManager.LeftDragEvent
+            += (a) => OnDragToggle(a, -1);
+        InputManager.RightDragEvent
+            += (a) => OnDragToggle(a, 1);
+        InputManager.LeftDragVectorEvent
+            += (a, b, screenDrag) => OnDragUpdate(screenDrag, -1);
+        InputManager.RightDragVectorEvent
+            += (a, b, screenDrag) => OnDragUpdate(screenDrag, 1);
 
-    [SerializeField] private int treeInputConfigSelection = 0;
-    [SerializeField] private List<InputConfigOption> treeInputConfig;
-    [SerializeField] private TextMeshProUGUI treeInputTextUI;
+        treeInputTextUI = treeInputTextUI != null ? treeInputTextUI
+            : UnityU.FindObjectByName<TextMeshProUGUI>(inputConfigButtonName, true);
+
+        if (treeInputTextUI != null && treeInputConfig.Count > 0)
+        {
+            treeInputTextUI.text = treeInputConfig[treeInputConfigSelection].name;
+            treeInputTextUI.GetComponentInParent<Button>(true)?.onClick.AddListener(SetNextInputConfigOption);
+        }
+    }
 
     public void SetNextInputConfigOption()
     {
@@ -78,24 +100,6 @@ public class PlayerInput : MonoBehaviour
         swapXDragInwards = treeInputConfig[treeInputConfigSelection].data[3];
 
         treeInputTextUI.text = treeInputConfig[treeInputConfigSelection].name;
-    }
-
-    private void Start()
-    {
-        InputManager.LeftDragEvent
-            += (a) => OnDragToggle(a, -1);
-        InputManager.RightDragEvent
-            += (a) => OnDragToggle(a, 1);
-        InputManager.LeftDragVectorEvent
-            += (a, b, screenDrag) => OnDragUpdate(screenDrag, -1);
-        InputManager.RightDragVectorEvent
-            += (a, b, screenDrag) => OnDragUpdate(screenDrag, 1);
-
-        if (treeInputTextUI != null && treeInputConfig.Count > 0)
-        {
-            treeInputTextUI.text = treeInputConfig[treeInputConfigSelection].name;
-            treeInputTextUI.GetComponentInParent<Button>()?.onClick.AddListener(SetNextInputConfigOption);
-        }
     }
 
     private void OnDragToggle(bool state, int side)

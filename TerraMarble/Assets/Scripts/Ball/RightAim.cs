@@ -69,7 +69,7 @@ public class RightAim : MonoBehaviour
     private void AlternateStart(object sender, EventArgs e)
     {
         lineIndicator.enabled = true;
-        timeSlowDown.startSlowMotion();
+        timeSlowDown.SetSlowMotion(true);
        
         
         //timeSlowDown.startSlowMotion();
@@ -90,7 +90,7 @@ public class RightAim : MonoBehaviour
         if (!buttonDown)
         {
             lineIndicator.enabled = false;
-            timeSlowDown.StopSlowMotion();
+            timeSlowDown.SetSlowMotion(false);
             //timeSlowDown.StopSlowMotion();
             hasMin = false;
             // GetComponent<Rigidbody2D>().AddRelativeForce(aimDirection.normalized * 100);
@@ -103,8 +103,8 @@ public class RightAim : MonoBehaviour
         else if (buttonDown)
 
         {
-            timeSlowDown.startSlowMotion();
-             //StartCoroutine(Countdown());
+            timeSlowDown.SetSlowMotion(true);
+            //StartCoroutine(Countdown());
         }
     }
     private IEnumerator Countdown()

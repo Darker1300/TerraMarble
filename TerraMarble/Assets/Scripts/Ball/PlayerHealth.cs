@@ -69,6 +69,7 @@ public class PlayerHealth : MonoBehaviour
         // Health UI
         heartContainerUI = heartContainerUI != null ? heartContainerUI
             : GameObject.Find(heartContainerName)?.transform;
+
         boolDamageID = Animator.StringToHash(boolDamageName);
         CreateIcons();
 
@@ -108,7 +109,11 @@ public class PlayerHealth : MonoBehaviour
     private void CreateIcons()
     {
         heartIcons = new List<Animator>(maxHealth);
-        heartContainerUI.DestroyChildren();
+
+        if (Application.isPlaying)
+            heartContainerUI.DestroyChildren();
+        else heartContainerUI.DestroyImmediateChildren();
+
         for (int i = 0; i < maxHealth; i++)
         {
             // Create Icon

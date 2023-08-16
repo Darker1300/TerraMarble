@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Unity.Mathematics;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace UnityUtility
 {
@@ -81,6 +80,24 @@ namespace UnityUtility
             return transform;
         }
 
+        public static Transform DestroyImmediateChildren(this Transform transform)
+        {
+            foreach (Transform child in transform)
+            {
+                GameObject.DestroyImmediate(child.gameObject);
+            }
+            return transform;
+        }
+
+        public static T FindObjectByName<T>(string _name, bool _includeInactive) where T : UnityEngine.Object
+        {
+            var collection = UnityEngine.Object.FindObjectsOfType<T>(_includeInactive);
+            foreach (T obj in collection)
+                if (obj.name == _name)
+                    return obj;
+            return null;
+        }
+
         ///   <para>Returns transform with tag or any of its children. Works recursively.</para>
         public static List<Transform> FindChildrenWithTag(this Transform parent, string tag,
             List<Transform> results = null)
@@ -149,7 +166,7 @@ namespace UnityUtility
 
         public static Coroutine StartCoroutine(this MonoBehaviour mb, (object, Func<object, YieldInstruction>) funcs)
         {
-            return mb.StartCoroutine(CoroutineGroup(new (object, Func<object, YieldInstruction>)[] {funcs}));
+            return mb.StartCoroutine(CoroutineGroup(new (object, Func<object, YieldInstruction>)[] { funcs }));
         }
 
         public static Coroutine StartCoroutine(this MonoBehaviour mb,
@@ -166,8 +183,8 @@ namespace UnityUtility
         public static void SafeDestroy(GameObject gameObject)
         {
             if (Application.isEditor && !Application.isPlaying)
-                Object.DestroyImmediate(gameObject);
-            else Object.Destroy(gameObject);
+                UnityEngine.Object.DestroyImmediate(gameObject);
+            else UnityEngine.Object.Destroy(gameObject);
         }
 
         public static void LogArray(IEnumerable<GameObject> array)
