@@ -22,7 +22,7 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
     [SerializeField]
     public float distanceAroundPlanet;
     [SerializeField]
-    private int amount;
+    public int amount;
     [SerializeField]
     private int bunchSpacing;
     [SerializeField]
