@@ -28,14 +28,14 @@ public class EnemyHealth : MonoBehaviour
     public float explosionRadius = 2f;
     public bool explosionBoost = false;
     private bool isDying;
-
+    private WaveManager waveManager;
 
     // Start is called before the first frame update
     void Start()
     {
 
         rb = GetComponent<Rigidbody2D>();
-
+        waveManager = GameObject.FindObjectOfType<WaveManager>();
     }
     private void OnEnable()
     {
@@ -136,14 +136,11 @@ public class EnemyHealth : MonoBehaviour
         rb.velocity = Vector2.zero;
         OnHit();
         rb.AddForce(colider.transform.Towards(transform).normalized * knockBackForce);
-
-
-
-
+        
     }
     public void EnemyDead()
     {
-
+       
 
         GameObject.FindObjectOfType<FruitManager>().FertilizeNearby(transform.position);
         //tell the spawner it has 
@@ -151,7 +148,7 @@ public class EnemyHealth : MonoBehaviour
         //return to pool
         GetComponent<PoolObject>()?.Pool.ReturnToPool(this.gameObject);
 
-
+        --waveManager.TotalEnemiesActive;
     }
 
 

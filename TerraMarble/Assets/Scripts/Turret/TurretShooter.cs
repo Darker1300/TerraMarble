@@ -23,6 +23,7 @@ public class TurretShooter : MonoBehaviour
     private Transform WheelTransform;
     private float wheelRadius;
     public bool StartWithAmmo = true;
+    public int bulletsPerBurstFire = 3;
     
 
     // Start is called before the first frame update
@@ -34,6 +35,7 @@ public class TurretShooter : MonoBehaviour
         //UpdateAmmo();
         WheelTransform = GameObject.FindGameObjectWithTag("Wheel").transform;
         wheelRadius = WheelTransform.GetComponent<CircleCollider2D>().radius;
+        
     }
     private void OnEnable()
     {
@@ -45,11 +47,12 @@ public class TurretShooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        AmmoLineIndictor.End = new Vector3(0,-(((float)AmmoAmount / MaxAmmo) * 6), 0);
         //if has ammo
         if (AmmoAmount != 0 && Time.time > nextFire && AmmoAmount > 0)
         {
 
-            AmmoLineIndictor.End = new Vector3(0,-(((float)AmmoAmount / MaxAmmo) * 6), 0);
+            
             //Debug.Log(AmmoAmount);
             //Debug.Log((AmmoAmount / MaxAmmo) * 6);
             Target = null;
@@ -60,6 +63,7 @@ public class TurretShooter : MonoBehaviour
                 testShoot = false;
                 nextFire = Time.time + fireRate;
             }
+
             //scales the line depending on ammo to max ammo
         }
         //if has target
@@ -69,11 +73,12 @@ public class TurretShooter : MonoBehaviour
 
     public void UpdateAmmo()
     {
+
     }
 
     IEnumerator FireRate()
     {
-        int i = 4;
+        int i = bulletsPerBurstFire;
 
         while (i > 0)
         {
@@ -82,7 +87,9 @@ public class TurretShooter : MonoBehaviour
                 ammoController.GetProjectile(BallStateTracker.BallState.NoEffector, Target.transform.position);
                 ammoController.currentProjectile.SetActive(true);
                 AmmoAmount--;
+                
                 //UpdateAmmo();
+
             }
             else yield break;
 
