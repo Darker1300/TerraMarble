@@ -32,7 +32,7 @@ Transform:
   - {fileID: 7797537612007469216}
   - {fileID: 7797537613282656539}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1928417803155658167
 MonoBehaviour:
@@ -119,7 +119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571888184767667114, guid: 360ff2e44f5b9ea49aa1a33722c679a5, type: 3}
       propertyPath: m_Name
-      value: EnemySpawner (4)
+      value: Small EnemySpawner
       objectReference: {fileID: 0}
     - target: {fileID: 8571888184767667114, guid: 360ff2e44f5b9ea49aa1a33722c679a5, type: 3}
       propertyPath: m_IsActive
@@ -255,7 +255,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571888184767667114, guid: 360ff2e44f5b9ea49aa1a33722c679a5, type: 3}
       propertyPath: m_Name
-      value: EnemySpawner (5)
+      value: Tracker EnemySpawner
       objectReference: {fileID: 0}
     - target: {fileID: 8571888184767667114, guid: 360ff2e44f5b9ea49aa1a33722c679a5, type: 3}
       propertyPath: m_IsActive
