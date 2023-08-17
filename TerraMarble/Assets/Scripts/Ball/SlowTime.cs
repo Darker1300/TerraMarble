@@ -39,7 +39,9 @@ public class SlowTime : MonoBehaviour
 
     private void UpdateTime(string _timeOption)
     {
-        Time.timeScale = Convert.ToSingle(_timeOption);
+        float timeNumber = Convert.ToSingle(_timeOption);
+        Time.timeScale = timeNumber;
+        Time.fixedDeltaTime = timeNumber * 0.02f;
     }
 
     public void SetSlowMotion(bool state)
