@@ -23,12 +23,16 @@ public class AimTreeLockUI : MonoBehaviour
 
     [SerializeField] private Disc rangeBackDisc;
 
-    [Header("Flying How much the ball UI shrinks ")] [SerializeField] [Range(0, 1)]
+    [Header("Flying How much the ball UI shrinks ")]
+    [SerializeField]
+    [Range(0, 1)]
     private float ShrinkSize = 0.5f;
 
     private float startDiscSize;
     public AnimationCurve DotUiScaleInfluence;
 
+    [Header("Telegraph")]
+    public Disc telegraphDisc;
 
     [Header("Data")] [SerializeField] private bool isDragging = false;
 
@@ -49,6 +53,15 @@ public class AimTreeLockUI : MonoBehaviour
             UpdateWheelAim();
             UpdateScreenAim();
         }
+        if (Vector3.Distance(Camera.main.GetComponent<FollowBehavior>().trackingTarget.position, Camera.main.GetComponent<FollowBehavior>().trackingTarget2.position) < 25f)
+        {
+            telegraphDisc.enabled = true;
+           
+            telegraphDisc.transform.rotation = Camera.main.transform.rotation;
+        }
+        else
+            telegraphDisc.enabled = false;
+
     }
 
     public void OnDragToggle(bool inputDown)
@@ -80,13 +93,13 @@ public class AimTreeLockUI : MonoBehaviour
 
         //
         screenAimTransform.rotation = Camera.main.transform.rotation;
-        screenAimTransform.localScale = Vector3.forward + (Vector3) worldSize;
+        screenAimTransform.localScale = Vector3.forward + (Vector3)worldSize;
 
         screenAimTransform.position = new Vector3(center.x, center.y, screenAimTransform.position.z);
 
         // Aim Line
         SetScreenLine(playerInput.Side);
-        
+
         Vector2 dragInput = playerInput.RawDrag;
         dragInput.y = Mathf.Clamp01(-dragInput.y);
 
@@ -115,7 +128,7 @@ public class AimTreeLockUI : MonoBehaviour
 
     private void UpdateWheelAim()
     {
-        Vector2 dir = ((Vector2) wheelAimTransform.Towards(treeActive.transform)).normalized;
+        Vector2 dir = ((Vector2)wheelAimTransform.Towards(treeActive.transform)).normalized;
         float ang = MathU.Vector2ToDegree(dir);
         wheelAimTransform.rotation = Quaternion.AngleAxis(ang, Vector3.forward);
 
