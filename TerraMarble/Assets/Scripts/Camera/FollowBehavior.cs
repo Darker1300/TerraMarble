@@ -7,8 +7,9 @@ public class FollowBehavior : MonoBehaviour
 
     private bool CenterOfTwo;
     private float screenHeight;
-
-     public Transform trackingTarget;
+    [SerializeField]
+    private Renderer playerMeshRenderer;
+    public Transform trackingTarget;
      public Transform trackingTarget2;
     private Rigidbody2D rb;
 
@@ -41,7 +42,12 @@ public class FollowBehavior : MonoBehaviour
     [Header("Orbit Follow System")]
     [SerializeField] private bool useOrbitSystem = false;
     [SerializeField] private Vector3 followOffset = Vector3.back;
+    [SerializeField] private Vector3 ZoomOffset = Vector3.back;
+    [Header("PrepareDown Follow System")]
     [SerializeField] private Vector3 followOffsetPrepareDown = Vector3.back;
+    public float smoothSpeed = 0.125f; // Smoothing factor
+    public float yOffsetPrepareDown = 2.0f; // Vertical offset to keep the object in the top half
+
     [SerializeField] private float rotateTime = .1f;
     [Header("Data")]
     [SerializeField] private float rotateVelocity = 0;
@@ -80,9 +86,20 @@ public class FollowBehavior : MonoBehaviour
         }
 
         screenHeight = Screen.height;
-    }
 
-    public void ConfigureTargets()
+
+        playerMeshRenderer = trackingTarget.GetComponent<BallAnimController>().BodyBase.GetComponentInChildren<SkinnedMeshRenderer>();
+    }
+    private void LateUpdate()
+    {
+        if (cameraState == CameraState.PrepareDown)
+        {
+            Vector3 desiredPosition = trackingTarget.position + new Vector3(0, yOffset, 0);
+            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
+            transform.position = smoothedPosition;
+        }
+    }
+public void ConfigureTargets()
     {
         if (trackingTarget2 != null)
             CenterOfTwo = true;
@@ -95,18 +112,7 @@ public class FollowBehavior : MonoBehaviour
     {
         CameraStateController();
         CameraZoom();
-        //CameraZoom();
-        //FixedPos();
-        //BallIsAboveCenter(1f);
 
-
-        //if (CameraZoomInOut)
-        //{
-        //    CameraZoom();
-        //}
-
-
-        //transform.position = new Vector3(trackingTarget.position.x +xOffset, trackingTarget.position.y + yOffset, transform.position.z);
     }
     public void TrackTarget(bool center)
     {
@@ -140,16 +146,106 @@ public class FollowBehavior : MonoBehaviour
         Vector3 towards = trackingTarget2.Towards(rb.transform);
         //transform.position =  new Vector3(towards.x,towards.y,transform.position.z);
         transform.position = Vector3.SmoothDamp(transform.position, new Vector3(towards.x, towards.y, transform.position.z), ref veloref, followUpSpeed);
-        //convert rb up to 
+       
 
     }
     public Vector3 BridgeToDefaultPos()
     {
         Quaternion tRotation = GetFollowRotation(trackingTarget, trackingTarget2);
         transform.rotation = tRotation;
+        Vector3 bridge = ((trackingTarget2.position + (tRotation * followOffsetPrepareDown)) + trackingTarget2.Towards(rb.transform)) / 2f;
+        return bridge;
 
-        return ((trackingTarget2.position + (tRotation * followOffsetPrepareDown)) + trackingTarget2.Towards(rb.transform)) / 2f;
+        ////if the bridge point to player projected up is not lower than camupdist else add the diference to bridge point
+        ////project bridge to camera up compare that with view port height(/ 2),get the diference then project it back onto
+
+        //// bridge point to player vector 
+        //Vector3 toPlayerFromBridge = trackingTarget.position- bridge;
+        //Debug.DrawLine(bridge,bridge + toPlayerFromBridge, Color.blue);
+
+
+        //Vector3 cameraTopViewportPoint = new Vector3(0.5f, 1.0f, 0.0f); // Center of the top edge of the viewport
+        //Vector3 worldPointAtTopViewport = Camera.main.ViewportToWorldPoint(cameraTopViewportPoint);
+        //Vector3 BridgeTocamera = Vector3.Project(worldPointAtTopViewport,bridge.normalized) - bridge;
+        //Debug.DrawLine(bridge, bridge + BridgeTocamera, Color.red);
+
+
+        //    Debug.Log("B to Player  " + toPlayerFromBridge.sqrMagnitude + "  |  B to Cam  " + BridgeTocamera.sqrMagnitude);
+        //if (BridgeTocamera.sqrMagnitude < toPlayerFromBridge.sqrMagnitude)
+        //{
+        //   float difference = toPlayerFromBridge.sqrMagnitude - BridgeTocamera.sqrMagnitude;
+        //   bridge =   bridge.normalized * (difference + bridge.sqrMagnitude);
+        //    //bridge = bridge.normalized * (difference + (bridge.sqrMagnitude - (worldPointAtTopViewport - transform.position).sqrMagnitude));
+        //}
+
+        ////(pb) (project toPlayerFromBridge onto camera transform up) 
+
+        ////float dot = Vector2.Dot( Vector3.up, toPlayerFromBridge) ;
+        ////Debug.Log("dott" + dot);
+        ////Vector3 projectPlayerTo =  (toPlayerFromBridge.magnitude * dot) * transform.up ;
+
+        ////(top camera) get distance to top of camera (viewport)the 
+
+        ////make sure to player(pb) is not higher than (top camera) 
+        ////if difference get the diference then project it back onto the world to player vector
+        ////
+        ////get its magnitude and the bridge magnitude add them together then times that by planet to world normalized direction
+
+        //return bridge;
+
+
+        //project 
+
+
+
+        //if player is at the top of the screen 
+
+        //Vector2 playerOffScreenV2 = IsPlayerInView();
+        //if (playerOffScreenV2 == Vector2.zero)
+        //{
+        //    //(wheel + playerRot) * offset) + 
+        //    //direction 
+        //    return ((trackingTarget2.position + (tRotation * followOffsetPrepareDown)) + trackingTarget2.Towards(rb.transform)) / 2f;
+        //}
+        //else
+        //{
+        //    return ((((trackingTarget2.position + (tRotation * followOffsetPrepareDown)) + trackingTarget2.Towards(rb.transform)) / 2f) + transform.up * Mathf.Abs(playerOffScreenV2.y));
+        //}
+
+
+
         //get direction vector from point a to point b
+
+    }
+    public Vector2 IsPlayerInView()
+    {
+
+        if (!playerMeshRenderer.isVisible)
+
+        {
+            Vector3 objectPosition =trackingTarget. transform.position;
+
+            float cameraHeight = 2f * Camera.main.orthographicSize;
+            float cameraWidth = cameraHeight * Camera.main.aspect;
+
+            float distanceOffScreenX = 0;
+            float distanceOffScreenY = 0;
+
+            if (objectPosition.x < Camera.main.transform.position.x - cameraWidth / 2)
+                distanceOffScreenX = Mathf.Abs(Camera.main.transform.position.x - cameraWidth / 2 - objectPosition.x);
+            else if (objectPosition.x > Camera.main.transform.position.x + cameraWidth / 2)
+                distanceOffScreenX = Mathf.Abs(objectPosition.x - Camera.main.transform.position.x - cameraWidth / 2);
+
+            if (objectPosition.y < Camera.main.transform.position.y - cameraHeight / 2)
+                distanceOffScreenY = Mathf.Abs(Camera.main.transform.position.y - cameraHeight / 2 - objectPosition.y);
+            else if (objectPosition.y > Camera.main.transform.position.y + cameraHeight / 2)
+                distanceOffScreenY = Mathf.Abs(objectPosition.y - Camera.main.transform.position.y - cameraHeight / 2);
+
+            Debug.Log($"Object is off the screen by {distanceOffScreenX} units horizontally and {distanceOffScreenY} units vertically.");
+            return new Vector2(distanceOffScreenX,distanceOffScreenY);
+        }
+        else return Vector2.zero;
+
 
     }
     public Vector3 GetDefaultPos()
@@ -247,9 +343,13 @@ public class FollowBehavior : MonoBehaviour
                 //keep ball in 7/10 of screen ball pos mostly at top until it reaches back to default zone
 
                 //TrackTarget(true);
-                transform.position = Vector3.Lerp(transform.position, BridgeToDefaultPos(), Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, BridgeToDefaultPos() , Time.deltaTime);
                 //until the camera position is close enough to 
-                if (!BallIsAboveCenter() || Vector3.Distance(trackingTarget.position, trackingTarget2.position) < 30f)
+               
+               //project 
+
+               
+                if ( Vector3.Distance(trackingTarget.position, trackingTarget2.position) < 30f)
                 {
                     cameraState = CameraState.Default;
                     return;
@@ -316,7 +416,7 @@ public class FollowBehavior : MonoBehaviour
 
 
 
-        float distance = Vector3.Distance(trackingTarget2.transform.position + (transform.rotation * followOffset), trackingTarget.position);
+        float distance = Vector3.Distance(trackingTarget2.transform.position + (transform.rotation * ZoomOffset), trackingTarget.position);
         float target = Mathf.Max(distance / 2, defaultCameraSize);
 
         Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, target, ref cameraScaleVelocity, cameraScaleSpeed);

@@ -116,7 +116,7 @@ public class BallWindJump : MonoBehaviour
         {
             IsJumping = false;
             OnWindJumpEnd();
-            Camera.main.GetComponent<FollowBehavior>().cameraState = FollowBehavior.CameraState.Default;
+           Camera.main.GetComponent<FollowBehavior>().cameraState = FollowBehavior.CameraState.FollowUp;
         }
         //if (Input.GetKeyDown(KeyCode.Space)) DoWindJump();
 
@@ -148,26 +148,27 @@ public class BallWindJump : MonoBehaviour
     void OnTap(int side)
     {
         DoDash(dashForce, side);
+        
+    
 
+    //// If not at rest
+    //if (ballRb.velocity.magnitude > minVelocityForDash)
+    //{
+    //    Vector2 dashDirection = ballRb.transform.up.To2DXY();
 
-        //// If not at rest
-        //if (ballRb.velocity.magnitude > minVelocityForDash)
-        //{
-        //    Vector2 dashDirection = ballRb.transform.up.To2DXY();
+    //    // Side Dash
+    //    Vector2 localVelocity = transform.InverseTransformDirection(ballRb.velocity.To3DXY()).To2DXY();
+    //    if (Mathf.Abs(localVelocity.x) > minVelocityForSideDash)
+    //        dashDirection = (ballRb.transform.up.To2DXY() * 2f * Mathf.Sign(localVelocity.y) +
+    //                                (ballRb.transform.right.To2DXY() * Mathf.Sign(localVelocity.x))).normalized;
 
-        //    // Side Dash
-        //    Vector2 localVelocity = transform.InverseTransformDirection(ballRb.velocity.To3DXY()).To2DXY();
-        //    if (Mathf.Abs(localVelocity.x) > minVelocityForSideDash)
-        //        dashDirection = (ballRb.transform.up.To2DXY() * 2f * Mathf.Sign(localVelocity.y) +
-        //                                (ballRb.transform.right.To2DXY() * Mathf.Sign(localVelocity.x))).normalized;
+    //    // Apply Force
+    //    ballRb.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
 
-        //    // Apply Force
-        //    ballRb.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
-
-        //    // particles
-        //    partSystem.Emit(dashPartEmitCount);
-        //}
-    }
+    //    // particles
+    //    partSystem.Emit(dashPartEmitCount);
+    //}
+}
     
     /// <returns>If successfully applied force.</returns>
     public bool DoDash(float newDashForce, int side,  bool forceDash = false)
