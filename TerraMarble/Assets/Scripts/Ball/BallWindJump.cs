@@ -76,8 +76,8 @@ public class BallWindJump : MonoBehaviour
         InputManager.LeftDragVectorEvent += (vector, delta, screenDragVector) => UpdateDragInput(screenDragVector);
         InputManager.RightDragVectorEvent += (vector, delta, screenDragVector) => UpdateDragInput(screenDragVector);
 
-        InputManager.TapLeft += () => OnTap(-1);
-        InputManager.TapRight += () => OnTap(1);
+        //InputManager.TapLeft += () => OnTap(-1);
+        //InputManager.TapRight += () => OnTap(1);
 
         flyUI.SetUI(false);
     }
@@ -145,29 +145,29 @@ public class BallWindJump : MonoBehaviour
     //    }
     //}
 
-    void OnTap(int side)
-    {
-        DoDash(dashForce, side);
+    //void OnTap(int side)
+    //{
+    //    DoDash(dashForce, side);
 
 
-        //// If not at rest
-        //if (ballRb.velocity.magnitude > minVelocityForDash)
-        //{
-        //    Vector2 dashDirection = ballRb.transform.up.To2DXY();
+    //    //// If not at rest
+    //    //if (ballRb.velocity.magnitude > minVelocityForDash)
+    //    //{
+    //    //    Vector2 dashDirection = ballRb.transform.up.To2DXY();
 
-        //    // Side Dash
-        //    Vector2 localVelocity = transform.InverseTransformDirection(ballRb.velocity.To3DXY()).To2DXY();
-        //    if (Mathf.Abs(localVelocity.x) > minVelocityForSideDash)
-        //        dashDirection = (ballRb.transform.up.To2DXY() * 2f * Mathf.Sign(localVelocity.y) +
-        //                                (ballRb.transform.right.To2DXY() * Mathf.Sign(localVelocity.x))).normalized;
+    //    //    // Side Dash
+    //    //    Vector2 localVelocity = transform.InverseTransformDirection(ballRb.velocity.To3DXY()).To2DXY();
+    //    //    if (Mathf.Abs(localVelocity.x) > minVelocityForSideDash)
+    //    //        dashDirection = (ballRb.transform.up.To2DXY() * 2f * Mathf.Sign(localVelocity.y) +
+    //    //                                (ballRb.transform.right.To2DXY() * Mathf.Sign(localVelocity.x))).normalized;
 
-        //    // Apply Force
-        //    ballRb.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
+    //    //    // Apply Force
+    //    //    ballRb.AddForce(dashDirection * dashForce, ForceMode2D.Impulse);
 
-        //    // particles
-        //    partSystem.Emit(dashPartEmitCount);
-        //}
-    }
+    //    //    // particles
+    //    //    partSystem.Emit(dashPartEmitCount);
+    //    //}
+    //}
     
     /// <returns>If successfully applied force.</returns>
     public bool DoDash(float newDashForce, int side,  bool forceDash = false)
