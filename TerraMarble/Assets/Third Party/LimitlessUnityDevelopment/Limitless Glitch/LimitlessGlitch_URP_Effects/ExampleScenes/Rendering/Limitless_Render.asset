@@ -164,7 +164,8 @@ MonoBehaviour:
   - {fileID: 4926592474162038450}
   - {fileID: -6922115131037918442}
   - {fileID: 3243480810044884145}
-  m_RendererFeatureMap: b785012da074873b2ae3b3fa783d277d1fcb130473b9947000c0bc5160f1a92b46152427e9f8241f21dd0aa57922b541b0f0914f70fc9c7b887c54af34c6642248a6d375fa2bd7e353912c28eaef1b84055488ebb6bf7611f95d83e6e5e9f0f08510a65dc633f72de2bfbcec54a5e921b02c7e1a02683e6f8da8171da3a55387601360c838acc15e1b9c11d0d806c8c024caf55dbe13ffa7b709e71414c9b0e0b2868ac7c0c55e4416db2098f6b4ef9fb18485ae9c28032d
+  - {fileID: 5856715295519952233}
+  m_RendererFeatureMap: b785012da074873b2ae3b3fa783d277d1fcb130473b9947000c0bc5160f1a92b46152427e9f8241f21dd0aa57922b541b0f0914f70fc9c7b887c54af34c6642248a6d375fa2bd7e353912c28eaef1b84055488ebb6bf7611f95d83e6e5e9f0f08510a65dc633f72de2bfbcec54a5e921b02c7e1a02683e6f8da8171da3a55387601360c838acc15e1b9c11d0d806c8c024caf55dbe13ffa7b709e71414c9b0e0b2868ac7c0c55e4416db2098f6b4ef9fb18485ae9c28032d694d10f4873b4751
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -342,6 +343,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   Event: 300
+--- !u!114 &5856715295519952233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af22cf077d9f8846a3e74914b658002, type: 3}
+  m_Name: Blit
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    Event: 500
+    blitMaterial: {fileID: 2100000, guid: 2808321a14ccaa54396eb241bd4c7311, type: 2}
+    blitMaterialPassIndex: 0
+    setInverseViewMatrix: 0
+    requireDepthNormals: 0
+    srcType: 0
+    srcTextureId: _CameraColorTexture
+    srcTextureObject: {fileID: 0}
+    dstType: 0
+    dstTextureId: _BlitPassTexture
+    dstTextureObject: {fileID: 0}
+    overrideGraphicsFormat: 0
+    graphicsFormat: 4
 --- !u!114 &6827927869950268256
 MonoBehaviour:
   m_ObjectHideFlags: 0

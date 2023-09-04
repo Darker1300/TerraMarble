@@ -1,5 +1,118 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7357949812913835976
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 626f01b573819c44996f56ae5014db91, type: 3}
+  m_Name: LimitlessGlitch16
+  m_EditorClassIdentifier: 
+  active: 0
+  enable:
+    m_OverrideState: 1
+    m_Value: 1
+  stop:
+    m_OverrideState: 0
+    m_Value: 0
+  fade:
+    m_OverrideState: 1
+    m_Value: 0.082
+  amount:
+    m_OverrideState: 1
+    m_Value: 21.5
+  speed:
+    m_OverrideState: 0
+    m_Value: 0.2
+  randomActivateAmount:
+    m_OverrideState: 0
+    m_Value: 0.75
+  mask:
+    m_OverrideState: 1
+    m_Value: {fileID: 0}
+    dimension: 1
+--- !u!114 &-3631395764586684204
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b973f681804446538903cfc706fff30, type: 3}
+  m_Name: Limitless_Glitch1
+  m_EditorClassIdentifier: 
+  active: 1
+  enable:
+    m_OverrideState: 1
+    m_Value: 1
+  x:
+    m_OverrideState: 0
+    m_Value: 127.1
+  y:
+    m_OverrideState: 0
+    m_Value: 10002
+  z:
+    m_OverrideState: 0
+    m_Value: 200
+  fade:
+    m_OverrideState: 0
+    m_Value: 1
+  amount:
+    m_OverrideState: 0
+    m_Value: 1
+  stretch:
+    m_OverrideState: 0
+    m_Value: 0.02
+  speed:
+    m_OverrideState: 0
+    m_Value: 0.5
+  rMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+  gMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+  bMultiplier:
+    m_OverrideState: 0
+    m_Value: 0
+  mask:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+    dimension: 1
+--- !u!114 &-1154885967567790260
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  active: 0
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.6476991, b: 0.26274514, a: 1}
+  center:
+    m_OverrideState: 1
+    m_Value: {x: 0.5, y: 0.5}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.425
+  smoothness:
+    m_OverrideState: 1
+    m_Value: 1
+  rounded:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,6 +128,9 @@ MonoBehaviour:
   components:
   - {fileID: 1016715050487334927}
   - {fileID: 5550120329074992011}
+  - {fileID: -1154885967567790260}
+  - {fileID: -7357949812913835976}
+  - {fileID: -3631395764586684204}
 --- !u!114 &1016715050487334927
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -71,10 +187,10 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.04569688}
+    m_Value: {x: 0.99121743, y: 1, z: 0.9961117, w: -0.04569688}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.6854534}
+    m_Value: {x: 0.98232514, y: 0.96465045, z: 1, w: 0.52611995}
   gain:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0.04569688}

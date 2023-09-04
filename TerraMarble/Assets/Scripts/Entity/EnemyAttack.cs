@@ -8,6 +8,7 @@ public class EnemyAttack : MonoBehaviour
 {
     [SerializeField] private float cooldownDuration = 2f;
     [SerializeField] private float attackTime = 0.015f;
+    [SerializeField] private int attackDamage = 10;
 
     [SerializeField] private Disc attackOutlineDisc = null;
     [SerializeField] private Disc attackFillDisc = null;
@@ -50,7 +51,7 @@ public class EnemyAttack : MonoBehaviour
 
                 if (Mathf.InverseLerp(0f, attackRange, attackFillDisc.Radius) > 0.99f)
                 {   // finished attacking
-                    playerHealth.Damage(1);
+                    playerHealth.Damage(attackDamage);
                     ResetAttacking();
                     StartCooldown();
                 }

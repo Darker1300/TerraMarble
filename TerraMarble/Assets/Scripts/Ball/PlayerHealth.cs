@@ -9,6 +9,10 @@ using UnityUtility;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [Header("healthbar or hearts")]
+    public bool healthBar = true;
+    [SerializeField]
+    private HealthControllerTwo healthShieldController;
     [Header("References")]
     [SerializeField] private GameObject healthIconPrefab;
     [SerializeField] private Transform heartContainerUI;
@@ -17,10 +21,13 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private Disc immuneDisc;
 
     [Header("Health Config")]
-    [SerializeField] private int currentHealth = 3;
-    [SerializeField] private int maxHealth = 3;
+    [SerializeField] private int currentHealth = 100;
+    [SerializeField] private int maxHealth = 100;
     [SerializeField] private bool infiniteHealth = true;
-
+    [Header("Shield bar configure")]
+    [SerializeField]
+    private int maxShield = 100;
+    [SerializeField] private int currentShield = 100;
     [Header("Immune Config")]
     [SerializeField] private float immuneDuration = 2;
     [SerializeField] private float immuneTimeRemaining = 0;
@@ -57,6 +64,8 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
+
+
         // Immunity indicator
         immuneDisc = immuneDisc != null ? immuneDisc
             : FindObjectOfType<BallAnimController>()?
@@ -65,14 +74,23 @@ public class PlayerHealth : MonoBehaviour
 
         if (immuneDisc is not null)
             normalDiscColor = immuneDisc.Color;
+        if (!healthBar)
+        {
+            //disable healthbar
+            healthShieldController.gameObject.SetActive(false);
 
-        // Health UI
-        heartContainerUI = heartContainerUI != null ? heartContainerUI
+            // Health UI
+            heartContainerUI = heartContainerUI != null ? heartContainerUI
             : GameObject.Find(heartContainerName)?.transform;
 
         boolDamageID = Animator.StringToHash(boolDamageName);
         CreateIcons();
-
+        }
+        else //using healthbar
+        {
+            heartContainerUI.gameObject.SetActive(false);
+            healthShieldController.gameObject.SetActive(true);
+        }
         // Damage Immunity callback
         OnDamaged.AddListener(StartImmune);
     }
@@ -132,14 +150,25 @@ public class PlayerHealth : MonoBehaviour
 
     public void UpdateUI()
     {
-        if (heartIcons.Count == 0)
-            Debug.LogError("Missing Health UI Reference");
-
-        for (int i = maxHealth; i > 0; i--)
+        if (!healthBar)
         {
-            bool damaged = i > currentHealth;
-            heartIcons[maxHealth - i].SetBool(boolDamageID, damaged);
+            if (heartIcons.Count == 0)
+                Debug.LogError("Missing Health UI Reference");
+
+            for (int i = maxHealth; i > 0; i--)
+            {
+                bool damaged = i > currentHealth;
+                heartIcons[maxHealth - i].SetBool(boolDamageID, damaged);
+            }
         }
+        else
+        {
+
+
+
+
+        }
+
     }
 
     public void Damage() => Damage(1);
@@ -148,16 +177,46 @@ public class PlayerHealth : MonoBehaviour
     {
         if (IsImmune) return;
 
-        currentHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
-
-        OnDamaged.Invoke();
-
-        if (currentHealth == 0)
+        if (!healthBar)
         {
-            OnDeath.Invoke();
 
-            if (infiniteHealth)
-                SetCurrentHealth(maxHealth);
+            currentHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
+
+            OnDamaged.Invoke();
+
+            if (currentHealth == 0)
+            {
+                OnDeath.Invoke();
+
+                if (infiniteHealth)
+                    SetCurrentHealth(maxHealth);
+            }
+        }
+        else
+        {
+            if (currentShield > 0 )
+            {
+                currentShield = Math.Clamp(currentShield - amount, 0, maxShield);
+                healthShieldController.UpdateShield((float)currentShield* (1 / (float)maxShield), (float)amount * (1 / (float)maxShield));
+                //healthShieldController.damageVignette.SetColorToShield();
+            }else
+            if (currentHealth > 0)
+            {
+                currentHealth = Math.Clamp(currentHealth - amount, 0, maxHealth);
+                healthShieldController.UpdateHealth((float)currentHealth *(1 / (float)maxHealth), (float)amount * (1 / (float)maxHealth));
+               // healthShieldController.damageVignette.SetColorToHealth();
+            }
+            else
+            {
+                healthShieldController.ResetHealth();
+                currentHealth = maxHealth;
+                currentShield = maxShield;
+                OnDeath.Invoke();
+            }
+        
+        
+        
+        
         }
 
         UpdateUI();
@@ -176,24 +235,29 @@ public class PlayerHealth : MonoBehaviour
         CreateIcons();
     }
 
-    [Button] [ShowInInspector]
-    private void TestDamage() 
+    [Button]
+    [ShowInInspector]
+    private void TestDamage()
         => Damage(1);
 
-    [Button] [ShowInInspector]
-    private void TestRestoreHealth() 
+    [Button]
+    [ShowInInspector]
+    private void TestRestoreHealth()
         => SetCurrentHealth(maxHealth);
 
-    [Button] [ShowInInspector]
-    private void TestIncreaseMaxHealth() 
+    [Button]
+    [ShowInInspector]
+    private void TestIncreaseMaxHealth()
         => SetMaxHealth(maxHealth + 1);
 
-    [Button] [ShowInInspector]
-    private void TestDecreaseMaxHealth() 
+    [Button]
+    [ShowInInspector]
+    private void TestDecreaseMaxHealth()
         => SetMaxHealth(maxHealth - 1);
-    
-    [Button] [ShowInInspector]
-    private void TestRecreateIcons() 
+
+    [Button]
+    [ShowInInspector]
+    private void TestRecreateIcons()
         => CreateIcons();
 
 }

@@ -16,6 +16,7 @@ MonoBehaviour:
   - {fileID: 2827558575638713682}
   - {fileID: 1016715050487334927}
   - {fileID: 8785224690192001912}
+  - {fileID: 8250243166753551777}
 --- !u!114 &1016715050487334927
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -85,6 +86,35 @@ MonoBehaviour:
   saturation:
     m_OverrideState: 1
     m_Value: -60
+--- !u!114 &8250243166753551777
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba514a314b5dcd45a0ced5fe2de779b, type: 3}
+  m_Name: LimitlessGlitch11
+  m_EditorClassIdentifier: 
+  active: 0
+  enable:
+    m_OverrideState: 1
+    m_Value: 1
+  amount:
+    m_OverrideState: 1
+    m_Value: 0.0159
+  linesAmount:
+    m_OverrideState: 0
+    m_Value: 1
+  speed:
+    m_OverrideState: 0
+    m_Value: 1
+  mask:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+    dimension: 1
 --- !u!114 &8785224690192001912
 MonoBehaviour:
   m_ObjectHideFlags: 3
