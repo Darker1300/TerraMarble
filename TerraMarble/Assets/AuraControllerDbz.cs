@@ -2,14 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
-public class DamageVignette : MonoBehaviour
+using Shapes;
+public class AuraControllerDbz : MonoBehaviour
 {
+    [SerializeField]
+    public Disc disc;
 
-    [Range(0,1)]
+    //[SerializeField]
+    //private float rangeMin = 0.5f;
+    //[SerializeField]
+    //private float rangeMax = 0.5f;
+
+    [Range(0, 1)]
     public float intensity;
-    
-   public Material vignette;
+
+    public Material vignette;
     //public AnimationCurve ;
     [SerializeField]
     public float maxIntensity = 0.3f;
@@ -21,15 +28,15 @@ public class DamageVignette : MonoBehaviour
     [SerializeField]
     private bool Test;
 
-   [SerializeField]
+    [SerializeField]
     private float currentTime;
     [SerializeField]
-    private float IncreasVignetteSpeed = 0.3f;
+    private float ExpandBackSpeed = 0.3f;
     //[SerializeField]
     //private float maxSize = 0.8f;
-    
+
     private float currentTarget;
-    
+
     private float StartIncreaseSize;
     [SerializeField]
     private AnimationCurve pulseCurve;
@@ -37,6 +44,7 @@ public class DamageVignette : MonoBehaviour
     private float drainAuraSpeed;
     public Color shieldColor;
     public Color healthColor;
+    public float testAmount;
     /// <summary>
     /// onhit 
     /// </summary>
@@ -44,7 +52,7 @@ public class DamageVignette : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -55,32 +63,39 @@ public class DamageVignette : MonoBehaviour
 
         if (Test)
         {
-            setVignetteTarget(0.15f);
+            setRadiusTarget(testAmount);
             Test = false;
+            GetComponent<AuraDIscColorChangeDbz>().LerpToColor();
         }
         UpdateVignette();
     }
+    public void TestDam()
+    {
+
+        setRadiusTarget(testAmount);
+        GetComponent<AuraDIscColorChangeDbz>().LerpToColor();
+    }
     public void SetColorToShield()
     {
-        
-        vignette.SetColor( "_Color", vignette.GetColor("_ColorTwo"));
+
+        vignette.SetColor("_Color", vignette.GetColor("_ColorTwo"));
     }
     public void SetColorToHealth()
     {
-        
-       vignette.SetColor("_Color", vignette.GetColor("_ColorOne"));
+
+        vignette.SetColor("_Color", vignette.GetColor("_ColorOne"));
     }
     private void UpdateVignette()
     {
         //if (CurrentIntensity >= maxSize)
         //{
-            
+
 
 
         //    slowDownZone.currentSlowdown = 0f;
         //    if (!HasFiredDash)
         //    {
-               
+
         //        currentTarget = 0;
         //        slowDownZone.Player.transform.parent.GetComponent<BallWindJump>().DoDash(50, 1, true);
         //        HasFiredDash = true;
@@ -90,11 +105,13 @@ public class DamageVignette : MonoBehaviour
         //}
         if (Increase)
         {//if has not reached target
-            if (CurrentIntensity < currentTarget)
+            if (CurrentIntensity > currentTarget)
             {
-                currentTime += IncreasVignetteSpeed * Time.deltaTime;
-                CurrentIntensity = Mathf.Lerp(StartIncreaseSize, currentTarget, pulseCurve.Evaluate(currentTime));
-                vignette.SetFloat("_FullScreenIntensity", CurrentIntensity);
+                currentTime += ExpandBackSpeed * Time.deltaTime;
+                CurrentIntensity = Mathf.Lerp(StartIncreaseSize, currentTarget, pulseCurve.Evaluate(1-currentTime));
+                disc.Radius = CurrentIntensity ;
+               
+                //vignette.SetFloat("_FullScreenIntensity", CurrentIntensity);
             }
             else
             {
@@ -103,26 +120,19 @@ public class DamageVignette : MonoBehaviour
             }
 
         }//drain until zero
-        else if (CurrentIntensity > 0.0f)
+        else if (CurrentIntensity < maxIntensity)
         {
-            CurrentIntensity -= drainAuraSpeed * Time.deltaTime;
-            vignette.SetFloat("_FullScreenIntensity", CurrentIntensity);
-
+            CurrentIntensity += drainAuraSpeed * Time.deltaTime;
+            disc.Radius = CurrentIntensity;
         }
 
     }
 
     //value of intensity based on damage amount
-    public void setVignetteTarget(float intensity)
+    public void setRadiusTarget(float intensity)
     {
-        //currentTarget = damagePercentCurve.Evaluate( intensity * maxIntensity);
-        currentTarget = maxIntensity;
-        //currentTarget = intensity;
+        //currentTarget = damagePercentCurve.Evaluate(intensity * maxIntensity);
+        currentTarget = intensity;
         Increase = true;
     }
-
 }
-
-   
-
-

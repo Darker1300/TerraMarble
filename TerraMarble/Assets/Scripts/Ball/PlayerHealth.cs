@@ -109,7 +109,12 @@ public class PlayerHealth : MonoBehaviour
                 EndImmune();
         }
     }
+    public void UpdateHealthAndShield(float Healthperc, float shield)
+    {
+        currentHealth = Mathf.RoundToInt(Healthperc * (float)maxHealth);
+        currentShield = Mathf.RoundToInt(shield * (float)maxShield);
 
+    }
     private void StartImmune()
     {
         IsImmune = true;

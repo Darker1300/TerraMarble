@@ -20,7 +20,15 @@ public class HealthControllerTwo : MonoBehaviour
     public Color HealthVigColor;
     public bool flashingHealthBackGround = false;
     public FlashSpriteColor FlashBar;
-    
+    [SerializeField]
+    private AuraControllerDbz AuraController;
+    private float lastTimeDamaged;
+    private bool needsHealing;
+    [SerializeField]
+    private float healingDelay = 3f;
+    [SerializeField]
+    private PlayerHealth playerHealth;
+
     private void Update()
     {
         // Simulate health and shield changes over time for demonstration purposes
@@ -52,7 +60,15 @@ public class HealthControllerTwo : MonoBehaviour
             test = false;
         }
 
-        UpdateBars();
+        //healing will stop 
+        if (needsHealing && Time.time - lastTimeDamaged >= healingDelay)
+        {
+
+            RepleshBars();
+        }else 
+            //if sheild is bellow
+            //last damage recieved cached 
+            UpdateBars();
     }
 
     private void UpdateBars()
@@ -69,16 +85,44 @@ public class HealthControllerTwo : MonoBehaviour
 
 
     }
+    private void RepleshBars()
+    {
+       
+
+        // Update health bar fill amount over time
+        float targetHealthFillAmount = 1f;
+        healthBarStatic.fillAmount = Mathf.MoveTowards(healthBarStatic.fillAmount, targetHealthFillAmount, fillSpeed * Time.deltaTime);
+        shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetHealthFillAmount, fillSpeed * Time.deltaTime);
+        currentHealthPercentage = healthBarStatic.fillAmount;
+        playerHealth.UpdateHealthAndShield(currentHealthPercentage,currentShieldPercentage);
+
+        // Update shield bar fill amount over time
+        float targetShieldFillAmount =  1f;
+        shieldBarStatic.fillAmount = Mathf.MoveTowards(shieldBarStatic.fillAmount, targetShieldFillAmount, fillSpeed * Time.deltaTime);
+        shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetShieldFillAmount, fillSpeed * Time.deltaTime);
+        currentShieldPercentage = shieldBarStatic.fillAmount;
+        if (playerHealth.CurrentHealth == playerHealth.MaxHealth)
+        {
+            //turn on flashing health
+            ToggleFLashing(false);
+            flashingHealthBackGround = false;
+
+        }
+    }
 
     // Example method to update health and shield percentages
     public void UpdateHealth(float newHealthPercentage, float damToMaxHealthPercent)
     {
+        lastTimeDamaged = Time.time;
+        needsHealing = true;
+
         currentHealthPercentage = Mathf.Clamp(newHealthPercentage *100, 0f, 100f);
         //currentShieldPercentage = Mathf.Clamp(newShieldPercentage, 0f, 100f);
         float targetHealthFillAmount = currentHealthPercentage / 100f;
         healthBarStatic.fillAmount = targetHealthFillAmount;
         damageVignette.setVignetteTarget(damToMaxHealthPercent);
        damageVignette.SetColorToHealth();
+        AuraController.TestDam();
         if (!flashingHealthBackGround)
         {
             //turn on flashing health
@@ -86,7 +130,19 @@ public class HealthControllerTwo : MonoBehaviour
 
 
         }
+        
+    }
+    public void UpdateShield(float newShieldPercentage, float damToMaxShieldPercent)
+    {
+        lastTimeDamaged = Time.time;
+        needsHealing = true;
 
+        currentShieldPercentage = Mathf.Clamp(newShieldPercentage * 100, 0f, 100f);
+        float targetsheildFillAmount = currentShieldPercentage / 100f;
+        shieldBarStatic.fillAmount = targetsheildFillAmount;
+        damageVignette.setVignetteTarget(damToMaxShieldPercent);
+        damageVignette.SetColorToShield();
+        AuraController.TestDam();
     }
     public void ToggleFLashing(bool on)
     {
@@ -96,14 +152,7 @@ public class HealthControllerTwo : MonoBehaviour
         }else
             FlashBar.enabled = false;
     }
-    public void UpdateShield(float newShieldPercentage, float damToMaxShieldPercent)
-    {
-        currentShieldPercentage = Mathf.Clamp(newShieldPercentage * 100, 0f, 100f);
-        float targetsheildFillAmount = currentShieldPercentage / 100f;
-        shieldBarStatic.fillAmount = targetsheildFillAmount;
-        damageVignette.setVignetteTarget(damToMaxShieldPercent);
-        damageVignette.SetColorToShield();
-    }
+  
     public void ResetHealth()
     {
         healthBarStatic.fillAmount = 1;

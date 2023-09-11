@@ -89,7 +89,7 @@ public class Projectile : MonoBehaviour
 
             if (isEnemyProjectile)
             {
-                FindObjectOfType<PlayerHealth>().Damage(10);
+                FindObjectOfType<PlayerHealth>().Damage(2);
             }
 
             if (gameObject.activeInHierarchy)

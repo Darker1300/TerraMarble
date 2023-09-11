@@ -251,7 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.5803922, g: 0.28235295, b: 0.05882353, a: 1}
+  color: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 1}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -706,7 +706,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 3286163911610860551, guid: 250030397728b9441ae8eeb0b239214e, type: 3}
-  m_Color: {r: 0.28627452, g: 0.7529412, b: 0.5294118, a: 1}
+  m_Color: {r: 0.64705884, g: 0.8039216, b: 0.6039216, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

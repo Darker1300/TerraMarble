@@ -20,6 +20,8 @@ public class ChangeColorOverTime : MonoBehaviour
     public UnityEvent  colorChangeEnd;
     private Color initialColor; // the object's initial color before transparency is applied
     public ShapeRenderer shapeRender;
+    public bool Test;
+    public bool FromColorToNormal;
 
     void Start()
     {
@@ -36,15 +38,25 @@ public class ChangeColorOverTime : MonoBehaviour
     {
         float elapsedTime = 0f;
         Color currentColor = initialColor;
+      
         //colorChangeStart?.Invoke(true);
         while (elapsedTime < duration)
         {
             // calculate the percentage of time that has elapsed so far, using the animation curve to influence it
             float curveTime = elapsedTime / duration;
             float curveValue = ColorCurve.Evaluate(curveTime);
+            if (FromColorToNormal)
+            {
+                // lerp the color from the initial color to the target color based on the animation curve
+                currentColor = Color.Lerp(targetColor, initialColor, curveValue);
+            }
+            else
+            {
 
-            // lerp the color from the initial color to the target color based on the animation curve
-            currentColor = Color.Lerp(initialColor, targetColor, curveValue);
+                // lerp the color from the initial color to the target color based on the animation curve
+                currentColor = Color.Lerp(initialColor, targetColor, curveValue);
+                
+            }
             shapeRender.Color = currentColor;
 
             // increment the elapsed time and wait for the next frame
@@ -52,8 +64,13 @@ public class ChangeColorOverTime : MonoBehaviour
             yield return null;
         }
 
-        // ensure the object is the target color after the coroutine has completed
-        shapeRender.Color = targetColor;
+        if (FromColorToNormal)
+        {
+            shapeRender.Color = initialColor;
+
+        }else
+            // ensure the object is the target color after the coroutine has completed
+            shapeRender.Color = targetColor;
         colorChangeEnd?.Invoke();
         
     }
@@ -126,6 +143,13 @@ public class ChangeColorOverTime : MonoBehaviour
         shapeRender.Color = currentColor;
         colorChangeEnd?.Invoke();
     }
-
+    private void Update()
+    {
+        if (Test)
+        {
+            LerpToColor();
+            Test = false;
+        } 
+    }
 
 }
