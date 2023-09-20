@@ -68,7 +68,8 @@ MonoBehaviour:
   dragDirOffsetAmount: 20
   bendTime: 0.04
   bendMaxSpeed: 1000
-  doDebug: 1
+  doDebug: 0
+  bendMaxAngle: 89
   treeBendCurve:
     serializedVersion: 2
     m_Curve:
@@ -93,30 +94,16 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  inputCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  allowBendIdle: 0
+  bendIdle: {x: -0.05, y: 1}
+  bendIdleTime: 0.2
+  collisionSensitivity: 0.25
+  collisionForceMin: 0
+  collisionForceMax: 100
+  collisionAngleMax: 23.333
+  collisionSpeedIncrease: 0.1
+  collisionSpeedDecrease: 0.4
+  launchTime: 0.05
   launchCurve:
     serializedVersion: 2
     m_Curve:
@@ -150,7 +137,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  launchTime: 0.05
   jumpHeight: 0.4
   stretchHeight: 0.4
   wobbleMaxAngle: 30
@@ -164,6 +150,8 @@ MonoBehaviour:
   slideMinForce: 10
   wheelRadius: 18.666
   nearbyTrees: []
+  previousTreeDrag: {x: 0, y: 0}
+  bendIdleVelocity: {x: 0, y: 0}
 --- !u!114 &5207247042109310666
 MonoBehaviour:
   m_ObjectHideFlags: 0

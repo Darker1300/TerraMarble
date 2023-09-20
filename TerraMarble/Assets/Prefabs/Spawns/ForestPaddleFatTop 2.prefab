@@ -767,12 +767,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startRotation: 0
-  launchStartRotation: 0
-  goalRotation: 0
-  wobbleGoalRotation: 0
+  benderGoalRotation: 0
+  currentGoalRotation: 0
   wobbleAngleVelocity: 0
   launchPowerPercent: 0
   launchProgress: 1
+  collisionAngleDesired: 0
+  collisionBallSideDirection: 1
+  collisionAngleCurrent: 0
   doDebug: 0
 --- !u!114 &7420985491049078963
 MonoBehaviour:
