@@ -429,7 +429,7 @@ public void ConfigureTargets()
         Vector3 vector = _bottom.Towards(_top).normalized;
         Vector2 dir = vector.normalized;
         dir = dir.RotatedByDegree(-90f);
-        Quaternion desiredAngle = Quaternion.AngleAxis(MathU.Vector2ToDegree(dir), Vector3.forward);
+        Quaternion desiredAngle = Quaternion.AngleAxis(dir.ToDegrees(), Vector3.forward);
 
         desiredAngle = MathU.SmoothDampRotation(transform.rotation, desiredAngle, ref rotateVelocity, rotateTime);
         return desiredAngle;
