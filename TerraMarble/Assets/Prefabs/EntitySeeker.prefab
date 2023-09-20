@@ -514,6 +514,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldownDuration: 2
   attackTime: 0.001
+  attackDamage: 2
   attackOutlineDisc: {fileID: 5824118008269747750}
   attackFillDisc: {fileID: 161903002556296968}
   cooldownTimeRemaining: 0

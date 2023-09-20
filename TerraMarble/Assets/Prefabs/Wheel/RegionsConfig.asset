@@ -35,7 +35,7 @@ MonoBehaviour:
     - RegionColor: {r: 0, g: 0.65882355, b: 0.40784314, a: 1}
       SurfacePrefab: {fileID: 0}
     - RegionColor: {r: 0, g: 0.5372549, b: 0.33333334, a: 1}
-      SurfacePrefab: {fileID: 417338232552944473, guid: 4c705fde20a2b74459f7ed452649a9bb, type: 3}
+      SurfacePrefab: {fileID: 417338232552944473, guid: 7d1c08147ddbbc540bd1175944c93827, type: 3}
     - RegionColor: {r: 0.49019608, g: 0.4862745, b: 0.49411765, a: 1}
       SurfacePrefab: {fileID: 8846236625911648540, guid: f4564313d724aae40b1cc3139494780c, type: 3}
     - RegionColor: {r: 0.49019608, g: 0.4862745, b: 0.49411765, a: 1}

@@ -32,17 +32,18 @@ public class FruitBase : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider2D)
     {
         if (treeIndex < 0) return;
-        var ballState = collider2D.gameObject.GetComponent<BallStateTracker>();
+        var ballState = collider2D.transform.parent?.GetComponent<BallStateTracker>();
 
         if (ballState != null)
         {
 
                         
 
-        }
+        
         forestController.PopFruit(treeIndex);
         bow.AmmoAmount++;
         bow.UpdateAmmo();
+        }
 
     }
 

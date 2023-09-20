@@ -18,7 +18,8 @@ public class BlobEscape : MonoBehaviour
     private float currentTarget;
     private bool Increase;
     public int TapsNeededForIncrease = 3;
-    private int CurrentTapAmount = 0;
+    
+    public int CurrentTapAmount = 0;
     private float StartIncreaseSize;
     private float currentTime;
     public bool test;

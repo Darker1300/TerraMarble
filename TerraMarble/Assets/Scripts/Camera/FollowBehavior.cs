@@ -343,7 +343,7 @@ public void ConfigureTargets()
                 //keep ball in 7/10 of screen ball pos mostly at top until it reaches back to default zone
 
                 //TrackTarget(true);
-                transform.position = Vector3.Lerp(transform.position, BridgeToDefaultPos() , Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, BridgeToDefaultPos().WithZ(-10) , Time.deltaTime);
                 //until the camera position is close enough to 
                
                //project 
@@ -392,7 +392,7 @@ public void ConfigureTargets()
         Quaternion tRotation = GetFollowRotation(trackingTarget, trackingTarget2);
         transform.rotation = tRotation;
 
-        transform.position = Vector3.SmoothDamp(transform.position, trackingTarget2.position + (tRotation * followOffset), ref veloref, FixedSpeed);
+        transform.position = Vector3.SmoothDamp(transform.position, trackingTarget2.position + (tRotation * followOffset), ref veloref, FixedSpeed).WithZ(-10);
 
 
     }
