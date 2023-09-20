@@ -86,6 +86,9 @@ public class BallDash : MonoBehaviour
                                      .Towards(transform.position.To2DXY())
                                      .sqrMagnitude <
                                  (dashRechargeRange * dashRechargeRange);
+
+        if (dashRechargeParticles == null) return;
+
         if (isRange)
             dashRechargeParticles.Play();
         else

@@ -1196,12 +1196,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d21280f2d8c504c963be39e3355686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBar: 1
+  healthShieldController: {fileID: 0}
   healthIconPrefab: {fileID: 71189525541810594, guid: e67920c503ed640449e6cb4be8f5c115, type: 3}
   heartContainerUI: {fileID: 0}
   immuneDisc: {fileID: 4297447128960843069}
   currentHealth: 7
   maxHealth: 7
   infiniteHealth: 1
+  maxShield: 100
+  currentShield: 100
   immuneDuration: 2
   immuneTimeRemaining: 0
   immuneColor: {r: 1, g: 1, b: 1, a: 0.29803923}
@@ -1438,9 +1442,9 @@ MonoBehaviour:
   dashForce: 50
   dashPartEmitCount: 5
   useMinVelocityForDash: 0
-  dashMax: 5
-  dashRemaining: 5
-  dashMaxDefaultIndex: 5
+  dashMax: 5000
+  dashRemaining: 5000
+  dashMaxDefaultIndex: 7
   dashMaxOptions:
   - 0
   - 1
@@ -1449,7 +1453,7 @@ MonoBehaviour:
   - 4
   - 5
   - 10
-  - 99
+  - 9999
   dashMaxButton: {fileID: 0}
   dashRechargeTime: 0.25
   dashRechargeRange: 20
@@ -1457,7 +1461,7 @@ MonoBehaviour:
   playerInput: {fileID: 5227708796409464064}
   ballRb: {fileID: 4297447129141640614}
   partSystem: {fileID: 741370545376487465}
-  nearbySensor: {fileID: 0}
+  nearbySensor: {fileID: 1487549798048971839}
   wheel: {fileID: 0}
   dashRechargeTimer: 0
 --- !u!114 &2321576262505571559
