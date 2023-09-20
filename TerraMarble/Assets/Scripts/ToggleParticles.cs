@@ -38,4 +38,9 @@ public class ToggleParticles : MonoBehaviour
         ParticleSystem.EmissionModule emission = ParticleSystem.emission;
         emission.enabled = false;
     }
+
+    public bool IsPlaying() 
+    {
+        return ParticleSystem.emission.enabled && ParticleSystem.isPlaying;
+    }
 }

@@ -6,28 +6,36 @@ namespace MathUtility
 {
     public static class MathU
     {
-        public static Vector2 RadianToVector2(float radian)
+        public static Vector2 RadiansToVector2(this float radian)
         {
             return new(
                 Mathf.Cos(radian),
                 Mathf.Sin(radian));
         }
 
-        public static Vector2 DegreeToVector2(float degree)
+        public static Vector2 DegreesToVector2(this float degree)
         {
-            return RadianToVector2(degree * Mathf.Deg2Rad);
+            return RadiansToVector2(degree * Mathf.Deg2Rad);
         }
 
-        public static float Vector2ToRadian(Vector2 direction)
+        public static float ClampToDegrees(this float degree)
         {
-            return Mathf.Atan2(
-                direction.y,
-                direction.x);
+            return (degree + 360f) % 360f;
         }
 
-        public static float Vector2ToDegree(Vector2 direction)
+        public static float ClampToRadians(this float radian)
         {
-            return Vector2ToRadian(direction) * Mathf.Rad2Deg;
+            return (radian + Mathf.PI * 2f) % (Mathf.PI * 2f);
+        }
+
+        public static float ToDegrees(this Vector2 vector)
+        {
+            return vector.ToRadians() * Mathf.Rad2Deg;
+        }
+
+        public static float ToRadians(this Vector2 vector)
+        {
+            return Mathf.Atan2(vector.y, vector.x).ClampToRadians();
         }
 
         public static Vector2 RotatedByRadian(this Vector2 v, float radian)
@@ -73,8 +81,8 @@ namespace MathUtility
         /// </summary>
         public static float ClampAngle(float angle, float min, float max)
         {
-            float start = (min + max) * 0.5f - 180;
-            float floor = Mathf.FloorToInt((angle - start) / 360) * 360;
+            float start = (min + max) * 0.5f - 180f;
+            float floor = Mathf.FloorToInt((angle - start) / 360f) * 360f;
             return Mathf.Clamp(angle, min + floor, max + floor);
         }
 

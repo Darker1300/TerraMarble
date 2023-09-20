@@ -19,13 +19,7 @@ public class BallMass : MonoBehaviour
 
         massButton = massButton != null ? massButton
             : UnityU.FindObjectByName<CycleButton>(massButtonName, true);
-
-        if (massButton != null)
-        {
-            massButton.SetOptions(massOptions);
-            massButton.ValueChanged.AddListener(UpdateMass);
-            massButton.SetIndex(defaultMassIndex);
-        }
+        massButton?.Initialise(defaultMassIndex, massOptions, UpdateMass);
     }
 
     private void UpdateMass(string _massOption)

@@ -12,8 +12,9 @@ public class PlayerInput : MonoBehaviour
     // References
 
     // Private Fields
-    [ShowInInspector] private Vector2 rawDrag = Vector2.zero;
     [ShowInInspector] private int side = 1;
+    [ShowInInspector] private Vector2 rawDrag = Vector2.zero;
+    [ShowInInspector] private Vector2 rawScreenDrag = Vector2.zero;
 
     // Influences
     [SerializeField]
@@ -41,6 +42,7 @@ public class PlayerInput : MonoBehaviour
     [ShowInInspector] public Vector2 Drag
         => applyInputCurve ? ApplyDragInputCurve(rawDrag, inputCurve) : rawDrag;
     public Vector2 RawDrag => rawDrag;
+    public Vector2 RawScreenDrag => rawScreenDrag;
     public int Side => side;
 
     [Serializable] public class InputConfigOption
@@ -110,11 +112,14 @@ public class PlayerInput : MonoBehaviour
             this.side = side;
         else // On Up
             rawDrag = Vector2.zero;
+
+        rawScreenDrag = Vector2.zero;
     }
 
     private void OnDragUpdate(Vector2 screenDragVector, int side)
     {
         rawDrag = CalcRawDrag(screenDragVector, dragScreenSize);
+        rawScreenDrag = screenDragVector;
     }
 
     private Vector2 GetDrag()

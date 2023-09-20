@@ -25,9 +25,11 @@ public class TreeBend : MonoBehaviour
     [Tooltip("how much drag dir boosts bend area, in degrees")]
     public float dragDirOffsetAmount = 20f;
 
-    [Header("Bend Config")] public float bendTime = 0.05f;
+    [Header("Bend Config")] 
+    public float bendTime = 0.05f;
     public float bendMaxSpeed = 1000f;
     [SerializeField] private bool doDebug = false;
+    public float bendMaxAngle = 89f;
 
     [SerializeField]
     private AnimationCurve treeBendCurve
@@ -37,17 +39,26 @@ public class TreeBend : MonoBehaviour
     [SerializeField] private Vector2 bendIdle = new Vector2(-0.05f, 1f);
     [SerializeField] private float bendIdleTime = 0.2f;
 
-    [Header("Wobble Config")]
+    [Header("Spring Config")]
+    public float collisionSensitivity = 1f;
+    public float collisionForceMin = 1f;
+    public float collisionForceMax = 100f;
+
+    public float collisionAngleMax = 40f;
+    public float collisionSpeedIncrease = 10f;
+    public float collisionSpeedDecrease = 2f;
+
+    [Header("Launch Config")]
+    public float launchTime = 0.05f;
     public AnimationCurve launchCurve = new(
         new Keyframe(0, 0),
         new Keyframe(0.5f, 1f),
         new Keyframe(1, 0));
 
-    public float launchTime = 0.05f;
-
     public float jumpHeight = 0.4f;
     public float stretchHeight = 0.75f;
 
+    [Header("Wobble Config")]
     public float wobbleMaxAngle = 30f;
     public float wobbleSlowFactor = 0.75f;
     public float wobbleMinThreshold = 5.0f;
@@ -65,15 +76,8 @@ public class TreeBend : MonoBehaviour
     [Foldout("Data")] [SerializeField] private Vector2 previousTreeDrag = Vector2.zero;
     [Foldout("Data")] [SerializeField] private Vector2 bendIdleVelocity;
 
-
-    //public bool CanBallSlide
-    //    => isDragDirSet && dragInput.y > 0 && dragDir == Math.Sign(dragInput.x);
-    //public bool IsDragging
-    //    => isDragDirSet && dragInput.y > 0;
-
     private void Start()
     {
-        //aimUi = FindObjectOfType<AimTreeLockUI>(true);
         wheelRegions = FindObjectOfType<WheelRegionsManager>();
         ball = FindObjectOfType<BallStateTracker>();
         ballRb = ball?.GetComponent<Rigidbody2D>();

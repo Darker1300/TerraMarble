@@ -1141,9 +1141,11 @@ GameObject:
   - component: {fileID: 1495955045}
   - component: {fileID: 4297447129141640638}
   - component: {fileID: 4297447129141640608}
+  - component: {fileID: 7375531708841541390}
   - component: {fileID: 2321576262505571559}
   - component: {fileID: 1495955044}
   - component: {fileID: 1081640368779457437}
+  - component: {fileID: 4861876586259185460}
   - component: {fileID: 4297447129141640614}
   - component: {fileID: 4297447129141640639}
   m_Layer: 6
@@ -1418,6 +1420,46 @@ MonoBehaviour:
   maxGravityDist: 300
   maxGravity: 40
   stompPower: 40
+--- !u!114 &7375531708841541390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297447129141640627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb930e34d664434c8dd3b09d0309681, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minScreenDragForDash: 0.01
+  minVelocityForDash: 0.1
+  minVelocityForSideDash: 1
+  dashForce: 50
+  dashPartEmitCount: 5
+  useMinVelocityForDash: 0
+  dashMax: 5
+  dashRemaining: 5
+  dashMaxDefaultIndex: 5
+  dashMaxOptions:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 10
+  - 99
+  dashMaxButton: {fileID: 0}
+  dashRechargeTime: 0.25
+  dashRechargeRange: 20
+  dashRechargeParticles: {fileID: 0}
+  playerInput: {fileID: 5227708796409464064}
+  ballRb: {fileID: 4297447129141640614}
+  partSystem: {fileID: 741370545376487465}
+  nearbySensor: {fileID: 0}
+  wheel: {fileID: 0}
+  dashRechargeTimer: 0
 --- !u!114 &2321576262505571559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1437,12 +1479,6 @@ MonoBehaviour:
   jumpDuration: 0.05
   minUpDragInput: 0.1
   upDragUISize: 0.15
-  minScreenDragForDash: 0.01
-  minVelocityForDash: 0.1
-  minVelocityForSideDash: 1
-  dashForce: 50
-  dashPartEmitCount: 5
-  useMinVelocityForDash: 0
   forceCurve:
     serializedVersion: 2
     m_Curve:
@@ -1477,6 +1513,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   doDebug: 1
+  partDistance: -0.2
   particleRateCurve:
     serializedVersion: 2
     m_Curve:
@@ -1510,12 +1547,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  partDistance: -0.2
   partInitialBurst: 3
   partMultiplier: 0.5
   upDragInput: 0
   horDragInput: -1
-  rawScreenDragInput: {x: 0, y: 0}
   IsJumping: 0
   ballRb: {fileID: 4297447129141640614}
   wheel: {fileID: 0}
@@ -1565,6 +1600,27 @@ MonoBehaviour:
   - 2
   rigidBody: {fileID: 4297447129141640614}
   massButton: {fileID: 0}
+--- !u!114 &4861876586259185460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297447129141640627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a21d1ff7595a754580e1411ff1fb1fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sideDeflectForce: 10
+  downDeflectForce: 1000
+  maxDragAllowed: 0.5
+  dragCooldown: 0.2
+  minVelocity: 0.1
+  isContacting: 0
+  isDragReleased: 0
+  isActive: 0
+  dragTimer: 0
 --- !u!50 &4297447129141640614
 Rigidbody2D:
   serializedVersion: 4

@@ -19,7 +19,7 @@ public class RightAim : MonoBehaviour
     public Disc Ui;
     public BallStateTracker ballState;
 
-    public SlowTime timeSlowDown;
+    public PlayerSlowTime timeSlowDown;
     public int tapAmount;
     public enum tapState
     {
@@ -46,7 +46,7 @@ public class RightAim : MonoBehaviour
         lineIndicator = GetComponent<LineRenderer>();
         updateGravityScript = GetComponent<UpdateGravity>();
 
-        timeSlowDown = GetComponent<SlowTime>();
+        timeSlowDown = GetComponent<PlayerSlowTime>();
 
         InputManager.LeftDragEvent += Release;
         InputManager.LeftTap += AlternateStart;

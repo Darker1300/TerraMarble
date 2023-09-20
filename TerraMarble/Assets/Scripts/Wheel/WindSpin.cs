@@ -99,10 +99,10 @@ public class WindSpin : MonoBehaviour
     /// <returns>Degrees</returns>
     public float GetAngleFromPoint(Vector2 _worldPoint)
     {
-        return MathU.Vector2ToDegree((_worldPoint - (Vector2)transform.position).normalized);
+        return transform.position.To2DXY()
+            .Towards(_worldPoint).normalized
+            .ToDegrees();
     }
-
-
 
     //   void Awake()
     //   {

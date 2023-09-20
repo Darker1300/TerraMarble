@@ -26,6 +26,13 @@ public class CycleButton : MonoBehaviour
         ButtonUI?.onClick.AddListener(Increment);
     }
 
+    public void Initialise(int _defaultIndex, List<string> _options, UnityAction<string> _onUpdate)
+    {
+        SetOptions(_options);
+        if (_onUpdate != null) ValueChanged.AddListener(_onUpdate);
+        SetIndex(_defaultIndex);
+    }
+
     public void SetOptions(List<string> _options)
     {
         options = _options;

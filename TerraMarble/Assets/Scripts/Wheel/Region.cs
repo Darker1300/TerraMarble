@@ -148,7 +148,7 @@ public class Region : MonoBehaviour
         => Mathf.DeltaAngle(AngleStart, AngleEnd);
 
     public Vector2 AngleCenterVector
-        => MathU.DegreeToVector2(AngleCenter);
+        => MathU.DegreesToVector2(AngleCenter);
 
     public int RegionIndex
     {
@@ -189,7 +189,8 @@ public class Region : MonoBehaviour
         if (!RegionsMan.RegionTemplateIsNull)
             Gizmos.DrawWireSphere(
                 transform.position + transform.TransformVector(
-                    (Vector3)MathU.DegreeToVector2(MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x))
+                    (Vector3)MathU.LerpAngleUnclamped(AngleStart, AngleEnd, defaultBasePosition.x)
+                        .DegreesToVector2()
                     * (RegionTemplate.RadiusBase + Mathf.LerpUnclamped(0f, RegionTemplate.Thickness, defaultBasePosition.y))
                 ),
                 transform.lossyScale.magnitude * 0.05f);
@@ -406,7 +407,7 @@ public class Region : MonoBehaviour
     public Vector2 RegionPosition(float _x, float _y = 1f)
     {
         return transform.position + transform.TransformVector(
-            (Vector3)MathU.DegreeToVector2(
+            (Vector3)MathU.DegreesToVector2(
                 MathU.LerpAngleUnclamped(AngleStart, AngleEnd, _x))
             * (RadiusBase + Mathf.LerpUnclamped(0f, Thickness, _y))
         );
@@ -422,7 +423,7 @@ public class Region : MonoBehaviour
     public float WorldToRegionDistance(Vector2 _worldPos)
     {
         Vector2 localPos = transform.InverseTransformPoint(_worldPos);
-        var angle = MathU.Vector2ToDegree(localPos.normalized);
+        var angle = localPos.normalized.ToDegrees();
         var segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
         return segments;
     }
@@ -440,7 +441,7 @@ public class Region : MonoBehaviour
     public Vector2 WorldToRegion(Vector2 _worldPos)
     {
         Vector2 localPos = transform.InverseTransformPoint(_worldPos);
-        var angle = MathU.Vector2ToDegree(localPos.normalized);
+        var angle = localPos.normalized.ToDegrees();
         var segments = angle * (1f / Mathf.DeltaAngle(AngleStart, AngleEnd));
 
         var totalDst = Vector2.Distance(transform.position, localPos);

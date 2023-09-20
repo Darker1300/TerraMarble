@@ -2,6 +2,7 @@ using MathUtility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityUtility;
 
 public class BallAnimController : MonoBehaviour
 {
@@ -57,9 +58,7 @@ public class BallAnimController : MonoBehaviour
         Animator = Animator != null ? Animator
             : GetComponentInChildren<Animator>();
 
-        foreach (AnimParameter parameterName in Enum.GetValues(typeof(AnimParameter)))
-            HashIDs.Add(parameterName,
-                Animator.StringToHash(Enum.GetName(typeof(AnimParameter), parameterName)));
+        HashIDs = UnityU.EnumToHashIDs<AnimParameter>();
 
         WindJump = WindJump != null ? WindJump
             : GetComponentInChildren<BallWindJump>();
@@ -171,7 +170,7 @@ public class BallAnimController : MonoBehaviour
             Vector2 localFacingVector = -localVelocityVector;// * -xDirSign; // flips the pitch, so it moves towards the right side
             localFacingVector = localFacingVector.Perp();  // goes from up(towards) to right 
             localFacingVector = localFacingVector.Rotate(pitchOffset); // so can rotate, for debugging purposes
-            float localFacingAngle = MathU.Vector2ToDegree(localFacingVector);
+            float localFacingAngle = localFacingVector.ToDegrees();
 
             if (isTreeRolling)  // keep Upright while Rolling
                 localFacingAngle = MathU.ClampAngle(localFacingAngle, -pitchMaxAngleWhileRolling, pitchMaxAngleWhileRolling);
@@ -188,7 +187,7 @@ public class BallAnimController : MonoBehaviour
             //        pitchUprightSpeed * Time.deltaTime);
 
             // Calculate and apply offset to BodyBase's local position, so it is opposite the velocity's direction.
-            Vector2 localPositionOffset = -MathU.DegreeToVector2(localFacingAngle).Perp() * pitchPosOffset;
+            Vector2 localPositionOffset = -localFacingAngle.DegreesToVector2().Perp() * pitchPosOffset;
             BodyBase.localPosition = localPositionOffset;
             //BodyBase.localPosition =
             //    Vector2.MoveTowards(BodyBase.localPosition.To2DXY(),

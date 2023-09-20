@@ -110,7 +110,7 @@ public class BlobEscape : MonoBehaviour
             {
                 //Aura.Radius = .5f;
                 currentTarget = 0;
-                slowDownZone.Player.transform.parent.GetComponent<BallWindJump>().DoDash(50, 1,true);
+                slowDownZone.Player.transform.parent.GetComponent<BallDash>()?.DoDash(50, 1,true, false);
                 HasFiredDash = true;
                 AuraReady?.Invoke();
             }

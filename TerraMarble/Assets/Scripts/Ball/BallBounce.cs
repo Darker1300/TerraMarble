@@ -1,129 +1,227 @@
+using MathUtility;
 using System;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class BallBounce : MonoBehaviour
 {
-    private UpdateGravity updateGravity;
-    private Rigidbody2D rb;
-    private Wheel wheel;
-    [Header("Bounce")] [SerializeField] private bool canBounce = true;
-
-    [SerializeField] private float minBounceForce = 0f;
-    [SerializeField] private float maxBounceForce = 20f;
-    //[SerializeField] [Range(0f, 1f)] private float bounceFactor = 0.95f;
-
-    //how much influence of magnitude carries over
-    [Header("Slide")]
-    [SerializeField]
-    [Range(0, 1)]
-    private float slideFactor = 1f;
-
-    [SerializeField] private float slideMax = 50f;
-    [SerializeField] private float slideMin = 0f;
-
-    private bool isHit = false;
+    [Header("Deflect Config")]
+    // [SerializeField] private float upTolerance = 0.36f;
+    [SerializeField] private float sideDeflectForce = 100f;
+    [SerializeField] private float downDeflectForce = 80f;
+    [SerializeField] private float maxDragAllowed = 0.2f;
+    [SerializeField] private float dragCooldown = 0.2f;
+    [SerializeField] private float minVelocity = 0.1f;
+    [Header("Tree Stiffness Config")]
     //[SerializeField]
-    //[Range(-1, 1)]
-    //private float bounceRange = 0.0f;
+    //private AnimationCurve treeStiffnessCurve
+    //    = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
-    private void Awake()
+    private Rigidbody2D rigidBody2D = null;
+    private PlayerInput playerInput = null;
+    private Wheel wheel = null;
+
+    [Header("Data")]
+    [SerializeField] private bool isContacting = false;
+    [SerializeField] private bool isDragReleased = false;
+    [SerializeField] private bool isActive = false;
+    [SerializeField] private float dragTimer = 0f;
+    private ContactPoint2D contact;
+
+    //[SerializeField] private float treeLength = 2f; // Maximum distance to start reducing velocity.
+    //private Vector2 initialVelocity;
+
+    void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody2D = rigidBody2D != null ? rigidBody2D
+            : GetComponent<Rigidbody2D>();
+        playerInput = FindObjectOfType<PlayerInput>();
         wheel = FindObjectOfType<Wheel>();
-        
-        updateGravity ??= GetComponent<UpdateGravity>();
+
+        InputManager.LeftDragEvent
+            += (a) => OnDragToggle(a, -1);
+        InputManager.RightDragEvent
+            += (a) => OnDragToggle(a, 1);
     }
 
     private void FixedUpdate()
     {
-        if (isHit) isHit = false;
+        UpdateState();
+
+        //initialVelocity = rigidBody2D.velocity;
+        //if (isActive && contact.collider)
+        //    ApplySuction(contact);
+
+        if (isActive)
+            ApplyDeflect(contact);
+    }
+
+    //private void ApplySuction(ContactPoint2D _contact)
+    //{
+    //    // raycast side dir if fast
+    //    // down dir if slow
+    //    // clamp min velocity in that dir
+
+
+
+
+
+
+
+    //    // Calculate the distance between A and B (Tree).
+    //    float distance = Vector2.Distance(_contact.point, _contact.collider.transform.position);
+
+    //    TreePaddleController treePC = _contact.collider.GetComponent<TreePaddleController>();
+    //    treeLength = treePC.TreeHeight;
+
+    //    //Debug.Log(treeLength.ToString("0.00")); // string.Format(@"{treeLength:0.00}"
+
+    //    // Calculate the reduction factor based on the AnimationCurve.
+    //    float reductionFactor = treeStiffnessCurve.Evaluate(distance / treeLength);
+
+    //    // Reduce the velocity of A.
+    //    rigidBody2D.velocity = initialVelocity * reductionFactor;
+    //}
+
+    private void OnDrawGizmos()
+    {
+        TreePaddleController treePC = contact.collider != null ?
+            contact.collider.GetComponent<TreePaddleController>() : null;
+        if (treePC != null)
+        {
+            var startPos = treePC.transform.position;
+            Vector3 endPos = treePC.TreeTipPosition;
+            Gizmos.DrawLine(startPos, endPos);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (isHit || !enabled) return;
-        //if (canBounce)
-            Bounce(collision.contacts[0].normal,0f);
-        //else
-        //    Slide(collision.contacts[0].normal);
+        => HandleCollision(collision);
 
-        //CheckDotProduct(collision.contacts[0].normal, rb.velocity.normalized, bounceRange)
-        //Debug.Log("slideDot" + (Vector2.Dot(collision.contacts[0].normal, rb.velocity.normalized)));
-        //                  Downwards against wind 
-        //if ((canBounce && CheckDirectionProduct(updateGravity.wheelDir, rb.velocity.normalized, 0.0f) && !MovingWithWind(transform.position, rb.velocity)) ||
-        //   (canBounce && !CheckDirectionProduct(updateGravity.wheelDir, rb.velocity.normalized, 0.0f) && !MovingWithWind(transform.position, rb.velocity)))
-        //{ 
-        //    Bounce(collision.contacts[0].normal);
-        //}
-        //else if ((canBounce && !CheckDirectionProduct(updateGravity.wheelDir, rb.velocity.normalized, 0.0f) && MovingWithWind(transform.position, rb.velocity)) ||
-        //   (canBounce && CheckDirectionProduct(updateGravity.wheelDir, rb.velocity.normalized, 0.0f) && MovingWithWind(transform.position, rb.velocity)))
-        //{
-        //    Slide(collision.contacts[0].normal);
-        //}
-        isHit = true;
-    }
-    public bool CheckDirectionProduct(Vector2 lft,Vector2 rght,float range)
+    private void OnCollisionStay2D(Collision2D collision)
+        => HandleCollision(collision);
+
+    #region State Checking
+
+    private void OnDragToggle(bool state, int side)
     {
-        //if 
-        if (Vector2.Dot(lft, rght) > range )
+        if (state == false)
+            dragTimer = dragCooldown;
+    }
+
+    private void UpdateState()
+    {
+        // Determine if the drag has been released, and is within the cooldown period.
+        isDragReleased = dragTimer > 0f;
+
+        // Determine if the ball's deflecting behavior is active.
+        // isActive = isContacting && !isDragReleased;
+        UpdateIsActive();
+
+        // Reset flags and timers after handling contact.
+        if (isContacting ||
+            (playerInput.IsDragging
+             && playerInput.RawDrag.sqrMagnitude > maxDragAllowed * maxDragAllowed))
         {
-            Debug.Log("Bounce");
-            return true;
+            dragTimer = dragCooldown;
         }
-        else
-            return false;
+        else if (dragTimer > float.Epsilon)
+            dragTimer = Mathf.Max(0f, dragTimer - Time.fixedDeltaTime);
 
+        isContacting = false;
     }
 
-    //private bool MovingWithWind(Vector3 pos,Vector2 vel)
+    private void UpdateIsActive()
+        => isActive = isContacting
+                      && !isDragReleased
+                      && rigidBody2D.velocity.sqrMagnitude > (minVelocity * minVelocity);
+
+    #endregion
+
+    private void HandleCollision(Collision2D _collision)
+    {
+        if (CheckHit(_collision, ref contact))
+        {
+            isContacting = true;
+            contact = _collision.GetContact(0);
+        }
+    }
+
+    // Check if the collision qualifies as a deflect, and set the relevant contact point.
+    private bool CheckHit(Collision2D _collision, ref ContactPoint2D _outContact)
+    {
+        var tree = _collision.collider != null
+            ? _collision.collider.GetComponent<TreePaddleController>() : null;
+
+        // Check if the player is dragging and if the drag exceeds the allowed threshold.
+        if (tree == null)
+            return false;
+        //if (playerInput.IsDragging && playerInput.RawDrag.sqrMagnitude > maxDragAllowed)
+        //    return false;
+
+        return true;
+
+        //// Calculate the direction from the ball's position to the world center.
+        //Vector2 downDirection = transform.position.To2DXY().Towards(wheel.transform.position.To2DXY()).normalized;
+
+        //// Find the contact point that qualifies as a bounce based on the dot product.
+        //_outContact = _collision.contacts.FirstOrDefault(point2D =>
+        //{
+        //    return Vector2.Dot(point2D.normal, -downDirection) > upTolerance;
+        //});
+
+        //// Return whether a valid contact point was found.
+        //return _outContact.collider != null;
+    }
+
+    //private Vector2 CalcSpriteWorldSize(SpriteRenderer spriteRenderer)
     //{
-    //    return wheel.IsMovingWithWheel(pos, vel);
+    //    // Get the local bounds of the SpriteRenderer
+    //    Bounds localBounds = spriteRenderer.localBounds;
+
+    //    // Transform the local bounds corners to world space
+    //    Vector3 worldMin = spriteRenderer.transform.TransformPoint(localBounds.min);
+    //    Vector3 worldMax = spriteRenderer.transform.TransformPoint(localBounds.max);
+
+    //    // Calculate the dimensions in world space
+    //    float worldWidth = Mathf.Abs(worldMax.x - worldMin.x);
+    //    float worldHeight = Mathf.Abs(worldMax.y - worldMin.y);
+
+    //    return new Vector2(worldWidth, worldHeight);
+
+    //    //// Transform the local bounds to world space.
+    //    //Vector3 minWorld = spriteRenderer.transform.TransformPoint(localBounds.min);
+    //    //Vector3 maxWorld = spriteRenderer.transform.TransformPoint(localBounds.max);
+
+    //    //// Calculate the world size dimensions.
+    //    //Vector2 worldSize = new(
+    //    //    Mathf.Abs(maxWorld.x - minWorld.x),
+    //    //    Mathf.Abs(maxWorld.y - minWorld.y));
+
+    //    //return worldSize;
     //}
 
-    public void Bounce(Vector2 surfaceNormal,float extra)
+
+
+    // Apply a deflect force to the ball based on the contact point and direction.
+    private void ApplyDeflect(ContactPoint2D _contact)
     {
-        Vector2 initialVel = rb.velocity;
-        Vector2 initialDir = initialVel.normalized;
-        float initialMag = initialVel.magnitude;
+        Vector2 downDir = transform.position.To2DXY().Towards(wheel.transform.position.To2DXY()).normalized;
 
-        Vector2 surfaceReflect = Vector2.Reflect(initialDir, surfaceNormal);
+        // Determine the direction to be pushed away from the surface (left or right).
+        var rightDir = downDir.Perp();
+        int sideDotSign = Math.Sign(Vector2.Dot(_contact.normal, rightDir));
 
-        // // attempts to keep momentum
-        //Vector2 wheelReflect = Vector2.Reflect(initialDir, -updateGravity.wheelDir.normalized);
-        //Vector2 followThru = (surfaceReflect * bounceFactor
-        //                      + wheelReflect * (1f - bounceFactor)).normalized;
+        // Set the appropriate direction based on the surface normal.
+        var sideDir = rightDir;
+        if (sideDotSign < 0) sideDir = -rightDir;
 
-        Vector2 bounceClamped = surfaceReflect * (Mathf.Clamp(initialMag, minBounceForce, maxBounceForce) + extra);
+        // Apply the deflect force to the rigid body.
+        Vector2 sideForce = sideDir * sideDeflectForce;
+        Vector2 downForce = downDir * downDeflectForce;
 
-        rb.velocity = bounceClamped;
 
-        // // Old Bounce code
-        //var project = Vector2.ClampMagnitude(rb.velocity.normalized -20 * (Vector2.Dot(rb.velocity, normal) * normal),
-        //     gravityDir.maxGravity);
-        // rb.AddForce(project * Time.fixedDeltaTime);
+        rigidBody2D.velocity = (sideForce + downForce) * Time.fixedDeltaTime;
     }
 
-    public void Slide(Vector2 surfaceNormal)
-    {
-        Vector2 surfaceDirection = Vector3.Cross(surfaceNormal, Vector3.forward);
-        float dotA = Vector2.Dot(rb.velocity, surfaceDirection);
-        float dotB = Vector2.Dot(rb.velocity, -surfaceDirection);
-        surfaceDirection = dotA > dotB ? surfaceDirection : -surfaceDirection;
-        //simply which direction is closest to wind
-        //dot product of vel and (-/surface direction )
-        //whichever is closer apply for that way
-        //slide in that direction
-        //
-        //Debug.Log("dot" + dot);
-
-        //if above zero facing relativly same direction
-        float magnitude = Mathf.Clamp(rb.velocity.magnitude * slideFactor, slideMin, slideMax);
-        Vector2 velocity = surfaceDirection * magnitude;
-        if (dotA > 0)
-            rb.AddForce(velocity);
-        else if (dotA < 0)
-            rb.AddForce( -velocity);
-        //else Bounce(surfaceNormal);
-    }
 }

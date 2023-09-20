@@ -92,10 +92,7 @@ namespace UnityUtility
         public static T FindObjectByName<T>(string _name, bool _includeInactive) where T : UnityEngine.Object
         {
             var collection = UnityEngine.Object.FindObjectsOfType<T>(_includeInactive);
-            foreach (T obj in collection)
-                if (obj.name == _name)
-                    return obj;
-            return null;
+            return collection.FirstOrDefault(obj => obj.name == _name);
         }
 
         ///   <para>Returns transform with tag or any of its children. Works recursively.</para>
@@ -240,6 +237,16 @@ namespace UnityUtility
             _color.a = _a;
             return _color;
         }
+
+        public static Dictionary<T, int> EnumToHashIDs<T>()
+        {
+            Dictionary<T, int> hashIDs = new();
+            foreach (T parameterName in Enum.GetValues(typeof(T)))
+                hashIDs.Add(parameterName,
+                    Animator.StringToHash(Enum.GetName(typeof(T), parameterName)));
+            return hashIDs;
+        }
+
     }
 
     public static class EnumerableExtensions

@@ -73,7 +73,7 @@ public class EntitySeek : MonoBehaviour
         float newAngle = MoveTowardsAroundAngle(_currentPos, _targetPos, _circlePos, newRadius, _maxDelta.x);
 
         // convert radius and angle to position
-        Vector2 newPos = MathU.DegreeToVector2(newAngle) * newRadius;
+        Vector2 newPos = newAngle.DegreesToVector2() * newRadius;
 
         return newPos;
     }
@@ -92,10 +92,8 @@ public class EntitySeek : MonoBehaviour
         Vector2 _currentPos, Vector2 _targetPos,
         Vector2 _circlePos, float _circleRadius, float _maxDelta)
     {
-        float currentAngle = MathU.Vector2ToDegree(
-            _circlePos.Towards(_currentPos).normalized);
-        float targetAngle = MathU.Vector2ToDegree(
-            _circlePos.Towards(_targetPos).normalized);
+        float currentAngle = _circlePos.Towards(_currentPos).normalized.ToDegrees();
+        float targetAngle = _circlePos.Towards(_targetPos).normalized.ToDegrees();
 
         // Move along New Radius to get new angle
         float circleLength = _circleRadius * Mathf.PI * 2.0f;

@@ -129,7 +129,7 @@ public class AimTreeLockUI : MonoBehaviour
     private void UpdateWheelAim()
     {
         Vector2 dir = ((Vector2)wheelAimTransform.Towards(treeActive.transform)).normalized;
-        float ang = MathU.Vector2ToDegree(dir);
+        float ang = dir.ToDegrees();
         wheelAimTransform.rotation = Quaternion.AngleAxis(ang, Vector3.forward);
 
         UpdatePowerBar();
