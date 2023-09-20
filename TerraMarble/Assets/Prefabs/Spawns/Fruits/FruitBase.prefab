@@ -89,7 +89,7 @@ MonoBehaviour:
   angUnitInput: 1
   angRadiansStart: 0
   angRadiansEnd: 2.3561945
-  radius: 0.41
+  radius: 0.8
   radiusSpace: 0
   thickness: 0.5
   thicknessSpace: 0
@@ -169,7 +169,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 15
 --- !u!114 &6947646198797452861
 MonoBehaviour:
   m_ObjectHideFlags: 0

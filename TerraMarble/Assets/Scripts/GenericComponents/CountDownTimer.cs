@@ -22,7 +22,7 @@ public class CountDownTimer : MonoBehaviour
         }
         else
         {
-            TimerFinished.Invoke();
+            TimerFinished?.Invoke();
             this.enabled = false;
         }
     }

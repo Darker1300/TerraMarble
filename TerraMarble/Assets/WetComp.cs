@@ -9,12 +9,23 @@ public class WetComp : MonoBehaviour
 	bool isRegion = false;
 	[SerializeField] private Region parentRegion;
 	[SerializeField] private ShapeRenderer shape;
-	
+    [SerializeField] private SpriteRenderer sprite;
 
+    private bool usingShape;
 	//private Color StartColor;
     private void Start()
     {
-		shape =  GetComponent<ShapeRenderer>();
+        if (GetComponent<ShapeRenderer>() !=null)
+        {
+		    
+            shape =  GetComponent<ShapeRenderer>();
+            usingShape = true;
+
+        }
+        else
+        {
+            sprite = GetComponent<SpriteRenderer>();
+        }
 		//MakeTransparent();
 	}
 
@@ -49,12 +60,17 @@ public class WetComp : MonoBehaviour
 	public void UpdateWet(float percent)
 	{
 		// apply color change to renderer
+        if (usingShape)
+        {
+            shape.Color = SetAlpha(shape.Color, percent / 100);
 
-		shape.Color = SetAlpha(shape.Color,percent/100);
+        }
+        else
+            sprite.color = SetAlpha(sprite.color, percent / 100);
         //Debug.Log("wetAdded" + percent / 100);
         //shape.Color = Color.blue;
-        
-	}
+
+    }
 
 	
 	

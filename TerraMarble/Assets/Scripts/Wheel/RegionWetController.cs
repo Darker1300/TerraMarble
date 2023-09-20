@@ -44,7 +44,7 @@ public class RegionWetController : MonoBehaviour
         float distanceFactor = 1 - Vector2.Distance(surfacePos, Base_position) / radiusSize;
         //Debug.Log("factor "+ distanceFactor + "original " + Vector2.Distance(surfacePos, transform.position));
         //float percentageToAdd = distanceFactor * percentagePerMeter;
-        currentWetness = Mathf.Min(currentWetness + (distanceFactor * maxWetFromFruit), maxWetness);
+        currentWetness = Mathf.Min(currentWetness + ((distanceFactor) * maxWetFromFruit), maxWetness);
         WetUpdate?.Invoke(currentWetness);
         if (currentWetness > 30)
         {
