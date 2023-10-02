@@ -12,7 +12,7 @@ public class PlayerInput : MonoBehaviour
     // References
 
     // Private Fields
-    [ShowInInspector] private int side = 1;
+    [ShowInInspector] private int rawSide = 1;
     [ShowInInspector] private Vector2 rawDrag = Vector2.zero;
     [ShowInInspector] private Vector2 rawScreenDrag = Vector2.zero;
 
@@ -25,10 +25,12 @@ public class PlayerInput : MonoBehaviour
     //private Vector2 dragDirTolerance = new(0.1f, 0.05f);
 
     [SerializeField] private bool applyInputCurve = true;
-
-    [SerializeField]
-    private AnimationCurve inputCurve
+    [SerializeField] private AnimationCurve inputCurve
         = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [SerializeField] private bool applyClampInputCurve = true;
+    [SerializeField] private AnimationCurve clampInputCurve
+        = AnimationCurve.Linear(0, 0, 1, 1);
 
     [SerializeField] private bool invertXDrag = false;
     [SerializeField] private bool invertSide = false;
@@ -37,26 +39,29 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private bool isDragging = false;
 
     // Properties
-    [ShowInInspector] public Vector2 TreeDrag => GetDrag();
-    [ShowInInspector] public int TreeDragSide => GetSide();
-    [ShowInInspector] public Vector2 Drag
-        => applyInputCurve ? ApplyDragInputCurve(rawDrag, inputCurve) : rawDrag;
+    [ShowInInspector] public Vector2 TreeDrag => GetTreeDrag();
+    [ShowInInspector] public int TreeDragSide => GetTreeSide();
     public Vector2 RawDrag => rawDrag;
     public Vector2 RawScreenDrag => rawScreenDrag;
-    public int Side => side;
+    public int RawSide => rawSide;
 
-    [Serializable] public class InputConfigOption
-    {
-        public string name = "Option";
-        public bool[] data = new bool[4];
-    }
-
+    [Header("Config Button")]
     [SerializeField] private int treeInputConfigSelection = 0;
-    [SerializeField] private List<InputConfigOption> treeInputConfig;
-    [SerializeField] private TextMeshProUGUI treeInputTextUI;
-    private const string inputConfigButtonName = "Input Config Text";
+    [SerializeField] private List<string> treeInputConfigNames = new()
+    {
+        "Directional",
+        "Sided"
+    };
+    [SerializeField] private List<bool[]> treeInputConfigData = new()
+    {
+        new[] { false, true, false, true },
+        new[] { false, true, false, false }
+    };
+    private const string inputConfigButtonName = "InputConfigButton";
+    [SerializeField] private CycleButton treeInputButton;
 
-    [ShowInInspector] public bool IsDragging
+    [ShowInInspector]
+    public bool IsDragging
     {
         get => isDragging;
         private set => isDragging = value;
@@ -79,29 +84,21 @@ public class PlayerInput : MonoBehaviour
         InputManager.RightDragVectorEvent
             += (a, b, screenDrag) => OnDragUpdate(screenDrag, 1);
 
-        treeInputTextUI = treeInputTextUI != null ? treeInputTextUI
-            : UnityU.FindObjectByName<TextMeshProUGUI>(inputConfigButtonName, true);
+        treeInputButton = treeInputButton != null ? treeInputButton
+            : UnityU.FindObjectByName<CycleButton>(inputConfigButtonName, true);
 
-        if (treeInputTextUI != null && treeInputConfig.Count > 0)
-        {
-            treeInputTextUI.text = treeInputConfig[treeInputConfigSelection].name;
-            treeInputTextUI.GetComponentInParent<Button>(true)?.onClick.AddListener(SetNextInputConfigOption);
-        }
+        treeInputButton?.Initialise(treeInputConfigSelection, treeInputConfigNames, UpdateInputConfig);
     }
 
-    public void SetNextInputConfigOption()
+    private void UpdateInputConfig(string _configOption)
     {
+        int index = treeInputConfigNames.IndexOf(_configOption);
+        bool[] data = treeInputConfigData[index];
 
-        treeInputConfigSelection++;
-        if (treeInputConfigSelection >= treeInputConfig.Count)
-            treeInputConfigSelection = 0;
-
-        invertXDrag = treeInputConfig[treeInputConfigSelection].data[0];
-        invertSide = treeInputConfig[treeInputConfigSelection].data[1];
-        swapXDragOutwards = treeInputConfig[treeInputConfigSelection].data[2];
-        swapXDragInwards = treeInputConfig[treeInputConfigSelection].data[3];
-
-        treeInputTextUI.text = treeInputConfig[treeInputConfigSelection].name;
+        invertXDrag = data[0];
+        invertSide = data[1];
+        swapXDragOutwards = data[2];
+        swapXDragInwards = data[3];
     }
 
     private void OnDragToggle(bool state, int side)
@@ -109,7 +106,7 @@ public class PlayerInput : MonoBehaviour
         IsDragging = state;
 
         if (IsDragging) // On Down
-            this.side = side;
+            this.rawSide = side;
         else // On Up
             rawDrag = Vector2.zero;
 
@@ -122,24 +119,24 @@ public class PlayerInput : MonoBehaviour
         rawScreenDrag = screenDragVector;
     }
 
-    private Vector2 GetDrag()
+    private Vector2 GetTreeDrag()
     {
         Vector2 drag = rawDrag;
         if (applyInputCurve)
-            drag = ApplyDragInputCurve(drag, inputCurve);
+            drag = ApplyDragInputCurves(drag, inputCurve, clampInputCurve);
         drag.x *= NegIf(invertXDrag);
-        drag.x *= NegIf(swapXDragOutwards && Math.Sign(rawDrag.x) == side);
-        drag.x *= NegIf(swapXDragInwards && Math.Sign(rawDrag.x) != side);
+        drag.x *= NegIf(swapXDragOutwards && Math.Sign(rawDrag.x) == rawSide);
+        drag.x *= NegIf(swapXDragInwards && Math.Sign(rawDrag.x) != rawSide);
 
         return drag;
     }
 
-    private int GetSide()
+    private int GetTreeSide()
     {
-        int side = this.side;
+        int side = this.rawSide;
         side *= NegIf(invertSide);
-        side *= NegIf(swapXDragOutwards && Math.Sign(rawDrag.x) == this.side);
-        side *= NegIf(swapXDragInwards && Math.Sign(rawDrag.x) != this.side);
+        side *= NegIf(swapXDragOutwards && Math.Sign(rawDrag.x) == this.rawSide);
+        side *= NegIf(swapXDragInwards && Math.Sign(rawDrag.x) != this.rawSide);
         return side;
     }
 
@@ -149,18 +146,24 @@ public class PlayerInput : MonoBehaviour
         return new(
             Mathf.Clamp(_screenDragVector.x / _dragScreenSize.x, -1f, 1f),
             Mathf.Clamp(_screenDragVector.y / _dragScreenSize.y, -1f, 1f)
-        //Mathf.Abs(Mathf.Clamp(_screenDragVector.y / _dragScreenSize.y, -1f, 0f))
         );
     }
 
-    private static Vector2 ApplyDragInputCurve(Vector2 _rawDrag, AnimationCurve _inputCurve)
+    private static Vector2 ApplyDragInputCurves(Vector2 _rawDrag, AnimationCurve _inputCurve, AnimationCurve _clampCurve)
     {
+        // absolute
         float x = Mathf.Abs(_rawDrag.x);
         float y = Mathf.Abs(_rawDrag.y);
 
+        // smooth curve
         x = _inputCurve.Evaluate(x);
         y = _inputCurve.Evaluate(y);
 
+        // clamp curve
+        float newX = _clampCurve.Evaluate(y);
+        if (newX > x) x = newX;
+
+        // bring back sign
         _rawDrag.x = x * Mathf.Sign(_rawDrag.x);
         _rawDrag.y = y * Mathf.Sign(_rawDrag.y);
 

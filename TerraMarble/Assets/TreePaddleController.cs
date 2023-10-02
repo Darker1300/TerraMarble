@@ -7,7 +7,7 @@ using UnityEngine;
 public class TreePaddleController : MonoBehaviour
 {
     // References
-    private Transform treeBase; // base of paddle
+    private Transform treeStump;
     private Region treeRegion; // ground tile
     private Rigidbody2D treeRigidbody; // rigidbody2d
     private TreeBend treeBender; // user controller
@@ -50,25 +50,27 @@ public class TreePaddleController : MonoBehaviour
     private float treeHeightLocal;
 
     /// World Space
-    public float TreeHeight 
+    public float TreeHeight
         => transform.lossyScale.y * treeHeightLocal;
 
-    public Vector2 TreeTipLocalPosition
+    public Vector2 TreeTipVector
         => transform.up * (transform.lossyScale.y * treeHeightLocal);
 
     public Vector2 TreeTipPosition
-        => transform.position.To2DXY() + TreeTipLocalPosition;
+        => transform.position.To2DXY() + TreeTipVector;
+
+    public Region TreeRegion => treeRegion;
 
 
     private void Start()
     {
         treeRegion = GetComponentInParent<Region>();
         treeBender = FindObjectOfType<TreeBend>(true);
-        treeBase = transform.parent;
-        treeRigidbody = treeBase.GetComponent<Rigidbody2D>();
+        treeStump = transform.parent;
+        treeRigidbody = treeStump.GetComponent<Rigidbody2D>();
         treeCollider = GetComponent<PolygonCollider2D>();
 
-        treeBaseStartPosition = treeBase.localPosition;
+        treeBaseStartPosition = treeStump.localPosition;
         treePaddleStartScale = transform.localScale;
         startRotation = benderGoalRotation = currentGoalRotation
             = currentRotation;
@@ -114,7 +116,7 @@ public class TreePaddleController : MonoBehaviour
             else treeSideSign = 1;
 
             collisionBallSideDirection = treeSideSign;
-            Vector2 forceDirection = treeRegion.Base.right.To2DXY() * treeSideSign;
+            Vector2 forceDirection = TreeRegion.Base.right.To2DXY() * treeSideSign;
 
             float forcePower = Mathf.Clamp(
                 contact.relativeVelocity.magnitude * treeBender.collisionSensitivity,
@@ -210,7 +212,7 @@ public class TreePaddleController : MonoBehaviour
                 treeBender.launchTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
 
         // Jump and Stretch
-        Vector3 newPos = treeBase.localPosition;
+        Vector3 newPos = treeStump.localPosition;
         Vector3 newScale = transform.localScale;
 
         // curve = 0..1..0;
@@ -226,7 +228,7 @@ public class TreePaddleController : MonoBehaviour
             newScale.y = Mathf.SmoothDamp(newScale.y, goalScaleY, ref stretchVelocity,
                 treeBender.launchTime, treeBender.bendMaxSpeed, Time.fixedDeltaTime);
 
-        treeBase.localPosition = newPos;
+        treeStump.localPosition = newPos;
         transform.localScale = newScale;
     }
 
@@ -289,9 +291,9 @@ public class TreePaddleController : MonoBehaviour
 
     public int DirectionFromPoint(Vector2 worldPos)
     {
-        float towardsPointDelta = treeRegion.RegionsMan.RegionDistanceDelta(
-            treeRegion.RegionIndex + 0.5f,
-            treeRegion.WorldToRegionDistance(worldPos));
+        float towardsPointDelta = TreeRegion.RegionsMan.RegionDistanceDelta(
+            TreeRegion.RegionIndex + 0.5f,
+            TreeRegion.WorldToRegionDistance(worldPos));
 
         if (towardsPointDelta > 0f) // Right side
             return -1;
@@ -302,9 +304,9 @@ public class TreePaddleController : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (!doDebug) return;
-        Vector3 flipAxis = ((Vector2) treeRegion.Wheel.transform.position).Towards(treeRegion.Base.transform.position)
+        Vector3 flipAxis = ((Vector2)TreeRegion.Wheel.transform.position).Towards(TreeRegion.Base.transform.position)
             .normalized;
-        Gizmos.DrawRay(treeRegion.Base.transform.position, flipAxis);
+        Gizmos.DrawRay(TreeRegion.Base.transform.position, flipAxis);
     }
 
 

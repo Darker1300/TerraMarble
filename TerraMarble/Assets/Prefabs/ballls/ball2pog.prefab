@@ -1320,14 +1320,41 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  applyClampInputCurve: 1
+  clampInputCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   invertXDrag: 0
   invertSide: 1
   swapXDragOutwards: 0
   swapXDragInwards: 1
   isDragging: 0
   treeInputConfigSelection: 0
-  treeInputConfig: []
-  treeInputTextUI: {fileID: 0}
+  treeInputConfigNames:
+  - Directional
+  - Sided
+  treeInputButton: {fileID: 0}
 --- !u!114 &5078328464560796646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1621,6 +1648,8 @@ MonoBehaviour:
   maxDragAllowed: 0.5
   dragCooldown: 0.2
   minVelocity: 0.1
+  sideSlipForce: 50
+  slipUpTolerance: 0.1
   isContacting: 0
   isDragReleased: 0
   isActive: 0
