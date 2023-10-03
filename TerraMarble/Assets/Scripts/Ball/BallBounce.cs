@@ -29,6 +29,7 @@ public class BallBounce : MonoBehaviour
     [SerializeField] private float dragTimer = 0f;
     private ContactPoint2D deflectContact;
 
+    [SerializeField] VelocityBoost velBooster;
     //[SerializeField] private float treeLength = 2f; // Maximum distance to start reducing velocity.
     //private Vector2 initialVelocity;
 
@@ -157,6 +158,10 @@ public class BallBounce : MonoBehaviour
                 }
             }
         }
+        //else if (_collision.gameObject.CompareTag("Mountain"))
+        //{
+        //    velBooster.boo
+        //}
     }
 
     private TreePaddleController GetTree(Collision2D _collision)

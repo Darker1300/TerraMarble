@@ -16,6 +16,7 @@ public class EnemyWeaponOne : MonoBehaviour
 
     public float fireRate = 0.5F;
     private float nextFire = 0.0F;
+    [SerializeField] private ChangeColorOverTime colorChange;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +39,7 @@ public class EnemyWeaponOne : MonoBehaviour
                 StartCoroutine("FireRate");
                 testShoot = false;
                 nextFire = Time.time + fireRate;
+                
             }
 
         }
@@ -55,6 +57,8 @@ public class EnemyWeaponOne : MonoBehaviour
     IEnumerator FireRate()
     {
         int i = 2;
+        //colorChange.LerpToColor();
+        //yield return new WaitForSeconds(.5f);
 
         while (i > 0)
         {

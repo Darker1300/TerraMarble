@@ -415,6 +415,7 @@ GameObject:
   - component: {fileID: 4312980075626418181}
   - component: {fileID: 4312980075626418180}
   - component: {fileID: 4312980075626418187}
+  - component: {fileID: 1278486501}
   m_Layer: 13
   m_Name: Gun
   m_TagString: Untagged
@@ -506,7 +507,56 @@ MonoBehaviour:
   aim: {fileID: 4312980075626418182}
   AmmoAmount: 200
   testShoot: 0
-  fireRate: 0.5
+  fireRate: 1
+  colorChange: {fileID: 1278486501}
+--- !u!114 &1278486501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4312980075626418185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c1a880877379744083bfa1146b97004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColor: {r: 0.8773585, g: 0.055179685, b: 0.055179685, a: 1}
+  duration: 0.5
+  fadeInDuration: 0.5
+  ColorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  InfoString: 
+  colorChangeEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  shapeRender: {fileID: 0}
+  spriteRender: {fileID: 8402579907346213946}
+  Test: 0
+  FromColorToNormal: 1
+  isShape: 0
 --- !u!1 &4312980076968409489
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,7 +830,7 @@ Transform:
   - {fileID: 4312980075626418186}
   - {fileID: 4312980076968409490}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &897765814820119402
 MonoBehaviour:
@@ -796,6 +846,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldownDuration: 2
   attackTime: 0.001
+  attackDamage: 10
   attackOutlineDisc: {fileID: 7712877255489708445}
   attackFillDisc: {fileID: 4172014868021852339}
   cooldownTimeRemaining: 0
