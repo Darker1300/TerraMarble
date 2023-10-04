@@ -7,7 +7,8 @@ public class AuraControllerDbz : MonoBehaviour
 {
     [SerializeField]
     public Disc disc;
-
+    [SerializeField]
+    private TrailRenderer auraTrail;
     //[SerializeField]
     //private float rangeMin = 0.5f;
     //[SerializeField]
@@ -48,7 +49,15 @@ public class AuraControllerDbz : MonoBehaviour
     /// <summary>
     /// onhit 
     /// </summary>
-
+    /// Aura uniform settings
+    /// 
+    
+    [SerializeField]
+    private float minAuraDiscSize;
+    [SerializeField]
+    private float maxAuraDiscSize;
+    [Range(0, 1)]
+    private float currentAuraSize;
     // Start is called before the first frame update
     void Start()
     {
@@ -58,6 +67,7 @@ public class AuraControllerDbz : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //float newIntensity = Mathf.Sin(Time.time); // Example value
         //vignette.SetFloat("_FullScreenIntensity", newIntensity);
 

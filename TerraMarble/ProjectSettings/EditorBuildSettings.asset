@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Tom12.unity
     guid: 1b13b5bf0ee335a43a16cfb2e63a5611
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Ethan 12.unity
     guid: fa48ee62a379b6c4487e4d9c2d0ad8ed
   m_configObjects:
