@@ -10,24 +10,26 @@ public class HealthControllerTwo : MonoBehaviour
     [SerializeField] private Image healthBarStatic;
     [SerializeField] private Image shieldBarStatic;
     [SerializeField] private float fillSpeed = 0.5f; // Adjust as needed
-    [SerializeField]
-    private float currentHealthPercentage = 100f;
-    [SerializeField]
-    private float currentShieldPercentage = 100f;
+    [SerializeField] private float currentHealthPercentage = 100f;
+    [SerializeField] private float currentShieldPercentage = 100f;
     [SerializeField] private bool test;
     public DamageVignette damageVignette;
     public Color ShieldVigColor;
     public Color HealthVigColor;
     public bool flashingHealthBackGround = false;
     public FlashSpriteColor FlashBar;
-    [SerializeField]
-    private AuraControllerDbz AuraController;
+    [SerializeField] private AuraControllerDbz AuraController;
     private float lastTimeDamaged;
     private bool needsHealing;
-    [SerializeField]
-    private float healingDelay = 3f;
-    [SerializeField]
-    private PlayerHealth playerHealth;
+    [SerializeField] private float healingDelay = 3f;
+    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private TrailScaler trailScaler;
+
+    private void Start()
+    {
+        trailScaler = trailScaler != null ? trailScaler
+            : GetComponentInChildren<TrailScaler>();
+    }
 
     private void Update()
     {
@@ -76,6 +78,9 @@ public class HealthControllerTwo : MonoBehaviour
         // Update shield bar fill amount over time
         float targetShieldFillAmount = currentShieldPercentage / 100f;
         shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetShieldFillAmount, fillSpeed * Time.deltaTime);
+
+        // Trail
+        trailScaler.UpdateTrail(playerHealth.CurrentShield * (1f / playerHealth.MaxShield));
     }
 
     private void ReplenishBars()
@@ -99,6 +104,8 @@ public class HealthControllerTwo : MonoBehaviour
             ToggleFlashing(false);
             flashingHealthBackGround = false;
         }
+        // trail
+        trailScaler.UpdateTrail(playerHealth.CurrentShield * (1f / playerHealth.MaxShield));
     }
 
     // Example method to update health and shield percentages
