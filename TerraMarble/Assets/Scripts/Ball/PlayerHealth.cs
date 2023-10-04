@@ -9,11 +9,11 @@ public class PlayerHealth : MonoBehaviour
 {
     [Header("healthbar or hearts")]
     public bool healthBar = true;
-    [SerializeField]
-    private HealthControllerTwo healthShieldController;
+    [SerializeField] private HealthControllerTwo healthShieldController;
     [Header("References")]
     [SerializeField] private GameObject healthIconPrefab;
     [SerializeField] private Transform heartContainerUI;
+    [SerializeField] private TrailScaler trailScaler;
 
     private const string immuneDiscName = "body, shadow";
     [SerializeField] private Disc immuneDisc;
@@ -79,6 +79,9 @@ public class PlayerHealth : MonoBehaviour
                 .transform.Find(immuneDiscName)?
                 .GetComponent<Disc>();
 
+        trailScaler = trailScaler != null ? trailScaler
+            : GetComponentInChildren<TrailScaler>();
+
         if (immuneDisc is not null)
             normalDiscColor = immuneDisc.Color;
         //if (!healthBar)
@@ -134,6 +137,8 @@ public class PlayerHealth : MonoBehaviour
     {
         currentShield = Math.Clamp(newCurrentShield, 0f, maxShield);
         UpdateShieldUI();
+
+        // trail 
     }
 
     private void SetMaxShield(float newMaxShield)
@@ -147,6 +152,8 @@ public class PlayerHealth : MonoBehaviour
     {
         float percent = currentShield * (1f / maxShield);
         healthShieldController.UpdateShield(percent);
+
+
     }
 
     public void ConsumeShield(float amount)
@@ -157,9 +164,11 @@ public class PlayerHealth : MonoBehaviour
     public void DamageShield(float amount)
     {
         currentShield = Math.Clamp(currentShield - amount, 0f, maxShield);
+
         float currentPercent = currentShield * (1f / maxShield);
         float dmgPercent = amount * (1f / maxShield);
         healthShieldController.UpdateShield(currentPercent, dmgPercent);
+        trailScaler.UpdateTrail(currentPercent);
     }
 
     private void StartImmune()
@@ -243,8 +252,7 @@ public class PlayerHealth : MonoBehaviour
         //{
         if (currentShield > 0)
         {
-            currentShield = Math.Clamp(currentShield - amount, 0, maxShield);
-            healthShieldController.UpdateShield(currentShield * (1 / maxShield), amount * (1 / maxShield));
+            DamageShield(amount);
             //healthShieldController.damageVignette.SetColorToShield();
         }
         else

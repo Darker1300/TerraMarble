@@ -47,8 +47,8 @@ public class TrailScaler : MonoBehaviour
         targetScaleFactor2 = Mathf.Lerp(minAuraTrailSize2, maxAuraTrailSize2, percent);
         targetScaleFactorLength = Mathf.Lerp(minAuraTrailLength,maxAuraTrailSizeLength,percent);
         isScaling = true;
-
     }
+
     void Update()
     {
 
