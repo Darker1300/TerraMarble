@@ -15,13 +15,19 @@ public class BallWindJump : MonoBehaviour
     [SerializeField] private float minUpDragInput = 0.1f;
     [SerializeField] private float upDragUISize = 0.15f;
 
-    [SerializeField] private AnimationCurve forceCurve
+    [SerializeField]
+    private AnimationCurve forceCurve
         = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private bool doDebug = true;
 
+    [Header("Config Cost")]
+    [SerializeField] private float glideCost = 1f;
+    [SerializeField] private float flyCost = 1f;
+
     [Header("Config Particles")]
     [SerializeField] private float partDistance = 2.5f;
-    [SerializeField] private AnimationCurve particleRateCurve
+    [SerializeField]
+    private AnimationCurve particleRateCurve
         = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private int partInitialBurst = 10;
     [SerializeField] private float partMultiplier = 10f;
@@ -40,14 +46,21 @@ public class BallWindJump : MonoBehaviour
     private Vector3 downDir = Vector3.down;
 
     private FlyUI flyUI;
+    private PlayerHealth playerHealth;
+    private FollowBehavior followBehavior;
+
     void Start()
     {
-        ballRb = gameObject.GetComponentInParent<Rigidbody2D>();
+        followBehavior = Camera.main.GetComponent<FollowBehavior>();
+        wheel = FindObjectOfType<Wheel>();
         partSystem = partSystem != null ? partSystem
             : GetComponentInChildren<ParticleSystem>();
-
-        wheel = FindObjectOfType<Wheel>();
         flyUI = GetComponentInChildren<FlyUI>(true);
+
+        ballRb = gameObject.GetComponentInParent<Rigidbody2D>();
+        playerHealth = playerHealth != null ? playerHealth
+            : FindObjectOfType<PlayerHealth>();
+
         InputManager.LeftDragEvent += ToggleDrag;
         InputManager.RightDragEvent += ToggleDrag;
 
@@ -85,11 +98,14 @@ public class BallWindJump : MonoBehaviour
                 flyUI.UpdateUI(upDragInput);
             }
         }
-        else if (IsJumping)
+        else
         {
-            IsJumping = false;
-            OnWindJumpEnd();
-            Camera.main.GetComponent<FollowBehavior>().cameraState = FollowBehavior.CameraState.FollowUp;
+            if (IsJumping)
+            {
+                IsJumping = false;
+                OnWindJumpEnd();
+                followBehavior.cameraState = FollowBehavior.CameraState.FollowUp;
+            }
         }
     }
 
@@ -105,12 +121,19 @@ public class BallWindJump : MonoBehaviour
         partSystem.Emit(partInitialBurst);
 
         flyUI.SetUI(true);
-        Camera.main.GetComponent<FollowBehavior>().cameraState = FollowBehavior.CameraState.FollowUp;
+        followBehavior.cameraState = FollowBehavior.CameraState.FollowUp;
+    }
+
+    private bool CanWindJump()
+    {
+        if (playerHealth == null) return false;
+        return playerHealth.CurrentShield > 0f;
     }
 
     void OnWindJumpUpdate()
     {
-        if (!IsJumping) return;
+        if (!IsJumping || !CanWindJump())
+            return;
 
         Vector2 rbVLocal = transform
             .InverseTransformDirection(ballRb.velocity).To2DXY();
@@ -137,6 +160,9 @@ public class BallWindJump : MonoBehaviour
 
         // Timer
         jumpTimer += Time.fixedDeltaTime;
+
+        float forceCost = (forwardForce * glideCost + upForce * flyCost) * Time.fixedDeltaTime;
+        playerHealth.ConsumeShield(forceCost);
     }
 
     void UpdateParticles()

@@ -535,12 +535,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e48e97fe1715ed4b9a7601398a06601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmmoText: {fileID: 0}
-  Target: {fileID: 0}
-  aim: {fileID: 0}
   AmmoAmount: 250
-  testShoot: 0
+  maxShots: 2
   fireRate: 1
+  burstFireRate: 0.5
+  MinHeight: 8
+  AmmoTextObjectName: AmmoText
+  WheelTag: Wheel
 --- !u!114 &1421575005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1148,6 +1149,7 @@ GameObject:
   - component: {fileID: 4861876586259185460}
   - component: {fileID: 4297447129141640614}
   - component: {fileID: 4297447129141640639}
+  - component: {fileID: 4090630950360548728}
   m_Layer: 6
   m_Name: ball2pog
   m_TagString: Ball
@@ -1654,6 +1656,7 @@ MonoBehaviour:
   isDragReleased: 0
   isActive: 0
   dragTimer: 0
+  velBooster: {fileID: 0}
 --- !u!50 &4297447129141640614
 Rigidbody2D:
   serializedVersion: 4
@@ -1687,6 +1690,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 220c97f6f065aed42af2ecf829980ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4090630950360548728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297447129141640627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4d46cee7af1e749a14318ed7ff737c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impulseForce: 300
+  collisionTag: Mountain
+  minVelocity: 0.1
+  test: 0
 --- !u!1 &4297447130273422564
 GameObject:
   m_ObjectHideFlags: 0

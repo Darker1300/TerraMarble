@@ -1,80 +1,93 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyWeaponOne : MonoBehaviour
 {
-    WaitForSeconds Firedelay = new WaitForSeconds(.5f);
-    Coroutine coroutine;
-    //[SerializeField] TextMeshProUGUI AmmoText;
-    public GameObject Target;
-    [SerializeField]
     private AutoAim aim;
     private AmmoController ammoController;
-    public int AmmoAmount;
-    public bool testShoot = false;
+    private GameObject target;
 
-    public float fireRate = 0.5F;
-    private float nextFire = 0.0F;
-    [SerializeField] private ChangeColorOverTime colorChange;
-    // Start is called before the first frame update
-    void Start()
+    public int AmmoAmount = 2000;
+    [SerializeField] private int maxShots = 2;
+    public float fireRate = 1f;
+    public float burstFireRate = .3f;
+
+    private float nextFire;
+
+    private Coroutine fireRateCoroutine;
+
+    private void Start()
+    {
+        InitializeComponents();
+    }
+
+    private void InitializeComponents()
     {
         ammoController = GetComponent<AmmoController>();
         aim = GetComponent<AutoAim>();
-       // AmmoText = GameObject.FindObjectOfType<TextMeshProUGUI>();
-        //UpdateAmmo();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //if has ammo
-        if (AmmoAmount != 0 && Time.time > nextFire && AmmoAmount > 0)
+        if (aim == null || ammoController == null)
         {
-            Target = null;
-            Target = aim.FindClosestTarget();
-            if (Target != null)
-            {
-                StartCoroutine("FireRate");
-                testShoot = false;
-                nextFire = Time.time + fireRate;
-                
-            }
-
+            Debug.LogError("Missing required components. Ensure AutoAim and AmmoController are attached.");
+            enabled = false; // Disable the script if components are missing.
         }
-        //if has target
-
-        //shoot
     }
 
-    public void UpdateAmmo()
+    private void Update()
     {
-        //if (AmmoText)
-          //  AmmoText.text = "Fruit: " + AmmoAmount;
+        if (CanFire())
+        {
+            target = aim.FindClosestTarget();
+            if (target != null)
+            {
+                StartFiring();
+            }
+        }
     }
 
-    IEnumerator FireRate()
+    private bool CanFire()
     {
-        int i = 2;
-        //colorChange.LerpToColor();
-        //yield return new WaitForSeconds(.5f);
+        return Time.time > nextFire && ammoController != null && aim != null;
+    }
 
-        while (i > 0)
+    private void StartFiring()
+    {
+        if (fireRateCoroutine == null)
+        {
+            fireRateCoroutine = StartCoroutine(FireRoutine());
+            nextFire = Time.time + fireRate;
+        }
+    }
+
+    private IEnumerator FireRoutine()
+    {
+        int shotsRemaining = maxShots;
+
+        while (shotsRemaining > 0)
         {
             if (AmmoAmount > 0)
             {
-                ammoController.GetProjectile(BallStateTracker.BallState.NoEffector, Target.transform.position);
-                ammoController.currentProjectile.SetActive(true);
+                FireProjectile();
+                shotsRemaining--;
                 AmmoAmount--;
-                //UpdateAmmo();
             }
-            else yield break;
+            else
+            {
+                break;
+            }
 
-            // Do something 4 times
-            i--;
-            yield return Firedelay;
+            yield return new WaitForSeconds(burstFireRate);
         }
+
+        fireRateCoroutine = null;
     }
 
+    private void FireProjectile()
+    {
+        if (target == null) return;
+
+        Vector3 targetPosition = target.transform.position;
+        ammoController.GetProjectile(BallStateTracker.BallState.NoEffector, targetPosition);
+        ammoController.currentProjectile.SetActive(true);
+    }
 }

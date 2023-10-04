@@ -6,6 +6,11 @@ namespace MathUtility
 {
     public static class MathU
     {
+        public static float Squared(this float value)
+        {
+            return value * value;
+        }
+
         public static Vector2 RadiansToVector2(this float radian)
         {
             return new(

@@ -148,7 +148,8 @@ public class EnemyHealth : MonoBehaviour
         //return to pool
         GetComponent<PoolObject>()?.Pool.ReturnToPool(this.gameObject);
 
-        --waveManager.TotalEnemiesActive;
+        if (waveManager != null)
+            --waveManager.TotalEnemiesActive;
     }
 
 

@@ -13,31 +13,29 @@ public class BallDash : MonoBehaviour
     [SerializeField] private int dashPartEmitCount = 5;
     [SerializeField] private bool useMinVelocityForDash = false;
 
-    [Header("Config Dash Limit")]
-    [SerializeField] private int dashMax = 5;
-    [SerializeField] private int dashRemaining = 5;
-    [SerializeField] private int dashMaxDefaultIndex = 5;
-    public List<string> dashMaxOptions = new() { "0", "1", "2", "3", "4", "5", "10", "99" };
-    [SerializeField] private CycleButton dashMaxButton;
-    private const string dashMaxButtonName = "Dash Max Button";
+    [Header("Config Dash Costs")]
+    [SerializeField] private float dashCost = 5f;
 
-    [Header("Config Dash Recharge")]
-    [SerializeField] private float dashRechargeTime = 0.25f;
-    [SerializeField] private float dashRechargeRange = 20f;
-    //[SerializeField] private string dashRechargeBufferName = "Surface";
-    //[SerializeField] private NearbySensor.ColliderBuffer nearbySurfaceObjects;
-    [SerializeField] private ToggleParticles dashRechargeParticles;
+    [SerializeField] private int dashCostDefaultIndex = 1;
+    public List<string> dashCostOptions = new() { "1", "5", "10", "12.5", "16.67", "25", "50"};
+    [SerializeField] private CycleButton dashCostButton;
+    private const string dashCostButtonName = "Dash Cost Button";
 
+    //[Header("Config Dash Recharge")]
+    //[SerializeField] private float dashRechargeTime = 0.25f;
+    //[SerializeField] private float dashRechargeRange = 20f;
+    //[SerializeField] private ToggleParticles dashRechargeParticles;
 
     [Header("References")]
     [SerializeField] private PlayerInput playerInput = null;
+    [SerializeField] private PlayerHealth playerHealth = null;
     [SerializeField] private Rigidbody2D ballRb = null;
     [SerializeField] private ParticleSystem partSystem = null;
     [SerializeField] private NearbySensor nearbySensor = null;
     [SerializeField] private WheelRegionsManager wheel = null;
 
-    [Header("Data")]
-    [SerializeField] private float dashRechargeTimer = 0f;
+    //[Header("Data")]
+    //[SerializeField] private float dashRechargeTimer = 0f;
 
 
     void Start()
@@ -49,15 +47,17 @@ public class BallDash : MonoBehaviour
             : GetComponentInChildren<NearbySensor>();
         playerInput = playerInput != null ? playerInput
             : FindObjectOfType<PlayerInput>();
+        playerHealth = playerHealth != null ? playerHealth
+            : FindObjectOfType<PlayerHealth>();
         wheel = wheel != null ? wheel
                 : FindObjectOfType<WheelRegionsManager>();
 
-        dashMaxButton = dashMaxButton != null ? dashMaxButton
-            : UnityU.FindObjectByName<CycleButton>(dashMaxButtonName, true);
-        dashMaxButton?.Initialise(dashMaxDefaultIndex, dashMaxOptions, UpdateDashMax);
+        dashCostButton = dashCostButton != null ? dashCostButton
+            : UnityU.FindObjectByName<CycleButton>(dashCostButtonName, true);
+        dashCostButton?.Initialise(dashCostDefaultIndex, dashCostOptions, UpdateDashCost);
 
-        dashRechargeParticles = dashRechargeParticles != null ? dashRechargeParticles
-            : UnityU.FindObjectByName<ToggleParticles>("Dash Charging Particles", true);
+        //dashRechargeParticles = dashRechargeParticles != null ? dashRechargeParticles
+        //    : UnityU.FindObjectByName<ToggleParticles>("Dash Charging Particles", true);
 
         InputManager.TapLeft += () => DoDash(dashForce, -1);
         InputManager.TapRight += () => DoDash(dashForce, 1);
@@ -66,33 +66,39 @@ public class BallDash : MonoBehaviour
         //nearbySensor.Updated += NearbySensorUpdated;
     }
 
-    private void UpdateDashMax(string _newMaxDash)
+    private void UpdateDashCost(string _newDashCost)
     {
-        int newMax = int.Parse(_newMaxDash);
-        dashMax = newMax;
-        dashRemaining = newMax;
+        float newCost = float.Parse(_newDashCost);
+        dashCost = newCost;
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    //bool isNearby = nearbySurfaceObjects.ColliderSet.Stay.Count > 0;
+
+    //    //bool leftNearby = nearbySurfaceObjects.ColliderSet.Exit.Count > 0
+    //    //                     && nearbySurfaceObjects.ColliderSet.Stay.Count == 0;
+    //    //bool enteredNearby = nearbySurfaceObjects.ColliderSet.Enter.Count ==
+    //    //                         nearbySurfaceObjects.ColliderSet.Stay.Count;
+
+
+    //    //bool isRange = wheel.transform.position.To2DXY()
+    //    //                             .Towards(transform.position.To2DXY())
+    //    //                             .sqrMagnitude <
+    //    //                         (dashRechargeRange * dashRechargeRange);
+
+    //    //if (dashRechargeParticles == null) return;
+
+    //    //if (isRange)
+    //    //    dashRechargeParticles.Play();
+    //    //else
+    //    //    dashRechargeParticles.Pause();
+    //}
+
+    public bool CanAffordDash()
     {
-        //bool isNearby = nearbySurfaceObjects.ColliderSet.Stay.Count > 0;
-        
-        //bool leftNearby = nearbySurfaceObjects.ColliderSet.Exit.Count > 0
-        //                     && nearbySurfaceObjects.ColliderSet.Stay.Count == 0;
-        //bool enteredNearby = nearbySurfaceObjects.ColliderSet.Enter.Count ==
-        //                         nearbySurfaceObjects.ColliderSet.Stay.Count;
-
-        bool isRange = wheel.transform.position.To2DXY()
-                                     .Towards(transform.position.To2DXY())
-                                     .sqrMagnitude <
-                                 (dashRechargeRange * dashRechargeRange);
-
-        if (dashRechargeParticles == null) return;
-
-        if (isRange)
-            dashRechargeParticles.Play();
-        else
-            dashRechargeParticles.Pause();
+        if (playerHealth == false) return false;
+        return playerHealth.CurrentShield > dashCost - float.Epsilon;
     }
 
     /// <returns>If successfully applied force.</returns>
@@ -104,7 +110,7 @@ public class BallDash : MonoBehaviour
                 return false;
         }
 
-        if (consumeDash && dashRemaining < 1)
+        if (consumeDash && !CanAffordDash())
             return false;
 
         Vector2 dashDirection;
@@ -115,15 +121,27 @@ public class BallDash : MonoBehaviour
             // Dash towards screen drag direction
 
             // Convert DragLeftScreenVector to world position
-            Vector3 dragLeftWorldVectorStart = Camera.main.ScreenToWorldPoint(
-                side == -1 ? InputManager.DragLeftStartScreenPos : InputManager.DragRightStartScreenPos);
-            Vector3 dragLeftWorldVectorEnd = Camera.main.ScreenToWorldPoint(
-                side == -1 ? InputManager.DragLeftEndScreenPos : InputManager.DragRightEndScreenPos);
+            Vector3 dragStart, dragEnd;
+
+            if (side == -1)
+            {
+                dragStart = InputManager.DragLeftStartScreenPos;
+                dragEnd = InputManager.DragLeftEndScreenPos;
+            }
+            else
+            {
+                dragStart = InputManager.DragRightStartScreenPos;
+                dragEnd = InputManager.DragRightEndScreenPos;
+            }
+
+            dragStart = Camera.main.ScreenToWorldPoint(dragStart);
+            dragEnd = Camera.main.ScreenToWorldPoint(dragEnd);
+
             // Calculate the direction in world space
-            Vector2 worldDirection = dragLeftWorldVectorEnd - dragLeftWorldVectorStart;
+            Vector2 worldVector = (dragEnd - dragStart).To2DXY();
 
             // Normalize the local direction
-            dashDirection = worldDirection.normalized;
+            dashDirection = worldVector.normalized;
         }
         // else if is moving
         else if (ballRb.velocity.sqrMagnitude > minVelocityForSideDash)
@@ -141,10 +159,13 @@ public class BallDash : MonoBehaviour
         ballRb.velocity = dashDirection * newDashForce;
 
         // particles
-        int partEmitCount = Mathf.CeilToInt(dashPartEmitCount * ((float)dashRemaining / dashMax));
+        float shieldPercent = playerHealth.CurrentShield * (1f / playerHealth.MaxShield);
+        float emitCount = dashPartEmitCount * Mathf.Max(1f - shieldPercent, 0.2f);
+        int partEmitCount = Mathf.CeilToInt(emitCount);
         partSystem?.Emit(partEmitCount);
 
-        dashRemaining -= 1;
+        // Apply Damage
+        playerHealth.ConsumeShield(dashCost);
 
         return true;
     }

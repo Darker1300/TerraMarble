@@ -1,87 +1,126 @@
+using MathUtility;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 
 public class Bow : MonoBehaviour
 {
-
-    WaitForSeconds Firedelay = new WaitForSeconds(.5f);
-    Coroutine coroutine;
-    [SerializeField] TextMeshProUGUI AmmoText;
-
-    public GameObject Target;
-    [SerializeField]
     private AutoAim aim;
     private AmmoController ammoController;
-    public int AmmoAmount;
-    public bool testShoot = false;
+    private GameObject target;
 
-    public float fireRate = 0.5F;
-    private float nextFire = 0.0F;
-    private Transform WheelTransform;
+    private TextMeshProUGUI ammoText;
+
+    public int AmmoAmount = 2000;
+    [SerializeField] private int maxShots = 2;
+    public float fireRate = 0.2f;
+    public float burstFireRate = 0.1f;
+
+    private float nextFire;
+
+    private Transform wheelTransform;
     private float wheelRadius;
-    
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float MinHeight = 8f;
+
+    [SerializeField] private string AmmoTextObjectName = "AmmoText";
+    [SerializeField] private string WheelTag = "Wheel";
+
+    private Coroutine fireRateCoroutine;
+
+    private void Start()
+    {
+        InitializeComponents();
+        UpdateAmmo();
+        FindWheelTransform();
+    }
+
+    private void InitializeComponents()
     {
         ammoController = GetComponent<AmmoController>();
         aim = GetComponent<AutoAim>();
-        AmmoText = AmmoText != null ? AmmoText
-            : GameObject.Find("AmmoText")?.GetComponent<TextMeshProUGUI>();
-        
-        UpdateAmmo();
-        WheelTransform = GameObject.FindGameObjectWithTag("Wheel").transform;
-        wheelRadius = WheelTransform.GetComponent<CircleCollider2D>().radius;
+
+        if (aim == null || ammoController == null)
+        {
+            Debug.LogError("Missing required components. Ensure AutoAim and AmmoController are attached.");
+            enabled = false; // Disable the script if components are missing.
+        }
+
+        ammoText = GameObject.Find(AmmoTextObjectName)?.GetComponent<TextMeshProUGUI>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        //if has ammo
-        if (AmmoAmount != 0 && Time.time > nextFire && AmmoAmount > 0)
+        if (CanFire())
         {
-            Target = null;
-            Target = aim.FindClosestTarget();
-            if (Target != null && Vector2.Distance(WheelTransform.position, transform.position) > wheelRadius +8)
-            {
-                StartCoroutine("FireRate");
-                testShoot = false;
-                nextFire = Time.time + fireRate;
-            }
-
+            target = aim.FindClosestTarget();
+            if (target != null && IsTargetAboveHeight()) 
+                StartFiring();
         }
-        //if has target
-
-        //shoot
     }
 
     public void UpdateAmmo()
     {
-        if (AmmoText)
-            AmmoText.text = "Ammo: " + AmmoAmount;
+        if (ammoText != null)
+            ammoText.text = "Ammo: " + AmmoAmount;
     }
 
-    IEnumerator FireRate()
+    private bool CanFire()
     {
-        int i = 2;
+        return Time.time > nextFire && ammoController != null && aim != null;
+    }
 
-        while (i > 0)
+    private void StartFiring()
+    {
+        if (fireRateCoroutine == null)
         {
-            if (AmmoAmount > 0)
-            {
-                ammoController.GetProjectile(BallStateTracker.BallState.NoEffector, Target.transform.position);
-                ammoController.currentProjectile.SetActive(true);
-                AmmoAmount--;
-                UpdateAmmo();
-            }
-            else yield break;
-
-            // Do something 4 times
-            i--;
-            yield return Firedelay;
+            fireRateCoroutine = StartCoroutine(FireRoutine());
+            nextFire = Time.time + fireRate;
         }
     }
 
+    private IEnumerator FireRoutine()
+    {
+        int shotsRemaining = maxShots;
+
+        while (shotsRemaining > 0)
+        {
+            if (AmmoAmount > 0)
+            {
+                FireProjectile();
+                shotsRemaining--;
+                AmmoAmount--;
+            }
+            else
+            {
+                break;
+            }
+
+            yield return new WaitForSeconds(burstFireRate);
+        }
+
+        fireRateCoroutine = null;
+    }
+
+    private void FireProjectile()
+    {
+        if (target == null) return;
+
+        Vector3 targetPosition = target.transform.position;
+        ammoController.GetProjectile(BallStateTracker.BallState.NoEffector, targetPosition);
+        ammoController.currentProjectile.SetActive(true);
+    }
+
+    private bool IsTargetAboveHeight()
+    {
+        return wheelTransform.position.To2DXY()
+                   .Towards(transform.position).sqrMagnitude
+               > (wheelRadius + MinHeight).Squared();
+    }
+
+    private void FindWheelTransform()
+    {
+        wheelTransform = GameObject.FindGameObjectWithTag(WheelTag).transform;
+        wheelRadius = wheelTransform.GetComponent<CircleCollider2D>().radius;
+    }
 }

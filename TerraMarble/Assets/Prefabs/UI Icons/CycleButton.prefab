@@ -61,11 +61,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d10b98b64481644ae1419f025e26c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: 'Data: {0}'
   ButtonUI: {fileID: 1950858465326556681}
   TextUI: {fileID: 3665190543980019715}
-  text: 'Data: {0}'
   index: -1
   options: []
+  ValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7317899413181471887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,7 +272,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 5, y: 0, z: 5, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

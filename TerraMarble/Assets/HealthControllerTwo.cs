@@ -54,27 +54,21 @@ public class HealthControllerTwo : MonoBehaviour
 
             // Update health bar fill amount over time
 
-           
-           
-
             test = false;
         }
 
         //healing will stop 
         if (needsHealing && Time.time - lastTimeDamaged >= healingDelay)
         {
-
-            RepleshBars();
-        }else 
-            //if sheild is bellow
-            //last damage recieved cached 
+            ReplenishBars();
+        } else 
+            //if shield is bellow
+            //last damage received cached 
             UpdateBars();
     }
 
     private void UpdateBars()
     {
-        
-        
         // Update health bar fill amount over time
         float targetHealthFillAmount = currentHealthPercentage / 100f;
         healthBarFillImage.fillAmount = Mathf.MoveTowards(healthBarFillImage.fillAmount, targetHealthFillAmount, fillSpeed * Time.deltaTime);
@@ -82,31 +76,28 @@ public class HealthControllerTwo : MonoBehaviour
         // Update shield bar fill amount over time
         float targetShieldFillAmount = currentShieldPercentage / 100f;
         shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetShieldFillAmount, fillSpeed * Time.deltaTime);
-
-
     }
-    private void RepleshBars()
-    {
-       
 
+    private void ReplenishBars()
+    {
         // Update health bar fill amount over time
         float targetHealthFillAmount = 1f;
         healthBarStatic.fillAmount = Mathf.MoveTowards(healthBarStatic.fillAmount, targetHealthFillAmount, fillSpeed * Time.deltaTime);
         shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetHealthFillAmount, fillSpeed * Time.deltaTime);
         currentHealthPercentage = healthBarStatic.fillAmount;
-        playerHealth.UpdateHealthAndShield(currentHealthPercentage,currentShieldPercentage);
+        playerHealth.CurrentHealth = playerHealth.MaxHealth;
+        playerHealth.CurrentShield = playerHealth.MaxShield;
 
         // Update shield bar fill amount over time
         float targetShieldFillAmount =  1f;
         shieldBarStatic.fillAmount = Mathf.MoveTowards(shieldBarStatic.fillAmount, targetShieldFillAmount, fillSpeed * Time.deltaTime);
         shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetShieldFillAmount, fillSpeed * Time.deltaTime);
         currentShieldPercentage = shieldBarStatic.fillAmount;
-        if (playerHealth.CurrentHealth == playerHealth.MaxHealth)
+        if (Mathf.Approximately(playerHealth.CurrentHealth, playerHealth.MaxHealth))
         {
             //turn on flashing health
-            ToggleFLashing(false);
+            ToggleFlashing(false);
             flashingHealthBackGround = false;
-
         }
     }
 
@@ -126,25 +117,35 @@ public class HealthControllerTwo : MonoBehaviour
         if (!flashingHealthBackGround)
         {
             //turn on flashing health
-            ToggleFLashing(true);
-
-
+            ToggleFlashing(true);
         }
         
     }
-    public void UpdateShield(float newShieldPercentage, float damToMaxShieldPercent)
+
+    public void UpdateShield(float newCurrentShieldPercent)
     {
         lastTimeDamaged = Time.time;
         needsHealing = true;
 
-        currentShieldPercentage = Mathf.Clamp(newShieldPercentage * 100, 0f, 100f);
-        float targetsheildFillAmount = currentShieldPercentage / 100f;
-        shieldBarStatic.fillAmount = targetsheildFillAmount;
-        damageVignette.setVignetteTarget(damToMaxShieldPercent);
+        currentShieldPercentage = Mathf.Clamp(newCurrentShieldPercent * 100, 0f, 100f);
+        float targetShieldFillAmount = currentShieldPercentage / 100f;
+        shieldBarStatic.fillAmount = targetShieldFillAmount;
+    }
+
+    public void UpdateDamageVignette(float shieldDamagePercent)
+    {
+        damageVignette.setVignetteTarget(shieldDamagePercent);
         damageVignette.SetColorToShield();
         AuraController.TestDam();
     }
-    public void ToggleFLashing(bool on)
+
+    public void UpdateShield(float newCurrentShieldPercent, float shieldDamagePercent)
+    {
+        UpdateShield(newCurrentShieldPercent);
+        UpdateDamageVignette(shieldDamagePercent);
+    }
+
+    public void ToggleFlashing(bool on)
     {
         if (on)
         {
@@ -161,6 +162,6 @@ public class HealthControllerTwo : MonoBehaviour
         healthBarFillImage.fillAmount = 1;
         currentHealthPercentage = 100;
         currentShieldPercentage = 100;
-        ToggleFLashing(false);
+        ToggleFlashing(false);
     }
 }

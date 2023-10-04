@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
 {
     private BallStateTracker.BallState effector;
     public ObjectPooler pooler;
-    public Vector2 TargetDirection;
+    public Vector2 TargetVector;
     [SerializeField] private float moveSpeed;
     private Transform planetCenter;
     public int projectileDammage;
@@ -62,8 +62,8 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (TargetDirection.sqrMagnitude > 0f)
-            transform.Translate(transform.rotation * TargetDirection.normalized * moveSpeed * Time.fixedDeltaTime);
+        if (TargetVector.sqrMagnitude > 0f)
+            transform.Translate(transform.rotation * TargetVector.normalized * (moveSpeed * Time.fixedDeltaTime));
 
         //transform.position = Vector2.MoveTowards(transform.position, targetTrans, moveSpeed * Time.deltaTime);
     }
