@@ -9,7 +9,7 @@ using UnityUtility;
 public class TreeBend : MonoBehaviour
 {
     // Positioning
-    private CircleCollider2D circleCollider2D;
+    private CircleCollider2D bendCircleCollector;
     private WheelRegionsManager wheelRegions;
     private BallStateTracker ball;
     private Rigidbody2D ballRb;
@@ -81,7 +81,7 @@ public class TreeBend : MonoBehaviour
         wheelRegions = FindObjectOfType<WheelRegionsManager>();
         ball = FindObjectOfType<BallStateTracker>();
         ballRb = ball?.GetComponent<Rigidbody2D>();
-        circleCollider2D = GetComponent<CircleCollider2D>();
+        bendCircleCollector = GetComponent<CircleCollider2D>();
         wheelRadius = wheelRegions.WheelRadius;
 
         playerInput = FindObjectOfType<PlayerInput>();
@@ -151,7 +151,7 @@ public class TreeBend : MonoBehaviour
             Vector3 directionVector = transform.position.Towards(treeGroundSurfacePoint);
 
             // Calculate the squared distance between this object and the tree, normalized by the square of the circle collider's radius
-            float distPercent = directionVector.sqrMagnitude / (circleCollider2D.radius * circleCollider2D.radius);
+            float distPercent = directionVector.sqrMagnitude / (bendCircleCollector.radius * bendCircleCollector.radius);
 
             // Apply the tree bending curve across the extent of the circle collider
             float bendCurve = treeBendCurve.Evaluate(Mathf.Clamp01(distPercent));

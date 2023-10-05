@@ -48,7 +48,11 @@ public class BallWindJump : MonoBehaviour
     private FlyUI flyUI;
     private PlayerHealth playerHealth;
     private FollowBehavior followBehavior;
+
     public LayerMask collisionLayer;
+    Collider2D[] dashCollisionObjs;
+    CircleCollider2D ballCollider;
+
     void Start()
     {
         followBehavior = Camera.main.GetComponent<FollowBehavior>();
@@ -68,6 +72,9 @@ public class BallWindJump : MonoBehaviour
         InputManager.RightDragVectorEvent += (vector, delta, screenDragVector) => UpdateDragInput(screenDragVector);
 
         flyUI.SetUI(false);
+
+        dashCollisionObjs = new Collider2D[1];
+        ballCollider = GetComponentInChildren<CircleCollider2D>();
     }
 
     private void ToggleDrag(bool state)
@@ -108,18 +115,17 @@ public class BallWindJump : MonoBehaviour
             }
         }
     }
-    public bool CheckForCollision()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, GetComponentInChildren<CircleCollider2D>().radius, collisionLayer);
-        if (colliders.Length > 0)
-        {
-            return true;
-        }
-        else return false;
-    }
+
     void FixedUpdate()
     {
         OnWindJumpUpdate();
+    }
+
+    public bool CheckForCollision()
+    {
+        var size = Physics2D.OverlapCircleNonAlloc(
+            transform.position, ballCollider.radius + 0.1f, dashCollisionObjs, collisionLayer);
+        return size > 0;
     }
 
     public void DoWindJump()
@@ -134,18 +140,17 @@ public class BallWindJump : MonoBehaviour
 
     private bool CanWindJump()
     {
-        //if (playerHealth == null) return false;
+        if (playerHealth == null) return false;
+        
         if (playerHealth.CurrentShield > 0f || CheckForCollision())
         {
             return true;
         }
-        else return false;
-        
+        return false;
     }
 
     void OnWindJumpUpdate()
     {
-   
         if (!IsJumping || !CanWindJump() )
             return;
 

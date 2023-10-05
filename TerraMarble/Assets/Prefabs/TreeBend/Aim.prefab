@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5207247042109310711}
   - component: {fileID: 5207247042109310664}
+  - component: {fileID: 4330856301933483595}
   - component: {fileID: 5207247042109310665}
   - component: {fileID: 5207247042109310666}
   - component: {fileID: 5207247042109310667}
@@ -33,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &5207247042109310664
 CircleCollider2D:
@@ -50,7 +51,19 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 11.5
+  m_Radius: 14
+--- !u!114 &4330856301933483595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5207247042109310668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 397e2a84a3c7049428bd522b85800ad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5207247042109310665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd53a0a735b492d4fb68aca87ec313c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragStartOffset: 12.5
+  dragStartOffset: 9.5
   dragMoveRange: 25
   dragDirOffsetAmount: 20
   bendTime: 0.04

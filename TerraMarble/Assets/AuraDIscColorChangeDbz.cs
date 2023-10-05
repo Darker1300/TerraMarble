@@ -5,7 +5,7 @@ using Shapes;
 using System;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
-public class AuraDIscColorChangeDbz : MonoBehaviour
+public class AuraDiscColorChangeDbz : MonoBehaviour
 {
     public Color targetColor; // the color we want to lerp to
     public float duration = 2f; // how long the color will take to become fully transparent
@@ -25,8 +25,7 @@ public class AuraDIscColorChangeDbz : MonoBehaviour
     [SerializeField]
     private Material TrailMaterial;
     public bool changeTrailColor;
-    [SerializeField]
-    private Color initialTrailColor;
+    public Color initialTrailColor;
     void Start()
     {
        TrailMaterial.SetColor("_EmissionColor",initialTrailColor);

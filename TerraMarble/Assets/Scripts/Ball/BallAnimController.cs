@@ -53,7 +53,7 @@ public class BallAnimController : MonoBehaviour
     [Header("Bounce")]
     [SerializeField] private bool DoBounce = false;
 
-    void Awake()
+    void Start()
     {
         Animator = Animator != null ? Animator
             : GetComponentInChildren<Animator>();

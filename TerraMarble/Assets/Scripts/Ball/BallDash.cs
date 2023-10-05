@@ -10,42 +10,46 @@ public class BallDash : MonoBehaviour
     [SerializeField] private float minVelocityForDash = .1f;
     [SerializeField] private float minVelocityForSideDash = 1f;
     [SerializeField] private float dashForce = 50f;
-    [SerializeField] private int dashPartEmitCount = 5;
-    [SerializeField] private bool useMinVelocityForDash = false;
+    //[SerializeField] private int dashPartEmitCount = 5;
+    [SerializeField] private bool useMinVelocityForDash;
 
     [Header("Config Dash Costs")]
     [SerializeField] private float dashCost = 5f;
 
+    [SerializeField] private ParticleSystem dashParticleSystem;
+    [SerializeField] private Color freeDashColor = Color.yellow;
+    [SerializeField] private Color paidDashColor = Color.cyan;
+    public bool FreeDash = true;
+    public int freeDashCurrent = 2;
+    [SerializeField] private int freeDashMax;
+
+
     [SerializeField] private int dashCostDefaultIndex = 1;
-    public List<string> dashCostOptions = new() { "1", "5", "10", "12.5", "16.67", "25", "50"};
+    public List<string> dashCostOptions = new() { "1", "5", "10", "12.5", "16.67", "25", "50" };
     [SerializeField] private CycleButton dashCostButton;
     private const string dashCostButtonName = "Dash Cost Button";
-    public bool FreeDash=true;
-    public int freeDashCurrent= 2;
     //[Header("Config Dash Recharge")]
     //[SerializeField] private float dashRechargeTime = 0.25f;
     //[SerializeField] private float dashRechargeRange = 20f;
     //[SerializeField] private ToggleParticles dashRechargeParticles;
 
     [Header("References")]
-    [SerializeField] private PlayerInput playerInput = null;
-    [SerializeField] private PlayerHealth playerHealth = null;
-    [SerializeField] private Rigidbody2D ballRb = null;
-    [SerializeField] private ParticleSystem partSystem = null;
-    [SerializeField] private NearbySensor nearbySensor = null;
-    [SerializeField] private WheelRegionsManager wheel = null;
-
-    //[Header("Data")]
-    //[SerializeField] private float dashRechargeTimer = 0f;
+    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private Rigidbody2D ballRb;
+    [SerializeField] private NearbySensor nearbySensor;
+    [SerializeField] private WheelRegionsManager wheel;
 
     public LayerMask collisionLayer;
-    [SerializeField] private int freeDashMax;
+    Collider2D[] dashCollisionObjs;
+    CircleCollider2D ballCollider;
 
     void Start()
     {
+        dashParticleSystem = dashParticleSystem != null ? dashParticleSystem
+            : transform.Find("Dash Particles")?.GetComponent<ParticleSystem>();
+
         ballRb = gameObject.GetComponentInParent<Rigidbody2D>();
-        partSystem = partSystem != null ? partSystem
-            : GetComponentInChildren<ParticleSystem>();
         nearbySensor = nearbySensor != null ? nearbySensor
             : GetComponentInChildren<NearbySensor>();
         playerInput = playerInput != null ? playerInput
@@ -53,7 +57,7 @@ public class BallDash : MonoBehaviour
         playerHealth = playerHealth != null ? playerHealth
             : FindObjectOfType<PlayerHealth>();
         wheel = wheel != null ? wheel
-                : FindObjectOfType<WheelRegionsManager>();
+            : FindObjectOfType<WheelRegionsManager>();
 
         dashCostButton = dashCostButton != null ? dashCostButton
             : UnityU.FindObjectByName<CycleButton>(dashCostButtonName, true);
@@ -67,6 +71,9 @@ public class BallDash : MonoBehaviour
 
         //nearbySurfaceObjects = nearbySensor.FindBuffer(dashRechargeBufferName);
         //nearbySensor.Updated += NearbySensorUpdated;
+
+        dashCollisionObjs = new Collider2D[1];
+        ballCollider = GetComponentInChildren<CircleCollider2D>();
     }
 
     private void UpdateDashCost(string _newDashCost)
@@ -97,27 +104,28 @@ public class BallDash : MonoBehaviour
     //    //else
     //    //    dashRechargeParticles.Pause();
     //}
+
     public void ResetFreeDash()
     {
         FreeDash = true;
         freeDashCurrent = freeDashMax;
     }
-    public bool CanAffordDash()
-    {
-        //if (playerHealth == false) return false;
-        //return
 
-        //if (playerHealth == null) return false;
+    public bool PayForDash()
+    {
+        if (playerHealth == null) return false;
+
         //if on ground reset free dash amount
         if (CheckForCollision())
         {
             FreeDash = true;
-            freeDashCurrent = freeDashMax -1;
+            freeDashCurrent = freeDashMax - 1;
             return true;
             //call minus one free dash
         }
+
         //if we are in air
-        if (FreeDash == true)
+        if (FreeDash)
         {
             if (freeDashCurrent > 0)
             {
@@ -128,8 +136,6 @@ public class BallDash : MonoBehaviour
                 }
                 return true;
             }
-            
-           
         }
 
         if (playerHealth.CurrentShield > dashCost - float.Epsilon)
@@ -137,19 +143,17 @@ public class BallDash : MonoBehaviour
             playerHealth.ConsumeShield(dashCost);
             return true;
         }
-        
-        else return false;
 
+        return false;
     }
+
     public bool CheckForCollision()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, GetComponentInChildren<CircleCollider2D>().radius, collisionLayer);
-        if (colliders.Length > 0)
-        {
-            return true;
-        }
-        else return false;
+        var size = Physics2D.OverlapCircleNonAlloc(
+            transform.position, ballCollider.radius + 0.1f, dashCollisionObjs, collisionLayer);
+        return size > 0;
     }
+
     /// <returns>If successfully applied force.</returns>
     public bool DoDash(float newDashForce, int side, bool forceDash = false, bool consumeDash = true)
     {
@@ -159,7 +163,9 @@ public class BallDash : MonoBehaviour
                 return false;
         }
 
-        if (consumeDash && !CanAffordDash())
+        bool isFreeDash = FreeDash;
+
+        if (consumeDash && !PayForDash())
             return false;
 
         Vector2 dashDirection;
@@ -208,14 +214,28 @@ public class BallDash : MonoBehaviour
         ballRb.velocity = dashDirection * newDashForce;
 
         // particles
-        float shieldPercent = playerHealth.CurrentShield * (1f / playerHealth.MaxShield);
-        float emitCount = dashPartEmitCount * Mathf.Max(1f - shieldPercent, 0.2f);
-        int partEmitCount = Mathf.CeilToInt(emitCount);
-        partSystem?.Emit(partEmitCount);
+        EmitDashParticles(isFreeDash, dashDirection);
 
         // Apply Damage
-        
 
         return true;
+    }
+
+    public void EmitDashParticles(bool useFreeDashColor, Vector2 direction)
+    {
+        // set color
+        Color dashColor = paidDashColor;
+        if (useFreeDashColor)
+            dashColor = freeDashColor;
+
+        ParticleSystem.MainModule ma = dashParticleSystem.main;
+        ma.startColor = dashColor;
+
+        // set rotation
+        dashParticleSystem.transform.rotation =
+            Quaternion.LookRotation(Vector3.forward, -direction.To3DXY(0f));
+
+        // play
+        dashParticleSystem.Play();
     }
 }

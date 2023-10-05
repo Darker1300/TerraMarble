@@ -75,7 +75,7 @@ public class AuraControllerDbz : MonoBehaviour
         {
             setRadiusTarget(testAmount);
             Test = false;
-            GetComponent<AuraDIscColorChangeDbz>().LerpToColor();
+            GetComponent<AuraDiscColorChangeDbz>().LerpToColor();
         }
         UpdateVignette();
     }
@@ -83,7 +83,7 @@ public class AuraControllerDbz : MonoBehaviour
     {
 
         setRadiusTarget(testAmount);
-        GetComponent<AuraDIscColorChangeDbz>().LerpToColor();
+        GetComponent<AuraDiscColorChangeDbz>().LerpToColor();
     }
     public void SetColorToShield()
     {
