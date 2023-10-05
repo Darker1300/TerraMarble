@@ -48,7 +48,7 @@ public class BallWindJump : MonoBehaviour
     private FlyUI flyUI;
     private PlayerHealth playerHealth;
     private FollowBehavior followBehavior;
-
+    public LayerMask collisionLayer;
     void Start()
     {
         followBehavior = Camera.main.GetComponent<FollowBehavior>();
@@ -108,7 +108,15 @@ public class BallWindJump : MonoBehaviour
             }
         }
     }
-
+    public bool CheckForCollision()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, GetComponentInChildren<CircleCollider2D>().radius, collisionLayer);
+        if (colliders.Length > 0)
+        {
+            return true;
+        }
+        else return false;
+    }
     void FixedUpdate()
     {
         OnWindJumpUpdate();
@@ -126,13 +134,19 @@ public class BallWindJump : MonoBehaviour
 
     private bool CanWindJump()
     {
-        if (playerHealth == null) return false;
-        return playerHealth.CurrentShield > 0f;
+        //if (playerHealth == null) return false;
+        if (playerHealth.CurrentShield > 0f || CheckForCollision())
+        {
+            return true;
+        }
+        else return false;
+        
     }
 
     void OnWindJumpUpdate()
     {
-        if (!IsJumping || !CanWindJump())
+   
+        if (!IsJumping || !CanWindJump() )
             return;
 
         Vector2 rbVLocal = transform

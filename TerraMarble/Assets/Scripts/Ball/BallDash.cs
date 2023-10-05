@@ -20,7 +20,7 @@ public class BallDash : MonoBehaviour
     public List<string> dashCostOptions = new() { "1", "5", "10", "12.5", "16.67", "25", "50"};
     [SerializeField] private CycleButton dashCostButton;
     private const string dashCostButtonName = "Dash Cost Button";
-
+    public bool FreeDash=true;
     //[Header("Config Dash Recharge")]
     //[SerializeField] private float dashRechargeTime = 0.25f;
     //[SerializeField] private float dashRechargeRange = 20f;
@@ -37,7 +37,7 @@ public class BallDash : MonoBehaviour
     //[Header("Data")]
     //[SerializeField] private float dashRechargeTimer = 0f;
 
-
+    public LayerMask collisionLayer;
     void Start()
     {
         ballRb = gameObject.GetComponentInParent<Rigidbody2D>();
@@ -97,10 +97,36 @@ public class BallDash : MonoBehaviour
 
     public bool CanAffordDash()
     {
-        if (playerHealth == false) return false;
-        return playerHealth.CurrentShield > dashCost - float.Epsilon;
-    }
+        //if (playerHealth == false) return false;
+        //return
 
+        //if (playerHealth == null) return false;
+        if (FreeDash==true)
+        {
+            FreeDash = false;
+            return true;
+        }
+        if (playerHealth.CurrentShield > dashCost - float.Epsilon || CheckForCollision())
+        {
+            return true;
+        }
+        else if (FreeDash == true)
+        {
+            FreeDash = false;
+            return true;
+        }
+        else return false;
+
+    }
+    public bool CheckForCollision()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, GetComponentInChildren<CircleCollider2D>().radius, collisionLayer);
+        if (colliders.Length > 0)
+        {
+            return true;
+        }
+        else return false;
+    }
     /// <returns>If successfully applied force.</returns>
     public bool DoDash(float newDashForce, int side, bool forceDash = false, bool consumeDash = true)
     {

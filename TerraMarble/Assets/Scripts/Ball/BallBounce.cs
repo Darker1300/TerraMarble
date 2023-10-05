@@ -30,11 +30,13 @@ public class BallBounce : MonoBehaviour
     private ContactPoint2D deflectContact;
 
     [SerializeField] VelocityBoost velBooster;
+    private BallDash ballBounce;
     //[SerializeField] private float treeLength = 2f; // Maximum distance to start reducing velocity.
     //private Vector2 initialVelocity;
 
     void Start()
     {
+        ballBounce = GetComponent<BallDash>();
         rigidBody2D = rigidBody2D != null ? rigidBody2D
             : GetComponent<Rigidbody2D>();
         playerInput = FindObjectOfType<PlayerInput>();
@@ -138,6 +140,7 @@ public class BallBounce : MonoBehaviour
 
     private void HandleCollision(Collision2D _collision)
     {
+        ballBounce.FreeDash = true;
         if (GetTree(_collision) != null)
         {
             isContacting = true;

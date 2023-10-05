@@ -17,7 +17,7 @@ public class Bow : MonoBehaviour
     public float fireRate = 0.2f;
     public float burstFireRate = 0.1f;
 
-    private float nextFire;
+   private float nextFire;
 
     private Transform wheelTransform;
     private float wheelRadius;
