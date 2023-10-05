@@ -41,6 +41,12 @@ public class ArrowIndicator : MonoBehaviour
 
         private void Update()
         {
+            if (enemy == null)
+            {
+                indicatorInstance.SetActive(false);
+                return;
+            }
+
             // Calculate the direction from player to enemy.
             Vector3 direction = (enemy.position - player.position).normalized;
        
