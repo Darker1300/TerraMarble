@@ -9,7 +9,8 @@ public class HealthControllerTwo : MonoBehaviour
     [SerializeField] private Image shieldBarFillImage;
     [SerializeField] private Image healthBarStatic;
     [SerializeField] private Image shieldBarStatic;
-    [SerializeField] private float fillSpeed = 0.5f; // Adjust as needed
+     private float currentFillSpeed = 0.5f; // Adjust as needed
+    
     [SerializeField] private float currentHealthPercentage = 100f;
     [SerializeField] private float currentShieldPercentage = 100f;
     [SerializeField] private bool test;
@@ -22,6 +23,8 @@ public class HealthControllerTwo : MonoBehaviour
     private float lastTimeDamaged;
     private bool needsHealing;
     [SerializeField] private float healingDelay = 3f;
+    [SerializeField] private float replenishSpeed = 0.5f; // Adjust as needed
+    [SerializeField] private float damageSpeed = 0.5f; // Adjust as needed
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private TrailScaler trailScaler;
 
@@ -73,11 +76,11 @@ public class HealthControllerTwo : MonoBehaviour
     {
         // Update health bar fill amount over time
         float targetHealthFillAmount = currentHealthPercentage / 100f;
-        healthBarFillImage.fillAmount = Mathf.MoveTowards(healthBarFillImage.fillAmount, targetHealthFillAmount, fillSpeed * Time.deltaTime);
+        healthBarFillImage.fillAmount = Mathf.MoveTowards(healthBarFillImage.fillAmount, targetHealthFillAmount, currentFillSpeed * Time.deltaTime);
 
         // Update shield bar fill amount over time
         float targetShieldFillAmount = currentShieldPercentage / 100f;
-        shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetShieldFillAmount, fillSpeed * Time.deltaTime);
+        shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetShieldFillAmount, currentFillSpeed * Time.deltaTime);
 
         // Trail
         trailScaler.UpdateTrail(playerHealth.CurrentShield * (1f / playerHealth.MaxShield));
@@ -87,16 +90,16 @@ public class HealthControllerTwo : MonoBehaviour
     {
         // Update health bar fill amount over time
         float targetHealthFillAmount = 1f;
-        healthBarStatic.fillAmount = Mathf.MoveTowards(healthBarStatic.fillAmount, targetHealthFillAmount, fillSpeed * Time.deltaTime);
-        shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetHealthFillAmount, fillSpeed * Time.deltaTime);
+        healthBarStatic.fillAmount = Mathf.MoveTowards(healthBarStatic.fillAmount, targetHealthFillAmount, currentFillSpeed * Time.deltaTime);
+        shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetHealthFillAmount, currentFillSpeed * Time.deltaTime);
         currentHealthPercentage = healthBarStatic.fillAmount;
         playerHealth.CurrentHealth = playerHealth.MaxHealth;
         playerHealth.CurrentShield = playerHealth.MaxShield;
 
         // Update shield bar fill amount over time
         float targetShieldFillAmount =  1f;
-        shieldBarStatic.fillAmount = Mathf.MoveTowards(shieldBarStatic.fillAmount, targetShieldFillAmount, fillSpeed * Time.deltaTime);
-        shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetShieldFillAmount, fillSpeed * Time.deltaTime);
+        shieldBarStatic.fillAmount = Mathf.MoveTowards(shieldBarStatic.fillAmount, targetShieldFillAmount, currentFillSpeed * Time.deltaTime);
+        shieldBarFillImage.fillAmount = Mathf.MoveTowards(shieldBarFillImage.fillAmount, targetShieldFillAmount, currentFillSpeed * Time.deltaTime);
         currentShieldPercentage = shieldBarStatic.fillAmount;
         if (Mathf.Approximately(playerHealth.CurrentHealth, playerHealth.MaxHealth))
         {
@@ -106,6 +109,7 @@ public class HealthControllerTwo : MonoBehaviour
         }
         // trail
         trailScaler.UpdateTrail(playerHealth.CurrentShield * (1f / playerHealth.MaxShield));
+        currentFillSpeed = replenishSpeed;
     }
 
     // Example method to update health and shield percentages
@@ -113,7 +117,7 @@ public class HealthControllerTwo : MonoBehaviour
     {
         lastTimeDamaged = Time.time;
         needsHealing = true;
-
+        currentFillSpeed = damageSpeed;
         currentHealthPercentage = Mathf.Clamp(newHealthPercentage *100, 0f, 100f);
         //currentShieldPercentage = Mathf.Clamp(newShieldPercentage, 0f, 100f);
         float targetHealthFillAmount = currentHealthPercentage / 100f;
@@ -137,6 +141,7 @@ public class HealthControllerTwo : MonoBehaviour
         currentShieldPercentage = Mathf.Clamp(newCurrentShieldPercent * 100, 0f, 100f);
         float targetShieldFillAmount = currentShieldPercentage / 100f;
         shieldBarStatic.fillAmount = targetShieldFillAmount;
+        currentFillSpeed = damageSpeed;
     }
 
     public void UpdateDamageVignette(float shieldDamagePercent)
@@ -148,6 +153,7 @@ public class HealthControllerTwo : MonoBehaviour
 
     public void UpdateShield(float newCurrentShieldPercent, float shieldDamagePercent)
     {
+        currentFillSpeed = damageSpeed;
         UpdateShield(newCurrentShieldPercent);
         UpdateDamageVignette(shieldDamagePercent);
     }

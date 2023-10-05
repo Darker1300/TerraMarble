@@ -204,9 +204,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pooler: {fileID: 0}
-  TargetDirection: {x: 0, y: 0}
+  TargetVector: {x: 0, y: 0}
   moveSpeed: 0
-  projectileDammage: 5
+  projectileDammage: 10
   enemyTagName: Ball
   wheelTagName: Wheel
 --- !u!1 &333141709408704727
