@@ -140,7 +140,7 @@ public class BallBounce : MonoBehaviour
 
     private void HandleCollision(Collision2D _collision)
     {
-        ballBounce.FreeDash = true;
+        ballBounce.ResetFreeDash();
         if (GetTree(_collision) != null)
         {
             isContacting = true;

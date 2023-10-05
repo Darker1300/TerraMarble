@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using MathUtility;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityUtility;
 
@@ -11,7 +11,7 @@ public class BallDash : MonoBehaviour
     [SerializeField] private float minVelocityForSideDash = 1f;
     [SerializeField] private float dashForce = 50f;
     [SerializeField] private int dashPartEmitCount = 5;
-    [SerializeField] private bool useMinVelocityForDash;
+    [SerializeField] private bool useMinVelocityForDash = false;
 
     [Header("Config Dash Costs")]
     [SerializeField] private float dashCost = 5f;
@@ -21,25 +21,25 @@ public class BallDash : MonoBehaviour
     [SerializeField] private CycleButton dashCostButton;
     private const string dashCostButtonName = "Dash Cost Button";
     public bool FreeDash=true;
+    public int freeDashCurrent= 2;
     //[Header("Config Dash Recharge")]
     //[SerializeField] private float dashRechargeTime = 0.25f;
     //[SerializeField] private float dashRechargeRange = 20f;
     //[SerializeField] private ToggleParticles dashRechargeParticles;
 
     [Header("References")]
-    [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private PlayerHealth playerHealth;
-    [SerializeField] private Rigidbody2D ballRb;
-    [SerializeField] private ParticleSystem partSystem;
-    [SerializeField] private NearbySensor nearbySensor;
-    [SerializeField] private WheelRegionsManager wheel;
+    [SerializeField] private PlayerInput playerInput = null;
+    [SerializeField] private PlayerHealth playerHealth = null;
+    [SerializeField] private Rigidbody2D ballRb = null;
+    [SerializeField] private ParticleSystem partSystem = null;
+    [SerializeField] private NearbySensor nearbySensor = null;
+    [SerializeField] private WheelRegionsManager wheel = null;
 
     //[Header("Data")]
     //[SerializeField] private float dashRechargeTimer = 0f;
-    
+
     public LayerMask collisionLayer;
-    Collider2D[] dashCollisionObjs;
-    CircleCollider2D ballCollider;
+    [SerializeField] private int freeDashMax;
 
     void Start()
     {
@@ -67,9 +67,6 @@ public class BallDash : MonoBehaviour
 
         //nearbySurfaceObjects = nearbySensor.FindBuffer(dashRechargeBufferName);
         //nearbySensor.Updated += NearbySensorUpdated;
-
-        dashCollisionObjs = new Collider2D[1];
-        ballCollider = GetComponentInChildren<CircleCollider2D>();
     }
 
     private void UpdateDashCost(string _newDashCost)
@@ -100,40 +97,59 @@ public class BallDash : MonoBehaviour
     //    //else
     //    //    dashRechargeParticles.Pause();
     //}
-
+    public void ResetFreeDash()
+    {
+        FreeDash = true;
+        freeDashCurrent = freeDashMax;
+    }
     public bool CanAffordDash()
     {
         //if (playerHealth == false) return false;
         //return
 
         //if (playerHealth == null) return false;
-        if (FreeDash)
+        //if on ground reset free dash amount
+        if (CheckForCollision())
         {
-            FreeDash = false;
+            FreeDash = true;
+            freeDashCurrent = freeDashMax -1;
             return true;
+            //call minus one free dash
         }
-        if (playerHealth.CurrentShield > dashCost - float.Epsilon || CheckForCollision())
+        //if we are in air
+        if (FreeDash == true)
         {
-            return true;
+            if (freeDashCurrent > 0)
+            {
+                freeDashCurrent -= 1;
+                if (freeDashCurrent < 1)
+                {
+                    FreeDash = false;
+                }
+                return true;
+            }
+            
+           
         }
 
-        if (FreeDash)
+        if (playerHealth.CurrentShield > dashCost - float.Epsilon)
         {
-            FreeDash = false;
+            playerHealth.ConsumeShield(dashCost);
             return true;
         }
-
-        return false;
+        
+        else return false;
 
     }
-
     public bool CheckForCollision()
     {
-        var size = Physics2D.OverlapCircleNonAlloc(
-            transform.position, ballCollider.radius + 0.1f, dashCollisionObjs, collisionLayer);
-        return size > 0;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, GetComponentInChildren<CircleCollider2D>().radius, collisionLayer);
+        if (colliders.Length > 0)
+        {
+            return true;
+        }
+        else return false;
     }
-
     /// <returns>If successfully applied force.</returns>
     public bool DoDash(float newDashForce, int side, bool forceDash = false, bool consumeDash = true)
     {
@@ -198,7 +214,7 @@ public class BallDash : MonoBehaviour
         partSystem?.Emit(partEmitCount);
 
         // Apply Damage
-        playerHealth.ConsumeShield(dashCost);
+        
 
         return true;
     }
