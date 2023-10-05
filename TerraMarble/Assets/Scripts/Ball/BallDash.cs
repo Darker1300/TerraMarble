@@ -21,6 +21,7 @@ public class BallDash : MonoBehaviour
     [SerializeField] private CycleButton dashCostButton;
     private const string dashCostButtonName = "Dash Cost Button";
     public bool FreeDash=true;
+    public int freeDashCurrent= 2;
     //[Header("Config Dash Recharge")]
     //[SerializeField] private float dashRechargeTime = 0.25f;
     //[SerializeField] private float dashRechargeRange = 20f;
@@ -38,6 +39,8 @@ public class BallDash : MonoBehaviour
     //[SerializeField] private float dashRechargeTimer = 0f;
 
     public LayerMask collisionLayer;
+    [SerializeField] private int freeDashMax;
+
     void Start()
     {
         ballRb = gameObject.GetComponentInParent<Rigidbody2D>();
@@ -94,27 +97,47 @@ public class BallDash : MonoBehaviour
     //    //else
     //    //    dashRechargeParticles.Pause();
     //}
-
+    public void ResetFreeDash()
+    {
+        FreeDash = true;
+        freeDashCurrent = freeDashMax;
+    }
     public bool CanAffordDash()
     {
         //if (playerHealth == false) return false;
         //return
 
         //if (playerHealth == null) return false;
-        if (FreeDash==true)
+        //if on ground reset free dash amount
+        if (CheckForCollision())
         {
-            FreeDash = false;
+            FreeDash = true;
+            freeDashCurrent = freeDashMax -1;
+            return true;
+            //call minus one free dash
+        }
+        //if we are in air
+        if (FreeDash == true)
+        {
+            if (freeDashCurrent > 0)
+            {
+                freeDashCurrent -= 1;
+                if (freeDashCurrent < 1)
+                {
+                    FreeDash = false;
+                }
+                return true;
+            }
+            
+           
+        }
+
+        if (playerHealth.CurrentShield > dashCost - float.Epsilon)
+        {
+            playerHealth.ConsumeShield(dashCost);
             return true;
         }
-        if (playerHealth.CurrentShield > dashCost - float.Epsilon || CheckForCollision())
-        {
-            return true;
-        }
-        else if (FreeDash == true)
-        {
-            FreeDash = false;
-            return true;
-        }
+        
         else return false;
 
     }
@@ -191,7 +214,7 @@ public class BallDash : MonoBehaviour
         partSystem?.Emit(partEmitCount);
 
         // Apply Damage
-        playerHealth.ConsumeShield(dashCost);
+        
 
         return true;
     }
