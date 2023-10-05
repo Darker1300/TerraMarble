@@ -2883,7 +2883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f360c437dc28d448899b37e844f2ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetColor: {r: 0.8773585, g: 0.3034887, b: 0.3034887, a: 1}
+  targetColor: {r: 0.8784314, g: 0.3019608, b: 0.3019608, a: 1}
   duration: 1
   fadeInDuration: 0.2
   ColorCurve:
@@ -2920,7 +2920,7 @@ MonoBehaviour:
   isInner: 0
   TrailMaterial: {fileID: 2100000, guid: eed1b3fbb2e1efa42b68ddafed332d81, type: 2}
   changeTrailColor: 1
-  initialTrailColor: {r: 0.025157154, g: 1, b: 0.83235174, a: 1}
+  initialTrailColor: {r: 0.023529412, g: 1, b: 0.83137256, a: 1}
 --- !u!114 &7058598956616035754
 MonoBehaviour:
   m_ObjectHideFlags: 0
