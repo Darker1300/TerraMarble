@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MathUtility;
 using UnityEngine;
 
 public class VelocityBoost : MonoBehaviour
@@ -59,6 +60,27 @@ public class VelocityBoost : MonoBehaviour
             //Debug.Log("working slide rock");
             // Apply an impulse in the direction it was going
             rb.AddForce(surfaceDirection * impulseForce, ForceMode2D.Impulse);
+        }
+        else if (collision.gameObject.CompareTag("Wheel"))
+        {
+            Debug.Log("working slide wheel");
+            // Calculate the impulse direction based on the previous velocity
+
+            // Calculate the direction of movement
+            //Vector2 movementDirection = lastVelocity;
+
+            // Get the collision normal from the first contact point
+            Vector2 collisionNormal = collision.contacts[0].normal;
+
+            // Calculate the direction of the surface relative to the movement direction
+            Vector2 reflectedVelocity = Vector2.Reflect(lastVelocity, collisionNormal);//(Vector2.Reflect(movementDirection, collisionNormal) + transform.up.To2DXY()) * 0.5f;
+
+
+            debugDirection = reflectedVelocity.normalized;
+            //Vector2 impulseDirection = lastVelocity.normalized;
+
+            rb.velocity = reflectedVelocity;
+            //rb.AddForce(surfaceDirection, ForceMode2D.Impulse);
         }
     }
 
