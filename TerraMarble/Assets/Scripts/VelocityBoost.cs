@@ -6,6 +6,7 @@ public class VelocityBoost : MonoBehaviour
 {
     public float impulseForce = 5.0f; // Adjust this value as needed
     public string collisionTag = "YourTag"; // Set the desired tag in the Inspector
+   
     private Rigidbody2D rb;
     [SerializeField] private float minVelocity = 0.1f; 
     private Vector2 lastVelocity;
@@ -38,7 +39,7 @@ public class VelocityBoost : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         
-        if (collision.relativeVelocity.magnitude > 0.1f && collision.collider.gameObject.CompareTag(collisionTag))
+        if (collision.relativeVelocity.magnitude > 0.1f &&( collision.collider.gameObject.CompareTag(collisionTag) ))
         {
 
             Debug.Log("working slide rock");
@@ -60,6 +61,8 @@ public class VelocityBoost : MonoBehaviour
             // Apply an impulse in the direction it was going
             rb.AddForce(surfaceDirection * impulseForce, ForceMode2D.Impulse);
         }
+       
+        
     }
 
 }

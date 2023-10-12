@@ -41,6 +41,9 @@ public class PlayerHealth : MonoBehaviour
 
     private List<Animator> heartIcons;
     private int boolDamageID;
+    public float flyEnergyMax;
+    private float flyEnergyCurrent;
+    public bool UseFlyEnergy = true;
 
     // Properties
     public float CurrentHealth
@@ -48,7 +51,21 @@ public class PlayerHealth : MonoBehaviour
         get => currentHealth;
         set => SetCurrentHealth(value);
     }
-
+    public float FlyEnergyCurrent
+    {
+        get
+        {
+            if (UseFlyEnergy)
+                return flyEnergyCurrent;
+            else return currentShield;
+        }
+        set
+        {
+            if (UseFlyEnergy)
+                flyEnergyCurrent = value;
+            else currentShield = value;
+        }
+    }
     public float MaxHealth
     {
         get => maxHealth;
@@ -84,6 +101,10 @@ public class PlayerHealth : MonoBehaviour
 
         if (immuneDisc is not null)
             normalDiscColor = immuneDisc.Color;
+        if (UseFlyEnergy)
+        {
+            flyEnergyCurrent = flyEnergyMax;
+        }
         //if (!healthBar)
         //{
         //    //disable healthbar
@@ -160,7 +181,15 @@ public class PlayerHealth : MonoBehaviour
     {
         SetCurrentShield(currentShield - amount);
     }
+    public void ConsumeFlyEnergy(float amount)
+    {
+        //(currentShield - amount);
+        flyEnergyCurrent = Math.Clamp(flyEnergyCurrent - amount, 0f, flyEnergyMax);
 
+        float flyCurrentPercent = flyEnergyCurrent * (1f / flyEnergyMax);
+        float flyPercent = amount * (1f / flyEnergyMax);
+        healthShieldController.UpdateFlyEnergy(flyCurrentPercent, flyPercent);
+    }
     public void DamageShield(float amount)
     {
         currentShield = Math.Clamp(currentShield - amount, 0f, maxShield);
@@ -229,7 +258,24 @@ public class PlayerHealth : MonoBehaviour
     //}
 
     //public void Damage() => Damage(1);
+    //public void OnFlyUse(float amount)
+    //{
 
+
+    //        if (FlyEnergyCurrent > 0)
+    //    {
+    //        FlyEnergyCurrent = Math.Clamp(flyEnergyCurrent - amount, 0, flyEnergyMax);
+    //        healthShieldController.UpdateFlyEnergy(flyEnergyCurrent * (1 / flyEnergyMax), amount * (1 / flyEnergyMax));
+    //        // healthShieldController.damageVignette.SetColorToHealth();
+    //    }
+    //    //else
+    //    //{
+    //    //    healthShieldController.ResetHealth();
+    //    //    currentHealth = maxHealth;
+    //    //    currentShield = maxShield;
+    //    //    OnDeath.Invoke();
+    //    //}
+    //}
     public void Damage(float amount)
     {
         if (IsImmune) return;

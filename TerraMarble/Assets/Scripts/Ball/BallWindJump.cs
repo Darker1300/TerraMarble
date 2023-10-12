@@ -142,7 +142,7 @@ public class BallWindJump : MonoBehaviour
     {
         if (playerHealth == null) return false;
         
-        if (playerHealth.CurrentShield > 0f || CheckForCollision())
+        if (playerHealth.FlyEnergyCurrent > 0f || CheckForCollision())
         {
             return true;
         }
@@ -181,6 +181,12 @@ public class BallWindJump : MonoBehaviour
         jumpTimer += Time.fixedDeltaTime;
 
         float forceCost = (forwardForce * glideCost + upForce * flyCost) * Time.fixedDeltaTime;
+        if (playerHealth.UseFlyEnergy)
+        {
+            playerHealth.ConsumeFlyEnergy(forceCost);
+            
+
+        }else
         playerHealth.ConsumeShield(forceCost);
     }
 
