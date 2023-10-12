@@ -66,7 +66,12 @@ public class BallGrabber : MonoBehaviour
                 continue; // buffer not found;
 
             NearbyGrabSet.AddWhere(colliderBuffer.ColliderSet,
-                targetCollider => targetCollider.GetComponent<BallGrabbable>());
+                targetCollider =>
+                {
+                    if (targetCollider != null)
+                        return targetCollider.GetComponent<BallGrabbable>();
+                    return null;
+                });
         }
     }
 

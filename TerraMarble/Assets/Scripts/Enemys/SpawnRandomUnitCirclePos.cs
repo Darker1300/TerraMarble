@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using MathUtility;
 using UnityEngine;
 using UnityUtility;
 
 public class SpawnRandomUnitCirclePos : MonoBehaviour
 {
-
-
     [SerializeField]
     private ObjectPooler pooler;
 
@@ -88,16 +87,11 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
     //Pass in 
     private void Spawn(Vector2 centreToSpawnAround, int SpawnQauntity, float radius)
     {
-
         //spaced around world
 
-
-
-
-
-        Vector3 center = centreToSpawnAround;
-
-
+        float positionZ = pooler.objectPrefab.transform.position.z;
+        Vector3 center = centreToSpawnAround.To3DXY(positionZ);
+        
         for (int i = 0; i < SpawnQauntity; i++)
         {
             Vector3 pos = RandomCircle(center, radius);
@@ -105,8 +99,9 @@ public class SpawnRandomUnitCirclePos : MonoBehaviour
 
             GameObject spawnedObj = pooler.SpawnFromPool(pos, null);
             spawnedObj.transform.rotation = rot;
-            spawnedObj.GetComponent<EnemyHealth>().spawnRandomCircle = this;
 
+            EnemyHealth enemyHealth = spawnedObj.GetComponent<EnemyHealth>();
+            if (enemyHealth is not null) enemyHealth.spawnRandomCircle = this;
         }
 
     }

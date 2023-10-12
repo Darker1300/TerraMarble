@@ -144,6 +144,8 @@ public class TreePaddleController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (treeRigidbody == null) return;
+
         UpdateBend();
         // reset collisionDelta for the current FixedUpdate
         collisionAngleDesired = 0f;

@@ -10,10 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5207247042109310711}
   - component: {fileID: 5207247042109310664}
-  - component: {fileID: 4330856301933483595}
   - component: {fileID: 5207247042109310665}
   - component: {fileID: 5207247042109310666}
-  - component: {fileID: 5207247042109310667}
   m_Layer: 6
   m_Name: Aim
   m_TagString: Untagged
@@ -52,18 +50,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 14
---- !u!114 &4330856301933483595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5207247042109310668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 397e2a84a3c7049428bd522b85800ad6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5207247042109310665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,24 +164,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeBender: {fileID: 5207247042109310665}
---- !u!50 &5207247042109310667
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5207247042109310668}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0

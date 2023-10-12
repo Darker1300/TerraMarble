@@ -262,7 +262,7 @@ namespace UnityUtility
         /// Removes all items equal to Null.
         /// </summary>
         /// <returns>Count of items removed.</returns>
-        public static int RemoveAllNull<TSource>(this IList<TSource> collection)
+        public static int RemoveAllNull<TSource>(this IList<TSource> collection) where TSource : Component
         {
             int removeCount = 0;
             for (int i = collection.Count - 1; i >= 0; i--)

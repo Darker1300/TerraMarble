@@ -3,6 +3,7 @@ using Shapes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityUtility;
 
 public class PlantBombController : MonoBehaviour
@@ -12,6 +13,8 @@ public class PlantBombController : MonoBehaviour
     [SerializeField] private float duration = 3f;
     [SerializeField] private Color flashColor = Color.red;
     [SerializeField] private float flashSpeed = 0.25f;
+    [SerializeField] private bool destroySelfOnExplode = true;
+    [SerializeField] private bool startCountdownOnEnabled = false;
 
     [SerializeField] private ContactFilter2D explodeFilter;
 
@@ -38,7 +41,8 @@ public class PlantBombController : MonoBehaviour
         grabbable = grabbable != null ? grabbable
             : GetComponentInChildren<BallGrabbable>();
 
-        grabbable.GrabEnd += OnGrabEnd;
+        if (grabbable)
+            grabbable.GrabEnd += OnGrabEnd;
     }
 
     private void OnGrabEnd(BallGrabber grabber)
@@ -47,6 +51,10 @@ public class PlantBombController : MonoBehaviour
     private void OnEnable()
     {
         isCounting = false;
+
+        if (startCountdownOnEnabled)
+            isCounting = true;
+
         countdownTimer = duration;
     }
 
@@ -80,7 +88,8 @@ public class PlantBombController : MonoBehaviour
         }
     }
 
-    [Button] public void Explode()
+    [Button]
+    public void Explode()
     {
         List<Collider2D> targets = new List<Collider2D>();
         Physics2D.OverlapCircle(transform.position, radius, explodeFilter, targets);
@@ -100,7 +109,7 @@ public class PlantBombController : MonoBehaviour
                         Debug.Log($"Explode: {region.gameObject.name}");
 
                     if (region.regionID != Region.RegionID.Water)
-                        region.TerraformToDirt();
+                        region.TerraformToWater();
                     continue;
                 }
             }
@@ -120,13 +129,17 @@ public class PlantBombController : MonoBehaviour
 
         bodyRenderer.Color = startColor;
 
-        ObjectPooler explosionPartPool = GameObject.Find("EnemySpawner")
-            .transform.Find("ParticleSpawner")
-            .GetComponent<ObjectPooler>();
-        GameObject newPartGO = explosionPartPool.SpawnFromPool();
-        newPartGO.transform.SetParent(null, false);
-        newPartGO.transform.SetPositionAndRotation(transform.position, transform.rotation);
-        newPartGO.SetActive(true);
+        ObjectPooler explosionPartPool = UnityU.FindObjectByName<ObjectPooler>("BombParticleSpawner", true);
+        if (explosionPartPool)
+        {
+            GameObject newPartGO = explosionPartPool.SpawnFromPool();
+            newPartGO.transform.SetParent(null, false);
+            newPartGO.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            newPartGO.SetActive(true);
+        }
+
+        if (destroySelfOnExplode)
+            UnityU.SafeDestroy(gameObject);
     }
 
     private void OnDrawGizmosSelected()
