@@ -6,9 +6,12 @@ using UnityEngine.UI;
 public class HealthControllerTwo : MonoBehaviour
 {
     [SerializeField] private Image healthBarFillImage;
+    [SerializeField] private Image flyBarFillImage;
+    
     [SerializeField] private Image shieldBarFillImage;
     [SerializeField] private Image healthBarStatic;
     [SerializeField] private Image shieldBarStatic;
+    [SerializeField] private Image flybarBarStatic;
      private float currentFillSpeed = 0.5f; // Adjust as needed
     
     [SerializeField] private float currentHealthPercentage = 100f;
@@ -27,7 +30,17 @@ public class HealthControllerTwo : MonoBehaviour
     [SerializeField] private float damageSpeed = 0.5f; // Adjust as needed
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private TrailScaler trailScaler;
+    /// <summary>
+    /// fly energy variable
 
+    /// </summary>
+    [SerializeField] private float RechargeFlyDelay = 3f;
+    [SerializeField] private float replenishFlySpeed = 0.5f; // Adjust as needed
+    [SerializeField] private float FlyDepletionSpeed = 0.5f; // Adjust as needed
+    private float lastTimeFlyUsed;
+    private bool needsFlyRecharge;
+    private float currentFlyBarPercentage = 100f;
+    public float flyBarCurrentFillSpeed=0.5f;
     private void Start()
     {
         trailScaler = trailScaler != null ? trailScaler
@@ -70,8 +83,46 @@ public class HealthControllerTwo : MonoBehaviour
             //if shield is bellow
             //last damage received cached 
             UpdateBars();
-    }
 
+
+
+        //FLY STUFF
+        FlyHandler();
+
+    }
+    private void FlyHandler()
+    {
+        if (playerHealth.UseFlyEnergy && needsFlyRecharge && Time.time - lastTimeFlyUsed >= RechargeFlyDelay)
+        {
+            ReplenishFlyValue();
+        }
+        else
+            //if shield is bellow
+            //last damage received cached 
+            UpdateFlyBar();
+
+    }
+    private void ReplenishFlyValue()
+    {
+
+        float targetFlyFillAmount = 1f;
+        flybarBarStatic.fillAmount = Mathf.MoveTowards(flybarBarStatic.fillAmount, targetFlyFillAmount, flyBarCurrentFillSpeed * Time.deltaTime);
+        
+        currentFlyBarPercentage = flybarBarStatic.fillAmount;
+        playerHealth.FlyEnergyCurrent = playerHealth.flyEnergyMax;
+      
+    }
+    private void UpdateFlyBar()
+    {
+        // Update health bar fill amount over time
+        float targetFlyFillAmount = currentFlyBarPercentage / 100f;
+        flyBarFillImage.fillAmount = Mathf.MoveTowards(flyBarFillImage.fillAmount, targetFlyFillAmount, currentFillSpeed * Time.deltaTime);
+        needsFlyRecharge = true;
+    }
+    //private void ReplenishFlyBar()
+    //{
+
+    //}
     private void UpdateBars()
     {
         // Update health bar fill amount over time
@@ -132,7 +183,17 @@ public class HealthControllerTwo : MonoBehaviour
         }
         
     }
+    public void UpdateFlyEnergy(float newCurrentFlyBarPercent,float damToMaxFlyPercent)
+    {
+        lastTimeFlyUsed = Time.time;
+        needsFlyRecharge = true;
+        currentFillSpeed = FlyDepletionSpeed;
+        currentFlyBarPercentage = Mathf.Clamp(newCurrentFlyBarPercent * 100, 0f, 100f);
+        //currentShieldPercentage = Mathf.Clamp(newShieldPercentage, 0f, 100f);
+        float flyEnergyFillAmount = currentFlyBarPercentage / 100f;
+        flybarBarStatic.fillAmount = flyEnergyFillAmount;
 
+    }
     public void UpdateShield(float newCurrentShieldPercent)
     {
         lastTimeDamaged = Time.time;

@@ -572,7 +572,7 @@ public class InputManager : MonoBehaviour
 
         //    timer -= Time.deltaTime;
         //}
-        TapRight?.Invoke();
+        //TapRight?.Invoke();
         if (showDebug) Debug.Log("tap: " + (Time.time - startTime));
     }
    

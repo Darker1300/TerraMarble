@@ -137,9 +137,20 @@ public class BallDash : MonoBehaviour
                 return true;
             }
         }
-
-        if (playerHealth.CurrentShield > dashCost - float.Epsilon)
+        if (playerHealth.UseFlyEnergy)
         {
+            if (playerHealth.FlyEnergyCurrent > dashCost - float.Epsilon)
+            {
+
+                playerHealth.ConsumeFlyEnergy(dashCost);
+                return true;
+                
+            }
+
+        }else if (playerHealth.CurrentShield > dashCost - float.Epsilon)
+        {
+
+           
             playerHealth.ConsumeShield(dashCost);
             return true;
         }
