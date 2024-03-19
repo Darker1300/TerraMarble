@@ -144,7 +144,7 @@ public class CloudsManager : MonoBehaviour
         cloud.transform.localScale = newScale * Vector3.one;
 
         Vector3 newPos = localPoint.To3DXY(-.1f - scaleRandom);
-        cloud.transform.position = newPos;
+        cloud.transform.localPosition = newPos;
         cloud.height = randomDistance;
 
         cloud.transform.up = ((Vector2)wheel.transform.position)
