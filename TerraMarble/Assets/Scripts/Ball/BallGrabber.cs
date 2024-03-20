@@ -22,7 +22,7 @@ public class BallGrabber : MonoBehaviour
     public string HavenBufferName = "Shelter";
 
     [SerializeField] private NearbySensor.ColliderBuffer havenColliders;
-    public  int havenLaunchSpeed = 40;
+    public int havenLaunchSpeed = 40;
 
     void Start()
     {
@@ -56,18 +56,22 @@ public class BallGrabber : MonoBehaviour
 
         foreach (BallGrabbable grabbable in NearbyGrabSet.Exit)
             grabbable.NearbyExitInvoke(this);
-        if (grabbed = null)
-            return;
 
+        UpdateShelters();
+    }
+
+    public void UpdateShelters()
+    {
+        if (grabbed == null)
+            return;
         foreach (Collider2D Haven in havenColliders.ColliderSet.Stay)
         {
             // Calculate the dot product
             float dotProduct = Vector2.Dot(transform.up.normalized, (Haven.transform.position - transform.position).normalized);
-            Debug.Log("DotProd : " + dotProduct);
+            //Debug.Log("DotProd : " + dotProduct);
             // Check if the dot product is close to 1, indicating ObjectB is directly above ObjectA
             if (dotProduct < -0.9f)
             {
-               
                 Rigidbody2D targetRb = grabbed.GetComponent<Rigidbody2D>();
                 if (targetRb != null)
                 {
@@ -77,7 +81,6 @@ public class BallGrabber : MonoBehaviour
                     grabbed = null;
                     // Apply an upward force to ObjectB
                     targetRb.AddForce(transform.up * havenLaunchSpeed, ForceMode2D.Impulse);
-
                 }
             }
         }
@@ -139,7 +142,7 @@ public class BallGrabber : MonoBehaviour
         }
     }
 
-   
+
 
     private void Update()
     {
@@ -176,6 +179,8 @@ public class BallGrabber : MonoBehaviour
 
         foreach (BallGrabbable ballGrabbable in NearbyGrabSet.Stay)
         {
+            if (ballGrabbable.IsCoolingDown) continue;
+
             float sqrDist = ((Vector2)ballGrabbable.transform.position).Towards(transform.position).sqrMagnitude;
             if (sqrDist < closestDst)
             {
