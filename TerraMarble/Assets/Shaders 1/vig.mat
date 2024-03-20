@@ -50,7 +50,7 @@ Material:
     - _CenterIntensity: 1.93
     - _Cull: 2
     - _DstBlend: 10
-    - _FullScreenIntensity: -0.0040391516
+    - _FullScreenIntensity: -0.004993837
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SrcBlend: 5
