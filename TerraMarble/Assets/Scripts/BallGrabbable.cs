@@ -57,6 +57,9 @@ public class BallGrabbable : MonoBehaviour
     {
         if (!discUI || !Grabber) return;
 
+        if (cooldownTime > 0f)
+            cooldownTime = Mathf.Max(0f, cooldownTime - Time.deltaTime);
+
         if (!BallIsNearby && DiscAlpha < Mathf.Epsilon) return;
 
         float distance = Vector2.Distance(transform.position, Grabber.transform.position);
@@ -66,9 +69,6 @@ public class BallGrabbable : MonoBehaviour
             goalAlpha = MaxAlpha;
 
         DiscAlpha = Mathf.SmoothDamp(DiscAlpha, goalAlpha, ref fadeVelocity, FadeTime);
-
-        if (cooldownTime > 0f)
-            cooldownTime = Mathf.Max(0f, cooldownTime - Time.deltaTime);
     }
 
     private void OnDrawGizmosSelected()
