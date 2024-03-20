@@ -30,7 +30,7 @@ public class BallGrabbable : MonoBehaviour
     public bool AutoPickUp= false;
     public bool AutoDropOff= false;
     [SerializeField] private Disc discUI = null;
-    public bool IsCoolingDown => CooldownDuration > 0f;
+    public bool IsCoolingDown => cooldownTime > 0f;
 
     public float DiscAlpha
     {
