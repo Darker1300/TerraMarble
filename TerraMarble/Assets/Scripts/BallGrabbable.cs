@@ -24,7 +24,8 @@ public class BallGrabbable : MonoBehaviour
 
     public event GrabberEvent GrabStart;
     public event GrabberEvent GrabEnd;
-
+    public bool AutoPickUp= false;
+    public bool AutoDropOff= false;
     [SerializeField] private Disc discUI = null;
 
     public float DiscAlpha
@@ -82,10 +83,12 @@ public class BallGrabbable : MonoBehaviour
         NearbyEnter?.Invoke(grabber);
         BallIsNearby = true;
         if (Grabber == null) Grabber = grabber;
+
     }
 
     public void NearbyExitInvoke(BallGrabber grabber)
     {
+       
         NearbyExit?.Invoke(grabber);
         BallIsNearby = false;
     }

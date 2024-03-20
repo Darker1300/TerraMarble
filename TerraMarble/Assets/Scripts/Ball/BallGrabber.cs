@@ -83,19 +83,28 @@ public class BallGrabber : MonoBehaviour
                 
                 // Attach
                 grabbed = FindClosest();
-                if (grabbed != null)
+                if (grabbed != null )
+                {
+
+                if (!grabbed.AutoPickUp)
                 {
                     tether.AttachObjectToTether(grabbed.gameObject);
                     grabbed.GrabStartInvoke(this);
                 }
+                    
+                }
             }
             else
+            {
+            if (!grabbed.AutoDropOff)
             {
                 // Release
                 tether.DetachObjectToTether();
                 grabbed.GrabEndInvoke(this);
-                
+
                 grabbed = null;
+            }
+               
             }
         }
        
