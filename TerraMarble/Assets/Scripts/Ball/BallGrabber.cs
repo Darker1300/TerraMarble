@@ -19,12 +19,15 @@ public class BallGrabber : MonoBehaviour
 
     [SerializeField] private TetherComponent tether;
     [SerializeField] private BallGrabbable grabbed = null;
+    public string HavenBufferName = "Shelter";
 
+    [SerializeField] private NearbySensor.ColliderBuffer havenColliders;
+    public  int havenLaunchSpeed = 40;
 
     void Start()
     {
-        InputManager.TapLeft += BombPickUp;
-        InputManager.TapRight += BombPickUp;
+        InputManager.TapLeft += TapPickUp;
+        InputManager.TapRight += TapPickUp;
     }
 
 
@@ -38,8 +41,11 @@ public class BallGrabber : MonoBehaviour
             : tether;
 
         NearbySensor.Updated += OnSensorUpdate;
+        havenColliders = NearbySensor.FindBuffer(HavenBufferName);
+
     }
-    
+
+
 
     private void OnSensorUpdate()
     {
@@ -50,6 +56,31 @@ public class BallGrabber : MonoBehaviour
 
         foreach (BallGrabbable grabbable in NearbyGrabSet.Exit)
             grabbable.NearbyExitInvoke(this);
+        if (grabbed = null)
+            return;
+
+        foreach (Collider2D Haven in havenColliders.ColliderSet.Stay)
+        {
+            // Calculate the dot product
+            float dotProduct = Vector2.Dot(transform.up.normalized, (Haven.transform.position - transform.position).normalized);
+            Debug.Log("DotProd : " + dotProduct);
+            // Check if the dot product is close to 1, indicating ObjectB is directly above ObjectA
+            if (dotProduct < -0.9f)
+            {
+               
+                Rigidbody2D targetRb = grabbed.GetComponent<Rigidbody2D>();
+                if (targetRb != null)
+                {
+                    tether.DetachObjectToTether();
+                    grabbed.GrabEndInvoke(this);
+
+                    grabbed = null;
+                    // Apply an upward force to ObjectB
+                    targetRb.AddForce(transform.up * havenLaunchSpeed, ForceMode2D.Impulse);
+
+                }
+            }
+        }
     }
 
     private void UpdateNearbyGrabSet()
@@ -75,34 +106,47 @@ public class BallGrabber : MonoBehaviour
         }
     }
 
-    public void BombPickUp()
+    public void TapPickUp()
     {
-       
-            if (grabbed == null)
+
+        if (grabbed == null)
+        {
+
+            // Attach
+            grabbed = FindClosest();
+            if (grabbed != null)
             {
-                
-                // Attach
-                grabbed = FindClosest();
-                if (grabbed != null)
+
+                if (!grabbed.AutoPickUp)
                 {
                     tether.AttachObjectToTether(grabbed.gameObject);
                     grabbed.GrabStartInvoke(this);
                 }
+
             }
-            else
+        }
+        else
+        {
+            if (!grabbed.AutoDropOff)
             {
                 // Release
                 tether.DetachObjectToTether();
                 grabbed.GrabEndInvoke(this);
-                
+
                 grabbed = null;
             }
+
         }
-       
-    
+    }
+
+   
 
     private void Update()
     {
+
+
+
+
         //  if (Input.GetKeyDown(KeyCode.Space))
         //  {
         //      if (grabbed == null)
