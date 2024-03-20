@@ -10,12 +10,15 @@ public class BallGrabbable : MonoBehaviour
     public float NearbyRadius = 7.5f;
     public float FadeTime = 0.1f;
     public float MaxAlpha = 1f;
+    public float CooldownDuration = 0.75f;
     public bool showUI = true;
     public bool showGizmos = true;
 
     private float fadeVelocity;
+    private float cooldownTime = 0.0f;
 
-    [Header("Data")] public bool BallIsNearby = false;
+    [Header("Data")] 
+    public bool BallIsNearby = false;
     public bool IsGrabbed = false;
     public BallGrabber Grabber = null;
 
@@ -26,6 +29,7 @@ public class BallGrabbable : MonoBehaviour
     public event GrabberEvent GrabEnd;
 
     [SerializeField] private Disc discUI = null;
+    public bool IsCoolingDown => CooldownDuration > 0f;
 
     public float DiscAlpha
     {
@@ -61,6 +65,9 @@ public class BallGrabbable : MonoBehaviour
             goalAlpha = MaxAlpha;
 
         DiscAlpha = Mathf.SmoothDamp(DiscAlpha, goalAlpha, ref fadeVelocity, FadeTime);
+
+        if (cooldownTime > 0f)
+            cooldownTime = Mathf.Max(0f, cooldownTime - Time.deltaTime);
     }
 
     private void OnDrawGizmosSelected()
@@ -101,5 +108,6 @@ public class BallGrabbable : MonoBehaviour
     {
         GrabEnd?.Invoke(grabber);
         IsGrabbed = false;
+        cooldownTime = CooldownDuration;
     }
 }
